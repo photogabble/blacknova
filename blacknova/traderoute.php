@@ -2070,11 +2070,12 @@ function traderoute_engage($j)
 	/** Stupid User Limiter - Requested Via SF Bug - **/
 	/** Coded by Sane - Jan 15, 2003 - **/      
 
-if (($total_profit  <= 0) || ($playerinfo[turns] <= 0) ||
-  (($ore_buy == 0) && ($goods_buy == 0) && ($organics_buy == 0)))
-  {
-  		return false;
-  }
+if	(($total_profit  <= 0 && ($colonists_buy == 0 && $fighters_buy == 0 && $torps_buy == 0)) || 
+	 ($playerinfo[turns] <= 0) ||
+	 ($ore_buy == 0 && $goods_buy == 0 && $organics_buy == 0 && $colonists_buy == 0 && $fighters_buy == 0 && $torps_buy == 0))
+{
+	return false;
+}
 
 // ===============
   if($traderoute[circuit] == 2)
