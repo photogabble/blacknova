@@ -186,7 +186,7 @@ $db->Execute("CREATE TABLE $dbtables[ibank_accounts](" .
              "balance bigint(20) DEFAULT '0'," .
              "loan bigint(20)  DEFAULT '0'," .
              "loantime TIMESTAMP(14)," .
-			 "PRIMARY KEY(player_id)" .
+       "PRIMARY KEY(player_id)" .
              ")");
 db_create_result();
 
@@ -300,7 +300,7 @@ db_create_result();
 echo "Creating table: bounty ";
 $db->Execute("CREATE TABLE $dbtables[bounty] (" .
              "bounty_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
-             "amount bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "amount bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "bounty_on int unsigned DEFAULT '0' NOT NULL," .
              "placed_by int unsigned DEFAULT '0' NOT NULL," .
              "PRIMARY KEY (bounty_id)," .
@@ -337,12 +337,12 @@ db_create_result();
 
 echo "Creating table: ip_log ";
 $db->Execute("CREATE TABLE $dbtables[ip_log](" .
-              "log_id int unsigned DEFAULT '0' NOT NULL auto_increment," .       
+              "log_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
               "player_id int DEFAULT '0' NOT NULL," .
               "ip_address tinytext NOT NULL," .
               "time TIMESTAMP(14) ," .
               "PRIMARY KEY (log_id)," .
-              "KEY ship_id (player_id)" . 
+              "KEY ship_id (player_id)" .
               ")");
 db_create_result();
 
@@ -357,11 +357,11 @@ $db->Execute("CREATE TABLE $dbtables[ship_types] (" .
              "image char(20)," .
              "description text," .
              "buyable enum('Y','N') DEFAULT 'Y' NOT NULL," .
-             "cost_credits bigint(20) unsigned DEFAULT '0' NOT NULL," . 
-             "cost_ore bigint(20) unsigned DEFAULT '0' NOT NULL," . 
-             "cost_goods bigint(20) unsigned DEFAULT '0' NOT NULL," . 
-             "cost_energy bigint(20) unsigned DEFAULT '0' NOT NULL," . 
-             "cost_organics bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "cost_credits bigint(20) unsigned DEFAULT '0' NOT NULL," .
+             "cost_ore bigint(20) unsigned DEFAULT '0' NOT NULL," .
+             "cost_goods bigint(20) unsigned DEFAULT '0' NOT NULL," .
+             "cost_energy bigint(20) unsigned DEFAULT '0' NOT NULL," .
+             "cost_organics bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "turnstobuild int unsigned DEFAULT '0' NOT NULL," .
              "minhull tinyint(3) unsigned DEFAULT '0' NOT NULL," .
              "maxhull tinyint(3) unsigned DEFAULT '0' NOT NULL," .
@@ -441,6 +441,30 @@ $db->Execute("CREATE TABLE $dbtables[email_log](" .
              "e_stamp char(20)," .
              "e_response varchar(250)," .
              "PRIMARY KEY (log_id)" .
+             ")");
+db_create_result();
+
+echo "Creating table: routes_headers ";
+$db->Execute("CREATE TABLE $dbtables[routes_headers](" .
+             "route_id int DEFAULT '0' NOT NULL auto_increment," .
+             "route_name text NOT NULL," .
+             "sector_id int DEFAULT '0' NOT NULL," .
+             "player_id int DEFAULT '0' NOT NULL," .
+             "PRIMARY KEY (route_id)," .
+             "KEY (player_id)," .
+             "KEY (sector_id)" .
+             ")");
+db_create_result();
+
+echo "Creating table: routes_steps ";
+$db->Execute("CREATE TABLE $dbtables[routes_steps](" .
+             "step_id int DEFAULT '0' NOT NULL auto_increment," .
+             "route_id int DEFAULT '0' NOT NULL," .
+             "step int DEFAULT '0' NOT NULL," .
+             "action enum('move','trade','special','defense','planet') DEFAULT 'move' NOT NULL," .
+             "arguments text NOT NULL," .
+             "PRIMARY KEY (step_id)," .
+             "KEY (route_id)" .
              ")");
 db_create_result();
 
