@@ -653,7 +653,7 @@ if(!empty($planetinfo))
       else
         $planetowner="$l_planet_noone";
 
-      playerlog($playerinfo[ship_id], LOG_PLANET_CAPTURED, "$planetinfo[colonists]|$planetinfo[credits]|$planetowner");
+      playerlog($playerinfo[ship_id], LOG_PLANET_CAPTURED, "$planetinfo[colonists]|$planetinfo[credits]|$planetinfo[owner]");
       
     }
     elseif($command == "capture")
