@@ -282,6 +282,7 @@ include("footer.php");
 
 function traderoute_die($error_msg)
 {
+  global $l_footer_until_update, $l_footer_players_on_1, $l_footer_players_on_2, $l_footer_one_player_on, $sched_ticks;
   echo "<p>$error_msg<p>";
 
 
@@ -454,6 +455,7 @@ function traderoute_new($traderoute_id)
   global $l_tdr_cursector, $l_tdr_selspoint, $l_tdr_port, $l_tdr_planet, $l_tdr_none, $l_tdr_insector, $l_tdr_selendpoint;
   global $l_tdr_selmovetype, $l_tdr_realspace, $l_tdr_warp, $l_tdr_selcircuit, $l_tdr_oneway, $l_tdr_bothways, $l_tdr_create;
   global $l_tdr_modify, $l_tdr_returnmenu;
+  global $l_footer_until_update, $l_footer_players_on_1, $l_footer_players_on_2, $l_footer_one_player_on, $sched_ticks;
   global $db, $dbtables;
 
   if(!empty($traderoute_id))
