@@ -1,3 +1,8 @@
+TheMightyDude (31 August 2003)
+--------------------------------
+Fixed bug [674023] Colonists Trading Bug for the 2nd time.
+Forgot to add a line, causing BNT to bypass my fix :(
+
 TheMightyDude (29 August 2003)
 --------------------------------
 Put back the calc_ownership() function back in rsmove.php
