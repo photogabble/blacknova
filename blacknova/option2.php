@@ -30,7 +30,7 @@ if($newpass1 == $newpass2 && $password == $oldpass && $newpass1 != "")
 }
 if(!preg_match("/^[\w]+$/", $newlang)) 
 {
-   $newlang = default_lang;
+   $newlang = $default_lang;
 }
 $lang=$newlang;
 SetCookie("lang",$lang,time()+(3600*24)*365,$gamepath,$gamedomain);

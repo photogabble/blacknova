@@ -18,7 +18,7 @@ if(!empty($lang))
 {
   if(!preg_match("/^[\w]+$/", $lang)) 
   {
-     $lang = default_lang;
+     $lang = $default_lang;
 
   }
   foreach($avail_lang as $key => $value)
