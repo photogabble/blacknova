@@ -1,3 +1,8 @@
+TheMightyDude (08 October 2003)
+--------------------------------
+Added a named constant in global_funcs.php so that Setup Info can detect if register_globals has been patched.
+Updated Setup Info, Now displays more server information. 
+
 TheMightyDude (18 September 2003)
 --------------------------------
 Modified settings.php so the table borders are the same as in main menu.

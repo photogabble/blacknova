@@ -1,4 +1,15 @@
 <?
+
+// ****************************************************************
+// *** This script is ©2002 2003 Paul Kirby AKA TheMightyDude   ***
+// *** And is free to use under condition the copyright notice  ***
+// *** remains untouched.                                       ***
+// *** Email: admin@initcorp.co.uk                              ***
+// *** WebSite: http://E-Script.initcorp.co.uk                  ***
+// ****************************************************************
+// *** Setup Info Script                                        ***
+// ****************************************************************
+
 	error_reporting(0);
 
 	include("config.php");
@@ -20,10 +31,10 @@
 
 	include("header.php");
 	global $HTTP_SERVER_VARS;
-	$createdate = date("l, F d, Y",strtotime ("Aug 20, 2003"));
+	$createdate = date("l, F d, Y",strtotime ("Oct 01, 2003"));
 	$updatedate = date("l, F d, Y",filemtime (basename ($HTTP_SERVER_VARS["PHP_SELF"])));
 	$release_type = "OEM";
-	$version = "0.6.4 (<font color=\"white\">$release_type</font>)";
+	$version = "0.6.4c (<font color=\"white\">$release_type</font>)";
 	$author = "TheMightyDude";
 	$email = "admin@initcorp.co.uk";
 	$desc = "Written for Blacknova Traders V0.4x";
@@ -172,6 +183,16 @@
 		DisplayFlush("    </tr>\n");
 	}
 
+	Function do_Table_Single_Row($col1="Col1")
+	{
+		global $Cols;
+
+		$Col_Str="colspan=\"".($Cols)."\"";
+		DisplayFlush("    <tr>\n");
+		DisplayFlush("      <td bgcolor=\"#C0C0C0\" width=\"100%\" $Col_Str bgcolor=\"#C0C0C0\"><font face=\"Verdana\" size=\"1\" color=\"#000000\">$col1</font></td>\n");
+		DisplayFlush("    </tr>\n");
+	}
+
 	Function do_Table_Row($col1="Col1",$col2="Col2",$status=False)
 	{
 		global $Cols, $Wrap;
@@ -233,6 +254,18 @@
 		{
 			return $HTTP_SERVER_VARS["REMOTE_ADDR"];
 		}
+
+#		if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
+#			$ip = getenv("HTTP_CLIENT_IP");
+#		else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
+#			$ip = getenv("HTTP_X_FORWARDED_FOR");
+#		else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
+#			$ip = getenv("REMOTE_ADDR");
+#		else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
+#			$ip = $_SERVER['REMOTE_ADDR'];
+#		else
+#			$ip = "unknown";
+#		return($ip);
 	}
 
 	##############################
@@ -362,36 +395,81 @@
 	{
 
 		global $SERVER_SOFTWARE,$REMOTE_ADDR,$REMOTE_HOST,$REMOTE_PORT, $TERM,$HOSTTYPE,$LOCAL_ADDR;
-		global $ADODB_vers, $PHP_VERSION, $Wrap,$Cols;
+		global $ADODB_vers, $PHP_VERSION, $gd_array, $PHP_Interface, $Wrap,$Cols;
 		global $db,$HTTP_SERVER_VARS;
 		global $COOKIE_Result;
 		global $SERVER_PROTOCOL, $OS_TYPE, $PlatOS;
 		global $DB_Connect,$MYSQL_C_VERSION,$MYSQL_S_VERSION,$MYSQL_PROTO_INFO;
 		global $SERVER_ADDR,$SERVER_PORT,$GATEWAY_ADDR;
 		global $ADODB_Database,$ADODB_EXTENSION, $MYSQL_STATUS;
+		global $Zend_Version,$compiler,$APACHE_VERSION,$MOD_SSL_VERSION,$OPENSSL_VERSION,$php_sapi;
+
+		global $sapi_module;
 
 		DisplayFlush("<br>\n");
 		DisplayFlush("// This is just to find out what Server Operating System your running bnt on.<br>\n");
 		DisplayFlush("// And to find out what other software is running e.g. PHP,<br>\n");
 
+
 		$Cols = 3; $Wrap = True;
 		DisplayFlush("<br>\n");
 		do_Table_Title("Server Software/Operating System",$Cols);
 
-		if(!empty($OS_TYPE)) do_Table_Row("OPERATING SYSTEM",$OS_TYPE);
-		if(!empty($PlatOS)) do_Table_Row("PLATFORM SYSTEM","$PlatOS");
+		if(!empty($php_sapi)) do_Table_Row("System",$php_sapi);
+
+		if(!empty($OS_TYPE)) do_Table_Row("Operating System",$OS_TYPE);
+		if(defined('PHP_OS')) do_Table_Row("OS Type",PHP_OS);
+		if(!empty($PlatOS)) do_Table_Row("Platform System","$PlatOS");
+
 		if(!empty($REMOTE_ADDR)) do_Table_Row("LOCAL ADDR","$LOCAL_ADDR:$REMOTE_PORT");
 		if(!empty($REMOTE_ADDR)&&!empty($REMOTE_PORT)) do_Table_Row("PROXY ADDR","$GATEWAY_ADDR");
 		if(!empty($SERVER_ADDR)&&!empty($SERVER_PORT)) do_Table_Row("DESTINATION ADDR","$SERVER_ADDR:$SERVER_PORT");
-		if(!empty($ADODB_vers)) do_Table_Row("ADODB VERSION","$ADODB_vers");
-		if(!empty($PHP_VERSION)) do_Table_Row("PHP VERSION","$PHP_VERSION");
-		if(!empty($MYSQL_C_VERSION)) do_Table_Row("MYSQL CLIENT VERSION","$MYSQL_C_VERSION");
-		if(!empty($MYSQL_S_VERSION)) do_Table_Row("MYSQL SERVER VERSION","$MYSQL_S_VERSION");
+
 		if(!empty($DB_Connect)) do_Table_Row("DB CONNECTION","$DB_Connect");
 		if(!empty($COOKIE_Result)) do_Table_Row("COOKIE TEST","$COOKIE_Result");
 		if(!empty($ADODB_Database)) do_Table_Row("ADODB Database","$ADODB_Database");
 
 		do_Table_Footer("");
+
+		$Cols = 3; $Wrap = True;
+		DisplayFlush("<br>\n");
+		do_Table_Title("Software Versions",$Cols);
+
+		if(!empty($Zend_Version)) {do_Table_Row("Zend Version","$Zend_Version");}
+		if(!empty($APACHE_VERSION)) {do_Table_Row("Apache Version","$APACHE_VERSION");}
+		if(!empty($PHP_VERSION)) {do_Table_Row("PHP Version","$PHP_VERSION");}
+		if(!empty($PHP_Interface)) {do_Table_Row("PHP Interface ","$PHP_Interface");}
+
+		if(!empty($MOD_SSL_VERSION)) {do_Table_Row("* mod_ssl Version","$MOD_SSL_VERSION");}
+		if(!empty($OPENSSL_VERSION)){do_Table_Row("* OpenSSL Version","$OPENSSL_VERSION");}
+
+		if(!empty($MYSQL_C_VERSION)){do_Table_Row("mySQL Client Version","$MYSQL_C_VERSION");}
+		if(!empty($MYSQL_S_VERSION)){do_Table_Row("mySQL Server Version","$MYSQL_S_VERSION");}
+		if(!empty($ADODB_vers)){do_Table_Row("Adodb Version","$ADODB_vers");}
+
+		do_Table_Blank_Row();
+		do_Table_Single_Row("* = Module (if any installed).");
+		do_Table_Footer("");
+
+
+		DisplayFlush("<p>// This GD Library section is just displayed for future use, and may not even be used within Blacknova Traders.</p>\n");
+
+		$Cols = 3; $Wrap = True;
+		do_Table_Title("GD Library Information",$Cols);
+	
+		if(!empty($gd_array)){
+			do_Table_Row("GD Version",$gd_array['GD Version']);
+			do_Table_Row("JPG Support",TRUEFALSE($gd_array['JPG Support'],True,"Enabled","Disabled"));
+			do_Table_Row("PNG Support",TRUEFALSE($gd_array['PNG Support'],True,"Enabled","Disabled"));
+			do_Table_Row("GIF Read Support",TRUEFALSE($gd_array['GIF Read Support'],True,"Enabled","Disabled"));
+	
+			do_Table_Blank_Row();
+			do_Table_Single_Row("These are optional installed libraries (if any installed).");
+		}else{
+			do_Table_Single_Row("Sorry GD Library not installed.");
+		}
+		do_Table_Footer("");
+
 	}
 
 	$SERVER_SOFTWARE = ''; $REMOTE_ADDR = ''; $REMOTE_HOST = ''; $HOSTTYPE = '';
@@ -403,10 +481,41 @@
 
 	$pos=strpos(getConIP(),",");$REMOTE_ADDR=$LOCAL_ADDR;
 	if(is_integer($pos)){$GATEWAY_ADDR=substr($LOCAL_ADDR,$pos+1);$LOCAL_ADDR=substr($LOCAL_ADDR,0,$pos);}
+
+	$Zend_Version = zend_version();
+
 	if(isset($HTTP_SERVER_VARS["SERVER_ADDR"])) $SERVER_ADDR = $HTTP_SERVER_VARS["SERVER_ADDR"];
 	if(isset($HTTP_SERVER_VARS["SERVER_PORT"])) $SERVER_PORT = $HTTP_SERVER_VARS["SERVER_PORT"];
+	if(isset($HTTP_SERVER_VARS["REMOTE_PORT"])) $REMOTE_PORT = $HTTP_SERVER_VARS["REMOTE_PORT"];
+
+// *** PHP Interface *** //
+	$sapi_type = php_sapi_name();
+	if (preg_match ("/cgi/", $sapi_type)) $PHP_Interface = "CGI PHP";
+	else if (preg_match ("/apache/", $sapi_type)) $PHP_Interface = "mod_PHP";
+	else $PHP_Interface = "Unknown ($sapi_type)";
+// ********************* //
+
+	if (function_exists('gd_info')) $gd_array = gd_info();
+
 	if(isset($PHP_VERSION)) $PHP_VERSION = PHP_VERSION;
 	if (is_integer(strpos($SERVER_SOFTWARE, "Apache"))) $PlatOS = "Apache"; else $PlatOS = "IIS";
+
+	##############################
+	# Get Apache Version + Mods. #
+	##############################
+ 
+	$ar = split("[/ ]",$HTTP_SERVER_VARS['SERVER_SOFTWARE']);
+	for ($i=0;$i<(count($ar));$i++){
+		switch(strtoupper($ar[$i])){
+			case 'APACHE': $i++;if(empty($APACHE_VERSION)) $APACHE_VERSION = $ar[$i];break;
+			case 'PHP': $i++;if(empty($PHP_VERSION)) $PHP_VERSION = $ar[$i];break;
+			case 'MOD_SSL':$i++;if(empty($MOD_SSL_VERSION)) $MOD_SSL_VERSION = $ar[$i];break;
+			case 'OPENSSL':$i++;if(empty($OPENSSL_VERSION)) $OPENSSL_VERSION = $ar[$i];break;
+		}
+	}
+
+	if(function_exists('php_uname')) $php_sapi =php_uname();
+	if(function_exists('apache_get_version')) $apache_version =apache_get_version();
 
 	$Spos = strpos($SERVER_SOFTWARE, "(")+1; 
 	$Epos = strpos($SERVER_SOFTWARE, ")",(int)$Spos);
@@ -417,7 +526,10 @@
 			$OS_TYPE = "Windows"; if (function_exists('exec')) $OS_TYPE = exec("ver");}
 		Else If($Platform=="Red Hat Linux"||$Platform=="Unix"||$Platform=="UNIX") 
 			$OS_TYPE = "Linux / Unux";
+		Else If($Platform=="Gentoo/Linux")
+			$OS_TYPE = "Gentoo Linux";
 		Else 
+#			$OS_TYPE = $Platform;
 			$OS_TYPE = "Unknown OS [<B>Tell Author to add Platform = $Platform</B>]"; 
 	}
 
@@ -458,11 +570,11 @@
 
 	if($show_Env_Var) {
 		DisplayFlush("<p>// This is used to help the admin of the server set up BNT, Or its used by me if you are having problems setting up BNT.</p>\n");
-		$Cols = 2;
+		$Cols = 2;$Wrap = True;
 		do_Table_Title("Environment Variables",$Cols);
 		ksort($HTTP_SERVER_VARS); reset($HTTP_SERVER_VARS);
 		foreach($HTTP_SERVER_VARS as $k => $v) 
-		{$v =implode("; ",explode(";", $v));do_Table_Row("$k","$v");}
+		{$v =implode("; ",explode(";", $v)); do_Table_Row("$k","$v");}
 		do_Table_Footer();
 	}
 
@@ -502,10 +614,16 @@
 	$Cols = 3;
 
 	do_Table_Title("PHP.INI Information",$Cols);
-	do_Table_Row("Register Globals", (get_cfg_var('register_globals') ? "On" : "Off") );
+	do_Table_Row("<b>* Register Globals</b>", "<b>".(get_cfg_var('register_globals') ? "On" : "Off")."</b>",((reg_global_fix===True) ? "<b>Patched</b>":""));
+	if(get_cfg_var('register_globals') !=True && (!defined('reg_global_fix'))) do_Table_Single_Row("<font color=\"red\"><b>*** Warning BNT at this time requires Register Globals to be enabled. Or to be patched.</b></font>");
+
 	do_Table_Row("Register argc argv",(get_cfg_var('register_argc_argv') ? "On" : "Off") );
 	do_Table_Row("Post Max Size",get_cfg_var('post_max_size'));
-	do_Table_Row("Safe Mode",(get_cfg_var('safe_mode') ? "On" : "Off") );
+
+	do_Table_Row("<b>* Safe Mode</b>","<b>".(get_cfg_var('safe_mode') ? "On" : "Off")."</b>" );
+	if(get_cfg_var('safe_mode')==True) do_Table_Single_Row("<font color=\"red\"><b>*** Warning BNT at this time requires Safe Mode to be disabled.</b></font>");
+
+
 	do_Table_Row("Display Errors",(get_cfg_var('display_errors') ? "On" : "Off") );
 	do_Table_Row("zlib Output Compression",(get_cfg_var('zlib.output_compression') ? "On" : "Off") );
 	do_Table_Row("Implicit Flush",(get_cfg_var('implicit_flush') ? "On" : "Off") );
@@ -568,6 +686,7 @@
 	do_Table_Row("HTML Errors",(ini_get('html_errors') ? "On" : "Off") );
 	do_Table_Row("Report Memleaks",(ini_get('report_memleaks') ? "On" : "Off") );
 	do_Table_Row("Log Errors",(ini_get('log_errors') ? "On" : "Off") );
+	do_Table_Single_Row("* = Important variable.");
 	do_Table_Footer("<br>");
 
 	#########################################

@@ -8,6 +8,7 @@ if (preg_match("/global_funcs.php/i", $PHP_SELF)) {
 //----- Start register_globals fix ---- 
 // seemed like a good enough place to put this in
 // Tested and everything seemed to run with register_globals=Off
+if(!defined('reg_global_fix'))define('reg_global_fix', True, TRUE);
 foreach ($_POST as $postkey => $postvar) 
 { 
   $$postkey = $postvar; 
