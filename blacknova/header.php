@@ -27,6 +27,9 @@ if($interface == "main.php")
 	a.dis:hover {text-decoration:none; font-size: $stylefontsize; font-family: verdana; color:#3366ff; font-weight:bold;}
         .portcosts1 {width:7em;border-style:none;font-family: verdana;font-size:12pt;background-color:#300030;color:#c0c0c0;}
         .portcosts2 {width:7em;border-style:none;font-family: verdana;font-size:12pt;background-color:#400040;color:#c0c0c0;}
+        .headlines {color:white;font-size:$stylefontsize;font-family:verdana,Arial,san-serif;line-height:10pt;text-decoration:none;}
+        .headlines:hover {text-decoration:none; font-size:$stylefontsize; font-family:verdana; color:#3366ff; font-weight:bold;line-height:10pt;}
+        .scroll-ends {font-weight: bold; COLOR: white; BACKGROUND: #400040; CURSOR: hand;}
 	";
 }
 echo "body {font-family: Arial, Tahoma, Helvetica, sans-serif; font-size: x-small}";

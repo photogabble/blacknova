@@ -762,8 +762,20 @@ echo $link_bnthelper_string;
 echo $port_bnthelper_string;
 echo $planet_bnthelper_string;
 echo $rspace_bnthelper_string;
-echo "is it not here?";
 
+echo "\n";
+?>
+<TABLE WIDTH="500" ALIGN=CENTER BORDER=1 CELLSPACING=0 CELLPADDING=1 BGCOLOR="black">
+<TR>
+
+<TD ID=IEfad1 align="center" width="490" class="scroll-ends">
+</TD>
+
+</TR>
+</TABLE>
+
+<?
+include("fader.php");
 include("footer.php");
 
 ?>
