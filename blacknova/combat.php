@@ -653,7 +653,8 @@ function planetcombat()
         $l_cmb_youlostarmorpoints = str_replace("[cmb_attackerarmor]", $attackerarmor, $l_cmb_youlostarmorpoints);
         echo "$l_cmb_youlostarmorpoints<BR>";
         $energy=$playerinfo[ship_energy];
-        $l_cmb_energyused = str_replace("[cmb_energy]", $energy, $l_cmb_energyused);
+        $energy_lost = $start_energy - $playerinfo[ship_energy];
+        $l_cmb_energyused = str_replace("[cmb_energy_lost]", $energy_lost, $l_cmb_energyused);
         $l_cmb_energyused = str_replace("[cmb_playerinfo_ship_energy]", $start_energy, $l_cmb_energyused);
         echo "$l_cmb_energyused<BR></CENTER>";
         $db->Execute("UPDATE $dbtables[ships] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, torps=torps-$attackertorps,armour_pts=armour_pts-$armor_lost, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");

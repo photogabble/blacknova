@@ -978,7 +978,7 @@ $l_cmb_escapepod        = "Luckily you have an escape pod!";
 $l_cmb_finalcombatstats = "Final Combat Stats";
 $l_cmb_youlostfighters  = "You lost [cmb_fighters_lost] out of [cmb_playerinfo_ship_fighters] total fighters.";
 $l_cmb_youlostarmorpoints       = "You lost [cmb_armor_lost] out of [cmb_playerinfo_armour_pts] total armor points, you have [cmb_attackerarmor] points remaining.";
-$l_cmb_energyused       = "You used [cmb_energy] energy, from a total of [cmb_playerinfo_ship_energy] energy.";
+$l_cmb_energyused       = "You used [cmb_energy_lost] energy, from a total of [cmb_playerinfo_ship_energy] energy.";
 $l_cmb_planetdefeated   = "Planet defeated";
 $l_cmb_citizenswanttodie        = "The citizens of this planet have decided they'd rather die than serve a pathetic ruler like you. They use a laser drill to dig a hole to the planet's core. You barely have time to escape into orbit before the whole planet is reduced to a ball of molten lava.";
 $l_cmb_youmaycapture    = "You may <a href=planet.php?planet_id=[cmb_planetinfo_planet_id]&command=capture>capture</a> the planet or just leave it undefended.";
