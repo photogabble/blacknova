@@ -18,9 +18,12 @@ if (checklogin())
 }
 
 //Retrieve the user and ship information
+
 $result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
-//Put the player information into the array: "playerinfo"
 $playerinfo=$result->fields;
+
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+$shipinfo = $res->fields;
 
 //Check to see if the player has less than one turn available
 //and if so return to the main menu
@@ -33,21 +36,22 @@ if ($playerinfo[turns]<1)
 }
 
 //Retrieve all the sector information about the current sector
-$result2 = $db->Execute ("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
+$result2 = $db->Execute ("SELECT * FROM $dbtables[universe] WHERE sector_id='$shipinfo[sector_id]'");
 //Put the sector information into the array "sectorinfo"
 $sectorinfo=$result2->fields;
 
 //Retrive all the warp links out of the current sector
-$result3 = $db->Execute ("SELECT * FROM $dbtables[links] WHERE link_start='$playerinfo[sector]'");
+$result3 = $db->Execute ("SELECT * FROM $dbtables[links] WHERE link_start='$shipinfo[sector_id]'");
 $i=0;
 $flag=0;
+
 if ($result3>0)
 {
     //loop through the available warp links to make sure it's a valid move
     while (!$result3->EOF)
     {
         $row = $result3->fields;
-        if ($row[link_dest]==$sector && $row[link_start]==$playerinfo[sector])
+        if ($row[link_dest]==$sector && $row[link_start]==$shipinfo[sector_id])
         {
             $flag=1;
         }
@@ -64,15 +68,9 @@ if ($flag==1)
     include("check_fighters.php");
     if($ok>0){
        $stamp = date("Y-m-d H-i-s");
-       $query="UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$sector where player_id=$playerinfo[player_id]";
+       $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1 where player_id=$playerinfo[player_id]");
+       $db->Execute("UPDATE $dbtables[ships] SET sector_id=$sector WHERE ship_id=$shipinfo[ship_id]");
        log_move($playerinfo[player_id],$sector);
-       $move_result = $db->Execute ("$query");
-  	if (!$move_result)
-	{
-	// is this really STILL needed?
-	    $error = $db->ErrorMsg();
-	    mail ($admin_mail,"Move Error", "Start Sector: $sectorinfo[sector_id]\nEnd Sector: $sector\nPlayer: $playerinfo[character_name] - $playerinfo[player_id]\n\nQuery:  $query\n\nSQL error: $error");
-	}
     }
     /* enter code for checking dangers in new sector */
     include("check_mines.php");
@@ -84,7 +82,7 @@ if ($flag==1)
 else
 {
     echo "$l_move_failed<BR><BR>";
-    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where player_id=$playerinfo[player_id]");
+    $db->Execute("UPDATE $dbtables[ships] SET cleared_defences=' ' where ship_id=$shipinfo[ship_id]");
    
     TEXT_GOTOMAIN();
 }

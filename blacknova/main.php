@@ -94,7 +94,7 @@ if($shipinfo[on_planet] == "Y")
   }
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='shipinfo[sector_id]' ORDER BY link_dest ASC");
+$res = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='$shipinfo[sector_id]' ORDER BY link_dest ASC");
 
 $i = 0;
 if($res > 0)
