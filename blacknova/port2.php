@@ -99,6 +99,8 @@ return $tempval;
 
 function phpChangeDelta($desiredvalue,$currentvalue)
 {
+global $upgrade_cost;
+
   $Delta=0; $DeltaCost=0;
   $Delta = $desiredvalue - $currentvalue;
 
@@ -107,7 +109,7 @@ function phpChangeDelta($desiredvalue,$currentvalue)
      $DeltaCost=$DeltaCost + mypw(2,$desiredvalue-$Delta); 
      $Delta=$Delta-1;
     }
-    $DeltaCost=$DeltaCost * 1000;
+    $DeltaCost=$DeltaCost * $upgrade_cost;
     
   return $DeltaCost;
 }
@@ -291,61 +293,61 @@ else
       {
         $tempvar = 0; $tempvar=phpTrueDelta($hull_upgrade, $playerinfo[hull]);
         $query = $query . ", hull=hull+$tempvar";
-        BuildOneCol("$l_hull $l_trade_upgraded");
+        BuildOneCol("$l_hull $l_trade_upgraded $hull_upgrade");
       }
       if($engine_upgrade > $playerinfo[engines])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($engine_upgrade, $playerinfo[engines]);
         $query = $query . ", engines=engines+$tempvar";
-        BuildOneCol("$l_engines $l_trade_upgraded");
+        BuildOneCol("$l_engines $l_trade_upgraded $engine_upgrade");
       }
       if ($power_upgrade > $playerinfo[power])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($power_upgrade, $playerinfo[power]);
         $query = $query . ", power=power+$tempvar";
-        BuildOneCol("$l_power $l_trade_upgraded");
+        BuildOneCol("$l_power $l_trade_upgraded $power_upgrade");
       }
       if($computer_upgrade > $playerinfo[computer])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($computer_upgrade, $playerinfo[computer]);
         $query = $query . ", computer=computer+$tempvar";
-        BuildOneCol("$l_computer $l_trade_upgraded");
+        BuildOneCol("$l_computer $l_trade_upgraded $computer_upgrade");
       }
       if($sensors_upgrade > $playerinfo[sensors])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($sensors_upgrade, $playerinfo[sensors]);
         $query = $query . ", sensors=sensors+$tempvar";
-        BuildOneCol("$l_sensors $l_trade_upgraded");
+        BuildOneCol("$l_sensors $l_trade_upgraded $sensors_upgrade");
       }
       if($beams_upgrade > $playerinfo[beams])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($beams_upgrade, $playerinfo[beams]);
         $query = $query . ", beams=beams+$tempvar";
-        BuildOneCol("$l_beams $l_trade_upgraded");
+        BuildOneCol("$l_beams $l_trade_upgraded $beams_upgrade");
       }
       if($armour_upgrade > $playerinfo[armour])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($armour_upgrade, $playerinfo[armour]);
         $query = $query . ", armour=armour+$tempvar";
-        BuildOneCol("$l_armour $l_trade_upgraded");
+        BuildOneCol("$l_armour $l_trade_upgraded $armour_upgrade");
       }
       if($cloak_upgrade > $playerinfo[cloak])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($cloak_upgrade, $playerinfo[cloak]);
         $query = $query . ", cloak=cloak+$tempvar";
-        BuildOneCol("$l_cloak $l_trade_upgraded");
+        BuildOneCol("$l_cloak $l_trade_upgraded $cloak_upgrade");
       }
       if($torp_launchers_upgrade > $playerinfo[torp_launchers])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($torp_launchers_upgrade, $playerinfo[torp_launchers]);
         $query = $query . ", torp_launchers=torp_launchers+$tempvar";
-        BuildOneCol("$l_torp_launch $l_trade_upgraded");
+        BuildOneCol("$l_torp_launch $l_trade_upgraded $torp_launchers_upgrade");
       }
       if($shields_upgrade > $playerinfo[shields])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($shields_upgrade, $playerinfo[shields]);
         $query = $query . ", shields=shields+$tempvar";
-        BuildOneCol("$l_shields $l_trade_upgraded");
+        BuildOneCol("$l_shields $l_trade_upgraded $shields_upgrade");
       }
       if($fighter_number)
       {

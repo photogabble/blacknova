@@ -190,7 +190,7 @@ $l_traded_goods		 = "Traded Goods";
 $l_traded_organics	 = "Traded Organics";
 $l_traded_energy	 = "Traded Energy";
 $l_trade_complete	 = "Trade completed";
-$l_trade_upgraded = "Upgraded";
+$l_trade_upgraded = "Upgraded to level ";
 $l_trade_added = "added";
 $l_trade_installed = "installed";
 

@@ -1,3 +1,7 @@
+L. Patrick Smallwood (10 June 2002)
+---------------------------------
+Fixes to the configurability of port/port2 costs, and added report of what level you upgraded to on port2.
+
 SharpBlue (15 June 2002)
 ---------------------------------
 Optimized the planets scheduler module.
