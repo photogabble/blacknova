@@ -138,7 +138,7 @@ $dev_warpedit_price = 100000;
 $dev_minedeflector_price = 10;
 $dev_escapepod_price = 100000;
 $dev_fuelscoop_price = 100000;
-$dev_lssd_price = 1000000;
+$dev_lssd_price = 10000000;
 
 $fighter_price = 50;
 $fighter_prate = .01;

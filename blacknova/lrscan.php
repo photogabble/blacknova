@@ -325,16 +325,18 @@ else
   echo "</TD></TR>";
   if($playerinfo['dev_lssd'] == 'Y')
   {
-   echo "<TR BGCOLOR=\"$color_line2\"><TD><B>$l_lss</B></TD></TR>";
-   echo "<TR><TD>";
-   if($playerinfo['ship_name'] != $sectorinfo['last_ship_seen'])
-   {  
-   echo $sectorinfo[last_ship_seen];
-   }
-   else
-   {
-   echo $sectorinfo[last_ship_seen_2];
-   }
+     echo "<TR BGCOLOR=\"$color_line2\"><TD><B>$l_lss</B></TD></TR>";
+     echo "<TR><TD>";
+     $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $playerinfo[ship_id] AND sector_id = $sector ORDER BY time DESC LIMIT 1");
+     if(!$resx)
+     {
+        echo "None";
+     }
+     else
+     {
+        $myrow = $resx->fields;
+        echo get_player($myrow[ship_id]);
+     }
   }
   else
   {

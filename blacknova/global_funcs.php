@@ -112,6 +112,7 @@ $dbtables['IGB_transfers'] = "${db_prefix}IGB_transfers";
 $dbtables['logs'] = "${db_prefix}logs";
 $dbtables['gen_id'] = "${db_prefix}gen_id";
 $dbtables['bounty'] = "${db_prefix}bounty";
+$dbtables['movement_log'] = "${db_prefix}movement_log";
 
 function bigtitle()
 {
@@ -167,7 +168,7 @@ function checklogin()
     /* if the player has an escapepod, set the player up with a new ship */
     if($playerinfo['dev_escapepod'] == "Y")
     {
-      $result2 = $db->Execute("UPDATE $dbtables[ships] SET hull=0, engines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armour=0, armour_pts=100, cloak=0, shields=0, sector=0, ship_ore=0, ship_organics=0, ship_energy=1000, ship_colonists=0, ship_goods=0, ship_fighters=100, ship_damage='', on_planet='N', dev_warpedit=0, dev_genesis=0, dev_beacon=0, dev_emerwarp=0, dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, ship_destroyed='N' where email='$username'");
+      $result2 = $db->Execute("UPDATE $dbtables[ships] SET hull=0, engines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armour=0, armour_pts=100, cloak=0, shields=0, sector=0, ship_ore=0, ship_organics=0, ship_energy=1000, ship_colonists=0, ship_goods=0, ship_fighters=100, ship_damage='', on_planet='N', dev_warpedit=0, dev_genesis=0, dev_beacon=0, dev_emerwarp=0, dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, ship_destroyed='N',dev_lssd='N' where email='$username'");
       echo $l_login_died;
       $flag = 1;
     }
@@ -322,8 +323,9 @@ function gen_score($sid)
   $calc_dev_emerwarp = "dev_emerwarp*$dev_emerwarp_price";
   $calc_dev_escapepod = "IF(dev_escapepod='Y', $dev_escapepod_price, 0)";
   $calc_dev_fuelscoop = "IF(dev_fuelscoop='Y', $dev_fuelscoop_price, 0)";
+  $calc_dev_lssd = "IF(dev_lssd='Y', $dev_lssd_price, 0)";
   $calc_dev_minedeflector = "dev_minedeflector*$dev_minedeflector_price";
-  $calc_dev = "$calc_dev_warpedit+$calc_dev_genesis+$calc_dev_beacon+$calc_dev_emerwarp+$calc_dev_escapepod+$calc_dev_fuelscoop+$calc_dev_minedeflector";
+  $calc_dev = "$calc_dev_warpedit+$calc_dev_genesis+$calc_dev_beacon+$calc_dev_emerwarp+$calc_dev_escapepod+$calc_dev_fuelscoop+$calc_dev_minedeflector+$calc_dev_lssd";
 
   $calc_planet_goods = "SUM($dbtables[planets].organics)*$organics_price+SUM($dbtables[planets].ore)*$ore_price+SUM($dbtables[planets].goods)*$goods_price+SUM($dbtables[planets].energy)*$energy_price";
   $calc_planet_colonists = "SUM($dbtables[planets].colonists)*$colonist_price";
@@ -976,5 +978,11 @@ function get_player($ship_id)
    {
       return "Unknown";
    }
+}
+
+function log_move($ship_id,$sector_id)
+{
+   global $db,$dbtables;
+   $res = $db->Execute("INSERT INTO $dbtables[movement_log] (ship_id,sector_id,time) VALUES ($ship_id,$sector_id,NOW())");
 }
 ?>

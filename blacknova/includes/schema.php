@@ -163,14 +163,7 @@ $db->Execute("CREATE TABLE $dbtables[universe](" .
              "angle2 float(10,2) DEFAULT '0.00' NOT NULL," .
              "distance bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "fighters bigint(20) DEFAULT '0' NOT NULL," .
-             "last_ship_seen varchar(20) binary NOT NULL default 'No one'," .
-             "last_ship_seen_2 varchar(20) binary NOT NULL default 'No one'," .
-             "lss_date_2 timestamp(8) NOT NULL," .
-             "lss_date timestamp(8) NOT NULL," .
-             "PRIMARY KEY (sector_id)," .
-             "KEY sector_id (sector_id)," .
-             "UNIQUE sector_id_2 (sector_id)," .
-             "UNIQUE sector_id_3 (sector_id)" .
+             "PRIMARY KEY (sector_id)" .
              ")");
 echo "created.<BR>";
 
@@ -317,6 +310,18 @@ $db->Execute("CREATE TABLE $dbtables[bounty] (" .
              "PRIMARY KEY (bounty_id)," .
              "KEY bounty_on (bounty_on)," .
              "KEY placed_by (placed_by)" .
+             ")");
+echo "created.<BR>";
+
+echo "Creating table: movement_log...";
+$db->Execute("CREATE TABLE $dbtables[movement_log](" .
+             "event_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
+             "ship_id bigint(20) DEFAULT '0' NOT NULL," .
+             "sector_id bigint(20) DEFAULT '0'," .
+             "time TIMESTAMP(14) ," .
+             "PRIMARY KEY (event_id)," .
+             "KEY ship_id(ship_id)," .
+             "KEY sector_id (sector_id)" .
              ")");
 echo "created.<BR>";
 
