@@ -848,6 +848,7 @@ else
 
         $headers = "From: GameAdmin <$admin_mail>\r\n";
         $content .= "\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
+        $content = ereg_replace("\r\n.\r\n","\r\n. \r\n",$content);
         while(!$res->EOF)
         {
           $e_response = mail($res->fields[email],$subject,$content,$headers);

@@ -1,3 +1,8 @@
+TheMightyDude (26 July 2002)
+--------------------------------
+Fixed Email Bug when having <CRLF>.<CRLF> on the same line in the message body.
+Which caused the the email to end before the email message finished.
+
 TheMightyDude (18 July 2002)
 --------------------------------
 Fixed admin.php to display the correct image and name of the players ship class.
