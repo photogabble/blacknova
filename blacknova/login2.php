@@ -48,7 +48,8 @@ SetCookie("screenres", $screen_res);
 
 /* first placement of cookie - don't use updatecookie. */
 $userpass = $email."+".$pass;
-SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
+//SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
+SetCookie("userpass",$userpass,time()+(3600*2),$gamepath,$gamedomain);
 
 $banned = 0;
 $res = $db->Execute("SELECT * FROM $dbtables[ip_bans] WHERE '$ip' LIKE ban_mask OR '$playerinfo[ip_address]' LIKE ban_mask");
@@ -91,6 +92,7 @@ if($playerfound)
     {
       // player's ship has not been destroyed
       playerlog($playerinfo[player_id], LOG_LOGIN, $ip);
+      ip_log($playerinfo[player_id],$ip);
       $stamp = date("Y-m-d H-i-s");
       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',ip_address='$ip' WHERE player_id=$playerinfo[player_id]");
 	  TEXT_GOTOMAIN();
