@@ -60,6 +60,8 @@ elseif($command == 'loans') //loans menu
   IGB_loans();
 elseif($command == 'borrow') //borrow operation
   IGB_borrow();
+elseif($command == 'repay') //repay operation
+  IGB_repay();
 else
 {
   echo "
@@ -932,6 +934,52 @@ function IGB_borrow()
   $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
+function IGB_repay()
+{
+  global $playerinfo, $account, $amount;
+  global $l_igb_notrepay, $l_igb_notenoughrepay,$l_igb_payloan;
+  global $l_igb_shipaccount, $l_igb_currentloan, $l_igb_loanthanks;
+  global $db, $dbtables, $l_igb_back, $l_igb_logout;
+
+  $amount = StripNonNum($amount);
+  if(($amount * 1) != $amount)
+    IGB_error($l_igb_invalidamount, "IGB.php?command=loans");
+
+  if($amount == 0)
+    IGB_error($l_igb_invalidamount, "IGB.php?command=loans");
+
+  if($account[loan] == 0)
+    IGB_error($l_igb_notrepay, "IGB.php?command=loans");
+
+  if($amount > $account[loan])
+    $amount = $account[loan];
+
+  if($amount > $playerinfo[credits])
+    IGB_error($l_igb_notenoughrepay, "IGB.php?command=loans");
+
+  $playerinfo[credits]-=$amount;
+  $account[loan]-=$amount;
+
+  echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_payloan<br>---------------------------------</td></tr>" .
+       "<tr valign=top>" .
+       "<td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loanthanks</td>" .
+       "<tr valign=top>" .
+       "<td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>---------------------------------</td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_shipaccount :</td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($playerinfo[credits]) . " C<br>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_payloan :</td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount) . " C<br>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_currentloan :</td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($account[loan]) . " C<br>" .
+       "<tr valign=top>" .
+       "<td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>---------------------------------</td>" .
+       "<tr valign=top>" .
+       "<td nowrap><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<a href=\"main.php\">$l_igb_logout</a></td>" .
+       "</tr>";
+
+  $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=loan-$amount,loantime=$account[loantime] WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
+}
 
 function IGB_error($errmsg, $backlink, $title="Error!")
 {

@@ -264,6 +264,14 @@ elseif($sectorinfo[port_type] == "special")
 {
   $title=$l_special_port;
   bigtitle();
+  if(isLoanPending($playerinfo[ship_id]))
+  {
+    echo "$l_port_loannotrade<p>";
+    TEXT_GOTOMAIN();
+    include("footer.php");
+    die();
+  }
+
   $res2 = $db->Execute("SELECT SUM(amount) as total_bounty FROM $dbtables[bounty] WHERE placed_by = 0 AND bounty_on = $playerinfo[ship_id]");
   if($res2)
   {

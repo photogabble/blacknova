@@ -995,4 +995,29 @@ function log_move($ship_id,$sector_id)
    global $db,$dbtables;
    $res = $db->Execute("INSERT INTO $dbtables[movement_log] (ship_id,sector_id,time) VALUES ($ship_id,$sector_id,NOW())");
 }
+
+function isLoanPending($ship_id)
+{
+  global $db, $dbtables;
+  global $IGB_lrate;
+
+  $res = $db->Execute("SELECT loan, UNIX_TIMESTAMP(loantime) AS time FROM $dbtables[ibank_accounts] WHERE ship_id=$ship_id");
+  if($res)
+  {
+    $account=$res->fields;
+
+    if($account[loan] == 0)
+      return false;
+
+    $curtime=time();
+    $difftime = ($curtime - $account[time]) / 60;
+    if($difftime > $IGB_lrate)
+      return true;
+    else
+      return false;
+  }
+  else
+    return false;
+
+}
 ?>

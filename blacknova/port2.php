@@ -125,6 +125,15 @@ else
 
   if($sectorinfo[port_type] == "special")
   {
+
+    if(isLoanPending($playerinfo[ship_id]))
+    {
+      echo "$l_port_loannotrade<p>";
+      TEXT_GOTOMAIN();
+      include("footer.php");
+      die();
+    }
+
     $hull_upgrade_cost = 0;
     if($hull_upgrade > $playerinfo[hull])
     {

@@ -938,6 +938,10 @@ $l_igb_loantimeleft = "Time left until full payment is due";
 $l_igb_loanlate = "Payment is late!";
 $l_igb_repayamount = "Enter the amount to repay";
 $l_igb_repay = "Repay";
+$l_igb_notrepay = "You have no loans to repay";
+$l_igb_notenoughrepay = "You do not have enough credits in your ship account to perform this operation.";
+$l_igb_payloan = "Loan Payment";
+$l_igb_loanthanks = "Your payment has been received. Thank you for doing business with the IGB.";
 
 // combat.php
 
@@ -1347,6 +1351,7 @@ $l_port_bounty = "You can not access a special port while you have a bounty on y
 $l_port_bounty2 = "Click <a href=\"port.php?pay=1\">here</a> to pay the bounty of [amount] credits.";
 $l_port_btynotenough = "You do not have enough credtis to pay the bounty of [amount] credits.<BR>";
 $l_port_bountypaid = "You have paid the bounty. Click <a href=\"port.php\">here</a> to continue.<BR>";
+$l_port_loannotrade = "The IGB has issued a lockdown on your ship account due to a late loan payment. You cannot trade at a special port until you pay back your loan.";
 $l_team_notyours = "You must be in the Alliance in order to invite someone.";
 $l_team_leavefirst = "You must leave a team first before joining another.";
 
