@@ -836,6 +836,118 @@ switch ($step) {
       echo "done<br>";
 
 /************************************************************
+Added some more playable ships for testing
+************************************************************/
+
+      echo "Inserting ship type: Destroyer..."; 
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
+                   "5, " .                //type_id
+                   "'Destroyer', " .         //name
+                   "'destroyer.gif', " .     //image
+                   "'The Destroyer is an older model Federation military ship.  The Federation has upgraded and made this model available to the public.  This is the same ship the Federation has used for years to do escorts and short range patrols.  They have stripped down this ship, but a few upgrades could bring it back to its former glory.'," .
+                   "'Y', " .              //buyable
+                   "8500000, " .           //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "120, " .               //turnstobuild
+                   "1, " .                //minhull
+                   "5, " .                //maxhull
+                   "3, " .                //minengines
+                   "10, " .                //maxengines
+                   "3, " .                //minpower
+                   "12, " .                //maxpower 
+                   "1, " .                //mincomputer
+                   "14, " .                //maxcomputer
+                   "1, " .                //minsensors
+                   "6, " .                //maxsensors
+                   "1, " .                //minbeams
+                   "12, " .                //maxbeams
+                   "1, " .                //mintorp_launchers
+                   "12, " .                //maxtorp_launchers
+                   "1, " .                //minshields
+                   "12, " .                //maxshields
+                   "3, " .                //minarmour
+                   "14, " .                //maxarmour
+                   "0, " .                //mincloak
+                   "2 " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+      echo "Inserting ship type: Cruiser..."; 
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
+                   "6, " .                //type_id
+                   "'Cruiser', " .         //name
+                   "'cruiser.gif', " .     //image
+                   "'The Cruiser is an older model Federation military ship.  The Federation has upgraded and made this model available to the public.  This is the same ship the Federation has used for years to  mediate border disputes and do long  range patrols.  They have stripped down this ship, but a few upgrades could bring it back to its former glory.'," .
+                   "'Y', " .              //buyable
+                   "92500000, " .           //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "325, " .               //turnstobuild
+                   "1, " .                //minhull
+                   "6, " .                //maxhull
+                   "4, " .                //minengines
+                   "16, " .                //maxengines
+                   "4, " .                //minpower
+                   "18, " .                //maxpower 
+                   "4, " .                //mincomputer
+                   "20, " .                //maxcomputer
+                   "2, " .                //minsensors
+                   "6, " .                //maxsensors
+                   "3, " .                //minbeams
+                   "18, " .                //maxbeams
+                   "1, " .                //mintorp_launchers
+                   "18, " .                //maxtorp_launchers
+                   "1, " .                //minshields
+                   "18, " .                //maxshields
+                   "3, " .                //minarmour
+                   "20, " .                //maxarmour
+                   "0, " .                //mincloak
+                   "2 " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+      echo "Inserting ship type: Transport..."; 
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
+                   "7, " .                //type_id
+                   "'Transport', " .         //name
+                   "'transport.gif', " .     //image
+                   "'This is the standard Federation transport ship.  It can carry quite alot of cargo but does not have much in the way of weapons.  A good cloaking system is its only real defense.  This is a good ship to have if you have allies to help defend you.  But if your on your own.... better keep an eye out for pirates.'," .
+                   "'Y', " .              //buyable
+                   "17500000, " .           //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "135, " .               //turnstobuild
+                   "6, " .                //minhull
+                   "25, " .                //maxhull
+                   "4, " .                //minengines
+                   "18, " .                //maxengines
+                   "2, " .                //minpower
+                   "6, " .                //maxpower 
+                   "0, " .                //mincomputer
+                   "2, " .                //maxcomputer
+                   "0, " .                //minsensors
+                   "5, " .                //maxsensors
+                   "0, " .                //minbeams
+                   "2, " .                //maxbeams
+                   "0, " .                //mintorp_launchers
+                   "2, " .                //maxtorp_launchers
+                   "0, " .                //minshields
+                   "2, " .                //maxshields
+                   "1, " .                //minarmour
+                   "6, " .                //maxarmour
+                   "4, " .                //mincloak
+                   "18 " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+/************************************************************
 Ships from here will have to be built, and the stats above
 will probably all be changed when testing, so no use defining
 these right now.
