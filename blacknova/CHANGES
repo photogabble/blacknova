@@ -1,5 +1,9 @@
 Patrick Smallwood (9 May 2002)
 ---------------------------------
+License change to GPL
+
+Patrick Smallwood (9 May 2002)
+---------------------------------
 Huge cleanup, touching lots of files, be careful of breakage: Removes *all* windows newlines from code.
 
 Patrick Smallwood (1 May 2002)
