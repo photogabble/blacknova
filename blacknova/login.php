@@ -109,7 +109,7 @@ echo "$l_login_lang&nbsp;&nbsp;<select name=newlang>";
 
 foreach($avail_lang as $curlang)
 {
-  if($curlang['file'] == $lang)
+  if($curlang['file'].".inc" == $lang)
     $selected = "selected";
   else
     $selected = "";

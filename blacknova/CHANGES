@@ -1,5 +1,9 @@
 Patrick Smallwood (7 June 2002)
 ---------------------------------
+Sourceforge bug #558626 - Fix for login.php - actually get a select from the dropdown. Yay.
+
+Patrick Smallwood (7 June 2002)
+---------------------------------
 Sourceforge bug #565233 - Fix turn usage in planet, and attack
 
 Patrick Smallwood (7 June 2002)
