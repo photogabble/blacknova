@@ -113,7 +113,8 @@ else
     else
     {
       if($playerscore == 0) $playerscore=1;
-      if($targetscore / $playerscore < $bounty_ratio || $targetinfo[turns_used] < $bounty_minturns)
+      if(($targetscore / $playerscore < $bounty_ratio || $targetinfo[turns_used] < $bounty_minturns) &&
+        !("furangee" == substr($targetinfo[email], -8) ) )
       {
          // Check to see if there is Federation bounty on the player. If there is, people can attack regardless.
          $btyamount = 0;
