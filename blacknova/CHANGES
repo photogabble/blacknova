@@ -1,7 +1,8 @@
 Torr (13 June 2002)
 ---------------------------------
 Correct display of traderoutes on the "main" page.
-Added some foundation work for Sector defense traderoutes.
+Added some foundation work for Sector defense traderoutes in main.php.
+Added enum type 'D' to the traderoutes table, more foundation work.
 
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------
