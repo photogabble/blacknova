@@ -616,7 +616,7 @@ switch ($step) {
             $insert = "INSERT INTO $dbtables[links] (link_start,link_dest) VALUES\n";
           }
           $insert .= "($k1,$v2),\n";
-          $i++
+          $i++;
         }
       }
       $insert = substr_replace($insert, ";", -2);
