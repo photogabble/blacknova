@@ -73,6 +73,10 @@ else
     $temp_turns = 1;
     }
     $efficiency = round($row[score] / $temp_turns);
+    if ($temp_turns < 150)
+     {
+     $efficiency = 0;
+     }
     $online = " ";
     if($difftime <= 5) $online = "Online";
     echo "<TR BGCOLOR=\"$color\"><TD>" . NUMBER($i) . "</TD><TD>" . NUMBER($row[score]) . "</TD><TD>$row[character_name]</TD><TD>" . NUMBER($row[turns_used]) . "</TD><TD>$row[last_login]</TD><TD>&nbsp;&nbsp;" . NUMBER($rating) . "</TD><TD>$row[team_name]&nbsp;</TD><TD>$online</TD><TD>$efficiency</TD></TR>\n";
