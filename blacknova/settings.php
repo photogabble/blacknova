@@ -41,7 +41,7 @@ function tabimage($imgfile,$alt)
 
 function start_line($bgcolor,$width)
 {
-  echo "<div align=\"center\"><table cellSpacing=\"1\" cellPadding=\"1\" border=\"0\" bgcolor=\"$bgcolor\" width=\"$width\"><tbody>\n";
+  echo "<div align=\"center\"><table cellSpacing=\"1\" cellPadding=\"0\" border=\"0\" bgcolor=\"$bgcolor\" width=\"$width\"><tbody>\n";
 }
 
 function line($item, $value)
@@ -76,7 +76,7 @@ start_border($MaxWidth);
 ## Version Tab ##
 #################
 tabimage("images/Info.gif","Displays the Game Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Game Server Title",$gamename);
 line("Game Type, Version","$game_name, $game_version");
 line("Game Codebase",$game_codebase);
@@ -87,7 +87,7 @@ end_line();
 ## Modules Tab ##
 #################
 tabimage("images/Modules.gif","Displays the Modules Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Modular Module Version",ModularVersion);
 
 if ($modcnt >0)
@@ -96,17 +96,24 @@ if ($modcnt >0)
   {
     $num++;
     list ($modfile,$modtag) = split ('/t', $moduleinfo,5);
-    echo "      <tr>\n";
+    echo "      <tr bgColor=$line_color>\n";
     echo "        <td width=100%>\n";
     echo "          <div align=center>\n";
     echo "            <table border=0 cellspacing=0 width=100% bgcolor=$line_color cellpadding=0>\n";
-    echo "              <tr bgColor=$line_color>\n";
-    echo "                <td width=15%><font color=#ffffff size=2>Module Name </font></td>\n";
-    echo "                <td width=30%><font color=#00ff00 size=2><a target=\"_blank\" href=\"".constant("$modtag"."_Website")."\" class=\"nav\">".constant($modtag."_Name")." " .constant($modtag."_Version")."</a></font></td>\n";
-    echo "                <td width=10%><font color=#ffffff size=2>Author </font></td>\n";
-    echo "                <td width=20%><font color=#00ff00 size=2><a href=\"".constant($modtag."_Email")."\" class=\"nav\">".constant($modtag."_Author")."</a></font></td>\n";
-    echo "                <td width=05%><font color=#ffffff size=2>Info </font></td>\n";
-    echo "                <td width=20%><font color=#00ff00 size=2>".constant($modtag."_Info")."</font></td>\n";
+    echo "              <tr>\n";
+
+	$modlink = constant($modtag."_Website");
+	if(!empty($modlink)) 
+		echo "        <td width=50% align=\"left\"><font color=#00ff00 size=2><a class=nav href=".constant("$modtag"."_Website").">".constant($modtag."_Name")." ".constant($modtag."_Version")."</a></font></td>\n";
+	else
+		echo "        <td width=50% align=\"left\"><font color=#00ff00 size=2>".constant($modtag."_Name")." ".constant($modtag."_Version")."</font></td>\n";
+
+	$modlink = constant($modtag."_Email");
+	if(!empty($modlink))
+		echo "        <td width=50% align=\"right\"><font color=#00ff00 size=2><a href=\"".constant($modtag."_Email")."\" class=\"nav\">".constant($modtag."_Author")."</a></font></td>\n";
+	else
+		echo "        <td width=50% align=\"right\"><font color=#00ff00 size=2>".constant($modtag."_Author")."</font></td>\n";
+
     echo "              </tr>\n";
     echo "            </table>\n";
     echo "          </div>\n";
@@ -139,7 +146,7 @@ $row = $regres->fields; $regplayers = $row['num_players'];
 $row = $deadres->fields; $deadplayers = $row['num_players'];
 
 tabimage("images/PlayerInfo.gif","Displays the Player Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Registered Players","$regplayers");
 line("Alive Players","$aliveplayers");
 line("Dead Players","$deadplayers");
@@ -150,7 +157,7 @@ end_line();
 ## Game Status Tab ##
 #####################
 tabimage("images/Status.gif","Displays the Status Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Allow Players",TRUEFALSE($server_closed,False,"Yes","<font color=red>No</font>"));
 line("Allow New Players",TRUEFALSE($account_creation_closed,False,"Yes","<font color=red>No</font>"));
 line("Maintenance Mode",TRUEFALSE(($account_creation_closed & $server_closed),True,"Yes","<font color=red>No</font>"));
@@ -161,7 +168,7 @@ end_line();
 ## Game Options Tab ##
 ######################
 tabimage("images/Options.gif","Displays the Options Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Allow Corp Planet Credit Transfer",TRUEFALSE($corp_planet_transfers,1,"Yes","<font color=red>No</font>"));
 line("Allow Full Long Range Scan",TRUEFALSE($allow_fullscan,True,"Yes","<font color=red>No</font>"));
 line("Allow Sub-Orbital Fighter Attacks",TRUEFALSE($sofa_on,True,"Yes","<font color=red>No</font>"));
@@ -179,7 +186,7 @@ end_line();
 ## Game Settings Tab ##
 #######################
 tabimage("images/Settings.gif","Displays the Settings Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Average tech level needed to hit mines",$mine_hullsize);
 line("Averaged Tech level When Emergency Warp Degrades",$ewd_maxhullsize);
 $num = NUMBER($sector_max);
@@ -234,7 +241,7 @@ end_line();
 ## Game Scheduler Tab ##
 ########################
 tabimage("images/Scheduler.gif","Displays the Scheduler Information");
-start_line("#E7C03D",$MaxWidth);
+start_line("#CCCCCC",$MaxWidth);
 line("Scheduler Type",TRUEFALSE($sched_type,0,"Cron based","Player triggered"));
 line("Ticks happen every",$sched_ticks ." minutes");
 line("Turns will happen every",$sched_turns ." minutes");
