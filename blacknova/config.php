@@ -37,7 +37,7 @@ $color_line2 = "#400040";
 /* Localization (regional) settings */
 $local_number_dec_point = ".";
 $local_number_thousands_sep = ",";
-$language = "english";
+
 
 /* game variables */
 $ip = getenv("REMOTE_ADDR");
@@ -58,7 +58,7 @@ $account_creation_closed=false;    //true = block new account creation
 
 /* newbie niceness variables */
 $newbie_nice = "YES";
-$newbie_extra_nice = "YES";
+//$newbie_extra_nice = "YES"; //Not used any more?!
 $newbie_hull = "8";
 $newbie_engines = "8";
 $newbie_power = "8";
@@ -73,7 +73,7 @@ $newbie_cloak = "8";
 /* specify which special features are allowed */
 $allow_fullscan = true;                // full long range scan
 $allow_navcomp = true;                 // navigation computer
-$allow_ibank = true;                  // Intergalactic Bank (IGB)
+$allow_ibank = true;                   // Intergalactic Bank (IGB)
 $allow_genesis_destroy = true;         // Genesis torps can destroy planets
 
 // iBank Config - Intergalactic Banking
@@ -87,10 +87,10 @@ $ibank_loanfactor = 0.10;			// One-time loan fee
 $ibank_loanlimit = 0.25;		// Maximum loan allowed, percent of net worth
 
 // Information displayed on the 'Manage Own Account' section
-$ibank_ownaccount_info = "Interest rate is " . $ibank_interest * 100 . "%<BR>Loan rate is " .
-$ibank_loaninterest * 100 . "%<P>If you have loans Make sure you have enough credits deposited each turn " .
-  "to pay the interest and mortage, otherwise it will be deducted from your ships acccount at <FONT COLOR=RED>" .
-  "twice the current Loan rate (" . $ibank_loaninterest * 100 * 2 .")%</FONT>.";
+//$ibank_ownaccount_info = "Interest rate is " . $ibank_interest * 100 . "%<BR>Loan rate is " .
+//$ibank_loaninterest * 100 . "%<P>If you have loans Make sure you have enough credits deposited each turn " .
+//  "to pay the interest and mortage, otherwise it will be deducted from your ships acccount at <FONT COLOR=RED>" .
+//  "twice the current Loan rate (" . $ibank_loaninterest * 100 * 2 .")%</FONT>.";
 
 // end of iBank config
 
@@ -187,18 +187,21 @@ $min_bases_to_own = 3;
 
 $default_lang = 'english';
 
-$avail_lang[0][file] = 'english';
-$avail_lang[0][name] = 'English';
-$avail_lang[1][file] = 'german';
-$avail_lang[1][name] = 'Deutsch';
-$avail_lang[2][file] = 'french';
-$avail_lang[2][name] = 'Français';
-$avail_lang[3][file] = 'romanian';
-$avail_lang[3][name] = 'Romanian';
-$avail_lang[4][file] = 'czech';
-$avail_lang[4][name] = 'Cesky';
-$avail_lang[5][file] = 'spanish';
-$avail_lang[5][name] = 'Espanol';
+$avail_lang[0]['file'] = 'english';
+$avail_lang[0]['name'] = 'English';
+$avail_lang[1]['file'] = 'german';
+$avail_lang[1]['name'] = 'Deutsch';
+$avail_lang[2]['file'] = 'french';
+$avail_lang[2]['name'] = 'Français';
+$avail_lang[3]['file'] = 'romanian';
+$avail_lang[3]['name'] = 'Romanian';
+$avail_lang[4]['file'] = 'czech';
+$avail_lang[4]['name'] = 'Cesky';
+$avail_lang[5]['file'] = 'spanish';
+$avail_lang[5]['name'] = 'Espanol';
+$avail_lang[6]['file'] = 'estonia';
+$avail_lang[6]['name'] = 'Eesti';
+
 
 $IGB_min_turns = $start_turns; //Turns a player has to play before ship transfers are allowed 0=disable
 $IGB_svalue = 0.15; //Max amount of sender's value allowed for ship transfers 0=disable

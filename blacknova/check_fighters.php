@@ -51,10 +51,25 @@
                  break;
 
               case "retreat":
+                 if( $calledfrom == 'rsmove.php' )
+                 {
+                   $shipspeed = mypw($level_factor, $shipinfo['engines']);
+                   $turns_back = 2 * round($distance / $shipspeed);
+                   if($turns_back == 0 )
+                   {
+                     $turns_back = 2;
+                   }
+
+                 }
+                 else
+                   $turns_back = 2; //Warp
+
+                 //TODO: what happens if we don't have enough turns for BOTH moves (forth+back)?? Destroy the ship? Order him to wait turns?
+
                  $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
                  $stamp = date("Y-m-d H-i-s");
-                 $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-2, turns_used=turns_used+2 WHERE player_id=$playerinfo[player_id]");
-                 $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector] WHERE ship_id=$shipinfo[ship_id]");
+                 $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-$turns_back, turns_used=turns_used+$turns_back WHERE player_id=$playerinfo[player_id]");
+                 $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
                  bigtitle();
                  echo "$l_chf_youretreatback<BR>";
                  TEXT_GOTOMAIN();
@@ -66,11 +81,30 @@
                  $fighterstoll = $total_sector_fighters * $fighter_price * 0.6;
                  if($playerinfo[credits] < $fighterstoll)
                  {
-                    echo "$l_chf_notenoughcreditstoll<BR>";
-                    echo "$l_chf_movefailed<BR>";
-                    // undo the move
-                    $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
-                    $ok=0;
+                   if( $calledfrom == 'rsmove.php' )
+                   {
+                     $shipspeed = mypw($level_factor, $shipinfo['engines']);
+                     $turns_back = 2 * round($distance / $shipspeed);
+                     if($turns_back == 0 )
+                     {
+                       $turns_back = 2;
+                     }
+                   }
+                   else
+                     $turns_back = 2; //Warp
+
+                   echo "$l_chf_notenoughcreditstoll<BR>";
+                   echo "$l_chf_movefailed<BR>";
+                   // undo the move
+
+                   //TODO: what happens if we don't have enough turns for BOTH moves (forth+back)?? Destroy the ship? Order him to wait turns?
+
+                   $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                   $stamp = date("Y-m-d H-i-s");
+                   $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-$turns_back, turns_used=turns_used+$turns_back WHERE player_id=$playerinfo[player_id]");
+                   $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
+
+                   $ok=0;
                  }
                  else
                  {
@@ -119,13 +153,13 @@
               default:
                  $interface_string = $calledfrom . '?sector='.$sector.'&destination='.$destination.'&engage='.$engage;
                  $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = '$interface_string' WHERE ship_id = $shipinfo[ship_id]");
-                 
+
                  $fighterstoll = $total_sector_fighters * $fighter_price * 0.6;
                  bigtitle();
                  echo "<FORM ACTION=$calledfrom METHOD=POST>";
                  $l_chf_therearetotalfightersindest = str_replace("[chf_total_sector_fighters]", $total_sector_fighters, $l_chf_therearetotalfightersindest);
                  echo "$l_chf_therearetotalfightersindest<br>";
-                 
+
                  if($defences[0]['fm_setting'] == "toll")
                  {
                     $l_chf_creditsdemanded = str_replace("[chf_number_fighterstoll]", NUMBER($fighterstoll), $l_chf_creditsdemanded);
@@ -136,7 +170,7 @@
                  {
                     echo "$l_chf_inputpay";
                  }
-                 
+
                  echo "$l_chf_inputfight";
                  echo "$l_chf_inputcloak<BR>";
                  echo "<INPUT TYPE=SUBMIT VALUE=$l_chf_go><BR><BR>";

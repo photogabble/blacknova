@@ -1,3 +1,10 @@
+Dominioon (04 October 2002)
+--------------------------------
+Fixed (?) retreat turns in check_fighters.php.
+Removed unused variable '$newbie_extra_nice'.
+Added Estonian translation.
+Fixed SOFA log.
+
 Nospoon (04 October 2002)
 --------------------------------
 Numerous bug fixes

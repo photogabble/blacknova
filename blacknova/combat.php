@@ -208,13 +208,13 @@ function planetbombing()
     if ($debug) echo "total figs go boom $planetfighterslost<BR>\n";
     echo "<br><br>\n";
     
-    playerlog($ownerinfo[player_id], LOG_PLANET_BOMBED, "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]|$beamsused|$planettorps|$planetfighterslost");
-
     $res = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
     $res = $db->Execute("UPDATE $dbtables[ships] SET fighters=fighters-$attackerfighters WHERE ship_id=$shipinfo[ship_id]");
 
     $res = $db->Execute("UPDATE $dbtables[planets] SET energy=energy-$beamsused,fighters=fighters-$planetfighterslost, torps=torps-$planettorps WHERE planet_id=$planetinfo[planet_id]");
     $res = $db->Execute("UNLOCK TABLES");
+
+    playerlog($ownerinfo[player_id], LOG_PLANET_BOMBED, "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]|$beamsused|$planettorps|$planetfighterslost");
 }
 
 

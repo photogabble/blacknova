@@ -96,7 +96,7 @@ line("Intergalactic Bank (IGB)",TRUEFALSE($allow_ibank,True,"Enabled","<font col
 line("Known Space Maps",TRUEFALSE($ksm_allowed,True,"Enabled","<font color=red>Disabled</font>"));
 line("Navigation Computer",TRUEFALSE($allow_navcomp,True,"Enabled","<font color=red>Disabled</font>"));
 line("Newbie Nice",TRUEFALSE($newbie_nice,"YES","Enabled","<font color=red>Disabled</font>"));
-line("Newbie Extra Nice",TRUEFALSE($newbie_extra_nice,"YES","Enabled","<font color=red>Disabled</font>"));
+//line("Newbie Extra Nice",TRUEFALSE($newbie_extra_nice,"YES","Enabled","<font color=red>Disabled</font>"));
 
 echo "</TABLE>\n";
 
