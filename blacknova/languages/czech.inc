@@ -253,6 +253,8 @@ $l_planet_ison		 = "je na planete.";
 $l_planet_captured	 = "Planeta obsazena";
 $l_planet_notdef	 = "Planeta nema obranu!";
 $l_planet_caplog	 = "Vase planeta '[planetname]' v sektoru [sector] byla obsazenam hracem jmenem [name].";
+$l_planet_readlog_link = "View";
+$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Planetarni presun";
 $l_planet2_noturn	 = "Pro planetarni presun potrebujete alespon jeden tah.";

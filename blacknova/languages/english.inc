@@ -259,6 +259,8 @@ $l_planet_captured	 = "Planet captured";
 $l_planet_notdef	 = "Planet not defeated!";
 $l_planet_caplog	 = "Your planet '[planetname]' in sector [sector] was captured by [name].";
 $l_planet_noone = "nobody";
+$l_planet_readlog_link = "View";
+$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Planetary Transfer";
 $l_planet2_noturn	 = "You need at least one turn to perform a planetary transfer.";

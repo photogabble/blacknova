@@ -159,6 +159,11 @@ if(!empty($planetinfo))
       {
         echo "$l_planet_hasbase<BR>";
       }
+      // This is aaded by request of multipul players.
+      $l_planet_readlog_link="<a href=log.php>" . $l_planet_readlog_link ."</a>";
+      $l_planet_readlog=str_replace("[View]",$l_planet_readlog_link,$l_planet_readlog);
+      echo "<BR>$l_planet_readlog<BR>";
+      
       if ($playerinfo[ship_id] == $planetinfo[owner])
       {
         if ($playerinfo[team] <> 0)

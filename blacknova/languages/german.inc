@@ -257,6 +257,8 @@ $l_planet_captured	 = "Planet erobert";
 $l_planet_notdef	 = "Planet nicht besiegt";
 $l_planet_caplog	 = "Dein Planet '[planetname]' in Sektor [sector] wurde von [name] erobert.";
 $l_planet_noone		 = "Niemand";
+$l_planet_readlog_link = "View";
+$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Planetarer Transfer";
 $l_planet2_noturn	 = "Du benötigst einen Zug um den planetaren Transfer durchzufüren.";

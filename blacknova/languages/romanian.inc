@@ -260,6 +260,8 @@ $l_planet_ison		 = "este pe Planeta.";
 $l_planet_captured	 = "Planeta a fost capturata!";
 $l_planet_notdef	 = "Planeta nu a fost infranta!";
 $l_planet_caplog	 = "Planeta dvs. '[planetname]' din Sectorul [sector] a fost capturata de [name].";
+$l_planet_readlog_link = "View";
+$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Transfer Planeetar";
 $l_planet2_noturn	 = "Aveti nevoie de cel putin un Drum pentru a efectua un Transfer Planetar.";

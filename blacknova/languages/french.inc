@@ -254,6 +254,8 @@ $l_planet_ison		 = "est sur la planète.";
 $l_planet_captured	 = "Planète capturée";
 $l_planet_notdef	 = "La planète n'a pas été vaincue!";
 $l_planet_noone = "personne";
+$l_planet_readlog_link = "View";
+$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Transfer Planétaire";
 $l_planet2_noturn	 = "Vous avez besoin d'au moins un tour pour effectuer un transfer.";
