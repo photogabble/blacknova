@@ -7,6 +7,7 @@ Torr (10 JUNE 2002)
 Added corp setting to planetary report system [feature request #542620]
 Added corp setting to planetary production report
 Added code to remove cheatting by setting more than 100% to planet production using the planetary production report
+Added some more checking to make sure production values are not set to a negative value
 Added player name to the alliance planet report [feature requesta #542620]
 
 L. Patrick Smallwood (8 June 2002)
