@@ -407,6 +407,8 @@ function IGB_transfer3()
   global $l_igb_transferfee, $l_igb_igbaccount, $l_igb_back, $l_igb_logout, $l_igb_errplanetsrcanddest, $l_igb_errnotyourplanet;
   global $l_igb_errunknownplanet, $l_igb_unnamed, $l_igb_ctransferred, $l_igb_srcplanet, $l_igb_destplanet;
   global $db, $dbtables;
+  if ($amount < 0) { $amount = 0; } 
+
 
   if(isset($ship_id)) //ship transfer
   {
