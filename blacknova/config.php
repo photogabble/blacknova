@@ -226,8 +226,8 @@ $Enable_PlanetWatcher = false;  //Which Disables the Planet Watcher Module.
 $Enable_PlanetWatcher = true;   //Which Enables the Planet Watcher Module.
 */
 
-$Enable_EmailLoggerModule = true;
-$Enable_GlobalMailerModule = true;
+$Enable_EmailLoggerModule = false;
+$Enable_GlobalMailerModule = false;
 
 include("global_funcs.php");
 
