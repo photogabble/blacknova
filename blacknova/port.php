@@ -342,7 +342,7 @@ echo "     DeltaCost=DeltaCost + Math.pow(2,desiredvalue-Delta); \n";
 echo "     Delta=Delta-1;\n";
 echo "    }\n";
 echo "\n";    
-echo "  DeltaCost=DeltaCost * 1000\n";
+echo "  DeltaCost=DeltaCost * $upgrade_cost\n";
 echo "  return DeltaCost;\n";
 echo "}\n";
 
