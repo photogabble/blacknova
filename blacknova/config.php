@@ -33,9 +33,12 @@ $sched_apocalypse	= 15;
 /**********************************************/
 // Change this to make it unique to you game of Blacknova
 $gamename		= "Blacknova Traders";
+
 // This is the name of the codebase that you are running, in most cases
 // you dont need to change it.
-$game_name		= "BlackNova Traders v0.42";
+$game_codebase	= "release-41 (0.42)";
+$game_name		= "BlackNova Traders";
+$game_version	= "0.42";
 
 // Administrator's password and email:
 // Be sure to change these. Don't leave them as is.
@@ -294,6 +297,7 @@ $Enable_PlanetWatcher = true;   //Which Enables the Planet Watcher Module.
 
 $Enable_EmailLoggerModule = false;
 $Enable_GlobalMailerModule = false;
+$Enable_AutoTow =True;
 
 $ip = getenv("REMOTE_ADDR");
 include("global_funcs.php");

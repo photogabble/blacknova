@@ -69,6 +69,13 @@ if(checklogin())
 
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
+
+// ********************************
+// ***** Auto Ship Tow Switch *****
+// ********************************
+
+if($Enable_AutoTow) check_tow($playerinfo['sector']);
+
 if($playerinfo['cleared_defences'] > ' ')
 {
    echo "$l_incompletemove <BR>";
@@ -243,19 +250,18 @@ else
   }
 }
 $link_bnthelper_string = $link_bnthelper_string . ":-->";
-?>
-</div>
-   </td>
-</tr>
-<tr>
-   <td nowrap align=center>
-   <div class=mnu>
-   &nbsp;<a class=dis href=\"lrscan.php?sector=*\">[<? echo $l_fullscan ?>]</a>&nbsp;<br>
-   </div>
-   </td>
-</tr>
-</table>
-<?
+
+echo "</div>";
+echo "  </td></tr>";
+echo "<tr>";
+echo "  <td nowrap align=center>";
+echo "  <div class=mnu>";
+echo "  &nbsp;<a class=dis href=\"lrscan.php?sector=*\">[$l_fullscan]</a>&nbsp;<br>";
+echo "  </div>";
+echo "  </td>";
+echo "</tr>";
+echo "</table>";
+
 //----------------------------------------------------------------------------------------------
 echo "</TD><TD valign=top>";
 // BEGINING OF THE MAIN BOX

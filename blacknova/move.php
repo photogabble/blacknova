@@ -56,6 +56,12 @@ if ($result3>0)
     }
 }
 
+// *******************************
+// ***** Call Avg Tech Check *****
+// *******************************
+
+  if(!checkavgtech($sector)){$flag=0;}
+
 //Check if there was a valid warp link to move to
 if ($flag==1)
 {

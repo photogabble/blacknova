@@ -77,7 +77,9 @@ start_border($MaxWidth);
 #################
 tabimage("images/Info.gif","Displays the Game Information");
 start_line("#E7C03D",$MaxWidth);
-line("Blacknova Version",$game_name);
+line("Game Server Title",$gamename);
+line("Game Type, Version","$game_name, $game_version");
+line("Game Codebase",$game_codebase);
 line("Admin Info","<a href=\"mailto:$admin_mail\" class=\"nav\">$adminname</a>");
 end_line();
 
@@ -170,6 +172,7 @@ line("Known Space Maps",TRUEFALSE($ksm_allowed,True,"Enabled","<font color=red>D
 line("Navigation Computer",TRUEFALSE($allow_navcomp,True,"Enabled","<font color=red>Disabled</font>"));
 line("Newbie Nice",TRUEFALSE($newbie_nice,"YES","Enabled","<font color=red>Disabled</font>"));
 line("Newbie Extra Nice",TRUEFALSE($newbie_extra_nice,"YES","Enabled","<font color=red>Disabled</font>"));
+line("Enable Auto Tow",TRUEFALSE($Enable_AutoTow,True,"Enabled","<font color=red>Disabled</font>"));
 end_line();
 
 #######################

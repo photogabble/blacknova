@@ -28,7 +28,7 @@ function createplanet()
 {
    global $db, $dbtables, $playerinfo, $l_gns_pcreate;
    global $default_prod_organics, $default_prod_ore, $default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp, $max_planets_sector;
-   
+   sleep(1); // Fix for too many plantes in sector :P
    $query1 = "INSERT INTO $dbtables[planets] VALUES('', $playerinfo[sector], NULL, 0, 0, 0, 0, 0, 0, 0, 0, $playerinfo[ship_id], 0, 'N', 'N', $default_prod_organics, $default_prod_ore, $default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp, 'N')";
    $update1 = $db->Execute($query1);
    $query2 = "UPDATE $dbtables[ships] SET turns_used=turns_used+1, turns=turns-1, dev_genesis=dev_genesis-1 WHERE ship_id=$playerinfo[ship_id]";

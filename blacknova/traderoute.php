@@ -1246,6 +1246,43 @@ function traderoute_engage($j)
   if($traderoute[source_type] == 'P' && $source[port_type] == 'special' && $playerinfo[trade_colonists] == 'N' && $playerinfo[trade_fighters] == 'N' && $playerinfo[trade_torps] == 'N')
     traderoute_die($l_tdr_globalsetbuynothing);
 
+  global $sector_max;
+// ********************************
+// ***** Check tech on source *****
+// ********************************
+  if(!checkavgtech($traderoute['source_id'])){
+    do_tow(); traderoute_die("Traderoute interupted!");}
+
+// ******************************
+// ***** Check tech on dest *****
+// ******************************
+  if(!checkavgtech($traderoute['dest_id'])){
+    traderoute_die("Traderoute interupted!");}
+
+
+// ******************************************
+// ***** Just a test to see who owns it *****
+// ******************************************
+
+	global $l_tdr_errnotownnotsell, $l_tdr_errnotownnotsell2;
+
+	if($traderoute['source_type'] == 'L') {
+		$result = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$traderoute[source_id]");
+		if($result)	{ $s_planet = $result->fields;
+			if($s_planet['owner'] != $playerinfo['ship_id']) {
+				$l_tdr_errnotownnotsell = str_replace("[tdr_source_name]", $s_planet[name], $l_tdr_errnotownnotsell);
+				$l_tdr_errnotownnotsell = str_replace("[tdr_source_sector_id]", $s_planet[sector_id], $l_tdr_errnotownnotsell);
+				traderoute_die($l_tdr_errnotownnotsell."Invalid Port / Destination."); } }
+		else traderoute_die($l_tdr_errnosrc."Invalid Port / Destination."); }
+
+	if($traderoute['dest_type'] == 'L') {
+		$result = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$traderoute[dest_id]");
+		if($result) { $d_planet = $result->fields;
+			if($d_planet['owner'] != $playerinfo['ship_id']) {
+				$l_tdr_errnotownnotsell2 = str_replace("[tdr_dest_name]", $d_planet['name'], $l_tdr_errnotownnotsell2);
+				$l_tdr_errnotownnotsell2 = str_replace("[tdr_dest_sector_id]", $d_planet['sector_id'], $l_tdr_errnotownnotsell2);
+				traderoute_die($l_tdr_errnotownnotsell2."Invalid Port / Destination."); } }
+		else traderoute_die($l_tdr_errnodestplanet."Invalid Port / Destination."); }
 
 // *********************************************
 // ***** Check if zone allows trading  SRC *****

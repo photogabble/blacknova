@@ -156,9 +156,17 @@ if(!empty($planetinfo))
         echo "$l_planet_hasbase<BR>";
       }
 
-      $l_planet_readlog_link="<a href=log.php>" . $l_planet_readlog_link ."</a>";
-      $l_planet_readlog=str_replace("[View]",$l_planet_readlog_link,$l_planet_readlog);
-      echo "<BR>$l_planet_readlog<BR>";
+// **************************
+// ***** View Ship Info *****
+// **************************
+
+      $l_planet_shipreport_link = $l_planet_readlog_link;
+      echo "<BR><a href=report.php>$l_planet_shipreport_link</a> $l_report_title<BR>";
+
+// **************************
+
+      $l_planet_readlog=str_replace("[View]","<a href=log.php>$l_planet_readlog_link</a>",$l_planet_readlog);
+      echo "$l_planet_readlog<BR><BR>";
 
       if ($playerinfo[ship_id] == $planetinfo[owner])
       {

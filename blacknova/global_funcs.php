@@ -10,17 +10,17 @@ if (preg_match("/global_funcs.php/i", $PHP_SELF)) {
 // Tested and everything seemed to run with register_globals=Off
 foreach ($_POST as $postkey => $postvar) 
 { 
-$$postkey = $postvar; 
+  $$postkey = $postvar; 
 } 
 
 foreach ($_GET as $getkey => $getvar) 
 { 
-$$getkey = $getvar; 
+  $$getkey = $getvar; 
 } 
 
 foreach ($_COOKIE as $cookiekey => $cookievar) 
 { 
-$$cookiekey = $cookievar; 
+  $$cookiekey = $cookievar; 
 } 
 //------ End register_globals fix 
 
@@ -139,6 +139,75 @@ $dbtables['vote'] = "${db_prefix}vote";
 $dbtables['shoutbox'] = "${db_prefix}shoutbox";
 $dbtables['adminnews'] = "${db_prefix}adminnews";
 
+// ***************************************
+// ***** Check ship avg tech in zone *****
+// ***************************************
+
+function checkavgtech($destination)
+{
+  global $playerinfo,$dbtables;
+  global $db;
+
+  $ship_maxhull = (($playerinfo['hull'] + $playerinfo['engines'] + $playerinfo['computer'] + $playerinfo['beams'] + $playerinfo['torp_launchers'] + $playerinfo['shields'] + $playerinfo['armour'])/7);
+  $res = $db->Execute("SELECT * FROM $dbtables[universe],$dbtables[zones] WHERE $dbtables[universe].zone_id=$dbtables[zones].zone_id AND $dbtables[universe].sector_id=$destination");
+  if ($res)
+  {
+    $num_to_tow = $res->RecordCount();
+    $res_maxhull = $res->fields['max_hull'];
+    if ($res_maxhull < $ship_maxhull AND $res_maxhull >0)
+    {
+      echo "<h4>You are stopped by the Border patrol<br></h4>\n\n";
+      echo "<p><h4><font color=\"red\">Sorry your ship cannot enter sector $destination, this is due to your ships Average tech level is to high for this zone.</font><br>\nHave a nice day :)</h4></p>\n";
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+  else
+  {
+    echo "ERROR in Zone table<br>\n";
+    return false;
+  }
+}
+
+function check_tow($sector)
+{
+  global $playerinfo,$dbtables;
+  global $db;
+
+  global $sched_ticks, $l_footer_until_update;
+  global $l_footer_one_player_on, $l_footer_players_on_1, $online, $l_footer_players_on_2;
+
+  $ship_maxhull = (($playerinfo['hull'] + $playerinfo['engines'] + $playerinfo['computer'] + $playerinfo['beams'] + $playerinfo['torp_launchers'] + $playerinfo['shields'] + $playerinfo['armour'])/7);
+  $res = $db->Execute("SELECT * FROM $dbtables[universe],$dbtables[zones] WHERE $dbtables[universe].zone_id=$dbtables[zones].zone_id AND $dbtables[universe].sector_id=$sector");
+  if ($res)
+  {
+    $num_to_tow = $res->RecordCount();
+    $res_maxhull = $res->fields['max_hull'];
+    if ($res_maxhull < $ship_maxhull AND $res_maxhull >0)
+    {
+      do_tow();
+      TEXT_GOTOMAIN();
+      include("footer.php");
+      die();
+    }
+  }
+
+}
+
+function do_tow()
+{
+  global $playerinfo, $dbtables, $sector_max;
+  global $db;
+
+  $newsector = rand(0, $sector_max);
+  echo "<br>You were towed to sector $newsector.<BR>";
+  $query = $db->Execute("UPDATE $dbtables[ships] SET sector=$newsector,cleared_defences=' ' where  ship_id=$playerinfo[ship_id]");
+
+}
+
 function TRUEFALSE($truefalse,$Stat,$True,$False)
 {
   return(($truefalse == $Stat) ? $True : $False);
@@ -221,13 +290,21 @@ function checklogin()
   }
   global $server_closed;
   global $l_login_closed_message;
-  if($server_closed && $flag==0)
+
+// ***************************************
+// ***** To allow the admin to login *****
+// ***** when the server is closed.  *****
+// ***************************************
+
+  if ($username <> $admin_mail)
   {
-    echo $l_login_closed_message;
-    $flag=1;
+    if($server_closed && $flag==0)
+    {
+      echo $l_login_closed_message;
+      TEXT_GOTOLOGIN();
+      $flag=1;
+    }
   }
-
-
 
   return $flag;
 }
