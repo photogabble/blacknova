@@ -147,7 +147,7 @@ else
       if($result)
       {
         $planet1 = $result->fields;
-        echo "&nbsp;$l_tdr_planet <b>$planet1[name]</b> in <a href=\"rsmove.php?engage=1&destination=$planet1[sector_id]\">$planet1[sector_id]</a></font></td>";
+        echo "&nbsp;$l_tdr_planet <b>$planet1[name]</b>$l_tdr_within<a href=\"rsmove.php?engage=1&destination=$planet1[sector_id]\">$planet1[sector_id]</a></font></td>";
       }
       else
         echo "&nbsp;$l_tdr_nonexistance</font></td>";
@@ -178,7 +178,7 @@ else
       if($result)
       {
         $planet2 = $result->fields;
-        echo "&nbsp;$l_tdr_planet <b>$planet2[name]</b> in <a href=\"rsmove.php?engage=1&destination=$planet2[sector_id]\">$planet2[sector_id]</a></font></td>";
+        echo "&nbsp;$l_tdr_planet <b>$planet2[name]</b>$l_tdr_within<a href=\"rsmove.php?engage=1&destination=$planet2[sector_id]\">$planet2[sector_id]</a></font></td>";
       }
       else
         echo "&nbsp;$l_tdr_nonexistance</font></td>";

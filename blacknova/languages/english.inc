@@ -721,6 +721,7 @@ $l_sdf_mode		 = "Mode";
 // the old ones so we could export to own file if performance problems
 // should occur
 
+$l_tdr_within		 = " in ";
 $l_tdr_title    	 = "Trade Routes";
 $l_tdr_newtdr   	 = "Click <a href=\"traderoute.php?command=new\">here</a> to create a new trade route";
 $l_tdr_modtdrset         = "To modify your global trade settings, click <a href=\"traderoute.php?command=settings\">here</a>";
@@ -843,7 +844,9 @@ $l_tdr_notowner = "You do not own this trade route";
 
 // IGB.php
 
+$l_igb_credit_symbol = "C";
 $l_igb_title    = "The Intergalactic Bank";
+$l_igb_humor    = "All your base are belong to us.";
 $l_igb_malfunction      = "This IGB terminal is malfunctionning. The Intergalatic Bank wishes to apologize for any inconvenience.";
 $l_igb_quit     = "Quit";
 $l_igb_login    = "Login";

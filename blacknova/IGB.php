@@ -72,9 +72,11 @@ else
   IIIIIIIIII          GGGGGG   GGGG    BBBBBBBBBBBBBBBBB
   </pre>
   <center>
-  <p>
-  The Intergalactic Bank (tm)<br>
-  All your base are belong to us<br>&nbsp;
+  <p>";
+  echo $l_igb_title;
+  echo "(tm)<br>";
+  echo $l_igb_humor;
+  echo "<br>&nbsp;
   </center></td>
   <td width=25% valign=bottom align=right><font size=2 color=#00FF00 face=\"courier new\"><a href=\"IGB.php?command=login\">$l_igb_login</a></td>
   ";
@@ -97,12 +99,12 @@ function IGB_login()
   global $account;
   global $l_igb_welcometoigb, $l_igb_accountholder, $l_igb_back, $l_igb_logout;
   global $l_igb_igbaccount, $l_igb_shipaccount, $l_igb_withdraw, $l_igb_transfer;
-  global $l_igb_deposit, $l_igb_operations;
+  global $l_igb_deposit, $l_igb_credit_symbol; $l_igb_operations;
 
   echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_welcometoigb<br>---------------------------------</td></tr>" .
        "<tr valign=top>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_accountholder :<br><br>$l_igb_shipaccount :<br>$l_igb_igbaccount&nbsp;&nbsp;:</td>" .
-       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>$playerinfo[character_name]&nbsp;&nbsp;<br><br>" . NUMBER($playerinfo[credits]) . " C<br>" . NUMBER($account[balance]) . " C<br></td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>$playerinfo[character_name]&nbsp;&nbsp;<br><br>".NUMBER($playerinfo[credits]) . " $l_igb_credit_symbol<br>" . NUMBER($account[balance]) . " $l_igb_credit_symbol<br></td>" .
        "</tr>" .
        "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>$l_igb_operations<br>---------------------------------<br><br><a href=\"IGB.php?command=withdraw\">$l_igb_withdraw</a><br><a href=\"IGB.php?command=deposit\">$l_igb_deposit</a><br><a href=\"IGB.php?command=transfer\">$l_igb_transfer</a><br>&nbsp;</td></tr>" .
        "<tr valign=bottom>" .
