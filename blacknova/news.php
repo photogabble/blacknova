@@ -4,6 +4,7 @@ include("includes/newsservices.php");
 
 include("languages/$lang");
 $title=$l_news_title;
+$barsoff = true;
 include("header.php");
 
 connectdb();

@@ -1,9 +1,7 @@
 <?
-
 include("config.php");
-
 if(empty($lang))
-  $lang=$default_lang;
+  $lang = $default_lang;
 
 $found = 0;
 if(!empty($newlang))
@@ -33,7 +31,7 @@ if(!empty($newlang))
 include("languages/$lang");
 
 $title=$l_login_title;
-
+$barsoff = true;
 include("header.php");
 
 ?>

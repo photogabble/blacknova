@@ -61,6 +61,7 @@ if($server_closed)
 }
 
 $title=$l_login_title2;
+$barsoff = true;
 include("header.php");
 
 bigtitle();

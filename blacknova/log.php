@@ -7,6 +7,7 @@ include("languages/$lang");
 
 $title="$l_log_titlet";
 $no_body=1;
+$barsoff = true;
 include("header.php");
 
 connectdb();

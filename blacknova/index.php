@@ -6,6 +6,7 @@
   include("languages/$lang");
 	$title="Login"; 
   $no_body=1;
+	$barsoff = true;
 	include("header.php");
 //  include("config.php");
 ?>
