@@ -501,7 +501,7 @@ if($playerinfo[sector] != 0)
    if($result4 == 0 || $totalcount == 0 && $displayed != true)
    {
       echo "<tr><td align=center>";
-      echo "<br><font color=white size=2>$l_none</font><br><br>";
+      echo "<br><font color=white>$l_none</font><br><br>";
       echo "</td></tr>";
    }
 }
@@ -517,7 +517,7 @@ else
 </tr>
 </table>
 <?
-if($num_defences>0) echo "<b><center><font size=2 face=\"arial\" color=white>$l_sector_def</font><br></center></b>";
+if($num_defences>0) echo "<b><center><font face=\"arial\" color=white>$l_sector_def</font><br></center></b>";
 ?>
 <table border=0 width=100%>
 <tr>
