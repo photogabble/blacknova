@@ -64,9 +64,9 @@ else
       echo "<B>User editor</B>";
       echo "<BR>";
       echo "<FORM ACTION=admin.php METHOD=POST>";
-      if(empty($user))
+      if(empty($user1))
       {
-        echo "<SELECT SIZE=20 NAME=user>";
+        echo "<SELECT SIZE=20 NAME=user1>";
         $res = $db->Execute("SELECT player_id,character_name FROM $dbtables[players] ORDER BY character_name");
         while(!$res->EOF)
         {
@@ -82,7 +82,7 @@ else
         if(empty($operation))
         {
 
-          $res = $db->Execute("select * from $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE $dbtables[players].player_id=$user");
+          $res = $db->Execute("select * from $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE $dbtables[players].player_id=$user1");
           $row = $res->fields;
           $res = $db->Execute("select * from $dbtables[ship_types] WHERE type_id=$row[class]");
           $shipclass=$res->fields;
@@ -91,7 +91,7 @@ else
           echo "<tr><td noWrap width=89>Player name</td><td noWrap width=228><input value=\"$row[character_name]\" name=character_name size=20></td><td noWrap width=315 rowspan=5><div align=left><table border=0 cellpadding=0 cellspacing=1 width=300 height=130><tr><td width=100% valign=middle align=center nowrap height=82><img src=images/$shipclass[image]></td></tr><tr><td width=100% valign=middle align=center nowrap height=40><B>$shipclass[name]</B></td></tr></table></div></td></tr>";
           echo "<TR><TD nowrap>Password</TD><TD nowrap colspan=3><INPUT TYPE=TEXT NAME=password2 VALUE=\"$row[password]\"></TD></TR>";
           echo "<TR><TD nowrap>E-mail</TD><TD nowrap colspan=3><INPUT TYPE=TEXT NAME=email VALUE=\"$row[email]\"></TD></TR>";
-          echo "<TR><TD nowrap>ID</TD><TD nowrap colspan=3>$user</TD></TR>";
+          echo "<TR><TD nowrap>ID</TD><TD nowrap colspan=3>$user1</TD></TR>";
           echo "<TR><TD nowrap>Ship</TD><TD nowrap><INPUT TYPE=TEXT NAME=ship_name VALUE=\"$row[name]\"></TD></TR>";
           echo "<TR><TD nowrap>Destroyed?</TD><TD nowrap colspan=3><INPUT TYPE=CHECKBOX NAME=ship_destroyed VALUE=ON " . CHECKED($row[ship_destroyed]) . "></TD></TR>";
           echo "<TR><TD nowrap>Levels</TD>";
@@ -136,7 +136,7 @@ else
           echo "<TR><TD nowrap>Current sector</TD><TD nowrap colSpan=3><INPUT TYPE=TEXT NAME=sector VALUE=\"$row[sector_id]\"></TD></TR>";
           echo "</TABLE>";
           echo "<BR>";
-          echo "<INPUT TYPE=HIDDEN NAME=user VALUE=$user>";
+          echo "<INPUT TYPE=HIDDEN NAME=user1 VALUE=$user1>";
           echo "<INPUT TYPE=HIDDEN NAME=operation VALUE=save>";
           echo "<INPUT TYPE=SUBMIT VALUE=Save>";
         }
@@ -146,10 +146,10 @@ else
           $_ship_destroyed = empty($ship_destroyed) ? "N" : "Y";
           $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
           $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
-          $playerdb=$db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',email='$email',credits='$credits',turns='$turns',password='$password2' WHERE player_id=$user");
+          $playerdb=$db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',email='$email',credits='$credits',turns='$turns',password='$password2' WHERE player_id=$user1");
           if ($playerdb) echo "<td><font color=\"lime\">- updated players successfully.</font></td></tr><br>\n";
           else echo "<td><font color=\"red\">- failed to update players.</font></td></tr><br>\n";
-          $shipsdb=$db->Execute("UPDATE $dbtables[ships] SET cloak='$cloak',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector_id='$sector',ore='$ship_ore',organics='$ship_organics',goods='$ship_goods',energy='$ship_energy',colonists='$ship_colonists',fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts',name='$ship_name',destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers' WHERE player_id=$user");
+          $shipsdb=$db->Execute("UPDATE $dbtables[ships] SET cloak='$cloak',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector_id='$sector',ore='$ship_ore',organics='$ship_organics',goods='$ship_goods',energy='$ship_energy',colonists='$ship_colonists',fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts',name='$ship_name',destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers' WHERE player_id=$user1");
           if ($shipsdb) echo "<td><font color=\"lime\">- updated ships successfully.</font></td></tr><br>\n";
           else echo "<td><font color=\"red\">- failed to update ships.</font></td></tr><br>\n";
 
