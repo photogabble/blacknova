@@ -425,21 +425,21 @@ echo "+ changeDelta(form.shields_upgrade.value,$playerinfo[shields])\n";
 
   if($playerinfo[ship_fighters] != $fighter_max)
   {
-    echo "+ form.fighter_number.value * $fighter_price;\n";
+    echo "+ form.fighter_number.value * $fighter_price ";
   }
   if($playerinfo[torps] != $torpedo_max)
   {
-    echo "+ form.torpedo_number.value * $torpedo_price;\n";
+    echo "+ form.torpedo_number.value * $torpedo_price ";
   }
   if($playerinfo[armour_pts] != $armour_max)
   {
-    echo "+ form.armour_number.value * $armour_price;\n";
+    echo "+ form.armour_number.value * $armour_price ";
   }
   if($playerinfo[ship_colonists] != $colonist_max)
   {
-    echo "+ form.colonist_number.value * $colonist_price;\n";
+    echo "+ form.colonist_number.value * $colonist_price ";
   }
-  echo "\n";
+  echo ";\n";
   echo "  if (form.total_cost.value > $playerinfo[credits])\n";
   echo "  {\n";
   echo "    form.total_cost.value = '$l_no_credits';\n";
