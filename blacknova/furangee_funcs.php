@@ -984,9 +984,9 @@ function furangeetrade()
     // ************************
     // **** SET THE PRICES ****
     // ************************
-    $ore_price = $ore_price - $ore_delta * $sectorinfo[port_ore] / $ore_limit * $inventory_factor;
-    $organics_price = $organics_price + $organics_delta * $sectorinfo[port_organics] / $organics_limit * $inventory_factor;
-    $goods_price = $goods_price + $goods_delta * $sectorinfo[port_goods] / $goods_limit * $inventory_factor;
+    $ore_price1 = $ore_price - $ore_delta * $sectorinfo[port_ore] / $ore_limit * $inventory_factor;
+    $organics_price1 = $organics_price + $organics_delta * $sectorinfo[port_organics] / $organics_limit * $inventory_factor;
+    $goods_price1 = $goods_price + $goods_delta * $sectorinfo[port_goods] / $goods_limit * $inventory_factor;
     // ************************
     // ** SET CARGO BUY/SELL **
     // ************************
@@ -997,17 +997,17 @@ function furangeetrade()
     // *** WE ADJUST THIS TO MAKE SURE IT DOES NOT EXCEED WHAT THE PORT HAS TO SELL ***
     $amount_ore = min($amount_ore, $sectorinfo[port_ore]);
     // *** WE ADJUST THIS TO MAKE SURE IT DOES NOT EXCEES WHAT WE CAN AFFORD TO BUY ***
-    $amount_ore = min($amount_ore, floor(($playerinfo[credits] + $amount_organics * $organics_price + $amount_goods * $goods_price) / $ore_price));
+    $amount_ore = min($amount_ore, floor(($playerinfo[credits] + $amount_organics * $organics_price1 + $amount_goods * $goods_price1) / $ore_price1));
     // ************************
     // **** BUY/SELL CARGO ****
     // ************************
-    $total_cost = round(($amount_ore * $ore_price) - ($amount_organics * $organics_price + $amount_goods * $goods_price));
+    $total_cost = round(($amount_ore * $ore_price1) - ($amount_organics * $organics_price1 + $amount_goods * $goods_price1));
     $newcredits = max(0,$playerinfo[credits]-$total_cost);
     $newore = $playerinfo[ore]+$amount_ore;
     $neworganics = max(0,$playerinfo[organics]-$amount_organics);
     $newgoods = max(0,$playerinfo[goods]-$amount_goods);
     if ($newore < 0 || $neworganics < 0 || $newgoods < 0) {
-    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: ore $playerinfo[ore] / $newore org $playerinfo[organics] / $neworganics goods $playerinfo[goods] / $newgoods "); 
+    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: Port $sectorinfo[port_type] ORE player $newore port $sectorinfo[port_ore] price $ore_price1 delta $ore_delta ORG player $neworganics port $sectorinfo[port_organics] price $organics_price1 delta $organics_delta GOOD player $newgoods port $sectorinfo[port_goods] price $goods_price1 delta $goods_delta"); 
     }
     $trade_result = $db->Execute("UPDATE $dbtables[players] SET rating=rating+1, credits=$newcredits WHERE player_id=$playerinfo[player_id]");
     $trade_result = $db->Execute("UPDATE $dbtables[ships] SET ore=$newore, organics=$neworganics, goods=$newgoods WHERE ship_id=$playerinfo[ship_id]");
@@ -1022,9 +1022,9 @@ function furangeetrade()
     // ************************
     // **** SET THE PRICES ****
     // ************************
-    $organics_price = $organics_price - $organics_delta * $sectorinfo[port_organics] / $organics_limit * $inventory_factor;
-    $ore_price = $ore_price + $ore_delta * $sectorinfo[port_ore] / $ore_limit * $inventory_factor;
-    $goods_price = $goods_price + $goods_delta * $sectorinfo[port_goods] / $goods_limit * $inventory_factor;
+    $organics_price1 = $organics_price - $organics_delta * $sectorinfo[port_organics] / $organics_limit * $inventory_factor;
+    $ore_price1 = $ore_price + $ore_delta * $sectorinfo[port_ore] / $ore_limit * $inventory_factor;
+    $goods_price1 = $goods_price + $goods_delta * $sectorinfo[port_goods] / $goods_limit * $inventory_factor;
     // ************************
     // ** SET CARGO BUY/SELL **
     // ************************
@@ -1035,17 +1035,17 @@ function furangeetrade()
     // *** WE ADJUST THIS TO MAKE SURE IT DOES NOT EXCEED WHAT THE PORT HAS TO SELL ***
     $amount_organics = min($amount_organics, $sectorinfo[port_organics]);
     // *** WE ADJUST THIS TO MAKE SURE IT DOES NOT EXCEES WHAT WE CAN AFFORD TO BUY ***
-    $amount_organics = min($amount_organics, floor(($playerinfo[credits] + $amount_ore * $ore_price + $amount_goods * $goods_price) / $organics_price));
+    $amount_organics = min($amount_organics, floor(($playerinfo[credits] + $amount_ore * $ore_price1 + $amount_goods * $goods_price1) / $organics_price1));
     // ************************
     // **** BUY/SELL CARGO ****
     // ************************
-    $total_cost = round(($amount_organics * $organics_price) - ($amount_ore * $ore_price + $amount_goods * $goods_price));
+    $total_cost = round(($amount_organics * $organics_price1) - ($amount_ore * $ore_price1 + $amount_goods * $goods_price1));
     $newcredits = max(0,$playerinfo[credits]-$total_cost);
     $newore = max(0,$playerinfo[ore]-$amount_ore);
     $neworganics = $playerinfo[organics]+$amount_organics;
     $newgoods = max(0,$playerinfo[goods]-$amount_goods);
     if ($newore < 0 || $neworganics < 0 || $newgoods < 0) {
-    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: ore $playerinfo[ore] / $newore org $playerinfo[organics] / $neworganics goods $playerinfo[goods] / $newgoods "); 
+    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: Port $sectorinfo[port_type] ORE player $newore port $sectorinfo[port_ore] price $ore_price1 delta $ore_delta ORG player $neworganics port $sectorinfo[port_organics] price $organics_price1 delta $organics_delta GOOD player $newgoods port $sectorinfo[port_goods] price $goods_price1 delta $goods_delta"); 
     }
     $trade_result = $db->Execute("UPDATE $dbtables[players] SET rating=rating+1, credits=$newcredits WHERE player_id=$playerinfo[player_id]");
     $trace_result = $db->Execute("UPDATE $dbtables[ships] SET ore=$newore, organics=$neworganics, goods=$newgoods WHERE ship_id=$playerinfo[ship_id]");
@@ -1060,9 +1060,9 @@ function furangeetrade()
     // ************************
     // **** SET THE PRICES ****
     // ************************
-    $goods_price = $goods_price - $goods_delta * $sectorinfo[port_goods] / $goods_limit * $inventory_factor;
-    $ore_price = $ore_price + $ore_delta * $sectorinfo[port_ore] / $ore_limit * $inventory_factor;
-    $organics_price = $organics_price + $organics_delta * $sectorinfo[port_organics] / $organics_limit * $inventory_factor;
+    $goods_price1 = $goods_price - $goods_delta * $sectorinfo[port_goods] / $goods_limit * $inventory_factor;
+    $ore_price1 = $ore_price + $ore_delta * $sectorinfo[port_ore] / $ore_limit * $inventory_factor;
+    $organics_price1 = $organics_price + $organics_delta * $sectorinfo[port_organics] / $organics_limit * $inventory_factor;
     // ************************
     // ** SET CARGO BUY/SELL **
     // ************************
@@ -1073,17 +1073,17 @@ function furangeetrade()
     // *** WE ADJUST THIS TO MAKE SURE IT DOES NOT EXCEED WHAT THE PORT HAS TO SELL ***
     $amount_goods = min($amount_goods, $sectorinfo[port_goods]);
     // *** WE ADJUST THIS TO MAKE SURE IT DOES NOT EXCEES WHAT WE CAN AFFORD TO BUY ***
-    $amount_goods = min($amount_goods, floor(($playerinfo[credits] + $amount_ore * $ore_price + $amount_organics * $organics_price) / $goods_price));
+    $amount_goods = min($amount_goods, floor(($playerinfo[credits] + $amount_ore * $ore_price1 + $amount_organics * $organics_price1) / $goods_price1));
     // ************************
     // **** BUY/SELL CARGO ****
     // ************************
-    $total_cost = round(($amount_goods * $goods_price) - ($amount_organics * $organics_price + $amount_ore * $ore_price));
+    $total_cost = round(($amount_goods * $goods_price1) - ($amount_organics * $organics_price1 + $amount_ore * $ore_price1));
     $newcredits = max(0,$playerinfo[credits]-$total_cost);
     $newore = max(0,$playerinfo[ore]-$amount_ore);
     $neworganics = max(0,$playerinfo[organics]-$amount_organics);
     $newgoods = $playerinfo[goods]+$amount_goods;
     if ($newore < 0 || $neworganics < 0 || $newgoods < 0) {
-    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: ore $playerinfo[ore] / $newore org $playerinfo[organics] / $neworganics goods $playerinfo[goods] / $newgoods "); 
+    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: Port $sectorinfo[port_type] ORE player $newore port $sectorinfo[port_ore] price $ore_price1 delta $ore_delta ORG player $neworganics port $sectorinfo[port_organics] price $organics_price1 delta $organics_delta GOOD player $newgoods port $sectorinfo[port_goods] price $goods_price1 delta $goods_delta"); 
     }
     $trade_result = $db->Execute("UPDATE $dbtables[players] SET rating=rating+1, credits=$newcredits WHERE player_id=$playerinfo[player_id]");
     $trade_result = $db->Execute("UPDATE $dbtables[ships] SET ore=$newore, organics=$neworganics, goods=$newgoods WHERE ship_id=$playerinfo[ship_id]");
