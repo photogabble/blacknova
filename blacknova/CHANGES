@@ -1,3 +1,7 @@
+SharpBlue (21 June 2002)
+---------------------------------
+Fixed divison by zero error in attack when score was null
+
 SharpBlue (20 June 2002)
 ---------------------------------
 Renamed the ships table to players

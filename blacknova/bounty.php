@@ -19,11 +19,6 @@ if(checklogin())
 $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
-
-
-
-
-
 switch($response) {
    case "display":
       bigtitle();
@@ -91,31 +86,32 @@ switch($response) {
          echo "</TABLE>";
       }
       break;
+
    case "cancel":
       bigtitle();
       if ($playerinfo[turns]<1 )
       {
-	echo "$l_by_noturn<BR><BR>";
-	TEXT_GOTOMAIN();
-	include("footer.php");
-	die();
+        echo "$l_by_noturn<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
       }
       
       $res = $db->Execute("SELECT * from $dbtables[bounty] WHERE bounty_id = $bid");
       if(!res)
       {
-      	echo "$l_by_nobounty<BR><BR>";
-	TEXT_GOTOMAIN();
-	include("footer.php");
-	die();
+        echo "$l_by_nobounty<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
       }
       $bty = $res->fields;
       if($bty[placed_by] <> $playerinfo[player_id])
       {
       	echo "$l_by_notyours<BR><BR>";
-	TEXT_GOTOMAIN();
-	include("footer.php");
-	die();
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
       }
       $del = $db->Execute("DELETE FROM $dbtables[bounty] WHERE bounty_id = $bid");      
       $stamp = date("Y-m-d H-i-s");
@@ -125,31 +121,33 @@ switch($response) {
       TEXT_GOTOMAIN();
       die();
       break;
+   
    case "place":
       bigtitle();
       $bounty_on = stripnum($bounty_on);
-      $ex = $db->Execute("SELECT * from $dbtables[players] WHERE player_id = $bounty_on");
+//      $ex = $db->Execute("SELECT * from $dbtables[players] WHERE player_id = $bounty_on");
+      $ex = $db->Execute("SELECT DISTINCT $dbtables[players].* FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE $dbtables[ships].destroyed='N' AND $dbtables[players].player_id = $bounty_on");
       if(!$ex)
       {
-	echo "$l_by_notexists<BR><BR>";
-	TEXT_GOTOMAIN();
-	include("footer.php");
-	die();
+        echo "$l_by_notexists<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
       }
       $bty = $ex->fields;
-      if ($bty[ship_destroyed] == "Y")
+      if ($bty[destroyed] == "Y")
       {
-	echo "$l_by_destroyed<BR><BR>";
-	TEXT_GOTOMAIN();
-	include("footer.php");
-	die();
+        echo "$l_by_destroyed<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
       }
       if ($playerinfo[turns]<1 )
       {
-	echo "$l_by_noturn<BR><BR>";
-	TEXT_GOTOMAIN();
-	include("footer.php");
-	die();
+        echo "$l_by_noturn<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
       }
       $amount = stripnum($amount);
       if($amount < 0)
@@ -173,11 +171,13 @@ switch($response) {
          include("footer.php");
          die();
       }
+
       if($bounty_maxvalue != 0)
       {
          $percent = $bounty_maxvalue * 100;
          $score = gen_score($playerinfo[player_id]);
          $maxtrans = $score * $score * $bounty_maxvalue;
+         echo "ms is $maxtrans<br>";
          $previous_bounty = 0;
          $pb = $db->Execute("SELECT SUM(amount) AS totalbounty FROM $dbtables[players] WHERE bounty_on = $bounty_on AND placed_by = $playerinfo[player_id]");
          if($pb)
@@ -187,6 +187,7 @@ switch($response) {
          }
          if($amount + previous_bounty > $maxtrans)
          {   
+            $l_by_toomuch = str_replace("[percent]", $percent, $l_by_toomuch);
             echo "$l_by_toomuch<BR><BR>";
             TEXT_GOTOMAIN();
             include("footer.php");
@@ -201,9 +202,11 @@ switch($response) {
       TEXT_GOTOMAIN();
       die();
       break;
+
    default:
       bigtitle();
-      $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_destroyed = 'N' AND player_id <> $playerinfo[player_id] ORDER BY character_name ASC");
+      $res = $db->Execute("SELECT DISTINCT $dbtables[players].* FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE destroyed='N' AND $dbtables[players].player_id <> $playerinfo[player_id] ORDER BY character_name ASC");
+      echo $db->ErrorMsg();
       echo "<FORM ACTION=bounty.php METHOD=POST>";
       echo "<TABLE>";
       echo "<TR><TD>$l_by_bountyon</TD><TD><SELECT NAME=bounty_on>";
