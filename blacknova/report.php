@@ -1,13 +1,12 @@
 <?
 
-
 include("config.php");
 
 updatecookie();
 
 
 include("languages/$lang");
-$title=$l_report_title;;
+$title=$l_report_title;
 
 connectdb();
 include("header.php");
@@ -22,6 +21,25 @@ if(checklogin())
 $result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 
 $playerinfo=$result->fields;
+
+$shiptypes[0]= "tinyship.gif";
+$shiptypes[1]= "smallship.gif";
+$shiptypes[2]= "mediumship.gif";
+$shiptypes[3]= "largeship.gif";
+$shiptypes[4]= "hugeship.gif";
+
+$shipavg = $playerinfo[hull] + $playerinfo[engines] + $playerinfo[computer] + $playerinfo[beams] + $playerinfo[torp_launchers] + $playerinfo[shields] + $playerinfo[armour];
+$shipavg /= 7;
+if($shipavg < 8)
+   $shiplevel = 0;
+elseif($shipavg < 12)
+   $shiplevel = 1;
+elseif($shipavg < 16)
+   $shiplevel = 2;
+elseif($shipavg < 20)
+   $shiplevel = 3;
+else
+   $shiplevel = 4;
 
 bigtitle();
 
@@ -45,6 +63,8 @@ echo "<TR BGCOLOR=\"$color_line1\"><TD>$l_shields</TD><TD>$l_level $playerinfo[s
 echo "<TR BGCOLOR=\"$color_line2\"><TD>$l_beams</TD><TD>$l_level $playerinfo[beams]</TD></TR>";
 echo "<TR BGCOLOR=\"$color_line1\"><TD>$l_torp_launch</TD><TD>$l_level $playerinfo[torp_launchers]</TD></TR>";
 echo "<TR BGCOLOR=\"$color_line2\"><TD>$l_cloak</TD><TD>$l_level $playerinfo[cloak]</TD></TR>";
+echo "<TR BGCOLOR=\"$color_line1\"><TD><i>$l_shipavg</i></TD><TD>$l_level " . NUMBER($shipavg, 2) . "</TD></TR>";
+
 echo "</TABLE>";
 echo "</TD><TD VALIGN=TOP>";
 echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=\"100%\">";
@@ -77,17 +97,21 @@ echo "<TR BGCOLOR=\"$color_line2\"><TD>$l_deflect</TD><TD ALIGN=RIGHT>$playerinf
 echo "<TR BGCOLOR=\"$color_line1\"><TD>$l_ewd</TD><TD ALIGN=RIGHT>$playerinfo[dev_emerwarp]</TD></TR>";
 $escape_pod = ($playerinfo[dev_escapepod] == 'Y') ? $l_yes : $l_no;
 $fuel_scoop = ($playerinfo[dev_fuelscoop] == 'Y') ? $l_yes : $l_no;
+$lssd = ($playerinfo[dev_lssd] == 'Y') ? $l_yes : $l_no;
 echo "<TR BGCOLOR=\"$color_line2\"><TD>$l_escape_pod</TD><TD ALIGN=RIGHT>$escape_pod</TD></TR>";
 echo "<TR BGCOLOR=\"$color_line1\"><TD>$l_fuel_scoop</TD><TD ALIGN=RIGHT>$fuel_scoop</TD></TR>";
+echo "<TR BGCOLOR=\"$color_line2\"><TD>$l_lssd</TD><TD ALIGN=RIGHT>$lssd</TD></TR>";
 echo "</TABLE>";
 
 echo "</TD></TR>";
 echo "</TABLE>";
 
-echo "<BR><BR>";
+echo "<p align=center>";
+echo "<img src=\"images/$shiptypes[$shiplevel]\" border=0></p>";
 
 TEXT_GOTOMAIN();
 
 include("footer.php");
 
 ?>
+
