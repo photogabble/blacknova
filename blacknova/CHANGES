@@ -3,6 +3,10 @@ SharpBlue (27 June 2002)
 Separation of ships/players in the database is now complete.
 Fixed a serious bug in traderoutes where you could end up with negative credits
 
+TheMightyDude (26 June 2002)
+---------------------------------
+Fixed Netscape Bug when displaying traderoutes.
+
 SharpBlue (22 June 2002)
 ---------------------------------
 Fixed a bug in the furangee funcs when returning without UNLOCK
