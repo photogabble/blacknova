@@ -18,7 +18,6 @@ if(checklogin())
 $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
-
 // determine what type of report is displayed and display it's title
 if($PRepType==1 || !isset($PRepType)) // display the commodities on the planets
 {
@@ -67,7 +66,6 @@ function planet_report_menu()
          "<BR>";
   }
 }
-
 
 function standard_report()
 {
