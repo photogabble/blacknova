@@ -125,6 +125,15 @@ function planetbombing()
         include("footer.php");
         die();
     }
+    
+    if($playerinfo[ship_fighters] < 1)
+    {
+        echo "You have no fighters to attack with!<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
+    }
+
 
     $res = $db->Execute("LOCK TABLES $dbtables[ships] WRITE, $dbtables[planets] WRITE");
 
