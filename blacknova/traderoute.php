@@ -563,9 +563,12 @@ function traderoute_new($traderoute_id)
       $i++;
     }
   }
+  echo "
+    </select>
+    </tr>";
 //----------------------- Corp Planet
     echo "
-    </tr><tr>
+    <tr>
     <td align=right><font size=2>Corporate $l_tdr_planet : </font></td>
     <td><input type=radio name=\"ptype1\" value=\"corp_planet\"
     ";
@@ -649,9 +652,12 @@ function traderoute_new($traderoute_id)
       $i++;
     }
   }
+  echo "
+    </select>
+    </tr>";
 //----------------------- Corp Planet
   echo "
-    </tr><tr>
+    <tr>
     <td align=right><font size=2>Corporate $l_tdr_planet : </font></td>
     <td><input type=radio name=\"ptype2\" value=\"corp_planet\"
     ";
