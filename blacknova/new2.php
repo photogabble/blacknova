@@ -76,15 +76,35 @@ if ($flag==0)
   $shipid = newplayer($username, $character, $makepass, $shipname);
 
   $l_new_message = str_replace("[pass]", $makepass, $l_new_message);
-  mail("$username", "$l_new_topic", "$l_new_message\r\n\r\nhttp://$gamedomain","From: $admin_mail\r\nReply-To: $admin_mail\r\nX-Mailer: PHP/" . phpversion());
 
+  $msg = "$l_new_message\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
+  $hdrs .= "From: BlackNova Mailer <$admin_mail>\r\n";
+
+  $e_response=mail($username,$l_new_topic, $msg,$hdrs);
+  
   if($display_password)
   {
     echo $l_new_pwis . " " . $makepass . "<BR><BR>";
   }
-
-  echo "$l_new_pwsent<BR><BR>";
-  echo "<A HREF=login.php>$l_clickme</A> $l_new_login";
+  if ($Enable_EmailLoggerModule AND $modules['ELM'])
+  {
+    if ($e_response===TRUE)
+    {
+      echo "<font color=\"lime\">Email sent to $username</font> - \n";
+      AddELog($username,Registering,'Y',$l_new_topic,$e_response);
+    }
+    else
+    {
+      echo "<font color=\"Red\">Email failed to send to $username</font> - \n";
+      AddELog($username,Registering,'N',$l_new_topic,$e_response);
+    }
+  }
+  else
+  {
+    echo "<font color=\"lime\">Email sent to $username</font><br>";
+  }
+  echo "<BR>";
+  echo "<A HREF=login.php class=nav>$l_clickme</A> $l_new_login";
 
 } else {
 

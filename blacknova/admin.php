@@ -22,10 +22,9 @@ function YESNO($onoff)
 }
 
 $module = $menu;
-$login_ip = getenv("REMOTE_ADDR");
+
 if($swordfish != $adminpass)
 {
-  adminlog(LOG_RAW,"Admin Login attempt from $login_ip");
   echo "<FORM ACTION=admin.php METHOD=POST>";
   echo "Password: <INPUT TYPE=PASSWORD NAME=swordfish SIZE=20 MAXLENGTH=20>&nbsp;&nbsp;";
   echo "<INPUT TYPE=SUBMIT VALUE=Submit><INPUT TYPE=RESET VALUE=Reset>";
@@ -35,7 +34,6 @@ else
 {
   if(empty($module))
   {
-    adminlog(LOG_RAW,"Admin Login successful from $login_ip");
     echo "Welcome to the BlackNova Traders administration module<BR><BR>";
     echo "Select a function from the list below:<BR>";
     echo "<FORM ACTION=admin.php METHOD=POST>";
@@ -48,6 +46,8 @@ else
     echo "<OPTION VALUE=zoneedit>Zone editor</OPTION>";
     echo "<OPTION VALUE=ipedit>IP bans editor</OPTION>";
     echo "<OPTION VALUE=logview>Log Viewer</OPTION>";
+    if ($Enable_GlobalMailerModule AND $modules['GMM']) echo "<OPTION VALUE=globmsg>Global Mailer</OPTION>";
+    if ($Enable_EmailLoggerModule AND $modules['ELM']) echo "<OPTION VALUE=emailview>Email Log Viewer</OPTION>";
     echo "</SELECT>";
     echo "<INPUT TYPE=HIDDEN NAME=swordfish VALUE=$swordfish>";
     echo "&nbsp;<INPUT TYPE=SUBMIT VALUE=Submit>";
@@ -79,55 +79,59 @@ else
       {
         if(empty($operation))
         {
-          $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=$user");
+
+          $res = $db->Execute("select * from $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE $dbtables[players].player_id=$user");
           $row = $res->fields;
+          $res = $db->Execute("select * from $dbtables[ship_types] WHERE type_id=$row[currentship]");
+          $shipclass=$res->fields;
+
           echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Player name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
-          echo "<TR><TD>Password</TD><TD><INPUT TYPE=TEXT NAME=password2 VALUE=\"$row[password]\"></TD></TR>";
-          echo "<TR><TD>E-mail</TD><TD><INPUT TYPE=TEXT NAME=email VALUE=\"$row[email]\"></TD></TR>";
-          echo "<TR><TD>ID</TD><TD>$user</TD></TR>";
-          echo "<TR><TD>Ship</TD><TD><INPUT TYPE=TEXT NAME=ship_name VALUE=\"$row[ship_name]\"></TD></TR>";
-          echo "<TR><TD>Destroyed?</TD><TD><INPUT TYPE=CHECKBOX NAME=ship_destroyed VALUE=ON " . CHECKED($row[ship_destroyed]) . "></TD></TR>";
-          echo "<TR><TD>Levels</TD>";
-          echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Hull</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=hull VALUE=\"$row[hull]\"></TD>";
-          echo "<TD>Engines</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=engines VALUE=\"$row[engines]\"></TD>";
-          echo "<TD>Power</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=power VALUE=\"$row[power]\"></TD>";
-          echo "<TD>Computer</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=computer VALUE=\"$row[computer]\"></TD></TR>";
-          echo "<TR><TD>Sensors</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=sensors VALUE=\"$row[sensors]\"></TD>";
-          echo "<TD>Armour</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=armour VALUE=\"$row[armour]\"></TD>";
-          echo "<TD>Shields</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=shields VALUE=\"$row[shields]\"></TD>";
-          echo "<TD>Beams</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=beams VALUE=\"$row[beams]\"></TD></TR>";
-          echo "<TR><TD>Torpedoes</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=torp_launchers VALUE=\"$row[torp_launchers]\"></TD>";
-          echo "<TD>Cloak</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=cloak VALUE=\"$row[cloak]\"></TD></TR>";
+          echo "<tr><td noWrap width=89>Player name</td><td noWrap width=228><input value=\"$row[character_name]\" name=character_name size=20></td><td noWrap width=315 rowspan=5><div align=left><table border=0 cellpadding=0 cellspacing=1 width=300 height=130><tr><td width=100% valign=middle align=center nowrap height=82><img src=images/$shipclass[image]></td></tr><tr><td width=100% valign=middle align=center nowrap height=40><B>$shipclass[name]</B></td></tr></table></div></td></tr>";
+          echo "<TR><TD nowrap>Password</TD><TD nowrap colspan=3><INPUT TYPE=TEXT NAME=password2 VALUE=\"$row[password]\"></TD></TR>";
+          echo "<TR><TD nowrap>E-mail</TD><TD nowrap colspan=3><INPUT TYPE=TEXT NAME=email VALUE=\"$row[email]\"></TD></TR>";
+          echo "<TR><TD nowrap>ID</TD><TD nowrap colspan=3>$user</TD></TR>";
+          echo "<TR><TD nowrap>Ship</TD><TD nowrap><INPUT TYPE=TEXT NAME=ship_name VALUE=\"$row[name]\"></TD></TR>";
+          echo "<TR><TD nowrap>Destroyed?</TD><TD nowrap colspan=3><INPUT TYPE=CHECKBOX NAME=ship_destroyed VALUE=ON " . CHECKED($row[ship_destroyed]) . "></TD></TR>";
+          echo "<TR><TD nowrap>Levels</TD>";
+          echo "<TD nowrap colspan=3><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
+          echo "<TR><TD nowrap>Hull</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=hull VALUE=\"$row[hull]\"></TD>";
+          echo "<TD nowrap>Engines</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=engines VALUE=\"$row[engines]\"></TD>";
+          echo "<TD nowrap>Power</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=power VALUE=\"$row[power]\"></TD>";
+          echo "<TD nowrap>Computer</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=computer VALUE=\"$row[computer]\"></TD></TR>";
+          echo "<TR><TD nowrap>Sensors</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=sensors VALUE=\"$row[sensors]\"></TD>";
+          echo "<TD nowrap>Armour</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=armour VALUE=\"$row[armour]\"></TD>";
+          echo "<TD nowrap>Shields</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=shields VALUE=\"$row[shields]\"></TD>";
+          echo "<TD nowrap>Beams</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=beams VALUE=\"$row[beams]\"></TD></TR>";
+          echo "<TR><TD nowrap>Torpedoes</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=torp_launchers VALUE=\"$row[torp_launchers]\"></TD>";
+          echo "<TD nowrap>Cloak</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=cloak VALUE=\"$row[cloak]\"></TD></TR>";
           echo "</TABLE></TD></TR>";
-          echo "<TR><TD>Holds</TD>";
-          echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Ore</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_ore VALUE=\"$row[ship_ore]\"></TD>";
-          echo "<TD>Organics</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_organics VALUE=\"$row[ship_organics]\"></TD>";
-          echo "<TD>Goods</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_goods VALUE=\"$row[ship_goods]\"></TD></TR>";
-          echo "<TR><TD>Energy</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_energy VALUE=\"$row[ship_energy]\"></TD>";
-          echo "<TD>Colonists</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_colonists VALUE=\"$row[ship_colonists]\"></TD></TR>";
+          echo "<TR><TD nowrap>Holds</TD>";
+          echo "<TD nowrap colSpan=3><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
+          echo "<TR><TD nowrap>Ore</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=ship_ore VALUE=\"$row[ore]\"></TD>";
+          echo "<TD nowrap>Organics</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=ship_organics VALUE=\"$row[organics]\"></TD>";
+          echo "<TD nowrap>Goods</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=ship_goods VALUE=\"$row[goods]\"></TD></TR>";
+          echo "<TR><TD nowrap>Energy</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=ship_energy VALUE=\"$row[energy]\"></TD>";
+          echo "<TD nowrap>Colonists</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=ship_colonists VALUE=\"$row[colonists]\"></TD></TR>";
           echo "</TABLE></TD></TR>";
-          echo "<TR><TD>Combat</TD>";
-          echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Fighters</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_fighters VALUE=\"$row[ship_fighters]\"></TD>";
-          echo "<TD>Torpedoes</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=torps VALUE=\"$row[torps]\"></TD></TR>";
-          echo "<TR><TD>Armour Pts</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=armour_pts VALUE=\"$row[armour_pts]\"></TD></TR>";
+          echo "<TR><TD nowrap>Combat</TD>";
+          echo "<TD nowrap colSpan=3><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
+          echo "<TR><TD nowrap>Fighters</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=ship_fighters VALUE=\"$row[fighters]\"></TD>";
+          echo "<TD nowrap>Torpedoes</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=torps VALUE=\"$row[torps]\"></TD></TR>";
+          echo "<TR><TD nowrap>Armour Pts</TD><TD nowrap><INPUT TYPE=TEXT SIZE=8 NAME=armour_pts VALUE=\"$row[armour_pts]\"></TD></TR>";
           echo "</TABLE></TD></TR>";
-          echo "<TR><TD>Devices</TD>";
-          echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Beacons</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=dev_beacon VALUE=\"$row[dev_beacon]\"></TD>";
-          echo "<TD>Warp Editors</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=dev_warpedit VALUE=\"$row[dev_warpedit]\"></TD>";
-          echo "<TD>Genesis Torpedoes</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=dev_genesis VALUE=\"$row[dev_genesis]\"></TD></TR>";
-          echo "<TR><TD>Mine Deflectors</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=dev_minedeflector VALUE=\"$row[dev_minedeflector]\"></TD>";
-          echo "<TD>Emergency Warp</TD><TD><INPUT TYPE=TEXT SIZE=5 NAME=dev_emerwarp VALUE=\"$row[dev_emerwarp]\"></TD></TR>";
-          echo "<TR><TD>Escape Pod</TD><TD><INPUT TYPE=CHECKBOX NAME=dev_escapepod VALUE=ON " . CHECKED($row[dev_escapepod]) . "></TD>";
-          echo "<TD>FuelScoop</TD><TD><INPUT TYPE=CHECKBOX NAME=dev_fuelscoop VALUE=ON " . CHECKED($row[dev_fuelscoop]) . "></TD></TR>";
+          echo "<TR><TD nowrap>Devices</TD>";
+          echo "<TD nowrap colSpan=3><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
+          echo "<TR><TD nowrap>Beacons</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=dev_beacon VALUE=\"$row[dev_beacon]\"></TD>";
+          echo "<TD nowrap>Warp Editors</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=dev_warpedit VALUE=\"$row[dev_warpedit]\"></TD>";
+          echo "<TD nowrap>Genesis Torpedoes</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=dev_genesis VALUE=\"$row[dev_genesis]\"></TD></TR>";
+          echo "<TR><TD nowrap>Mine Deflectors</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=dev_minedeflector VALUE=\"$row[dev_minedeflector]\"></TD>";
+          echo "<TD nowrap>Emergency Warp</TD><TD nowrap><INPUT TYPE=TEXT SIZE=5 NAME=dev_emerwarp VALUE=\"$row[dev_emerwarp]\"></TD></TR>";
+          echo "<TR><TD nowrap>Escape Pod</TD><TD nowrap><INPUT TYPE=CHECKBOX NAME=dev_escapepod VALUE=ON " . CHECKED($row[dev_escapepod]) . "></TD>";
+          echo "<TD nowrap>FuelScoop</TD><TD nowrap><INPUT TYPE=CHECKBOX NAME=dev_fuelscoop VALUE=ON " . CHECKED($row[dev_fuelscoop]) . "></TD></TR>";
           echo "</TABLE></TD></TR>";
-          echo "<TR><TD>Credits</TD><TD><INPUT TYPE=TEXT NAME=credits VALUE=\"$row[credits]\"></TD></TR>";
-          echo "<TR><TD>Turns</TD><TD><INPUT TYPE=TEXT NAME=turns VALUE=\"$row[turns]\"></TD></TR>";
-          echo "<TR><TD>Current sector</TD><TD><INPUT TYPE=TEXT NAME=sector VALUE=\"$row[sector]\"></TD></TR>";
+          echo "<TR><TD nowrap>Credits</TD><TD nowrap colSpan=3><INPUT TYPE=TEXT NAME=credits VALUE=\"$row[credits]\"></TD></TR>";
+          echo "<TR><TD nowrap>Turns</TD><TD nowrap colSpan=3><INPUT TYPE=TEXT NAME=turns VALUE=\"$row[turns]\"></TD></TR>";
+          echo "<TR><TD nowrap>Current sector</TD><TD nowrap colSpan=3><INPUT TYPE=TEXT NAME=sector VALUE=\"$row[sector_id]\"></TD></TR>";
           echo "</TABLE>";
           echo "<BR>";
           echo "<INPUT TYPE=HIDDEN NAME=user VALUE=$user>";
@@ -140,8 +144,14 @@ else
           $_ship_destroyed = empty($ship_destroyed) ? "N" : "Y";
           $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
           $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
-          $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',password='$password2',email='$email',ship_name='$ship_name',ship_destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',credits='$credits',turns='$turns',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector='$sector',ship_ore='$ship_ore',ship_organics='$ship_organics',ship_goods='$ship_goods',ship_energy='$ship_energy',ship_colonists='$ship_colonists',ship_fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE player_id=$user");
-          echo "Changes saved<BR><BR>";
+          $playerdb=$db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',email='$email',credits='$credits',turns='$turns',password='$password2' WHERE player_id=$user");
+          if ($playerdb) echo "<td><font color=\"lime\">- updated players successfully.</font></td></tr><br>\n";
+          else echo "<td><font color=\"red\">- failed to update players.</font></td></tr><br>\n";
+          $shipsdb=$db->Execute("UPDATE $dbtables[ships] SET cloak='$cloak',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector_id='$sector',ore='$ship_ore',organics='$ship_organics',goods='$ship_goods',energy='$ship_energy',colonists='$ship_colonists',fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts',name='$ship_name',destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers' WHERE player_id=$user");
+          if ($shipsdb) echo "<td><font color=\"lime\">- updated ships successfully.</font></td></tr><br>\n";
+          else echo "<td><font color=\"red\">- failed to update ships.</font></td></tr><br>\n";
+
+          echo "<BR><BR>";
           echo "<INPUT TYPE=SUBMIT VALUE=\"Return to User editor\">";
           $button_main = false;
         }
@@ -779,6 +789,165 @@ else
       echo "</SELECT>&nbsp;&nbsp;" .
            "<INPUT TYPE=SUBMIT VALUE=\"View player log\">" .
            "</form><HR size=1 width=80%>";
+    }
+    elseif($module == "globmsg" AND $Enable_GlobalMailerModule AND $modules['GMM'])
+    {
+      if (empty($content))
+      {
+        $ver = X_Version;
+        $selfpath = basename($PHP_SELF);
+        echo "<div align=\"left\">\n";
+        echo "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"1\" width=\"100%\">\n";
+        echo "    <tr>\n";
+        echo "      <td width=\"50%\" nowrap><b>Global Email Message</b></td>\n";
+        echo "      <td width=\"50%\" nowrap align=\"right\"><a href=".X_Website." target=\"_blank\"><img border=\"0\" src=\"images/E-Script_s.gif\"></a></td>\n";
+        echo "    </tr>\n";
+        echo "  </table>\n";
+		echo "</div>\n";
+	
+        echo "<FORM ACTION=admin.php METHOD=POST>";
+        echo "<table>";
+        echo "  <tr>";
+        echo "    <td><font size=\"2\">TO:</font></td>";
+        echo "    <td><input disabled maxLength=\"40\" size=\"40\" value=\"All Players\" name=\"dummy\"></td>";
+        echo "  </tr>";
+        echo "  <tr>";
+        echo "    <td><font size=\"2\">FROM:</font></td>";
+        echo "    <td><input disabled maxLength=\"40\" size=\"40\" value=\"GameAdmin\" name=\"dummy\"></td>";
+        echo "  </tr>";
+        echo "  <tr>";
+        echo "    <td><font size=\"2\">SUBJECT:</font></td>";
+        echo "    <td><input maxLength=\"40\" size=\"40\" name=\"subject\"></td>";
+        echo "  </tr>";
+        echo "  <tr>";
+        echo "    <td valign=\"top\"><font size=\"2\">MESSAGE:</font></td>";
+        echo "    <td><textarea name=\"content\" rows=\"5\" cols=\"40\"></textarea></td>";
+        echo "  </tr>";
+        echo "  <tr>";
+        echo "    <td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Submit\"><input type=\"reset\" value=\"Reset\"></td>";
+        echo "  </tr>";
+        echo "</table>";
+        echo "<INPUT TYPE=HIDDEN NAME=\"swordfish\" VALUE=\"$swordfish\">";
+        echo "<INPUT TYPE=HIDDEN NAME=\"menu\" VALUE=\"globmsg\">";
+        echo "</FORM>";
+      }
+      else
+      {
+        $res = $db->Execute("select * from $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE email != '$admin_mail' ORDER BY character_name ASC");
+        $row = $res->fields;
+
+        $headers = "From: GameAdmin <$admin_mail>\r\n";
+        $content .= "\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
+        while(!$res->EOF)
+        {
+          $e_response = mail($res->fields[email],$subject,$content,$headers);
+          if ($e_response===TRUE)
+          {
+            echo "<font color=\"lime\">Global Message sent to ".$res->fields[email]."</font> - \n";
+            AddELog($res->fields[email],GlobalEmail,'Y',$subject,$e_response);
+          }
+          else
+          {
+            echo "<font color=\"Red\">Message failed to send to ".$res->fields[email]."</font> - \n";
+            AddELog($res->fields[email],GlobalEmail,'N',$subject,$e_response);
+          }
+          $res->MoveNext();
+        }
+        echo "<br><font color=\"lime\">Messages sent</font><BR>\n";
+      }
+    }
+
+# Email Viewer
+    elseif($module == "emailview" AND $Enable_EmailLoggerModule AND $modules['ELM'])
+    {
+      $ver = E_Logger_Version;
+      $selfpath = basename($PHP_SELF);
+      echo "<div align=\"left\">\n";
+      echo "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"1\" width=\"100%\">\n";
+      echo "    <tr>\n";
+      echo "      <td width=\"50%\" nowrap><b>Email Log Viewer</b></td>\n";
+      echo "      <td width=\"50%\" nowrap align=\"right\"><a href=".X_Website." target=\"_blank\"><img border=\"0\" src=\"images/E-Script_s.gif\"></a></td>\n";
+      echo "    </tr>\n";
+      echo "  </table>\n";
+      echo "</div>\n";
+      echo "<form action=$selfpath method=post>";
+      echo "<div align=\"center\">\n";
+      echo "  <center>\n";
+      echo "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"1\" width=\"100%\">\n";
+      echo "    <tr>\n";
+      echo "      <td width=\"50%\"></td>\n";
+      echo "      <td width=\"50%\" align=\"right\"><input type=\"submit\" value=\"Clear E-Logs\" name=\"cmd\"><input type=\"submit\" value=\"Refresh\" name=\"cmd\"></td>\n";
+      echo "		<input type=\"hidden\" name=\"swordfish\" value=$swordfish>\n";
+      echo "		<input type=\"hidden\" name=\"menu\" value=\"emailview\">\n";
+      echo "    </tr>\n";
+      echo "  </table>\n";
+      echo "  </center>\n";
+      echo "</div>\n";
+      echo "</form>\n";
+      if($cmd == "Clear E-Logs")
+      {
+        $db->Execute("DROP TABLE $dbtables[email_log]");
+        $db->Execute("CREATE TABLE $dbtables[email_log](" .
+            "log_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
+            "sp_name varchar(50) NOT NULL," .
+            "sp_IP tinytext NOT NULL," .
+            "dp_name varchar(50) NOT NULL," .
+            "e_subject varchar(250)," .
+            "e_status enum('Y','N') DEFAULT 'N' NOT NULL," .
+            "e_type tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+            "e_stamp char(20)," .
+            "e_response varchar(250)," .
+            "PRIMARY KEY (log_id)" .
+            ")");
+        $cmd="Refresh";
+      }
+      if(empty($cmd)|| $cmd =="Refresh")
+      {
+        echo "<br>\n";
+        $res =  $db->Execute ("SELECT * FROM $dbtables[email_log]");
+        echo "<body bgcolor=\"#000040\" text=\"#FFFFFF\">\n";
+        echo "<div align=\"center\">\n";
+        echo "  <center>\n";
+        echo "  <table cellSpacing=\"1\" cellPadding=\"2\" width=\"100%\" bgColor=\"#e7c03d\" border=\"0\">\n";
+        echo "    <tbody>\n";
+        echo "      <tr>\n";
+        echo "        <td noWrap width=\"50\" bgColor=\"#800000\" align=\"left\"><font size=\"2\" color=\"#FFFFFF\"><i><b>ID NO</b></i></font></td>\n";
+        echo "        <td noWrap width=\"150\" bgColor=\"#800000\" align=\"left\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Source</b></i></font></td>\n";
+        echo "        <td noWrap width=\"100\" bgColor=\"#800000\" align=\"center\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Source IP</b></i></font></td>\n";
+        echo "        <td noWrap width=\"150\" bgColor=\"#800000\" align=\"left\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Destination</b></i></font></td>\n";
+        echo "        <td noWrap bgColor=\"#800000\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Topic&nbsp;</b></i></font></td>\n";
+        echo "        <td noWrap width=\"100\" bgColor=\"#800000\" align=\"center\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Delivery</b></i></font></td>\n";
+        echo "        <td noWrap bgColor=\"#800000\" align=\"center\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Log Type</b></i></font></td>\n";
+        echo "        <td noWrap bgColor=\"#800000\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Date of Log</b></i></font></td>\n";
+        echo "        <td noWrap bgColor=\"#800000\"><font size=\"2\" color=\"#FFFFFF\"><i><b>Response</b></i></font></td>\n";
+        echo "      </tr>\n";
+        while (!$res->EOF)
+        {
+          $row=$res->fields;
+          if ($row[e_type]==MiscEmail)$LogType = "MiscEmail";
+          if ($row[e_type]==Registering)$LogType = "Registeration";
+          if ($row[e_type]==Feedback)$LogType = "Feedback";
+          if ($row[e_type]==ReqPassword)$LogType = "PW Request";
+          if ($row[e_type]==DebugInfo)$LogType = "Debug Info";
+          if ($row[e_type]==GlobalEmail)$LogType = "Global Email";
+          if ($row[e_status]=='Y') $Delivery = "<font size=\"1\" color=\"lime\">Successful</font>";else $Delivery = "<font size=\"1\" color=\"red\">Fail</font>";
+          echo "      <tr>\n";
+          echo "        <td noWrap width=\"50\" bgColor=\"#000080\" align=\"center\"><font size=\"1\" color=\"#FFFF00\">$row[log_id]</font></td>\n";
+          echo "        <td noWrap width=\"150\" bgColor=\"#000080\" align=\"left\"><font size=\"1\" color=\"#FFFF00\">$row[sp_name]</font></td>\n";
+          echo "        <td noWrap width=\"100\" bgColor=\"#000080\" align=\"center\"><font size=\"1\" color=\"#FFFF00\">$row[sp_IP]</font></td>\n";
+          echo "        <td noWrap width=\"150\" bgColor=\"#000080\" align=\"left\"><font size=\"1\" color=\"#FFFF00\">$row[dp_name]</font></td>\n";
+          echo "        <td noWrap bgColor=\"#000080\"><font size=\"1\" color=\"#FFFF00\">$row[e_subject]</font></td>\n";
+          echo "        <td noWrap width=\"100\" bgColor=\"#000080\" align=\"center\"><font size=\"1\">$Delivery</font></td>\n";
+          echo "        <td noWrap bgColor=\"#000080\" align=\"center\"><font size=\"1\" color=\"#FFFF00\">$LogType</font></td>\n";
+          echo "        <td noWrap bgColor=\"#000080\"><font size=\"1\" color=\"#FFFFFF\">$row[e_stamp]</font></td>\n";
+          echo "        <td noWrap bgColor=\"#000080\"><font size=\"1\" color=\"#FFFFFF\">$row[e_response]</font></td>\n";
+          echo "      </tr>\n";
+          $res->MoveNext();
+        }
+        echo "</table>\n</center></div>\n";
+        echo "</body>\n";
+        $res = nothing;
+      }
     }
     else
     {
