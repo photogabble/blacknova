@@ -877,7 +877,7 @@ function player_insignia_name($a_username) {
 global $db, $dbtables, $username, $player_insignia;
 global $l_insignia;
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$a_username'");
+$res = $db->Execute("SELECT score FROM $dbtables[ships] WHERE email='$a_username'");
 $playerinfo = $res->fields;  
 $score_array = array('1000', '3000', '6000', '9000', '12000', '15000', '20000', '40000', '60000', '80000', '100000', '120000', '160000', '200000', '250000', '300000', '350000', '400000', '450000', '500000');
 
@@ -889,6 +889,10 @@ for ( $i=0; $i<count($score_array); $i++)
        break;    
      }
 }
+
+if(!isset($player_insignia))
+  $player_insignia = end($l_insignia);
+
 return $player_insignia;
 
 }
