@@ -501,7 +501,6 @@ return $dropdownvar;
   }
   echo "\n";
   echo "<A HREF=\"bounty.php\">$l_by_placebounty</A><BR>\n";
-  echo "<A HREF =\"credittrans.php\">Do a bulk credit transfer from planets.</A><BR><BR>\n";
   echo " <FORM ACTION=port2.php METHOD=POST>\n";
   echo "  <TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=0>\n";
   echo "   <TR BGCOLOR=\"$color_header\">\n";
