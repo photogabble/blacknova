@@ -3,6 +3,8 @@ Torr (13 June 2002)
 Correct display of traderoutes on the "main" page.
 Added some foundation work for Sector defense traderoutes in main.php.
 Added enum type 'D' to the traderoutes table, more foundation work.
+Added enum trade_defs ('A','T') to the ships tabls, more foundation works.
+Removed new enum from ships table due to it breaking creating players.  Will have to modify new2.php in order to get that enum type added.
 
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------
