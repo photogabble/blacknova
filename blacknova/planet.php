@@ -300,6 +300,16 @@ if(!empty($planetinfo))
     elseif($command == "base")
     {
       /* build a base */
+ 	//Check to see if the player has less than one turn available
+ 	//and if so return to the main menu
+       if ($playerinfo[turns]<1)
+       {
+          echo "$l_planet_basenoturn<BR><BR>";
+ 	  TEXT_GOTOMAIN();
+ 	  include("footer.php");
+ 	  die();
+       }
+ 
       if($planetinfo[ore] >= $base_ore && $planetinfo[organics] >= $base_organics && $planetinfo[goods] >= $base_goods && $planetinfo[credits] >= $base_credits)
       {
       // ** Create The Base

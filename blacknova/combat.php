@@ -232,6 +232,7 @@ function planetcombat()
     global $level_factor;
     global $attackertorpdamage;
     global $start_energy;
+    global $initial_energy;
     global $min_value_capture;
     global $l_cmb_atleastoneturn;
     global $l_cmb_atleastoneturn, $l_cmb_shipenergybb, $l_cmb_shipenergyab, $l_cmb_shipenergyas, $l_cmb_shiptorpsbtl, $l_cmb_shiptorpsatl;
@@ -278,7 +279,7 @@ function planetcombat()
     $attackerarmor		= $playerinfo[armour_pts];
 
     // Now modify player beams, shields and torpedos on available materiel
-    $start_energy = $playerinfo[ship_energy];
+    $initial_energy = $playerinfo[ship_energy];
 
     // Beams
     if ($debug)
@@ -653,9 +654,9 @@ function planetcombat()
         $l_cmb_youlostarmorpoints = str_replace("[cmb_attackerarmor]", $attackerarmor, $l_cmb_youlostarmorpoints);
         echo "$l_cmb_youlostarmorpoints<BR>";
         $energy=$playerinfo[ship_energy];
-        $energy_lost = $start_energy - $playerinfo[ship_energy];
+        $energy_lost = $initial_energy - $playerinfo[ship_energy];
         $l_cmb_energyused = str_replace("[cmb_energy_lost]", $energy_lost, $l_cmb_energyused);
-        $l_cmb_energyused = str_replace("[cmb_playerinfo_ship_energy]", $start_energy, $l_cmb_energyused);
+        $l_cmb_energyused = str_replace("[cmb_playerinfo_ship_energy]", $initial_energy, $l_cmb_energyused);
         echo "$l_cmb_energyused<BR></CENTER>";
         $db->Execute("UPDATE $dbtables[ships] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, torps=torps-$attackertorps,armour_pts=armour_pts-$armor_lost, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
     }
@@ -735,6 +736,7 @@ function shiptoship($ship_id)
     global $attackerarmor;
     global $attackertorpdamage;
     global $start_energy;
+    global $initial_energy;
     global $playerinfo;
     global $l_cmb_attackershields, $l_cmb_attackertorps, $l_cmb_attackerarmor, $l_cmb_attackertorpdamage;
     global $l_cmb_startingstats, $l_cmb_statattackerbeams, $l_cmb_statattackerfighters, $l_cmb_statattackershields, $l_cmb_statattackertorps;
