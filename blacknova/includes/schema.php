@@ -113,8 +113,8 @@ $db->Execute("CREATE TABLE $dbtables[players](" .
              "turns smallint(4) DEFAULT '0' NOT NULL," .
              "turns_used int unsigned DEFAULT '0' NOT NULL," .
              "last_login datetime," .
-             "rating int DEFAULT '0' NOT NULL," .
-             "score int DEFAULT '0' NOT NULL," .
+             "rating bigint(20) DEFAULT '0' NOT NULL," .
+             "score bigint(20) DEFAULT '0' NOT NULL," .
              "team int DEFAULT '0' NOT NULL," .
              "team_invite int DEFAULT '0' NOT NULL," .
              "interface enum('N','O') DEFAULT 'N' NOT NULL," .

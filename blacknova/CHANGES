@@ -1,3 +1,7 @@
+TheMightyDude (04 May 2004)
+--------------------------------
+Added request [901153] score column needs to be bigint
+
 TheMightyDude (28 July 2003)
 --------------------------------
 Added request [756171] Code to hopefully fix scoring problem with ranking.
