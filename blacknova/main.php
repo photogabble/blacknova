@@ -112,6 +112,7 @@ $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE sector_id='$shipinfo
 $i = 0;
 if($res > 0)
 {
+  calc_ownership($shipinfo[sector_id]);
   while(!$res->EOF)
   {
     $planets[$i] = $res->fields;

@@ -191,7 +191,7 @@ else //ok, now we buy the ship for true
                "'$shipinfo[dev_lssd]'" .            //dev_lssd
                ")");
 
-  $res = $db->Execute("SELECT ship_id from $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND name='$shipname'");
+  $res = $db->Execute("SELECT ship_id from $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND class='$stype'");
   $ship_id = $res->fields[ship_id];
 
   //Insert current ship in players table
