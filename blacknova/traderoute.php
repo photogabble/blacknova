@@ -69,9 +69,6 @@ if ($playerinfo[ship_colonists] < 0 || $playerinfo[ship_ore] < 0 || $playerinfo[
 	$update1 = $db->Execute("UPDATE $dbtables[ships] SET ship_ore=$playerinfo[ship_ore], ship_organics=$playerinfo[ship_organics], ship_goods=$playerinfo[ship_goods], ship_energy=$playerinfo[ship_energy], ship_colonists=$playerinfo[ship_colonists] WHERE ship_id=$playerinfo[ship_id]");
 }
 
-if(!isset($tr_repeat) || $tr_repeat <= 0)
-  $tr_repeat = 1;
-
 if($command == 'new')   //displays new trade route form
   traderoute_new('');
 elseif($command == 'create')    //enters new route in db
@@ -85,13 +82,21 @@ elseif($command == 'settings')  //global traderoute settings form
 elseif($command == 'setsettings') //enters settings in db
   traderoute_setsettings();
 elseif(isset($engage)) //performs trade route
-for($i=$tr_repeat;$i>0;$i--)
 {
-  $result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
-  $playerinfo = $result->fields;
-  traderoute_engage($i);
+	if(!isset($tr_repeat) || $tr_repeat <= 0)
+	  $tr_repeat = 1;
+	
+	for($i=$tr_repeat;$i>0;$i--)
+	{
+	  $result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+	  $playerinfo = $result->fields;
+	  if (!traderoute_engage($i))
+	  {
+			traderoute_die("Trade Route Aborted");
+	  }
+	}
+	traderoute_die("");
 }
-
 
 //-----------------------------------------------------------------
 if($command != 'delete')
@@ -2062,6 +2067,15 @@ function traderoute_engage($j)
 
   echo "<font size=3 color=white><b>$l_tdr_credits : <font color=#00ff00>" . NUMBER($playerinfo[credits]) . "</font></b><br></center><p><font size=2>";
 
+	/** Stupid User Limiter - Requested Via SF Bug - **/
+	/** Coded by Sane - Jan 15, 2003 - **/      
+
+if (($total_profit  <= 0) || ($playerinfo[turns] <= 0) ||
+  (($ore_buy == 0) && ($goods_buy == 0) && ($organics_buy == 0)))
+  {
+  		return false;
+  }
+
 // ===============
   if($traderoute[circuit] == 2)
   {
@@ -2074,8 +2088,6 @@ function traderoute_engage($j)
        echo "<p>";
     }
   }
-// ===============
-  if($j == 1)
-     traderoute_die("");
+  return true;
 }
 ?>
