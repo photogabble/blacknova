@@ -386,8 +386,8 @@ function traderoute_distance($type1, $type2, $start, $dest, $circuit, $sells = '
   $x = $start[distance] * sin($sa1) * cos($sa2) - $dest[distance] * sin($fa1) * cos($fa2);
   $y = $start[distance] * sin($sa1) * sin($sa2) - $dest[distance] * sin($fa1) * sin($fa2);
   $z = $start[distance] * cos($sa1) - $dest[distance] * cos($fa1);
-  $distance = round(sqrt(pow($x, 2) + pow($y, 2) + pow($z, 2)));
-  $shipspeed = pow($level_factor, $playerinfo[engines]);
+  $distance = round(sqrt(mypw($x, 2) + pow($y, 2) + pow($z, 2)));
+  $shipspeed = mypw($level_factor, $playerinfo[engines]);
   $triptime = round($distance / $shipspeed);
 
   if(!$triptime && $destination != $playerinfo[sector])

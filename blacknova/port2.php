@@ -104,7 +104,7 @@ function phpChangeDelta($desiredvalue,$currentvalue)
 
     while($Delta>0) 
     {
-     $DeltaCost=$DeltaCost + pow(2,$desiredvalue-$Delta); 
+     $DeltaCost=$DeltaCost + mypw(2,$desiredvalue-$Delta); 
      $Delta=$Delta-1;
     }
     $DeltaCost=$DeltaCost * 1000;

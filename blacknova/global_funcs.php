@@ -115,6 +115,13 @@ $dbtables['gen_id'] = "${db_prefix}gen_id";
 $dbtables['bounty'] = "${db_prefix}bounty";
 $dbtables['movement_log'] = "${db_prefix}movement_log";
 
+function mypw($one,$two)
+{
+   $one = (float) $one;
+   $two = (int) $two;
+   return pow($one,$two);
+}
+
 function bigtitle()
 {
   global $title;
@@ -416,43 +423,43 @@ function NUMBER($number, $decimals = 0)
 function NUM_HOLDS($level_hull)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_hull) * 100);
+  return round(mypw($level_factor, $level_hull) * 100);
 }
 
 function NUM_ENERGY($level_power)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_power) * 500);
+  return round(mypw($level_factor, $level_power) * 500);
 }
 
 function NUM_FIGHTERS($level_computer)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_computer) * 100);
+  return round(mypw($level_factor, $level_computer) * 100);
 }
 
 function NUM_TORPEDOES($level_torp_launchers)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_torp_launchers) * 100);
+  return round(mypw($level_factor, $level_torp_launchers) * 100);
 }
 
 function NUM_ARMOUR($level_armour)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_armour) * 100);
+  return round(mypw($level_factor, $level_armour) * 100);
 }
 
 function NUM_BEAMS($level_beams)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_beams) * 100);
+  return round(mypw($level_factor, $level_beams) * 100);
 }
 
 function NUM_SHIELDS($level_shields)
 {
   global $level_factor;
-  return round(pow($level_factor, $level_shields) * 100);
+  return round(mypw($level_factor, $level_shields) * 100);
 }
 
 function SCAN_SUCCESS($level_scan, $level_cloak)

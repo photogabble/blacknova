@@ -23,7 +23,7 @@
                        $playershields=$playerinfo[ship_energy];
                     }
 //                    $playerinfo[ship_energy]=$playerinfo[ship_energy]-$playershields;
-                    $playertorpnum = round(pow($level_factor,$playerinfo[torp_launchers]))*2;
+                    $playertorpnum = round(mypw($level_factor,$playerinfo[torp_launchers]))*2;
                     if($playertorpnum > $playerinfo[torps])
                     { 
                        $playertorpnum = $playerinfo[torps];
