@@ -150,7 +150,7 @@
         furangeetrade();
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF ******
-        $reso2 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and $dbtables[players].player_id > 1");
+        $reso2 = $db->Execute("SELECT * FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE sector_id=$targetlink and email!='$playerinfo[email]' and $dbtables[players].player_id > 1");
         if (!$reso2->EOF)
         {
           $rowo2=$reso2->fields;
@@ -209,6 +209,7 @@
         } else
         {
           // ****** ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE ******
+          $targetlink = $playerinfo[sector_id];
           furangeemove();
           if ($furangeeisdead>0) {
             $res->MoveNext();
@@ -216,7 +217,7 @@
           }
           // ****** FIND A TARGET ******
           // ****** IN MY SECTOR, NOT MYSELF ******
-          $reso3 = $db->Execute("SELECT * FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE sector_id=$playerinfo[sector_id] and email!='$playerinfo[email]' and $dbtables[players].player_id > 1");
+          $reso3 = $db->Execute("SELECT * FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE sector_id=$targetlink and email!='$playerinfo[email]' and $dbtables[players].player_id > 1");
           if (!$reso3->EOF)
           {
             $rowo3=$reso3->fields;

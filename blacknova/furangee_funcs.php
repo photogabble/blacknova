@@ -750,36 +750,56 @@ function furangeemove()
       }
     }
     if ($total_sector_fighters>0 || $total_sector_mines>0 || ($total_sector_fighters>0 && $total_sector_mines>0))
-    //*** DEST LINK HAS DEFENCES ***
+    // ********************************
+    // **** DEST LINK HAS DEFENCES ****
+    // ********************************
     {
       if ($playerinfo[aggression] == 2 || $playerinfo[aggression] == 1) {
-        // *** ATTACK SECTOR DEFENCES ***
+        // *********************************
+        // **** DO MOVE TO TARGET LINK *****
+        // *********************************
+        $stamp = date("Y-m-d H-i-s");
+        $query="UPDATE $dbtables[players] SET last_login='$stamp', turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]";
+        $move_result = $db->Execute ("$query");
+        $db->Execute("UPDATE $dbtables[ships] SET sector_id=$targetlink WHERE ship_id=$playerinfo[ship_id]");
+        if (!$move_result)
+        {
+          $error = $db->ErrorMsg();
+          playerlog($playerinfo[player_id], LOG_RAW, "Move failed with error: $error "); 
+          $targetlink = $playerinfo[sector_id];         //*** RESET TARGET LINK SO IT IS NOT ZERO ***
+          return;
+        }
+        // ********************************
+        // **** ATTACK SECTOR DEFENCES ****
+        // ********************************
         furangeetosecdef();
         return;
       } else {
         playerlog($playerinfo[player_id], LOG_RAW, "Move failed, the sector is defended by $total_sector_fighters fighters and $total_sector_mines mines."); 
         return;
       }
-    }
-  }
-
-
-  // *********************************
-  // **** DO MOVE TO TARGET LINK *****
-  // *********************************
-  if ($targetlink>0)
-  {
-    $stamp = date("Y-m-d H-i-s");
-    $query="UPDATE $dbtables[players] SET last_login='$stamp', turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]";
-    $move_result = $db->Execute ("$query");
-    $db->Execute("UPDATE $dbtables[ships] SET sector_id=$targetlink WHERE ship_id=$playerinfo[ship_id]");
-    if (!$move_result)
-    {
-      $error = $db->ErrorMsg();
-      playerlog($playerinfo[player_id], LOG_RAW, "Move failed with error: $error "); 
     } else
+    // ********************************
+    // **** DEST LINK IS UNDEFENDED ***
+    // ********************************
     {
-      // playerlog($playerinfo[player_id], LOG_RAW, "Moved to $targetlink without incident."); 
+      // *********************************
+      // **** DO MOVE TO TARGET LINK *****
+      // *********************************
+      $stamp = date("Y-m-d H-i-s");
+      $query="UPDATE $dbtables[players] SET last_login='$stamp', turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]";
+      $move_result = $db->Execute ("$query");
+      $db->Execute("UPDATE $dbtables[ships] SET sector_id=$targetlink WHERE ship_id=$playerinfo[ship_id]");
+      if (!$move_result)
+      {
+        $error = $db->ErrorMsg();
+        playerlog($playerinfo[player_id], LOG_RAW, "Move failed with error: $error "); 
+        $targetlink = $playerinfo[sector_id];         //*** RESET TARGET LINK SO IT IS NOT ZERO ***
+        return;
+      } else
+      {
+        // playerlog($playerinfo[player_id], LOG_RAW, "Moved to $targetlink without incident."); 
+      }
     }
   } else
   {                                            //*** WE HAVE NO TARGET LINK FOR SOME REASON ***
