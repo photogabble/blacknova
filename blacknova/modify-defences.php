@@ -173,7 +173,7 @@ switch($response) {
       $stamp = date("Y-m-d H-i-s");
 
       $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
-      $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id]");
+      // RWG Wonder what this was here for?: $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id]");
       bigtitle();
       echo "$l_md_retr $quantity $defence_type.<BR>";
       TEXT_GOTOMAIN();
