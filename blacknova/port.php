@@ -381,56 +381,57 @@ echo "  {\n";
 echo "  form.colonist_number.value=0\n";
 echo "  }\n";
 echo "// Done with the bounds checking\n";
-echo "form.total_cost.value = form.dev_genesis_number.value * $dev_genesis_price + \n";
-echo "form.dev_beacon_number.value * $dev_beacon_price + \n";
+echo "// Pluses must be first, or if empty will produce a javascript error\n";
+echo "form.total_cost.value = form.dev_genesis_number.value * $dev_genesis_price \n";
+echo "+ form.dev_beacon_number.value * $dev_beacon_price\n";
 if($emerwarp_free > 0)
 {
-  echo "form.dev_emerwarp_number.value * $dev_emerwarp_price + \n";
+  echo "+ form.dev_emerwarp_number.value * $dev_emerwarp_price\n";
 }
-echo "form.dev_warpedit_number.value * $dev_warpedit_price + \n";
-echo "form.elements['dev_minedeflector_number'].value * $dev_minedeflector_price + \n";
+echo "+ form.dev_warpedit_number.value * $dev_warpedit_price\n";
+echo "+ form.elements['dev_minedeflector_number'].value * $dev_minedeflector_price\n";
 if($playerinfo[dev_escapepod] == 'N')
 {
-  echo "(form.escapepod_purchase.checked ?  $dev_escapepod_price : 0) + \n";
+  echo "+ (form.escapepod_purchase.checked ?  $dev_escapepod_price : 0)\n";
 }
 if($playerinfo[dev_fuelscoop] == 'N')
 {
-  echo "(form.fuelscoop_purchase.checked ?  $dev_fuelscoop_price : 0) + \n";
+  echo "+ (form.fuelscoop_purchase.checked ?  $dev_fuelscoop_price : 0)\n";
 }
 if($playerinfo[dev_lssd] == 'N')
 {
-  echo "(form.lssd_purchase.checked ?  $dev_lssd_price : 0) + \n";
+  echo "+ (form.lssd_purchase.checked ?  $dev_lssd_price : 0)\n";
 }
 
-echo "changeDelta(form.hull_upgrade.value,$playerinfo[hull]) + \n";
-echo "changeDelta(form.engine_upgrade.value,$playerinfo[engines]) + \n";
-echo "changeDelta(form.power_upgrade.value,$playerinfo[power]) + \n";
-echo "changeDelta(form.computer_upgrade.value,$playerinfo[computer]) + \n";
-echo "changeDelta(form.sensors_upgrade.value,$playerinfo[sensors]) + \n";
-echo "changeDelta(form.beams_upgrade.value,$playerinfo[beams]) + \n";
-echo "changeDelta(form.armour_upgrade.value,$playerinfo[armour]) + \n";
-echo "changeDelta(form.cloak_upgrade.value,$playerinfo[cloak]) + \n";
-echo "changeDelta(form.torp_launchers_upgrade.value,$playerinfo[torp_launchers]) + \n";
-echo "changeDelta(form.shields_upgrade.value,$playerinfo[shields]) + \n";
+echo "+ changeDelta(form.hull_upgrade.value,$playerinfo[hull])\n";
+echo "+ changeDelta(form.engine_upgrade.value,$playerinfo[engines])\n";
+echo "+ changeDelta(form.power_upgrade.value,$playerinfo[power])\n";
+echo "+ changeDelta(form.computer_upgrade.value,$playerinfo[computer])\n";
+echo "+ changeDelta(form.sensors_upgrade.value,$playerinfo[sensors])\n";
+echo "+ changeDelta(form.beams_upgrade.value,$playerinfo[beams])\n";
+echo "+ changeDelta(form.armour_upgrade.value,$playerinfo[armour])\n";
+echo "+ changeDelta(form.cloak_upgrade.value,$playerinfo[cloak])\n";
+echo "+ changeDelta(form.torp_launchers_upgrade.value,$playerinfo[torp_launchers])\n";
+echo "+ changeDelta(form.shields_upgrade.value,$playerinfo[shields])\n";
 
   if($playerinfo[ship_fighters] != $fighter_max)
   {
-    echo "form.fighter_number.value * $fighter_price + \n";
+    echo "+ form.fighter_number.value * $fighter_price;\n";
   }
   if($playerinfo[torps] != $torpedo_max)
   {
-    echo "form.torpedo_number.value * $torpedo_price + \n";
+    echo "+ form.torpedo_number.value * $torpedo_price;\n";
   }
   if($playerinfo[armour_pts] != $armour_max)
   {
-    echo "form.armour_number.value * $armour_price + \n";
+    echo "+ form.armour_number.value * $armour_price;\n";
   }
   if($playerinfo[ship_colonists] != $colonist_max)
   {
-    echo "form.colonist_number.value * $colonist_price;\n";
+    echo "+ form.colonist_number.value * $colonist_price;\n";
   }
   echo "\n";
-  echo "  if(form.total_cost.value > $playerinfo[credits])\n";
+  echo "  if (form.total_cost.value > $playerinfo[credits])\n";
   echo "  {\n";
   echo "    form.total_cost.value = '$l_no_credits';\n";
 //  echo "    form.total_cost.value = 'You are short '+(form.total_cost.value - $playerinfo[credits]) +' credits';\n";
