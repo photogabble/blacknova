@@ -1190,7 +1190,7 @@ $l_new_pwsent			="Parola a fost trimisa la $username.";
 $l_new_login			="pentru a merge la pagina de intrare.";
 $l_new_err			="Va rugam sa va intoarceti sau <a href=new.php>click aici</a> pentru a incerca inca o data.";
 $l_new_topic			="Parola BlackNova Traders";
-$l_new_message			="Bun gasit,\n\nDe la adresa IP $ip s-a solicitat ca parola jocului BlackNova Traders sa fie transmisa la acest e-mail.\n\nParola dvs. este: [pass]\n\nAceasta parola o puteti schimba imediat dupa ce ati intrat in joc folosind sectiunea -Optiuni-\n\nMultumim pentru vizita,\n\nBlackNova Admin\n\n\nVa asteptam sa va intoarceti la\nhttp://www.AdAcademy.ro/BlackNova/.";
+$l_new_message			="Salut !\r\n\r\nCineva a cerut de la IP-ul $ip sa iti fie trimisa parola jocului $game_name.\r\n\r\nParola este: [pass]\r\n\r\nMultumim.\r\n\r\nEchipa $game_name.";
 
 // logout.php
 
@@ -1203,7 +1203,7 @@ $l_mail_title			="E-mail Parola";
 $l_mail_noplayer		="Nu exista acest Jucator! - Creati un Jucator nou <A HREF=new.php>aici</A>.";
 $l_mail_sent			="Parola a fost trimisa la";
 $l_mail_topic			="Parola $game_name";
-$l_mail_message			="Bun gasit,\n\nDe la adresa IP $ip s-a solicitat ca parola jocului $game_name sa fie transmisa la acest e-mail.\n\nParola dvs. este: [pass]\n\nAceasta parola o puteti schimba imediat dupa ce ati intrat in joc folosind sectiunea -Optiuni-\n\nMultumim pentru vizita,\n\nBlackNova Admin\n\n\nVa asteptam sa va intoarceti la\nhttp://www.AdAcademy.ro/BlackNova/.";
+$l_mail_message			="Salut !\r\n\r\nCineva a cerut de la IP-ul $ip sa iti fie trimisa parola jocului $game_name.\r\n\r\nParola este: [pass]\r\n\r\nMultumim.\r\n\r\nEchipa $game_name.";
 
 // global_funcs.php
 
