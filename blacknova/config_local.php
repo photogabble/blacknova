@@ -51,6 +51,7 @@ $dbname = "blacknova_db";
 // "postgres" for PostgreSQL ver < 7
 // "postgres7" for PostgreSQL ver 7 and up
 // "sybase" for a SyBase database
+// NOTE: only mysql work as of right now, due to SQL compat code
 $db_type = "mysql";
 
 // Set this to 1 to use db persistent connections, 0 otherwise
