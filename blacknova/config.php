@@ -197,6 +197,8 @@ $avail_lang[3][file] = 'romanian';
 $avail_lang[3][name] = 'Romanian';
 $avail_lang[4][file] = 'czech';
 $avail_lang[4][name] = 'Cesky';
+$avail_lang[5][file] = 'spanish';
+$avail_lang[5][name] = 'Espanol';
 
 $IGB_min_turns = $start_turns; //Turns a player has to play before ship transfers are allowed 0=disable
 $IGB_svalue = 0.15; //Max amount of sender's value allowed for ship transfers 0=disable
