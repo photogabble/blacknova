@@ -13,7 +13,7 @@
   echo "<B>PLANETS</B><p>";
 
   $planetupdate = "UPDATE $dbtables[planets] SET " .
-    "organics=organics + ((LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $organics_prate * prod_organics / 100.0 * $expoprod) - LEAST(colonists, $colonist_limit) * $colonist_production_rate * $organics_consumption * $expoprod," .
+    "organics=organics + GREATEST(((LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $organics_prate * prod_organics / 100.0 * $expoprod) - LEAST(colonists, $colonist_limit) * $colonist_production_rate * $organics_consumption * $expoprod,0)," .
     "ore=ore + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $ore_prate * prod_ore / 100.0 * $expoprod," .
     "goods=goods + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $goods_prate * prod_goods / 100.0 * $expoprod," .
     "energy=energy + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $energy_prate * prod_energy / 100.0 * $expoprod," .
