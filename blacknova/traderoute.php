@@ -694,8 +694,7 @@ function traderoute_new($traderoute_id)
 //----------------------- End finishing point selection
 
   echo "
-    </select>
-    </tr><tr>
+    <tr>
     <td>&nbsp;
     </tr><tr>
     <td align=right><font size=2><b>$l_tdr_selmovetype : </b></font></td>
