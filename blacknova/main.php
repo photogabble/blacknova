@@ -150,7 +150,7 @@ $planettypes[4]= "hugeplanet.gif";
 
 ?>
 
-<table border=2 cellspacing=2 cellpadding=2 bgcolor="#400040" width="75%" align=center>
+<table border=1 cellspacing=0 cellpadding=0 bgcolor="#400040" width="75%" align=center>
 <tr><td align="center" colspan=3><font color=silver size=<? echo $basefontsize + 2; ?> face="arial"><? echo $l_player;?> <b><font color=white><? echo $playerinfo[character_name];?></font></b><?php echo $l_abord ?><b><font color=white><a href="report.php"><? echo $playerinfo[ship_name] ?></a></font></b>
 </td></tr>
 </table>
@@ -215,7 +215,7 @@ if($zoneinfo[zone_id] < 5)
 </table></td>
 </tr></table>
 
-<TABLE BORDER=2 CELLPADDING=2 BGCOLOR="#500050" align="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <div class=mnu>
 &nbsp;<a class=mnu href="device.php"><? echo $l_devices ?></a>&nbsp;<br>
@@ -265,7 +265,7 @@ if(!empty($link_forums))
 </table></td>
 </tr></table>
 
-<TABLE BORDER=2 CELLPADDING=2 BGCOLOR="#500050" align="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <div class=mnu>
 
@@ -590,7 +590,7 @@ else
 </table></td>
 </tr></table>
 
-<TABLE BORDER=2 CELLPADDING=2 BGCOLOR="#500050" align="center">
+<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <a class=dis>
 <img align=absmiddle height=12 width=12 alt="<? echo $l_ore ?>" src="images/ore.gif">&nbsp;<? echo $l_ore ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[ship_ore]); ?>&nbsp</div>
@@ -619,7 +619,7 @@ else
 </table></td>
 </tr></table>
 
-<TABLE BORDER=2 CELLPADDING=2 BGCOLOR="#500050" align="center">
+<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <div class=mnu>
 
@@ -715,7 +715,7 @@ else
 </table></td>
 </tr></table>
 
-<TABLE BORDER=2 CELLPADDING=2 BGCOLOR="#500050" align="center">
+<TABLE BORDER=1 CELLPADDING=1 CELLSPACING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <div class=mnu>
 &nbsp;<a class=mnu href=rsmove.php?engage=1&destination=<? echo $playerinfo[preset1]; ?>>=&gt;&nbsp;<? echo $playerinfo[preset1]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
