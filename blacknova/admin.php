@@ -26,7 +26,7 @@ $module = $menu;
 if($swordfish != $adminpass)
 {
   echo "<FORM ACTION=admin.php METHOD=POST>";
-  echo "Password: <INPUT TYPE=PASSWORD NAME=swordfish SIZE=20 MAXLENGTH=20><BR><BR>";
+  echo "Password: <INPUT TYPE=PASSWORD NAME=swordfish SIZE=20 MAXLENGTH=20>&nbsp;&nbsp;";
   echo "<INPUT TYPE=SUBMIT VALUE=Submit><INPUT TYPE=RESET VALUE=Reset>";
   echo "</FORM>";
 }
