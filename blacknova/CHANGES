@@ -1,3 +1,10 @@
+TheMightyDude (09 November 2002)
+--------------------------------
+Just updated the language files to support the SMTP Protocol :)
+Thi was causing some mail servers to reject the email due to \n\n should of been \r\n\r\n :)
+Also thanks to Dark Avenger for the romanian translation for the following email message variables:
+$l_mail_message and $l_new_message.
+
 Nospoon (06 October 2002)
 --------------------------------
 Added always reincarnate option to allow players to always restart
