@@ -359,6 +359,8 @@ switch ($teamwhat) {
 		LINK_BACK();
 		break;
 	case 5: // Eject member
+             if ($playerinfo[team] == $team[id])
+             {
 		$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=$who");
 		$whotoexpel = $result->fields;
 		if (!$confirmed) {
@@ -369,7 +371,7 @@ switch ($teamwhat) {
 			   should go here	if ($whotoexpel[team] ==
 			*/
 			$db->Execute("UPDATE $dbtables[planets] SET corp='0' WHERE owner='$who'");
-      $db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$who'");
+                        $db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$who'");
          /*
             No more necessary due to COUNT(*) in previous SQL statement
 
@@ -380,6 +382,19 @@ switch ($teamwhat) {
 		}
 		LINK_BACK();
 		break;
+             }
+             else
+             {
+             adminlog(LOG_CHEAT_TEAM, "$playerinfo[character_name]|$ip");
+             echo "Filthy cheater. <BR><BR>Welcome to your punishment:<BR><BR>";
+             echo "$l_die_vapor<BR><BR>";
+             echo "$l_die_please.<BR>";
+	     db_kill_player($playerinfo['player_id']);
+	     cancel_bounty($playerinfo['player_id']);
+	     adminlog(LOG_ADMIN_HARAKIRI, "$playerinfo[character_name]|$ip");
+	     playerlog($playerinfo[player_id], LOG_HARAKIRI, "$ip");
+             break;
+             } 
 	case 6: // Create Team
 		if ($testing)
 			if($swordfish != $adminpass) {
@@ -545,7 +560,7 @@ switch ($teamwhat) {
 				$result = $db->Execute("SELECT * FROM $dbtables[teams] WHERE id=$playerinfo[team_invite]");
 				$whichinvitingteam = $result->fields;
 			}
-			$isowner = $playerinfo[player_id] == $whichteam[creator];
+			$isowner = ($playerinfo[player_id] == $whichteam[creator]);
 			showinfo($playerinfo[team],$isowner);
 		}
 		$res= $db->Execute("SELECT COUNT(*) as TOTAL FROM $dbtables[teams]");

@@ -541,6 +541,7 @@ $l_log_text[LOG_DEFENCE_DEGRADE] = "Sector Defences Fighters in sector [sector] 
 $l_log_test[LOG_DEFENCE_DEGRADE] = "Sector Defences degraded.";
 $l_log_text[LOG_PLANET_CAPTURED] = "You captured a planet belonging to [owner]. It had [cols] colonists and [credits] credits on it.";
 $l_log_title[LOG_PLANET_CAPTURED] = "Planet captured!";
+$l_log_text[LOG_CHEAT_TEAM] = "Player [player] at IP address [ip] tried to exploit the team kick anyone cheat. His ship was destroyed!";
 
 // modify-defences.php
 

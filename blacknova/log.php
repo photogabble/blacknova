@@ -807,6 +807,12 @@ case LOG_BOUNTY_FEDBOUNTY:
     $retvalue[text] = str_replace("[figs]", "<font color=white><b>$figs</b></font>", $retvalue[text]);
     $retvalue[title] = $l_log_title[$entry[type]];
     break;
+ case LOG_CHEAT_TEAM: //data args are : [player] [ip]
+    list($name, $ip)= split ("\|", $entry[data]);
+    $retvalue[text] = str_replace("[player]", "<font color=white><b>$name</b></font>", $l_log_text[$entry[type]]);
+    $retvalue[text] = str_replace("[ip]", "<font color=white><b>$ip</b></font>", $retvalue[text]);                  
+    $retvalue[title] = $l_log_title[$entry[type]];
+    break;
 
   }
   return $retvalue;
