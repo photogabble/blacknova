@@ -946,10 +946,10 @@ function furangeetrade()
   // *********************************
   // ** CHECK FOR NEG CREDIT/CARGO ***
   // *********************************
-  if($playerinfo[ore]<0) $playerinfo[ore]=$shipore=0;
-  if($playerinfo[organics]<0) $playerinfo[organics]=$shiporganics=0;
-  if($playerinfo[goods]<0) $playerinfo[goods]=$shipgoods=0;
-  if($playerinfo[credits]<0) $playerinfo[credits]=$shipcredits=0;
+  if($playerinfo[ore] <= 0) $playerinfo[ore]=$shipore=0;
+  if($playerinfo[organics] <= 0) $playerinfo[organics]=$shiporganics=0;
+  if($playerinfo[goods] <= 0) $playerinfo[goods]=$shipgoods=0;
+  if($playerinfo[credits] <= 0) $playerinfo[credits]=$shipcredits=0;
   if($sectorinfo[port_ore] <= 0) return;
   if($sectorinfo[port_organics] <= 0) return;
   if($sectorinfo[port_goods] <= 0) return;
