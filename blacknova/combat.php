@@ -690,7 +690,7 @@ function planetcombat()
                 echo "<CENTER><font color=red>$l_cmb_youmaycapture</font></CENTER><BR><BR>";
                 playerlog($ownerinfo[player_id], LOG_PLANET_DEFEATED, "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
                 gen_score($ownerinfo[player_id]);
-                $update7a = $db->Execute("UPDATE $dbtables[planets] SET owner=0, fighters=0, torps=torps-$planettorps, base='N', defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
+                $update7a = $db->Execute("UPDATE $dbtables[planets] SET fighters=0, torps=torps-$planettorps, base='N', defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
             }
         }
         else
@@ -699,7 +699,7 @@ function planetcombat()
             echo "<CENTER>$l_cmb_youmaycapture2</CENTER><BR><BR>";
             playerlog($ownerinfo[player_id], LOG_PLANET_DEFEATED, "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
             gen_score($ownerinfo[player_id]);
-            $update7a = $db->Execute("UPDATE $dbtables[planets] SET owner=0,fighters=0, torps=torps-$planettorps, base='N', defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
+            $update7a = $db->Execute("UPDATE $dbtables[planets] SET fighters=0, torps=torps-$planettorps, base='N', defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
         }
         calc_ownership($planetinfo[sector_id]);
     }

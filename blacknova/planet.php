@@ -45,10 +45,9 @@ if(!empty($planetinfo))
     include("footer.php");
     die();
   }
-  if($planetinfo[owner] == 0 && $command != "capture")
+  if(($planetinfo[owner] == 0  || $planetinfo[defeated] == 'Y') && $command != "capture")
   {
-    echo "$l_planet_unowned.<BR><BR>";
-    $update = $db->Execute("UPDATE $dbtables[planets] SET fighters=0, defeated='Y' WHERE planet_id=$planet_id");
+    if($planetinfo[owner] == 0) echo "$l_planet_unowned.<BR><BR>";
     $capture_link="<a href=planet.php?planet_id=$planet_id&command=capture>$l_planet_capture1</a>";
     $l_planet_capture2=str_replace("[capture]",$capture_link,$l_planet_capture2);
     echo "$l_planet_capture2.<BR><BR>";
@@ -64,11 +63,6 @@ if(!empty($planetinfo))
   
     $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$planetinfo[owner] AND ship_id=$ownerinfo[currentship]");
     $ownershipinfo = $res->fields;
-  }
-  if($planetinfo[defeated] && $planetinfo[fighters] > 0)
-  {
-    $update = $db->Execute("UPDATE $dbtables[planets] SET defeated='N' WHERE planet_id=$planet_id");
-    $planetinfo[defeated] = "N";
   }
   if(empty($command))
   {
@@ -668,7 +662,7 @@ if(!empty($planetinfo))
       }
       $update = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
     }
-    elseif($command == "capture" &&  $planetinfo[owner] == 0)
+    elseif($command == "capture" &&  ($planetinfo[owner] == 0 || $planetinfo[defeated] == 'Y'))
     {
       echo "$l_planet_captured<BR>";
       $update = $db->Execute("UPDATE $dbtables[planets] SET corp=null, owner=$playerinfo[player_id], base='N', defeated='N' WHERE planet_id=$planet_id");
@@ -679,7 +673,7 @@ if(!empty($planetinfo))
 
       if($planetinfo[owner] != 0)
       {
-        gen_score($ownerinfo[player_id]);
+        gen_score($planetinfo[owner]);
       }
       
       if($planetinfo[owner] != 0)
