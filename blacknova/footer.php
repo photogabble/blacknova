@@ -16,7 +16,7 @@ $mySEC = ($sched_ticks * 60) - (TIME()-$result[last_run]);
 ?>
 <SCRIPT Language="JavaScript">
 var myi = <?=$mySEC?>;
-document.write('<B ID=myx><?=$mySEC?></B>&nbsp;<? echo $l_footer_until_update; ?><BR>');
+document.write('<B><SPAN ID=myx><?=$mySEC?></B></SPAN>&nbsp;<? echo $l_footer_until_update; ?><BR>');
 setTimeout("rmyx();",1000);
 
 function rmyx()
@@ -26,7 +26,7 @@ if (myi <= 0)
 {
 myi = <? echo ($sched_ticks * 60); ?>
 }
-document.all.myx.innerHTML = myi;
+document.getElementById("myx").innerHTML = myi;
 setTimeout("rmyx();",1000);
 }
 </SCRIPT>
