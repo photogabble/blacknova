@@ -2,10 +2,10 @@ BlackNova Traders - Readme
 
 A web-based massively multi-player strategy game of space trading and combat.
 
-Version 0.37
+Version 0.42
 http://www.blacknova.net
 
-Copyright (C) 2000 Ron Harwood <harwoodr@blacknova.net>
+Copyright (C) 2000-2002 Ron Harwood <harwoodr@blacknova.net>
 
 This program is free software; you can redistribute it and/or modify it under 
 the terms of the GNU Public License (see LICENSE or 
@@ -23,7 +23,7 @@ Requirements:
     a web-browser (doh!)
 
 Download:
-    You can get the newest version at http://blacknova.net
+    You can get the newest version at http://sourceforge.net/project/showfiles.php?group_id=14248
 
 Credits:
     This work is based on the old BBS games that went by many names
