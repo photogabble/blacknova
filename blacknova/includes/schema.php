@@ -133,6 +133,7 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              "trade_fighters enum('Y', 'N') DEFAULT 'N' NOT NULL," .
              "trade_torps enum('Y', 'N') DEFAULT 'N' NOT NULL," .
              "trade_energy enum('Y', 'N') DEFAULT 'Y' NOT NULL," .
+             "trade_defs enum('A', 'T') DEFAULT 'A' NOT NULL," .
              "cleared_defences tinytext," .
              "lang varchar(30) DEFAULT 'english.inc' NOT NULL," .
              "dhtml enum('Y', 'N') DEFAULT 'Y' NOT NULL," .
