@@ -92,6 +92,7 @@ if(!empty($planetinfo))
              $update = $db->Execute("delete from $dbtables[planets] where planet_id=$planet_id"); 
              $update2=$db->Execute("UPDATE $dbtables[ships] SET turns_used=turns_used+1, turns=turns-1,dev_genesis=dev_genesis-1 WHERE ship_id=$playerinfo[ship_id]"); 
              $update3=$db->Execute("UPDATE $dbtables[ships] SET on_planet='N' WHERE planet_id=$planet_id"); 
+             calc_ownership($playerinfo[sector]);
              echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=main.php\">"; 
           } 
           else 
