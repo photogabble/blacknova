@@ -247,9 +247,9 @@ else
           echo "<TD ALIGN=Right><tt>  Angle1     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=angle1 VALUE=\"$row[angle1]\"></TD>";
           echo "<TD ALIGN=Right><tt>  Angle2     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=angle2 VALUE=\"$row[angle2]\"></TD></TR>";
 */
-          echo "<TR><TD><tt>          X   </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=x VALUE=\"$row['x']\"></TD>";
-          echo "<TD ALIGN=Right><tt>  Y     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=y VALUE=\"$row['y']\"></TD>";
-          echo "<TD ALIGN=Right><tt>  Z     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=z VALUE=\"$row['z']\"></TD></TR>";
+          echo "<TR><TD><tt>          X   </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=x VALUE=\"$row[x]\"></TD>";
+          echo "<TD ALIGN=Right><tt>  Y     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=y VALUE=\"$row[y]\"></TD>";
+          echo "<TD ALIGN=Right><tt>  Z     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=z VALUE=\"$row[z]\"></TD></TR>";
 
           echo "<TR><TD COLSPAN=6>    <HR>       </TD></TR>";
           echo "</TABLE>";
