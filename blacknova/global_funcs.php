@@ -131,6 +131,8 @@ $dbtables['ships'] = "${db_prefix}ships";
 $dbtables['planet_log'] = "${db_prefix}planet_log";
 $dbtables['ip_log'] = "${db_prefix}ip_log";
 
+$dbtables['email_log'] = "${db_prefix}email_log";
+
 function mypw($one,$two)
 {
    return pow($one*1,$two*1);

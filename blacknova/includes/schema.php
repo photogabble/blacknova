@@ -424,7 +424,7 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              ")");
 db_create_result();
 
-echo "Creating table: E-Script Log...";
+echo "Creating table: email_log...";
 $db->Execute("CREATE TABLE $dbtables[email_log](" .
              "log_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "sp_name varchar(50) NOT NULL," .
@@ -445,4 +445,3 @@ echo "<b>Database schema creation completed successfully.</b><BR>";
 }
 
 ?>
-  
