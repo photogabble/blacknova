@@ -93,6 +93,7 @@ define(LOG_SPACE_PLAGUE,50);            // sent when space plague attacks a plan
 define(LOG_PLASMA_STORM,51);           // sent when a plasma storm attacks a planet
 define(LOG_BOUNTY_FEDBOUNTY,52);       // Sent when the federation places a bounty on a player
 define(LOG_PLANET_BOMBED,53);     //Sent after bombing a planet
+define(LOG_ADMIN_ILLEGVALUE, 54);        //sent to admin on planet destruction instead of capture
 // Database tables variables
 $dbtables['ibank_accounts'] = "${db_prefix}ibank_accounts";
 $dbtables['links'] = "${db_prefix}links";
