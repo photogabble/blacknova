@@ -340,17 +340,22 @@ function IGB_transfer2()
     if(!$res || $res->EOF)
       IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
     $source = $res->fields;
+    
 
     if(empty($source[name]))
       $source[name]=$l_igb_unnamed;
 
-    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM $dbtables[planets] WHERE planet_id=$dplanet_id");
+    $res = $db->Execute("SELECT name, credits, owner, sector_id, base FROM $dbtables[planets] WHERE planet_id=$dplanet_id");
     if(!$res || $res->EOF)
       IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
     $dest = $res->fields;
 
     if(empty($dest[name]))
       $dest[name]=$l_igb_unnamed;
+    if($dest[base] == 'N')
+      IGB_error($l_igb_errnobase, "IGB.php?command=transfer");
+
+    
 
     if($source[owner] != $playerinfo[ship_id] || $dest[owner] != $playerinfo[ship_id])
       IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");

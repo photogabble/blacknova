@@ -1345,4 +1345,5 @@ $l_log_title[LOG_PLANET_BOMBED] = "<font color=red>Planet bombed!</font>";
 $l_lssd = "Last Seen Device";
 $l_map = "Map";
 $l_lss = "Last ship seen in this sector";
+$l_igb_errnobase = "The IGB can not transfer credits to a planet without a base.";
 ?>
