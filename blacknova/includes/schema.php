@@ -69,8 +69,8 @@ $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
              "traderoute_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "source_id bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "dest_id bigint(20) unsigned DEFAULT '0' NOT NULL," .
-             "source_type enum('P','L','C') DEFAULT 'P' NOT NULL," .
-             "dest_type enum('P','L','C') DEFAULT 'P' NOT NULL," .
+             "source_type enum('P','L','C','D') DEFAULT 'P' NOT NULL," .
+             "dest_type enum('P','L','C','D') DEFAULT 'P' NOT NULL," .
              "move_type enum('R','W') DEFAULT 'W' NOT NULL," .
              "owner bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "circuit enum('1','2') DEFAULT '2' NOT NULL," .
