@@ -6,7 +6,7 @@ include("languages/$lang");
 function create_player($shipname, $character, $username, $password)
 {
 	global $db, $dbtables, $start_armour, $start_credits, $start_energy, $start_fighters, $start_pod, $start_scoop, $ip, $default_lang;
-	global $maxlen_password;
+	global $maxlen_password, $max_turns;
 
 	$stamp	= date("Y-m-d H:i:s");
  	
