@@ -1929,7 +1929,7 @@ function traderoute_engage($j)
     }
     else //dest is planet
     {
-      if($traderoute[source_type] == 'L')
+      if($traderoute[source_type] == 'L' || $traderoute[source_type] == 'C')
       {
         $colonists_buy=0;
         $fighters_buy=0;
@@ -1986,7 +1986,7 @@ function traderoute_engage($j)
       if($torps_buy == 0 && $fighters_buy == 0 && $colonists_buy == 0 && $organics_buy == 0)
         echo "$l_tdr_nothingtodump<br>";
 
-      if($traderoute[source_type] == 'L')
+      if($traderoute[source_type] == 'L' || $traderoute[source_type] == 'C')
       {
         if($playerinfo[trade_colonists] == 'Y')
         {
@@ -2009,7 +2009,7 @@ function traderoute_engage($j)
 
       $db->Execute("UPDATE $dbtables[planets] SET colonists=colonists+$colonists_buy, fighters=fighters+$fighters_buy, torps=torps+$torps_buy WHERE planet_id=$traderoute[dest_id]");
 
-      if($traderoute[source_type] == 'L')
+      if($traderoute[source_type] == 'L' || $traderoute[source_type] == 'C')
       {
         $db->Execute("UPDATE $dbtables[ships] SET colonists=$col_dump, fighters=$fight_dump, torps=$torps_dump, energy=energy+$dist[scooped] WHERE ship_id=$shipinfo[ship_id]");
       }
