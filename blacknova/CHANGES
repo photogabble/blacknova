@@ -1,3 +1,8 @@
+TheMightyDude (04 August 2002)
+--------------------------------
+Fix for Warning: Invalid argument supplied for foreach() in planet-report-CE.php on line 217
+When you collect planet credits but not selecting any planets. :)
+
 SharpBlue (26 July 2002)
 --------------------------------
 Shipyard is now working
