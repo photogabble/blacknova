@@ -21,6 +21,14 @@ $account = $result->fields;
 echo "<BODY bgcolor=#666666 text=\"#F0F0F0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
 ?>
 
+<STYLE TYPE="text/css">
+<!--
+	input.term {background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt; border-color:#00FF00;}
+	select.term {background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt; border-color:#00FF00;}
+
+-->
+</STYLE>
+
 <center>
 <img src=images/div1.gif>
 <table width=600 height=350 border=0>
@@ -126,8 +134,8 @@ function IGB_withdraw()
        "</tr><tr valign=top>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_selwithdrawamount :</td><td align=right>" .
        "<form action=IGB.php?command=withdraw2 method=POST>" .
-       "<input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=text size=15 maxlength=20 name=amount value=0>" .
-       "<br><br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit value=$l_igb_withdraw>" .
+       "<input class=term type=text size=15 maxlength=20 name=amount value=0>" .
+       "<br><br><input class=term type=submit value=$l_igb_withdraw>" .
        "</form></td></tr>" .
        "<tr valign=bottom>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
@@ -149,8 +157,8 @@ function IGB_deposit()
        "</tr><tr valign=top>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_seldepositamount :</td><td align=right>" .
        "<form action=IGB.php?command=deposit2 method=POST>" .
-       "<input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=text size=15 maxlength=20 name=amount value=0>" .
-       "<br><br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit value=$l_igb_deposit>" .
+       "<input class=term type=text size=15 maxlength=20 name=amount value=0>" .
+       "<br><br><input class=term type=submit value=$l_igb_deposit>" .
        "</form></td></tr>" .
        "<tr valign=bottom>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
@@ -185,7 +193,7 @@ function IGB_transfer()
        "<tr valign=top>" .
        "<form action=IGB.php?command=transfer2 method=POST>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_toanothership :<br><br>" .
-       "<select style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" name=ship_id>";
+       "<select class=term name=ship_id>";
 
   foreach($ships as $ship)
   {
@@ -193,13 +201,13 @@ function IGB_transfer()
   }
 
   echo "</select></td><td valign=center align=right>" .
-       "<input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit name=shipt value=\" $l_igb_shiptransfer \">" .
+       "<input class=term type=submit name=shipt value=\" $l_igb_shiptransfer \">" .
        "</form>" .
        "</td></tr>" .
        "<tr valign=top>" .
        "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_fromplanet :<br><br>" .
        "<form action=IGB.php?command=transfer2 method=POST>" .
-       "$l_igb_source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" name=splanet_id>";
+       "$l_igb_source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select class=term name=splanet_id>";
 
   if(isset($planets))
   {
@@ -215,7 +223,7 @@ function IGB_transfer()
      echo "<option value=none>$l_igb_none</option>";
   }
 
-  echo "</select><br>$l_igb_destination <select style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" name=dplanet_id>";
+  echo "</select><br>$l_igb_destination <select class=term name=dplanet_id>";
 
   if(isset($planets))
   {
@@ -233,7 +241,7 @@ function IGB_transfer()
 
 
   echo "</select></td><td valign=center align=right>" .
-       "<br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit name=planett value=\"$l_igb_planettransfer\">" .
+       "<br><input class=term type=submit name=planett value=\"$l_igb_planettransfer\">" .
        "</td></tr>" .
        "</form>";
 
@@ -241,7 +249,7 @@ function IGB_transfer()
   echo "<tr valign=top>" .
        "<td><br><font size=2 face=\"courier new\" color=#00FF00>Consolidate Credits to a single planet :" .
        "<form action=IGB.php?command=transfer2 method=POST>" .
-       "$l_igb_destination <select style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" name=dplanet_id>";
+       "$l_igb_destination <select class=term name=dplanet_id>";
 
   unset($splanet_id);
 
@@ -260,7 +268,7 @@ function IGB_transfer()
   }
 
   echo "</select></td><td valign=center align=right>" .
-       "<br><br><br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit name=planetc value=\"  Consolidate  \">" .
+       "<br><br><br><input class=term type=submit name=planetc value=\"  Consolidate  \">" .
        "</td></tr>" .
        "</form>";
 // ---- End Consol Credits form ---
@@ -353,8 +361,8 @@ function IGB_transfer2()
          "<form action=IGB.php?command=transfer3 method=POST>" .
          "<tr valign=top>" .
          "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_seltransferamount :</td>" .
-         "<td align=right><br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=text size=15 maxlength=20 name=amount value=0><br>" .
-         "<br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit value=$l_igb_transfer></td>" .
+         "<td align=right><br><input class=term type=text size=15 maxlength=20 name=amount value=0><br>" .
+         "<br><input class=term type=submit value=$l_igb_transfer></td>" .
          "<input type=hidden name=ship_id value=$ship_id>" .
          "</form>" .
          "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" .
@@ -415,7 +423,7 @@ function IGB_transfer2()
          "<tr valign=top>" .
          "<td><br><font size=2 face=\"courier new\" color=#00FF00>Are you sure you wish to consolidate your credits to $dest[name] $l_igb_in $dest[sector_id] :</td>" .
          "<td align=right><br><br>" .
-         "<br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit value=\"  Consolidate  \"></td>" .
+         "<br><input class=term type=submit value=\"  Consolidate  \"></td>" .
          "<input type=hidden name=splanet_id value=$splanet_id>" .
          "<input type=hidden name=dplanet_id value=$dplanet_id>" .
          "</form>" .
@@ -468,8 +476,8 @@ function IGB_transfer2()
          "<form action=IGB.php?command=transfer3 method=POST>" .
          "<tr valign=top>" .
          "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_seltransferamount :</td>" .
-         "<td align=right><br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=text size=15 maxlength=20 name=amount value=0><br>" .
-         "<br><input style=\"background-color: #000000; color: #00FF00; font-family:Courier New; font-size:10pt\" type=submit value=$l_igb_transfer></td>" .
+         "<td align=right><br><input class=term type=text size=15 maxlength=20 name=amount value=0><br>" .
+         "<br><input class=term type=submit value=$l_igb_transfer></td>" .
          "<input type=hidden name=splanet_id value=$splanet_id>" .
          "<input type=hidden name=dplanet_id value=$dplanet_id>" .
          "</form>" .
