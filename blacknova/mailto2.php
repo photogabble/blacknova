@@ -40,9 +40,13 @@ if(empty($content))
     $res2->MoveNext();
   }
 
-  echo "</SELECT></TD></TR>";
+  echo "</SELECT>";
+  echo "&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"to_allies\"> $l_sendm_myallies</td></tr>\n";
   echo "<TR><TD>$l_sendm_from:</TD><TD><INPUT DISABLED TYPE=TEXT NAME=dummy SIZE=40 MAXLENGTH=40 VALUE=\"$playerinfo[character_name]\"></TD></TR>";
-  if (isset($subject)) $subject = "RE: " . $subject;
+  // Try to reduce the "RE: RE: RE: RE: RE: RE:" subjects
+  if (isset($subject) && strpos($subject, "RE:") === false)
+     $subject = "RE: ".$subject;
+
   echo "<TR><TD>$l_sendm_subj:</TD><TD><INPUT TYPE=TEXT NAME=subject SIZE=40 MAXLENGTH=40 VALUE=\"$subject\"></TD></TR>";
   echo "<TR><TD>$l_sendm_mess:</TD><TD><TEXTAREA NAME=content ROWS=5 COLS=40></TEXTAREA></TD></TR>";
   echo "<TR><TD></TD><TD><INPUT TYPE=SUBMIT VALUE=$l_sendm_send><INPUT TYPE=RESET VALUE=$l_reset></TD>";
@@ -53,7 +57,7 @@ else
 {
   echo "$l_sendm_sent<BR><BR>";
 
-if (strpos($to, $l_sendm_ally)===false)
+if (strpos($to, $l_sendm_ally)===false && !isset($to_allies))
 {
   $timestamp = date("Y\-m\-d H\:i\:s");
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE character_name='$to'");
@@ -66,12 +70,18 @@ else
 {
   $timestamp = date("Y\-m\-d H\:i\:s");
 
-     $to = str_replace ($l_sendm_ally, "", $to);
-     $to = trim($to);
-     $to = addslashes($to);
-     $res = $db->Execute("SELECT id FROM $dbtables[teams] WHERE team_name='$to'");
-     $row = $res->fields;
-
+     if(!isset($to_allies)) {
+          $to = str_replace ($l_sendm_ally, "", $to);
+          $to = trim($to);
+          $subject = "$to: $subject";
+          $to = addslashes($to);
+          $res = $db->Execute("SELECT id FROM $dbtables[teams] WHERE team_name='$to'");
+          $row = $res->fields;
+     } else {
+          $res = $db->Execute("SELECT team AS id FROM $dbtables[ships] WHERE ship_id='$playerinfo[ship_id]'");
+          $row = $res->fields;
+          $subject = "$l_sendm_ally $subject";
+     }
      $res2 = $db->Execute("SELECT * FROM $dbtables[ships] where team='$row[id]'");
 
      while (!$res2->EOF)
