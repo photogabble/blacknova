@@ -1,4 +1,6 @@
 <script language="php">
+include("config.php");
+include("languages/$lang");
 
 /*
 ##############################################################################
@@ -54,7 +56,6 @@ srand((double)microtime()*1000000);
 
 ### Include config files and db scheme.
 
-include("config.php");
 include("includes/schema.php");
 
 ### Update cookie.
