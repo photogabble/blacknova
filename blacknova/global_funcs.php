@@ -1225,6 +1225,35 @@ function ip_log($player_id,$ip_address)
    }
 }
 
+function cleanjs($dontkill)
+{
+echo "<script language=\"javascript\" type=\"text/javascript\">\n";
+echo "function clean_js()\n";
+echo "{\n";
+echo "// Here we cycle through all form values (other than buy, or full), and regexp out all non-numerics. (1,000 = 1000)\n";
+echo "// Then, if its become a null value (type in just a, it would be a blank value. blank is bad.) we set it to zero.\n";
+echo "var form = document.forms[0];\n";
+echo "var i = form.elements.length;\n";
+echo "while (i > 0)\n";
+echo " {\n";
+echo " if ((form.elements[i-1].type == 'text') && (form.elements[i-1].name != '$dontkill'))\n";
+echo "  {\n";
+echo "  var tmpval = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
+echo "  if (tmpval != form.elements[i-1].value)\n";
+echo "   {\n";
+echo "   form.elements[i-1].value = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
+echo "   }\n";
+echo "  }\n";
+echo " if (form.elements[i-1].value == '')\n";
+echo "  {\n";
+echo "  form.elements[i-1].value ='0';\n";
+echo "  }\n";
+echo " i--;\n";
+echo " }\n";
+echo "}\n";
+echo "</script>\n";
+}
+
 // calculate the distance between two sectors.
 // We even run the queries ourselves.
 function calc_dist($src,$dst) {
