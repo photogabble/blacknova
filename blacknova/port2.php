@@ -274,7 +274,7 @@ else
       $dev_escapepod_cost + $dev_fuelscoop_cost + $dev_lssd_cost + $shields_upgrade_cost;
     if($total_cost > $playerinfo[credits])
     {
-      echo "You do not have enough credits for this transaction.  The total cost is " . NUMBER($total_cost) . " credits and you only have " . NUMBER($playerinfo[credits]) . " credits.<BR><BR>Click <A HREF=port.php>here</A> to return to the supply depot.<BR><BR>";
+      echo "You do not have enough credits for this transaction.  The total cost is " . NUMBER($total_cost) . " credits and you only have " . NUMBER($playerinfo[credits]) . " credits.";
     }
     else
     {
@@ -581,13 +581,13 @@ else
 
 //-------------------------------------------------------------------------------------------------
 
+if($sectorinfo[port_type] == "special")
+{
+  echo "<BR><BR>Click <A HREF=port.php>here</A> to return to the supply depot.";
+}
+
 echo "<BR><BR>";
 TEXT_GOTOMAIN();
-
-if($sectorinfo[port_type] == "special")
- {
- echo "<BR><BR>Click <A HREF=port.php>here</A> to return to the supply depot.";
- }
 
 include("footer.php");
 
