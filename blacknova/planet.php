@@ -24,7 +24,7 @@ $shipinfo = $res->fields;
 
 $result2 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id=$shipinfo[sector_id]");
 $sectorinfo=$result2->fields;
-
+$planet_id = stripnum($planet_id);
 $result3 = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
 if($result3)
   $planetinfo=$result3->fields;

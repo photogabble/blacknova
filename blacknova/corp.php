@@ -21,7 +21,7 @@ $playerinfo=$result->fields;
 
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
 $shipinfo = $res->fields;
-
+$planet_id = stripnum($planet_id);
 $result2 = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
 if($result2)
 
