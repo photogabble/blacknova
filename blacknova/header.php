@@ -8,8 +8,8 @@ ob_start("ob_gzhandler");
 <html>
 <head>
 <title><? echo $title; ?></title>
-<style type="text/css">
-<!--
+ <style type="text/css">
+ <!--
 <?
 if($interface == "")
 {
@@ -17,9 +17,8 @@ if($interface == "")
 }
 
 if($interface == "main.php")
-{
-	echo "
-  a.mnu {text-decoration:none; font-size: 8Pt; font-family: verdana; color:white; font-weight:bold;}
+{ 
+  echo "  a.mnu {text-decoration:none; font-size: 8Pt; font-family: verdana; color:white; font-weight:bold;}
   a.mnu:hover {text-decoration:none; font-size: 8Pt; font-family: verdana; color:#3366ff; font-weight:bold;}
   div.mnu {text-decoration:none; font-size: 8Pt; font-family: verdana; color:white; font-weight:bold;}
   a.dis {text-decoration:none; font-size: 8Pt; font-family: verdana; color:silver; font-weight:bold;}
@@ -28,14 +27,12 @@ if($interface == "main.php")
   .portcosts2 {width:7em;border-style:none;font-family: verdana;font-size:12pt;background-color:$color_line2;color:#c0c0c0;}
   .headlines {text-decoration:none; font-size:8Pt; font-family:verdana,Arial,san-serif; font-weight:bold; color:white;}
   .headlines:hover {text-decoration:none; color:#3366ff;}
-  .faderlines {background-color:$color_line2;}
-	";
+  .faderlines {background-color:$color_line2;}";
 }
-echo "body {font-family: Arial, Helvetica, sans-serif; font-size: x-small}";
+echo "\n  body {font-family: Arial, Helvetica, sans-serif; font-size: x-small}\n";
 ?>
-
--->
-</style>
+ -->
+ </style>
 </head>
 
 <?
