@@ -6,6 +6,8 @@ include("languages/$lang");
 function create_player($shipname, $character, $username, $password)
 {
 	global $db, $dbtables, $start_armour, $start_credits, $start_energy, $start_fighters, $start_pod, $start_scoop, $ip, $default_lang;
+	global $maxlen_password;
+
 	$stamp	= date("Y-m-d H:i:s");
  	
  	$query	= $db->Execute("SELECT MAX(turns_used + turns) AS mturns FROM $dbtables[ships]");
@@ -23,7 +25,7 @@ function create_player($shipname, $character, $username, $password)
 	$res	= $query->fields;
 	if ($res[vv] > 0)		{ $vote_stat = -3; }
 
-	$result2 = $db->Execute("INSERT INTO $dbtables[ships] SET `ship_name`='$shipname', `character_name`='$character', `password`='$password', `email`='$username', `armour_pts`='$start_armour', `credits`='$start_credits', `ship_energy`='$start_energy', `ship_fighters`='$start_fighters', `turns`='$mturns', `dev_escapepod`='$start_pod', `dev_fuelscoop`='$start_scoop', `last_login`='$stamp', `ip_address`='$ip', `lang`='$default_lang', `vote`=$vote_stat");
+	$result2 = $db->Execute("INSERT INTO $dbtables[ships] SET `ship_name`='$shipname', `character_name`='$character', `password`='".substr(md5($password),0,$maxlen_password)."', `email`='$username', `armour_pts`='$start_armour', `credits`='$start_credits', `ship_energy`='$start_energy', `ship_fighters`='$start_fighters', `turns`='$mturns', `dev_escapepod`='$start_pod', `dev_fuelscoop`='$start_scoop', `last_login`='$stamp', `ip_address`='$ip', `lang`='$default_lang', `vote`=$vote_stat");
 	if ($result2)
 	{
 		$ship_id = $db->Insert_ID();
@@ -65,7 +67,7 @@ if ($_POST['command'] == "new")
 {
 	$error_mesg		= "";
 		
-	$username		= $_POST['character']; //This needs to STAY before the db query
+	$username		= $_POST['username']; //This needs to STAY before the db query
 	$character		= htmlspecialchars($_POST['character']);
 	$character		= ereg_replace("[^[:digit:][:space:][:alpha:][\']]"," ",$character);
 	$shipname		= htmlspecialchars($_POST['shipname']);
@@ -110,7 +112,7 @@ if ($_POST['command'] == "new")
 		}
 		$makepass = $password_MD5;
 	} else {
-		$makepass = md5(makepassword());
+		$makepass = makepassword();
 	}
 	// All checks passed... If there is nothing in the error_mesg go ahead and create the player, otherwise display the form.
 }
