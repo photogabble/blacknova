@@ -10,23 +10,30 @@
 prefix=' ';
 
 <?
+$newspath = $gamepath."news.php";
 $startdate = date("Y/m/d");
 $res = $db->Execute("SELECT * from $dbtables[news] where date = '$startdate' order by news_id");
 
 echo "arURL = new Array(";
 if($res->EOF)
 {
-echo "\"../news.php\");";
+echo "\"";
+echo $newspath;
+echo "\");";
 }
 else
 {
   while (!$res->EOF)
   {
   $row = $res->fields;
-  echo "\"../news.php\",";
+  echo "\"";
+  echo $newspath;
+  echo "\");";
   $res->MoveNext();
   }
-echo "\"../news.php\");\n";
+echo "\"";
+echo $newspath;
+echo "\");";
 }
 
 echo "arTXT = new Array(";

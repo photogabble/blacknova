@@ -1,3 +1,7 @@
+L. Patrick Smallwood (10 June 2002)
+---------------------------------
+Fader link path should be based on gamepath. Thanks MightyDude: http://forums.blacknova.net/viewtopic.php?topic=800&forum=1&11
+
 Torr (10 JUNE 2002)
 ---------------------------------
 Added corp setting to planetary report system [feature request #542620]
@@ -5,19 +9,19 @@ Added corp setting to planetary production report
 Added code to remove cheatting by setting more than 100% to planet production using the planetary production report
 Added player name to the alliance planet report [feature requesta #542620]
 
-Patrick Smallwood (8 June 2002)
+L. Patrick Smallwood (8 June 2002)
 ---------------------------------
 Sourceforge bug #566411: Simple fix to main.php
 
-Patrick Smallwood (8 June 2002)
+L. Patrick Smallwood (8 June 2002)
 ---------------------------------
 Sourceforge bug #500446 and more: news forward/back links fixed, footer text no longer hard-coded.
 
-Patrick Smallwood (8 June 2002)
+L. Patrick Smallwood (8 June 2002)
 ---------------------------------
 Put game version on settings.php, as it was a FAQ. (http://forums.blacknova.net/viewtopic.php?topic=789&forum=2&1)
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #552750 - Combat Stats, show accurate energy used.
 
@@ -30,68 +34,68 @@ Added change to database to allow for corp traderoutes (enum dest/source type)
 Added field to messages table to allow for timestamping of messages
 Added support for time stamping to mailto2.php and readmial.php
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #552750 - Fix l_commodities in scanning planet.
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #552193 - Fix for mailto.php - actually get a select from the dropdown. Yay.
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #558626 - Fix for login.php - actually get a select from the dropdown. Yay.
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #565233 - Fix turn usage in planet, and attack
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #542401 - Fix logging for illegal values in traderoutes.
 
-Patrick Smallwood (7 June 2002)
+L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #497388 - Add alliance planets as option for traderoutes.
 
-Patrick Smallwood (21 May 2002)
+L. Patrick Smallwood (21 May 2002)
 ---------------------------------
 Cleanup of the fader styles, names, etc.
 
-Patrick Smallwood (21 May 2002)
+L. Patrick Smallwood (21 May 2002)
 ---------------------------------
 Added the first revision of the news fader for main.
 
-Patrick Smallwood (19 May 2002)
+L. Patrick Smallwood (19 May 2002)
 ---------------------------------
 Made the known space map a config.php option.
 
-Patrick Smallwood (9 May 2002)
+L. Patrick Smallwood (9 May 2002)
 ---------------------------------
 Additional cleanup of port's bound checking, faster, better, and more compact.
 
-Patrick Smallwood (9 May 2002)
+L. Patrick Smallwood (9 May 2002)
 ---------------------------------
 Huge revamp of port.php and port2.php, adding dropdowns, multiple-level upgrades, click-to-max, and onchange additions.
 
-Patrick Smallwood (9 May 2002)
+L. Patrick Smallwood (9 May 2002)
 ---------------------------------
 License change to GPL
 
-Patrick Smallwood (9 May 2002)
+L. Patrick Smallwood (9 May 2002)
 ---------------------------------
 Huge cleanup, touching lots of files, be careful of breakage: Removes *all* windows newlines from code.
 
-Patrick Smallwood (1 May 2002)
+L. Patrick Smallwood (1 May 2002)
 ---------------------------------
 Really fixed the create universe script, and also made it html compliant in all output, along with schema, header, and
 footer.
 
-Patrick Smallwood (1 May 2002)
+L. Patrick Smallwood (1 May 2002)
 ---------------------------------
 HUGE cleanup and redesign of create universe.
 
-Patrick Smallwood (1 May 2002)
+L. Patrick Smallwood (1 May 2002)
 ---------------------------------
 Fixed "no more than 500 goods ports ever" bug, thanks to heath@foomafia.com.
 
@@ -100,19 +104,19 @@ Ron Harwood & David Rowlands (1 May 2002)
 Added known galaxy map
 Put in bug fixes and patches submitted by Dominioon
 
-Patrick Smallwood (29 April 2002)
+L. Patrick Smallwood (29 April 2002)
 ---------------------------------
 Added schema file with details on changes required to add lssd. 
 These changes may not be correct, and should be examined closely. I beleive them to be functional however.
 
-Patrick Smallwood (29 April 2002)
+L. Patrick Smallwood (29 April 2002)
 ---------------------------------
 Added device "Last ship seen in sector" device. Purchase at special port. Accessible in device menu.
 Automatically adds functionality to both scan types. Automatically ignores your presence in sectors
 when reporting. Beginning cost: 1 mil. Future functionality: add timestamp/aging so it is only visible
 for three days.
 
-Patrick Smallwood (29 April 2002)
+L. Patrick Smallwood (29 April 2002)
 ---------------------------------
 Minor fixes for HTML glitches in main.php to correct the results of "Fighters in sector".
 
