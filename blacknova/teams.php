@@ -32,7 +32,7 @@ $playerinfo    = $result->fields;
 */
 if ($playerinfo[team_invite] != "") {
    /* Get invite info */
-   $invite        = $db->Execute(" SELECT $dbtables[players].ship_id, $dbtables[players].team_invite, $dbtables[teams].team_name,$dbtables[teams].id
+   $invite        = $db->Execute(" SELECT $dbtables[players].player_id, $dbtables[players].team_invite, $dbtables[teams].team_name,$dbtables[teams].id
                         FROM $dbtables[players]
                         LEFT JOIN $dbtables[teams] ON $dbtables[players].team_invite = $dbtables[teams].id
                         WHERE $dbtables[players].email='$username'") or die($db->ErrorMsg());
@@ -107,7 +107,7 @@ function DISPLAY_ALL_ALLIANCES()
    	echo "<TD>".$row[number_of_members]."</TD>";
 // This fixes it so that it actually displays the coordinator, and not the first member of the team.
 
-          $sql_query_2 = "SELECT character_name FROM $dbtables[players] WHERE ship_id = $row[creator]";
+          $sql_query_2 = "SELECT character_name FROM $dbtables[players] WHERE player_id = $row[creator]";
           $res2 = $db->Execute($sql_query_2) or die($db->ErrorMsg());
           while(!$res2->EOF) {
            $row2 = $res2->fields;
@@ -152,7 +152,7 @@ function showinfo($whichteam,$isowner)
    if ($playerinfo[team] == $team[id])
    {
       echo "<font color=white>";
-   	if ($playerinfo[ship_id] == $team[creator]) {
+   	if ($playerinfo[player_id] == $team[creator]) {
    	   echo "$l_team_coord ";
       }
    	else
@@ -160,7 +160,7 @@ function showinfo($whichteam,$isowner)
    		echo "$l_team_member ";
    	}
    	echo "$l_options<br><font size=2>";
-   	if ($playerinfo[ship_id] == $team[creator])
+   	if ($playerinfo[player_id] == $team[creator])
    	{
    	   echo "[<a href=$PHP_SELF?teamwhat=9&whichteam=$playerinfo[team]>$l_team_ed</a>] - ";
    	}
@@ -178,10 +178,10 @@ function showinfo($whichteam,$isowner)
 	while (!$result->EOF) {
     $member = $result->fields;
 		echo "<td> - $member[character_name] ($l_score $member[score])";
-		if ($isowner && ($member[ship_id] != $playerinfo[ship_id])) {
-			echo " - <font size=2>[<a href=\"$PHP_SELF?teamwhat=5&who=$member[ship_id]\">$l_team_eject</A>]</font></td>";
+		if ($isowner && ($member[player_id] != $playerinfo[player_id])) {
+			echo " - <font size=2>[<a href=\"$PHP_SELF?teamwhat=5&who=$member[player_id]\">$l_team_eject</A>]</font></td>";
 		} else {
-			if ($member[ship_id] == $team[creator])
+			if ($member[player_id] == $team[creator])
 			{
 				echo " - $l_team_coord</td>";
 			}
@@ -190,7 +190,7 @@ function showinfo($whichteam,$isowner)
     $result->MoveNext();
 	}
    /* Displays for members name */
-   $res = $db->Execute("SELECT ship_id,character_name FROM $dbtables[players] WHERE team_invite=$whichteam");
+   $res = $db->Execute("SELECT player_id,character_name FROM $dbtables[players] WHERE team_invite=$whichteam");
 	echo "<td bgcolor=$color_line2><font color=white>$l_team_pending <B>$team[team_name]</B></font></td>";
    echo "</tr><tr>";
 	if ($res->RecordCount() > 0) {
@@ -219,10 +219,10 @@ switch ($teamwhat) {
 		} elseif ($confirmleave == 1) {
 			if ($team[number_of_members] == 1) {
 				$db->Execute("DELETE FROM $dbtables[teams] WHERE id=$whichteam");
-				$db->Execute("UPDATE $dbtables[players] SET team='0' WHERE ship_id='$playerinfo[ship_id]'");
+				$db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$playerinfo[player_id]'");
 				$db->Execute("UPDATE $dbtables[players] SET team_invite=0 WHERE team_invite=$whichteam");
 
-        $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND base='Y'");
+        $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[player_id] AND base='Y'");
         $i=0;
         while(!$res->EOF)
         {
@@ -232,7 +232,7 @@ switch ($teamwhat) {
           $res->MoveNext();
         }
 
-        $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[ship_id]");
+        $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[player_id]");
         if(!empty($sectors))
         {
           foreach($sectors as $sector)
@@ -240,23 +240,23 @@ switch ($teamwhat) {
             calc_ownership($sector);
           }
         }
-        defence_vs_defence($playerinfo[ship_id]);
-        kick_off_planet($playerinfo[ship_id],$whichteam);
+        defence_vs_defence($playerinfo[player_id]);
+        kick_off_planet($playerinfo[player_id],$whichteam);
 
 		$l_team_onlymember = str_replace("[team_name]", "<b>$team[team_name]</b>", $l_team_onlymember);
         echo "$l_team_onlymember<BR><BR>";
-				playerlog($playerinfo[ship_id], LOG_TEAM_LEAVE, "$team[team_name]");
+				playerlog($playerinfo[player_id], LOG_TEAM_LEAVE, "$team[team_name]");
 			} else {
-				if ($team[creator] == $playerinfo[ship_id]) {
+				if ($team[creator] == $playerinfo[player_id]) {
 					echo "$l_team_youarecoord <B>$team[team_name]</B>. $l_team_relinq<BR><BR>";
 					echo "<FORM ACTION='$PHP_SELF' METHOD=POST>";
 					echo "<TABLE><INPUT TYPE=hidden name=teamwhat value=$teamwhat><INPUT TYPE=hidden name=confirmleave value=2><INPUT TYPE=hidden name=whichteam value=$whichteam>";
 					echo "<TR><TD>$l_team_newc</TD><TD><SELECT NAME=newcreator>";
-					$res = $db->Execute("SELECT character_name,ship_id FROM $dbtables[players] WHERE team=$whichteam ORDER BY character_name ASC");
+					$res = $db->Execute("SELECT character_name,player_id FROM $dbtables[players] WHERE team=$whichteam ORDER BY character_name ASC");
 					while(!$res->EOF) {
             $row = $res->fields;
-						if ($row[ship_id] != $team[creator])
-							echo "<OPTION VALUE=$row[ship_id]>$row[character_name]";
+						if ($row[player_id] != $team[creator])
+							echo "<OPTION VALUE=$row[player_id]>$row[character_name]";
             $res->MoveNext();
 					}
 					echo "</SELECT></TD></TR>";
@@ -264,10 +264,10 @@ switch ($teamwhat) {
 					echo "</TABLE>";
 					echo "</FORM>";
 				} else {
-					$db->Execute("UPDATE $dbtables[players] SET team='0' WHERE ship_id='$playerinfo[ship_id]'");
+					$db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$playerinfo[player_id]'");
 					$db->Execute("UPDATE $dbtables[teams] SET number_of_members=number_of_members-1 WHERE id=$whichteam");
 
-          $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND base='Y' AND corp!=0");
+          $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[player_id] AND base='Y' AND corp!=0");
           $i=0;
           while(!$res->EOF)
           {
@@ -276,7 +276,7 @@ switch ($teamwhat) {
             $res->MoveNext();
           }
 
-          $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[ship_id]");
+          $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[player_id]");
           if(!empty($sectors))
           {
             foreach($sectors as $sector)
@@ -286,21 +286,21 @@ switch ($teamwhat) {
           }
 
 					echo "$l_team_youveleft <B>$team[team_name]</B>.<BR><BR>";
-          defence_vs_defence($playerinfo[ship_id]);
-          kick_off_planet($playerinfo[ship_id],$whichteam);
-  				playerlog($playerinfo[ship_id], LOG_TEAM_LEAVE, "$team[team_name]");
+          defence_vs_defence($playerinfo[player_id]);
+          kick_off_planet($playerinfo[player_id],$whichteam);
+  				playerlog($playerinfo[player_id], LOG_TEAM_LEAVE, "$team[team_name]");
   				playerlog($team[creator], LOG_TEAM_NOT_LEAVE, "$playerinfo[character_name]");
 				}
 			}
 		} elseif ($confirmleave == 2) { // owner of a team is leaving and set a new owner
-			$res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$newcreator");
+			$res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$newcreator");
 			$newcreatorname = $res->fields;
 			echo "$l_team_youveleft <B>$team[team_name]</B> $l_team_relto $newcreatorname[character_name].<BR><BR>";
-			$db->Execute("UPDATE $dbtables[players] SET team='0' WHERE ship_id='$playerinfo[ship_id]'");
+			$db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$playerinfo[player_id]'");
 			$db->Execute("UPDATE $dbtables[players] SET team=$newcreator WHERE team=$creator");
 			$db->Execute("UPDATE $dbtables[teams] SET number_of_members=number_of_members-1,creator=$newcreator WHERE id=$whichteam");
 
-      $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND base='Y' AND corp!=0");
+      $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[player_id] AND base='Y' AND corp!=0");
       $i=0;
       while(!$res->EOF)
       {
@@ -309,7 +309,7 @@ switch ($teamwhat) {
         $res->MoveNext();
       }
 
-      $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[ship_id]");
+      $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[player_id]");
       if(!empty($sectors))
       {
         foreach($sectors as $sector)
@@ -318,7 +318,7 @@ switch ($teamwhat) {
         }
       }
 
-			playerlog($playerinfo[ship_id], LOG_TEAM_NEWLEAD, "$team[team_name]|$newcreatorname[character_name]");
+			playerlog($playerinfo[player_id], LOG_TEAM_NEWLEAD, "$team[team_name]|$newcreatorname[character_name]");
 			playerlog($newcreator, LOG_TEAM_LEAD,"$team[team_name]");
 		}
 
@@ -333,10 +333,10 @@ switch ($teamwhat) {
                 {
                    if($playerinfo[team_invite] == $whichteam)
                    {
-  		      $db->Execute("UPDATE $dbtables[players] SET team=$whichteam,team_invite=0 WHERE ship_id=$playerinfo[ship_id]");
+  		      $db->Execute("UPDATE $dbtables[players] SET team=$whichteam,team_invite=0 WHERE player_id=$playerinfo[player_id]");
   		      $db->Execute("UPDATE $dbtables[teams] SET number_of_members=number_of_members+1 WHERE id=$whichteam");
 		      echo "$l_team_welcome <B>$team[team_name]</B>.<BR><BR>";
-		      playerlog($playerinfo[ship_id], LOG_TEAM_JOIN, "$team[team_name]");
+		      playerlog($playerinfo[player_id], LOG_TEAM_JOIN, "$team[team_name]");
 		      playerlog($team[creator], LOG_TEAM_NEWMEMBER, "$team[team_name]|$playerinfo[character_name]");
                    }
                    else
@@ -359,7 +359,7 @@ switch ($teamwhat) {
 		LINK_BACK();
 		break;
 	case 5: // Eject member
-		$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_id=$who");
+		$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=$who");
 		$whotoexpel = $result->fields;
 		if (!$confirmed) {
 			echo "$l_team_ejectsure $whotoexpel[character_name]? <A HREF=\"$PHP_SELF?teamwhat=$teamwhat&confirmed=1&who=$who\">$l_yes</A> - <a href=\"$PHP_SELF\">$l_no</a><BR>";
@@ -369,7 +369,7 @@ switch ($teamwhat) {
 			   should go here	if ($whotoexpel[team] ==
 			*/
 			$db->Execute("UPDATE $dbtables[planets] SET corp='0' WHERE owner='$who'");
-      $db->Execute("UPDATE $dbtables[players] SET team='0' WHERE ship_id='$who'");
+      $db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$who'");
          /*
             No more necessary due to COUNT(*) in previous SQL statement
 
@@ -409,11 +409,11 @@ switch ($teamwhat) {
 		} else {
 	                $teamname = htmlspecialchars($teamname);
                         $teamdesc = htmlspecialchars($teamdesc);		
-                        $res = $db->Execute("INSERT INTO $dbtables[teams] (id,creator,team_name,number_of_members,description) VALUES ('$playerinfo[ship_id]','$playerinfo[ship_id]','$teamname','1','$teamdesc')");
-                        $db->Execute("INSERT INTO $dbtables[zones] VALUES('','$teamname\'s Empire', $playerinfo[ship_id], 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
-                        $db->Execute("UPDATE $dbtables[players] SET team='$playerinfo[ship_id]' WHERE ship_id='$playerinfo[ship_id]'");
+                        $res = $db->Execute("INSERT INTO $dbtables[teams] (id,creator,team_name,number_of_members,description) VALUES ('$playerinfo[player_id]','$playerinfo[player_id]','$teamname','1','$teamdesc')");
+                        $db->Execute("INSERT INTO $dbtables[zones] VALUES('','$teamname\'s Empire', $playerinfo[player_id], 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
+                        $db->Execute("UPDATE $dbtables[players] SET team='$playerinfo[player_id]' WHERE player_id='$playerinfo[player_id]'");
 			echo "$l_team_alliance <B>$teamname</B> $l_team_hcreated.<BR><BR>";
-			playerlog($playerinfo[ship_id], LOG_TEAM_CREATE, "$teamname");
+			playerlog($playerinfo[player_id], LOG_TEAM_CREATE, "$teamname");
 		}
 		LINK_BACK();
 		break;
@@ -422,11 +422,11 @@ switch ($teamwhat) {
 			echo "<FORM ACTION='$PHP_SELF' METHOD=POST>";
 			echo "<TABLE><INPUT TYPE=hidden name=teamwhat value=$teamwhat><INPUT TYPE=hidden name=invited value=1><INPUT TYPE=hidden name=whichteam value=$whichteam>";
 			echo "<TR><TD>$l_team_selectp:</TD><TD><SELECT NAME=who>";
-      $res = $db->Execute("SELECT character_name,ship_id FROM $dbtables[players] WHERE team<>$whichteam ORDER BY character_name ASC");
+      $res = $db->Execute("SELECT character_name,player_id FROM $dbtables[players] WHERE team<>$whichteam ORDER BY character_name ASC");
 			while(!$res->EOF) {
         $row = $res->fields;
-				if ($row[ship_id] != $team[creator])
-					echo "<OPTION VALUE=$row[ship_id]>$row[character_name]";
+				if ($row[player_id] != $team[creator])
+					echo "<OPTION VALUE=$row[player_id]>$row[character_name]";
         $res->MoveNext();
 			}
 			echo "</SELECT></TD></TR>";
@@ -437,7 +437,7 @@ switch ($teamwhat) {
 		} else {
                         if($playerinfo[team] == $whichteam)
                         {
-                   	   $res = $db->Execute("SELECT character_name,team_invite FROM $dbtables[players] WHERE ship_id=$who");
+                   	   $res = $db->Execute("SELECT character_name,team_invite FROM $dbtables[players] WHERE player_id=$who");
   			   $newpl = $res->fields;
 			   if ($newpl[team_invite]) 
                            {
@@ -446,7 +446,7 @@ switch ($teamwhat) {
 			   }
                            else 
                            {
-			      $db->Execute("UPDATE $dbtables[players] SET team_invite=$whichteam WHERE ship_id=$who");
+			      $db->Execute("UPDATE $dbtables[players] SET team_invite=$whichteam WHERE player_id=$who");
 			      echo("$l_team_plinvted<BR>");
 			      playerlog($who,LOG_TEAM_INVITE, "$team[team_name]");
 			   }
@@ -460,7 +460,7 @@ switch ($teamwhat) {
 		break;
 	case 8: // REFUSE invitation
 		echo "$l_team_refuse <B>$invite_info[team_name]</B>.<BR><BR>";
-		$db->Execute("UPDATE $dbtables[players] SET team_invite=0 WHERE ship_id=$playerinfo[ship_id]");
+		$db->Execute("UPDATE $dbtables[players] SET team_invite=0 WHERE player_id=$playerinfo[player_id]");
 		playerlog($team[creator], LOG_TEAM_REJECT, "$playerinfo[character_name]|$invite_info[team_name]");
 		LINK_BACK();
 		break;
@@ -501,11 +501,11 @@ switch ($teamwhat) {
    			/*
    			   Adding a log entry to all members of the renamed alliance
    			*/
-   		   $result_team_name = $db->Execute("SELECT ship_id FROM $dbtables[players] WHERE team=$whichteam AND ship_id<>$playerinfo[ship_id]") or die("<font color=red>error: " . $db->ErrorMsg() . "</font>");
-   			playerlog($playerinfo[ship_id], LOG_TEAM_RENAME, "$teamname");
+   		   $result_team_name = $db->Execute("SELECT player_id FROM $dbtables[players] WHERE team=$whichteam AND player_id<>$playerinfo[player_id]") or die("<font color=red>error: " . $db->ErrorMsg() . "</font>");
+   			playerlog($playerinfo[player_id], LOG_TEAM_RENAME, "$teamname");
    			while(!$result_team_name->EOF) {
           $teamname_array = $result_team_name->fields;
-   			   playerlog($teamname_array[ship_id], LOG_TEAM_M_RENAME, "$teamname");
+   			   playerlog($teamname_array[player_id], LOG_TEAM_M_RENAME, "$teamname");
                            $result_team_name->MoveNext();
             }
      		}
@@ -532,9 +532,9 @@ switch ($teamwhat) {
                No more necessary due to COUNT(*) in previous SQL statement
                AND already done in case 5:
 
-               $db->Execute("UPDATE $dbtables[players] SET team='0' WHERE ship_id='$playerinfo[ship_id]'");
+               $db->Execute("UPDATE $dbtables[players] SET team='0' WHERE player_id='$playerinfo[player_id]'");
    				$db->Execute("UPDATE $dbtables[teams] SET number_of_members=number_of_members-1 WHERE id=$whichteam");
-				   playerlog($playerinfo[ship_id], LOG_TEAM_KICK, "$whichteam[team_name]");
+				   playerlog($playerinfo[player_id], LOG_TEAM_KICK, "$whichteam[team_name]");
             */
 				LINK_BACK();
 				break;
@@ -545,7 +545,7 @@ switch ($teamwhat) {
 				$result = $db->Execute("SELECT * FROM $dbtables[teams] WHERE id=$playerinfo[team_invite]");
 				$whichinvitingteam = $result->fields;
 			}
-			$isowner = $playerinfo[ship_id] == $whichteam[creator];
+			$isowner = $playerinfo[player_id] == $whichteam[creator];
 			showinfo($playerinfo[team],$isowner);
 		}
 		$res= $db->Execute("SELECT COUNT(*) as TOTAL FROM $dbtables[teams]");

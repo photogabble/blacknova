@@ -104,10 +104,10 @@ elseif($zoneinfo[allow_trade] == 'L')
 {
   if($zoneinfo[corp_zone] == 'N')
   {
-    $res = $db->Execute("SELECT team FROM $dbtables[players] WHERE ship_id=$zoneinfo[owner]");
+    $res = $db->Execute("SELECT team FROM $dbtables[players] WHERE player_id=$zoneinfo[owner]");
     $ownerinfo = $res->fields;
 
-    if($playerinfo[ship_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
+    if($playerinfo[player_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
     {
       $title="Trade forbidden";
       bigtitle();
@@ -264,7 +264,7 @@ elseif($sectorinfo[port_type] == "special")
 {
   $title=$l_special_port;
   bigtitle();
-  if(isLoanPending($playerinfo[ship_id]))
+  if(isLoanPending($playerinfo[player_id]))
   {
     echo "$l_port_loannotrade<p>";
     echo "<A HREF=IGB.php>$l_igb_term</a><p>";
@@ -273,7 +273,7 @@ elseif($sectorinfo[port_type] == "special")
     die();
   }
 
-  $res2 = $db->Execute("SELECT SUM(amount) as total_bounty FROM $dbtables[bounty] WHERE placed_by = 0 AND bounty_on = $playerinfo[ship_id]");
+  $res2 = $db->Execute("SELECT SUM(amount) as total_bounty FROM $dbtables[bounty] WHERE placed_by = 0 AND bounty_on = $playerinfo[player_id]");
   if($res2)
   {
      $bty = $res2->fields;
@@ -299,8 +299,8 @@ elseif($sectorinfo[port_type] == "special")
            }
            else
            {
-              $db->Execute("UPDATE $dbtables[players] SET credits=credits-$bty[total_bounty] WHERE ship_id = $playerinfo[ship_id]");
-              $db->Execute("DELETE from $dbtables[bounty] WHERE bounty_on = $playerinfo[ship_id] AND placed_by = 0");
+              $db->Execute("UPDATE $dbtables[players] SET credits=credits-$bty[total_bounty] WHERE player_id = $playerinfo[player_id]");
+              $db->Execute("DELETE from $dbtables[bounty] WHERE bounty_on = $playerinfo[player_id] AND placed_by = 0");
               echo $l_port_bountypaid;
               die();
            }

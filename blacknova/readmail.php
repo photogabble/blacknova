@@ -20,13 +20,13 @@ $playerinfo = $res->fields;
 
 if ($action=="delete")
 {
- $db->Execute("DELETE FROM $dbtables[messages] WHERE ID='".$ID."' AND recp_id='".$playerinfo[ship_id]."'");
+ $db->Execute("DELETE FROM $dbtables[messages] WHERE ID='".$ID."' AND recp_id='".$playerinfo[player_id]."'");
 ?>
 <FONT COLOR="#FF0000" Size="7"><B><Blink><Center><? echo $l_readm_delete; ?></Center></Blink></B></FONT><BR>
 <?
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[messages] WHERE recp_id='".$playerinfo[ship_id]."' ORDER BY sent DESC");
+$res = $db->Execute("SELECT * FROM $dbtables[messages] WHERE recp_id='".$playerinfo[player_id]."' ORDER BY sent DESC");
  if ($res->EOF)
  {
   echo "$l_readm_nomessage";
@@ -55,7 +55,7 @@ $cur_T = date("H:i:s");
   while(!$res->EOF)
   {
    $msg = $res->fields;
-   $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_id='".$msg[sender_id]."'");
+   $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id='".$msg[sender_id]."'");
    $sender = $result->fields;
 ?>
 <TR BGCOLOR="<?

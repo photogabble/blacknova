@@ -39,10 +39,10 @@ elseif($zoneinfo[allow_trade] == 'L')
 {
   if($zoneinfo[corp_zone] == 'N')
   {
-    $res = $db->Execute("SELECT team FROM $dbtables[players] WHERE ship_id=$zoneinfo[owner]");
+    $res = $db->Execute("SELECT team FROM $dbtables[players] WHERE player_id=$zoneinfo[owner]");
     $ownerinfo = $res->fields;
 
-    if($playerinfo[ship_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
+    if($playerinfo[player_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
     {
       $title=$l_no_trade;
       bigtitle();
@@ -128,7 +128,7 @@ else
   if($sectorinfo[port_type] == "special")
   {
 
-    if(isLoanPending($playerinfo[ship_id]))
+    if(isLoanPending($playerinfo[player_id]))
     {
       echo "$l_port_loannotrade<p>";
       echo "<A HREF=IGB.php>$l_igb_term</a><p>";
@@ -410,7 +410,7 @@ else
         $query = $query . ", dev_lssd='Y'";
         BuildOneCol("$l_lssd $l_trade_installed");
       }
-      $query = $query . ", turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]";
+      $query = $query . ", turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]";
       $purchase = $db->Execute("$query");
       $hull_upgrade=0;
       echo "
@@ -562,7 +562,7 @@ else
       ";
 
       /* Update ship cargo, credits and turns */
-      $trade_result     = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost, ship_ore=ship_ore+$trade_ore, ship_organics=ship_organics+$trade_organics, ship_goods=ship_goods+$trade_goods, ship_energy=ship_energy+$trade_energy where ship_id=$playerinfo[ship_id]");
+      $trade_result     = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost, ship_ore=ship_ore+$trade_ore, ship_organics=ship_organics+$trade_organics, ship_goods=ship_goods+$trade_goods, ship_energy=ship_energy+$trade_energy where player_id=$playerinfo[player_id]");
 
       /* Make all trades positive to change port values*/
       $trade_ore        = round(abs($trade_ore));

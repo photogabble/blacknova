@@ -91,7 +91,7 @@ if($result3 > 0)
   else
   {
     $delete1 = $db->Execute("DELETE FROM $dbtables[links] WHERE link_start=$playerinfo[sector] AND link_dest=$target_sector");
-    $update1 = $db->Execute("UPDATE $dbtables[players] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
+    $update1 = $db->Execute("UPDATE $dbtables[players] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
     if(!$bothway)
     {
       echo "$l_warp_removed $target_sector.<BR><BR>";

@@ -16,7 +16,7 @@ if(checklogin())
 $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
-$query = "SELECT * FROM $dbtables[sector_defence] WHERE ship_id=$playerinfo[ship_id]";
+$query = "SELECT * FROM $dbtables[sector_defence] WHERE player_id=$playerinfo[player_id]";
 if(!empty($sort))
 {
   $query .= " ORDER BY";

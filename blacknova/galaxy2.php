@@ -13,7 +13,7 @@
 
 
 	$result = $db->Execute ("SELECT sector_id, port_type FROM $dbtables[universe] ORDER BY sector_id ASC");
-        $result2 = $db->Execute("SELECT distinct sector_id FROM $dbtables[movement_log] WHERE ship_id = $playerinfo[ship_id] order by sector_id ASC");
+        $result2 = $db->Execute("SELECT distinct sector_id FROM $dbtables[movement_log] WHERE player_id = $playerinfo[player_id] order by sector_id ASC");
         bigtitle();
 	$tile[special]="space261_md_blk.gif";
 	$tile[ore]="space262_md_blk.gif";

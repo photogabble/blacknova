@@ -11,8 +11,6 @@ $title=$l_report_title;
 connectdb();
 include("header.php");
 
-
-
 if(checklogin())
 {
   die();

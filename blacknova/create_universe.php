@@ -778,14 +778,11 @@ these right now.
       echo "Inserting ship type: Behemoth...";
       echo "done<br>";
 
-      $update = $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES (1,0,0)");
       $password = substr($admin_mail, 0, $maxlen_password);
       echo "<BR><BR><center><B>Your admin login is: <BR>";
       echo "<BR>Username: $admin_mail";
       echo "<BR>Password: $password<BR></B></center>";
-      $stamp=date("Y-m-d H:i:s");
-      $db->Execute("INSERT INTO $dbtables[players] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
-      $db->Execute("INSERT INTO $dbtables[zones] VALUES('','WebMaster\'s Territory', 1, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
+      newplayer($admin_mail, "WebMaster", $password, "WebMaster\'s Ship");
   
       PrintFlush("<BR><BR><center><BR><B>Congratulations! Universe created successfully.<BR>");
       PrintFlush("Click <A HREF=login.php>here</A> to return to the login screen.</B></center>");

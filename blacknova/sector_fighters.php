@@ -121,11 +121,11 @@
                  $l_sf_sendlog = str_replace("[sector]", $sector, $l_sf_sendlog);
                  
                  message_defence_owner($sector,$l_sf_sendlog);
-                 playerlog($playerinfo[ship_id], LOG_DEFS_DESTROYED_F, "$fighterslost|$sector");
+                 playerlog($playerinfo[player_id], LOG_DEFS_DESTROYED_F, "$fighterslost|$sector");
                  $armour_lost=$playerinfo[armour_pts]-$playerarmour;
                  $fighters_lost=$playerinfo[ship_fighters]-$playerfighters;
                  $energy=$playerinfo[ship_energy];
-                 $update4b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum WHERE ship_id=$playerinfo[ship_id]");
+                 $update4b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum WHERE player_id=$playerinfo[player_id]");
                  $l_sf_lreport = str_replace("[armor]", $armour_lost, $l_sf_lreport);
                  $l_sf_lreport = str_replace("[fighters]", $fighters_lost, $l_sf_lreport);
                  $l_sf_lreport = str_replace("[torps]", $playertorpnum, $l_sf_lreport);
@@ -133,7 +133,7 @@
                  if($playerarmour < 1)
                  {
                     echo $l_sf_shipdestroyed;
-                    playerlog($playerinfo[ship_id], LOG_DEFS_KABOOM, "$sector|$playerinfo[dev_escapepod]");
+                    playerlog($playerinfo[player_id], LOG_DEFS_KABOOM, "$sector|$playerinfo[dev_escapepod]");
                     $l_sf_sendlog2 = str_replace("[player]", $playerinfo[character_name], $l_sf_sendlog2);
                     $l_sf_sendlog2 = str_replace("[sector]", $sector, $l_sf_sendlog2);
                     message_defence_owner($sector,$l_sf_sendlog2);
@@ -141,8 +141,8 @@
                     {
                        $rating=round($playerinfo[rating]/2);
                        echo $l_sf_escape;
-                       $db->Execute("UPDATE $dbtables[players] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',cleared_defences=' ',dev_lssd='N' WHERE ship_id=$playerinfo[ship_id]"); 
-                       cancel_bounty($playerinfo[ship_id]);
+                       $db->Execute("UPDATE $dbtables[players] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',cleared_defences=' ',dev_lssd='N' WHERE player_id=$playerinfo[player_id]"); 
+                       cancel_bounty($playerinfo[player_id]);
                        $ok=0;
                        TEXT_GOTOMAIN();
                        die();
@@ -150,8 +150,8 @@
                     }
                     else
                     { 
-                       cancel_bounty($playerinfo[ship_id]);
-                       db_kill_player($playerinfo['ship_id']);
+                       cancel_bounty($playerinfo[player_id]);
+                       db_kill_player($playerinfo['player_id']);
                        $ok=0;
                        TEXT_GOTOMAIN();
                        die();

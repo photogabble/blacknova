@@ -135,7 +135,7 @@ else
       $planet[$i][name] = "$l_unnamed";
     }
     $owner = $planet[$i][owner];
-    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$owner");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$owner");
     $player = $res->fields[character_name];
 
     echo "<TR BGCOLOR=\"$color\">";

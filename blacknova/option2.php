@@ -53,7 +53,7 @@ elseif($newpass1 != $newpass2)
 }
 else
 {
-  $res = $db->Execute("SELECT ship_id,password FROM $dbtables[players] WHERE email='$username'");
+  $res = $db->Execute("SELECT player_id,password FROM $dbtables[players] WHERE email='$username'");
   $playerinfo = $res->fields;
   if($oldpass != $playerinfo[password])
   {
@@ -61,7 +61,7 @@ else
   }
   else
   {
-    $res = $db->Execute("UPDATE $dbtables[players] SET password='$newpass1' WHERE ship_id=$playerinfo[ship_id]");
+    $res = $db->Execute("UPDATE $dbtables[players] SET password='$newpass1' WHERE player_id=$playerinfo[player_id]");
     if($res)
     {
       echo $l_opt2_passchanged;

@@ -29,7 +29,7 @@ if(!get_magic_quotes_gpc())
   $shipname = addslashes($shipname);
 }
 
-$result = $db->Execute ("select email, character_name, ship_name from $dbtables[players] where email='$username' OR character_name='$character' OR ship_name='$shipname'");
+$result = $db->Execute ("SELECT email, character_name, $dbtables[ships].name AS ship_name FROM $dbtables[players], $dbtables[ships] where email='$username' OR character_name='$character' OR ship_name='$shipname'");
 $flag=0;
 if ($username=='' || $character=='' || $shipname=='' ) { echo "$l_new_blank<BR>"; $flag=1;}
 
@@ -60,35 +60,20 @@ if ($flag==0)
       $makepass .= sprintf("%s",$syllable_array[rand()%62]);
     }
   }
-  $stamp=date("Y-m-d H:i:s");
-  $query = $db->Execute("SELECT MAX(turns_used + turns) AS mturns FROM $dbtables[players]");
-  $res = $query->fields;
 
-  $mturns = $res[mturns];
+  $shipid = newplayer($username, $character, $makepass, $shipname);
 
-  if($mturns > $max_turns)
-    $mturns = $max_turns;
+  $l_new_message = str_replace("[pass]", $makepass, $l_new_message);
+  mail("$username", "$l_new_topic", "$l_new_message\r\n\r\nhttp://$gamedomain","From: $admin_mail\r\nReply-To: $admin_mail\r\nX-Mailer: PHP/" . phpversion());
 
-  $result2 = $db->Execute("INSERT INTO $dbtables[players] VALUES('','$shipname','N','$character','$makepass','$username',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$mturns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','$ip',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
-  if(!$result2) {
-    echo $db->ErrorMsg() . "<br>";
-  } else {
-    $result2 = $db->Execute("SELECT ship_id FROM $dbtables[players] WHERE email='$username'");
-    $shipid = $result2->fields;
-
- $l_new_message = str_replace("[pass]", $makepass, $l_new_message);
-    mail("$username", "$l_new_topic", "$l_new_message\r\n\r\nhttp://$gamedomain","From: $admin_mail\r\nReply-To: $admin_mail\r\nX-Mailer: PHP/" . phpversion());
-
-    $db->Execute("INSERT INTO $dbtables[zones] VALUES('','$character\'s Territory', $shipid[ship_id], 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
-    $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES($shipid[ship_id],0,0)");
-    if($display_password)
-    {
-       echo $l_new_pwis . " " . $makepass . "<BR><BR>";
-    }
-    echo "$l_new_pwsent<BR><BR>";
-    echo "<A HREF=login.php>$l_clickme</A> $l_new_login";
-
+  if($display_password)
+  {
+    echo $l_new_pwis . " " . $makepass . "<BR><BR>";
   }
+
+  echo "$l_new_pwsent<BR><BR>";
+  echo "<A HREF=login.php>$l_clickme</A> $l_new_login";
+
 } else {
 
   echo $l_new_err;

@@ -29,7 +29,7 @@ if(empty($content))
   while(!$res->EOF)
   {
     $row=$res->fields;
-    if($row[ship_id] == $to)
+    if($row[player_id] == $to)
     {
        echo "\n<OPTION SELECTED>$row[character_name]</OPTION>";
     }   
@@ -55,8 +55,8 @@ else
 
   $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE character_name='$to'");
   $target_info = $res->fields;
-  $db->Execute("INSERT INTO messages (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$target_info[ship_id]."', '".$subject."', '".$content."')");
-  #using this three lines to get recipients ship_id and sending the message -- blindcoder
+  $db->Execute("INSERT INTO messages (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[player_id]."', '".$target_info[player_id]."', '".$subject."', '".$content."')");
+  #using this three lines to get recipients player_id and sending the message -- blindcoder
 
 }
 

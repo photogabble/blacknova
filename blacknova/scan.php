@@ -16,11 +16,11 @@ if(checklogin())
 $result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
-$result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE ship_id='$ship_id'");
+$result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE player_id='$player_id'");
 $targetinfo=$result2->fields;
 
-$playerscore = gen_score($playerinfo[ship_id]);
-$targetscore = gen_score($targetinfo[ship_id]);
+$playerscore = gen_score($playerinfo[player_id]);
+$targetscore = gen_score($targetinfo[player_id]);
 
 $playerscore = $playerscore * $playerscore;
 $targetscore = $targetscore * $targetscore;
@@ -57,7 +57,7 @@ else
     {
       /* if scan fails - inform both player and target. */
       echo $l_planet_noscan;
-      playerlog($targetinfo[ship_id], LOG_SHIP_SCAN_FAIL, "$playerinfo[character_name]");
+      playerlog($targetinfo[player_id], LOG_SHIP_SCAN_FAIL, "$playerinfo[character_name]");
     }
     else
     {
@@ -66,7 +66,7 @@ else
 
       // Get total bounty on this player, if any
       $btyamount = 0;
-      $hasbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM $dbtables[bounty] WHERE bounty_on = $targetinfo[ship_id]");
+      $hasbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM $dbtables[bounty] WHERE bounty_on = $targetinfo[player_id]");
 
       if($hasbounty)
       {
@@ -78,7 +78,7 @@ else
             echo $l_scan_bounty . "<BR>";
             $btyamount = 0;
             // Check for Federation bounty
-            $hasfedbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM $dbtables[bounty] WHERE bounty_on = $targetinfo[ship_id] AND placed_by = 0");
+            $hasfedbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM $dbtables[bounty] WHERE bounty_on = $targetinfo[player_id] AND placed_by = 0");
             if($hasfedbounty)
             {
                $resy = $hasfedbounty->fields;
@@ -306,10 +306,10 @@ else
       if ($roll<$success)
         {echo "<td>$targetinfo[dev_fuelscoop]</td></tr>";} else {echo"<td>???</td></tr>";}
       echo "</table><BR>";
-      playerlog($targetinfo[ship_id], LOG_SHIP_SCAN, "$playerinfo[character_name]");
+      playerlog($targetinfo[player_id], LOG_SHIP_SCAN, "$playerinfo[character_name]");
     }
 
-    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
   }
 }
 

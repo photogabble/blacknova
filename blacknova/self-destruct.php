@@ -16,7 +16,7 @@ if(checklogin())
 
 bigtitle();
 
-$result = $db->Execute("SELECT ship_id,character_name FROM $dbtables[players] WHERE email='$username'");
+$result = $db->Execute("SELECT player_id,character_name FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
 if(!isset($sure))
@@ -36,10 +36,10 @@ elseif($sure == 2)
   echo "$l_die_count<BR>";
   echo "$l_die_vapor<BR><BR>";
   echo "$l_die_please.<BR>";
-  db_kill_player($playerinfo['ship_id']);
-  cancel_bounty($playerinfo['ship_id']);
+  db_kill_player($playerinfo['player_id']);
+  cancel_bounty($playerinfo['player_id']);
   adminlog(LOG_ADMIN_HARAKIRI, "$playerinfo[character_name]|$ip");
-  playerlog($playerinfo[ship_id], LOG_HARAKIRI, "$ip");
+  playerlog($playerinfo[player_id], LOG_HARAKIRI, "$ip");
 }
 else
 {

@@ -21,11 +21,11 @@ if(checklogin())
 $result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
-$result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE ship_id='$ship_id'");
+$result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE player_id='$player_id'");
 $targetinfo=$result2->fields;
 
-$playerscore = gen_score($playerinfo[ship_id]);
-$targetscore = gen_score($targetinfo[ship_id]);
+$playerscore = gen_score($playerinfo[player_id]);
+$targetscore = gen_score($targetinfo[player_id]);
 
 $playerscore = $playerscore * $playerscore;
 $targetscore = $targetscore * $targetscore;
@@ -68,15 +68,15 @@ else
   elseif($flee < $roll2)
   {
     echo "$l_att_flee<BR><BR>";
-    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
-    playerlog($targetinfo[ship_id], LOG_ATTACK_OUTMAN, "$playerinfo[character_name]");
+    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+    playerlog($targetinfo[player_id], LOG_ATTACK_OUTMAN, "$playerinfo[character_name]");
   }
   elseif($roll > $success)
   {
     /* if scan fails - inform both player and target. */
     echo "$l_planet_noscan<BR><BR>";
-    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
-    playerlog($targetinfo[ship_id], LOG_ATTACK_OUTSCAN, "$playerinfo[character_name]");
+    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+    playerlog($targetinfo[player_id], LOG_ATTACK_OUTSCAN, "$playerinfo[character_name]");
   }
   else
   {
@@ -97,12 +97,12 @@ else
       /* need to change warp destination to random sector in universe */
       $rating_change=round($targetinfo[rating]*.1);
       $dest_sector=rand(1,$sector_max);
-      $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1,rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
+      $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1,rating=rating-$rating_change WHERE player_id=$playerinfo[player_id]");
       $l_att_ewdlog=str_replace("[name]",$playerinfo[character_name],$l_att_ewdlog);
       $l_att_ewdlog=str_replace("[sector]",$playerinfo[sector],$l_att_ewdlog);
-      playerlog($targetinfo[ship_id], LOG_ATTACK_EWD, "$playerinfo[character_name]");
-      $result_warp = $db->Execute ("UPDATE $dbtables[players] SET sector=$dest_sector, dev_emerwarp=dev_emerwarp-1,cleared_defences=' ' WHERE ship_id=$targetinfo[ship_id]");
-      log_move($targetinfo[ship_id],$dest_sector);
+      playerlog($targetinfo[player_id], LOG_ATTACK_EWD, "$playerinfo[character_name]");
+      $result_warp = $db->Execute ("UPDATE $dbtables[players] SET sector=$dest_sector, dev_emerwarp=dev_emerwarp-1,cleared_defences=' ' WHERE player_id=$targetinfo[player_id]");
+      log_move($targetinfo[player_id],$dest_sector);
       echo "$l_att_ewd<BR><BR>";
     }
     else
@@ -111,7 +111,7 @@ else
       {
          // Check to see if there is Federation bounty on the player. If there is, people can attack regardless.
          $btyamount = 0;
-         $hasbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM $dbtables[bounty] WHERE bounty_on = $targetinfo[ship_id] AND placed_by = 0");
+         $hasbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM $dbtables[bounty] WHERE bounty_on = $targetinfo[player_id] AND placed_by = 0");
          if($hasbounty)
          {
             $resx = $hasbounty->fields;
@@ -120,14 +120,14 @@ else
          if($btyamount <= 0) 
          {
             $bounty = ROUND($playerscore * $bounty_maxvalue);
-            $insert = $db->Execute("INSERT INTO $dbtables[bounty] (bounty_on,placed_by,amount) values ($playerinfo[ship_id], 0 ,$bounty)");      
-            playerlog($playerinfo[ship_id],LOG_BOUNTY_FEDBOUNTY,"$bounty");
+            $insert = $db->Execute("INSERT INTO $dbtables[bounty] (bounty_on,placed_by,amount) values ($playerinfo[player_id], 0 ,$bounty)");      
+            playerlog($playerinfo[player_id],LOG_BOUNTY_FEDBOUNTY,"$bounty");
             echo $l_by_fedbounty2 . "<BR><BR>";
          }
       }
       if($targetinfo[dev_emerwarp] > 0)
       {
-        playerlog($targetinfo[ship_id], LOG_ATTACK_EWDFAIL, $playerinfo[character_name]);
+        playerlog($targetinfo[player_id], LOG_ATTACK_EWDFAIL, $playerinfo[character_name]);
       }
       $targetbeams = NUM_BEAMS($targetinfo[beams]);
       if($targetbeams>$targetinfo[ship_energy])
@@ -385,15 +385,15 @@ else
         {
           $rating=round($targetinfo[rating]/2);
           echo "$l_att_espod<BR><BR>";
-          $db->Execute("UPDATE $dbtables[players] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',cleared_defences=' ',dev_lssd='N' WHERE ship_id=$targetinfo[ship_id]");
-          playerlog($targetinfo[ship_id], LOG_ATTACK_LOSE, "$playerinfo[character_name]|Y");
-          collect_bounty($playerinfo[ship_id],$targetinfo[ship_id]);
+          $db->Execute("UPDATE $dbtables[players] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',cleared_defences=' ',dev_lssd='N' WHERE player_id=$targetinfo[player_id]");
+          playerlog($targetinfo[player_id], LOG_ATTACK_LOSE, "$playerinfo[character_name]|Y");
+          collect_bounty($playerinfo[player_id],$targetinfo[player_id]);
         }
         else
         {
-          playerlog($targetinfo[ship_id], LOG_ATTACK_LOSE, "$playerinfo[character_name]|N");
-          db_kill_player($targetinfo['ship_id']);
-          collect_bounty($playerinfo[ship_id],$targetinfo[ship_id]);
+          playerlog($targetinfo[player_id], LOG_ATTACK_LOSE, "$playerinfo[character_name]|N");
+          db_kill_player($targetinfo['player_id']);
+          collect_bounty($playerinfo[player_id],$targetinfo[player_id]);
         }
 
         if($playerarmour > 0)
@@ -457,11 +457,11 @@ else
           $l_att_ysalv=str_replace("[rating_change]",NUMBER(abs($rating_change)),$l_att_ysalv);
 
           echo $l_att_ysalv;
-          $update3 = $db->Execute ("UPDATE $dbtables[players] SET ship_ore=ship_ore+$salv_ore, ship_organics=ship_organics+$salv_organics, ship_goods=ship_goods+$salv_goods, credits=credits+$ship_salvage WHERE ship_id=$playerinfo[ship_id]");
+          $update3 = $db->Execute ("UPDATE $dbtables[players] SET ship_ore=ship_ore+$salv_ore, ship_organics=ship_organics+$salv_organics, ship_goods=ship_goods+$salv_goods, credits=credits+$ship_salvage WHERE player_id=$playerinfo[player_id]");
           $armour_lost=$playerinfo[armour_pts]-$playerarmour;
           $fighters_lost=$playerinfo[ship_fighters]-$playerfighters;
           $energy=$playerinfo[ship_energy];
-          $update3b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum, turns=turns-1, turns_used=turns_used+1, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
+          $update3b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum, turns=turns-1, turns_used=turns_used+1, rating=rating-$rating_change WHERE player_id=$playerinfo[player_id]");
           echo "$l_att_ylost $armour_lost $l_armourpts, $fighters_lost $l_fighters, $l_att_andused $playertorpnum $l_torps.<BR><BR>";
         }
       }
@@ -473,12 +473,12 @@ else
         $armour_lost=$targetinfo[armour_pts]-$targetarmour;
         $fighters_lost=$targetinfo[ship_fighters]-$targetfighters;
         $energy=$targetinfo[ship_energy];
-        playerlog($targetinfo[ship_id], LOG_ATTACKED_WIN, "$playerinfo[character_name]|$armour_lost|$fighters_lost");
-        $update4 = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$targettorpnum WHERE ship_id=$targetinfo[ship_id]");
+        playerlog($targetinfo[player_id], LOG_ATTACKED_WIN, "$playerinfo[character_name]|$armour_lost|$fighters_lost");
+        $update4 = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$targettorpnum WHERE player_id=$targetinfo[player_id]");
         $armour_lost=$playerinfo[armour_pts]-$playerarmour;
         $fighters_lost=$playerinfo[ship_fighters]-$playerfighters;
         $energy=$playerinfo[ship_energy];
-        $update4b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum, turns=turns-1, turns_used=turns_used+1, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
+        $update4b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum, turns=turns-1, turns_used=turns_used+1, rating=rating-$rating_change WHERE player_id=$playerinfo[player_id]");
         echo "$l_att_ylost $armour_lost $l_armourpts, $fighters_lost $l_fighters, $l_att_andused $playertorpnum $l_torps.<BR><BR>";
       }
       if($playerarmour < 1)
@@ -488,13 +488,13 @@ else
         {
           $rating=round($playerinfo[rating]/2);
           echo "$l_att_loosepod<BR><BR>";
-          $db->Execute("UPDATE $dbtables[players] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',dev_lssd='N' WHERE ship_id=$playerinfo[ship_id]");
-          collect_bounty($targetinfo[ship_id],$playerinfo[ship_id]);
+          $db->Execute("UPDATE $dbtables[players] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',dev_lssd='N' WHERE player_id=$playerinfo[player_id]");
+          collect_bounty($targetinfo[player_id],$playerinfo[player_id]);
         }
         else
         {
-          db_kill_player($playerinfo['ship_id']);
-          collect_bounty($targetinfo[ship_id],$playerinfo[ship_id]);
+          db_kill_player($playerinfo['player_id']);
+          collect_bounty($targetinfo[player_id],$playerinfo[player_id]);
         }
         if($targetarmour > 0)
         {
@@ -556,11 +556,11 @@ else
           $l_att_salv=str_replace("[name]",$targetinfo[character_name],$l_att_salv);
 
           echo "$l_att_salv<BR>";
-          $update6 = $db->Execute ("UPDATE $dbtables[players] SET credits=credits+$ship_salvage, ship_ore=ship_ore+$salv_ore, ship_organics=ship_organics+$salv_organics, ship_goods=ship_goods+$salv_goods WHERE ship_id=$targetinfo[ship_id]");
+          $update6 = $db->Execute ("UPDATE $dbtables[players] SET credits=credits+$ship_salvage, ship_ore=ship_ore+$salv_ore, ship_organics=ship_organics+$salv_organics, ship_goods=ship_goods+$salv_goods WHERE player_id=$targetinfo[player_id]");
           $armour_lost=$targetinfo[armour_pts]-$targetarmour;
           $fighters_lost=$targetinfo[ship_fighters]-$targetfighters;
           $energy=$targetinfo[ship_energy];
-          $update6b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$targettorpnum WHERE ship_id=$targetinfo[ship_id]");
+          $update6b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$targettorpnum WHERE player_id=$targetinfo[player_id]");
         }
       }
     }

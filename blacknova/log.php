@@ -14,18 +14,18 @@ if(checklogin())
 {
   die();
 }
-$res = $db->Execute("SELECT character_name, ship_id, dhtml FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT character_name, player_id, dhtml FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if($swordfish == $adminpass) //check if called by admin script
 {
-  $playerinfo[ship_id] = $player;
+  $playerinfo[player_id] = $player;
   
   if($player == 0)
     $playerinfo[character_name] = 'Administrator';
   else
   {
-    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$player");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$player");
     $targetname = $res->fields;
     $playerinfo[character_name] = $targetname[character_name];
   }
@@ -316,7 +316,7 @@ else
 if(empty($startdate))
   $startdate = date("Ymd");
 
-$res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$playerinfo[ship_id] AND time LIKE '$startdate%' ORDER BY time DESC, type DESC");
+$res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$playerinfo[player_id] AND time LIKE '$startdate%' ORDER BY time DESC, type DESC");
 while(!$res->EOF)
 {
   $logs[] = $res->fields;
@@ -381,7 +381,7 @@ if($mode != 'compat')
   $entry = $l_log_months[substr($yesterday, 4, 2) - 1] . " " . substr($yesterday, 6, 2) . " " . substr($yesterday, 0, 4);
 
   unset($logs);
-  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$playerinfo[ship_id] AND time LIKE '$yesterday%' ORDER BY time DESC, type DESC");
+  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$playerinfo[player_id] AND time LIKE '$yesterday%' ORDER BY time DESC, type DESC");
   while(!$res->EOF)
   {
     $logs[] = $res->fields;
@@ -426,7 +426,7 @@ if($mode != 'compat')
   $entry = $l_log_months[substr($yesterday2, 4, 2) - 1] . " " . substr($yesterday2, 6, 2) . " " . substr($yesterday2, 0, 4);
 
   unset($logs);
-  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$playerinfo[ship_id] AND time LIKE '$yesterday2%' ORDER BY time DESC, type DESC");
+  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$playerinfo[player_id] AND time LIKE '$yesterday2%' ORDER BY time DESC, type DESC");
   while(!$res->EOF)
   {
     $logs[] = $res->fields;

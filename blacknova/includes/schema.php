@@ -81,42 +81,13 @@ echo "- created successfully.<BR>";
 
 echo "Creating table: players ";
 $db->Execute("CREATE TABLE $dbtables[players](" .
-             "ship_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
-             "ship_name char(20)," .
-             "ship_destroyed enum('Y','N') DEFAULT 'N' NOT NULL," .
+             "player_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
+             "currentship int unsigned DEFAULT '0' NOT NULL," .
              "character_name char(20) NOT NULL," .
              "password char($maxlen_password) NOT NULL," .
              "email char(60) NOT NULL," .
-             "hull tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "engines tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "power tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "computer tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "sensors tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "beams tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "torp_launchers tinyint(3) DEFAULT '0' NOT NULL," .
-             "torps bigint(20) DEFAULT '0' NOT NULL," .
-             "shields tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "armour tinyint(3) unsigned DEFAULT '0' NOT NULL," .
-             "armour_pts bigint(20) DEFAULT '0' NOT NULL," .
-             "cloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
              "credits bigint(20) DEFAULT '0' NOT NULL," .
-             "sector int unsigned DEFAULT '0' NOT NULL," .
-             "ship_ore bigint(20) DEFAULT '0' NOT NULL," .
-             "ship_organics bigint(20) DEFAULT '0' NOT NULL," .
-             "ship_goods bigint(20) DEFAULT '0' NOT NULL," .
-             "ship_energy bigint(20) DEFAULT '0' NOT NULL," .
-             "ship_colonists bigint(20) DEFAULT '0' NOT NULL," .
-             "ship_fighters bigint(20) DEFAULT '0' NOT NULL," .
              "turns smallint(4) DEFAULT '0' NOT NULL," .
-             "ship_damage set('engines','power','computer','sensors','torps','cloak','shields') NOT NULL," .
-             "on_planet enum('Y','N') DEFAULT 'N' NOT NULL," .
-             "dev_warpedit smallint(5) DEFAULT '0' NOT NULL," .
-             "dev_genesis smallint(5) DEFAULT '0' NOT NULL," .
-             "dev_beacon smallint(5) DEFAULT '0' NOT NULL," .
-             "dev_emerwarp smallint(5) DEFAULT '0' NOT NULL," .
-             "dev_escapepod enum('Y','N') DEFAULT 'N' NOT NULL," .
-             "dev_fuelscoop enum('Y','N') DEFAULT 'N' NOT NULL," .
-             "dev_minedeflector bigint(20) DEFAULT '0' NOT NULL," .
              "turns_used int unsigned DEFAULT '0' NOT NULL," .
              "last_login datetime," .
              "rating int DEFAULT '0' NOT NULL," .
@@ -125,7 +96,6 @@ $db->Execute("CREATE TABLE $dbtables[players](" .
              "team_invite int DEFAULT '0' NOT NULL," .
              "interface enum('N','O') DEFAULT 'N' NOT NULL," .
 	 	         "ip_address tinytext NOT NULL," .
-             "planet_id int unsigned DEFAULT '0' NOT NULL," .
              "preset1 int DEFAULT '0' NOT NULL," .
              "preset2 int DEFAULT '0' NOT NULL," .
              "preset3 int DEFAULT '0' NOT NULL," .
@@ -133,17 +103,12 @@ $db->Execute("CREATE TABLE $dbtables[players](" .
              "trade_fighters enum('Y', 'N') DEFAULT 'N' NOT NULL," .
              "trade_torps enum('Y', 'N') DEFAULT 'N' NOT NULL," .
              "trade_energy enum('Y', 'N') DEFAULT 'Y' NOT NULL," .
-             "cleared_defences tinytext," .
              "lang varchar(30) DEFAULT 'english.inc' NOT NULL," .
              "dhtml enum('Y', 'N') DEFAULT 'Y' NOT NULL," .
-             "dev_lssd enum('Y','N') DEFAULT 'Y' NOT NULL," .
              "PRIMARY KEY (email)," .
              "KEY email (email)," .
-             "KEY sector (sector)," .
-             "KEY ship_destroyed (ship_destroyed)," .
-             "KEY on_planet (on_planet)," .
              "KEY team (team)," .
-             "KEY ship_id (ship_id)" .
+             "KEY player_id (player_id)" .
              ")");
 echo "- created successfully.<BR>";
 
@@ -188,11 +153,11 @@ echo "- created successfully.<BR>";
 
 echo "Creating table: ibank_accounts ";
 $db->Execute("CREATE TABLE $dbtables[ibank_accounts](" .
-             "ship_id int DEFAULT '0' NOT NULL," .
+             "player_id int DEFAULT '0' NOT NULL," .
              "balance bigint(20) DEFAULT '0'," .
              "loan bigint(20)  DEFAULT '0'," .
              "loantime TIMESTAMP(14)," .
-			 "PRIMARY KEY(ship_id)" .
+			 "PRIMARY KEY(player_id)" .
              ")");
 echo "- created successfully.<BR>";
 
@@ -258,14 +223,14 @@ echo "- created successfully.<BR>";
 echo "Creating table: sector_defence ";
 $db->Execute("CREATE TABLE $dbtables[sector_defence](" .
              "defence_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
-             "ship_id int DEFAULT '0' NOT NULL," .
+             "player_id int DEFAULT '0' NOT NULL," .
              "sector_id int unsigned DEFAULT '0' NOT NULL," .
              "defence_type enum('M','F') DEFAULT 'M' NOT NULL," .
              "quantity bigint(20) DEFAULT '0' NOT NULL," .
              "fm_setting enum('attack','toll') DEFAULT 'toll' NOT NULL," .
              "PRIMARY KEY (defence_id)," .
              "KEY sector_id (sector_id)," .
-             "KEY ship_id (ship_id)" .
+             "KEY player_id (player_id)" .
              ")");
 echo "- created successfully.<BR>";
 
@@ -294,12 +259,12 @@ echo "- created successfully.<BR>";
 echo "Creating table: logs ";
 $db->Execute("CREATE TABLE $dbtables[logs](" .
              "log_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
-             "ship_id int DEFAULT '0' NOT NULL," .
+             "player_id int DEFAULT '0' NOT NULL," .
              "type mediumint(5) DEFAULT '0' NOT NULL," .
              "time TIMESTAMP(14)," .
              "data varchar(255)," .
              "PRIMARY KEY (log_id)," .
-             "KEY idate (ship_id,time)" .
+             "KEY idate (player_id,time)" .
              ")");
 echo "- created successfully.<BR>";
 
@@ -318,11 +283,11 @@ echo "- created successfully.<BR>";
 echo "Creating table: movement_log ";
 $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "event_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
-             "ship_id int DEFAULT '0' NOT NULL," .
+             "player_id int DEFAULT '0' NOT NULL," .
              "sector_id int DEFAULT '0'," .
              "time TIMESTAMP(14) ," .
              "PRIMARY KEY (event_id)," .
-             "KEY ship_id(ship_id)," .
+             "KEY player_id(player_id)," .
              "KEY sector_id (sector_id)" .
              ")");
 echo "- created successfully.<BR>";
@@ -360,6 +325,48 @@ $db->Execute("CREATE TABLE $dbtables[ship_types] (" .
              "mincloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
              "maxcloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
              "PRIMARY KEY (type_id)" .
+             ")");
+echo "- created successfully.<BR>";
+
+echo "Creating table: ships ";
+$db->Execute("CREATE TABLE $dbtables[ships](" .
+             "ship_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
+             "player_id int unsigned DEFAULT '0' NOT NULL," .
+             "class int unsigned DEFAULT '1' NOT NULL," .
+             "name char(20)," .
+             "destroyed enum('Y','N') DEFAULT 'N' NOT NULL," .
+             "hull tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "engines tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "power tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "computer tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "sensors tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "beams tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "torp_launchers tinyint(3) DEFAULT '0' NOT NULL," .
+             "torps bigint(20) DEFAULT '0' NOT NULL," .
+             "shields tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "armour tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "armour_pts bigint(20) DEFAULT '0' NOT NULL," .
+             "cloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "sector_id int unsigned DEFAULT '0' NOT NULL," .
+             "ore bigint(20) DEFAULT '0' NOT NULL," .
+             "organics bigint(20) DEFAULT '0' NOT NULL," .
+             "goods bigint(20) DEFAULT '0' NOT NULL," .
+             "energy bigint(20) DEFAULT '0' NOT NULL," .
+             "colonists bigint(20) DEFAULT '0' NOT NULL," .
+             "fighters bigint(20) DEFAULT '0' NOT NULL," .
+             "on_planet enum('Y','N') DEFAULT 'N' NOT NULL," .
+             "dev_warpedit smallint(5) DEFAULT '0' NOT NULL," .
+             "dev_genesis smallint(5) DEFAULT '0' NOT NULL," .
+             "dev_beacon smallint(5) DEFAULT '0' NOT NULL," .
+             "dev_emerwarp smallint(5) DEFAULT '0' NOT NULL," .
+             "dev_escapepod enum('Y','N') DEFAULT 'N' NOT NULL," .
+             "dev_fuelscoop enum('Y','N') DEFAULT 'N' NOT NULL," .
+             "dev_minedeflector bigint(20) DEFAULT '0' NOT NULL," .
+             "planet_id int unsigned DEFAULT '0' NOT NULL," .
+             "cleared_defences tinytext," .
+             "dev_lssd enum('Y','N') DEFAULT 'Y' NOT NULL," .
+             "PRIMARY KEY (ship_id)," .
+             "KEY sector_id (sector_id)" .
              ")");
 echo "- created successfully.<BR>";
 

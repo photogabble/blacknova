@@ -43,7 +43,7 @@ if($sector == "*")
   echo "$l_lrs_used " . NUMBER($fullscan_cost) . " $l_lrs_turns. " . NUMBER($playerinfo[turns] - $fullscan_cost) . " $l_lrs_left.<BR><BR>";
 
   // deduct the appropriate number of turns
-  $db->Execute("UPDATE $dbtables[players] SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost where ship_id='$playerinfo[ship_id]'");
+  $db->Execute("UPDATE $dbtables[players] SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost where player_id='$playerinfo[player_id]'");
 
   // user requested a full long range scan
   $l_lrs_reach=str_replace("[sector]",$playerinfo[sector],$l_lrs_reach);
@@ -99,7 +99,7 @@ if($sector == "*")
     if($playerinfo['dev_lssd'] == 'Y')
      {
        
-        $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $playerinfo[ship_id] AND sector_id = $row[link_dest] ORDER BY time DESC LIMIT 1");
+        $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE player_id <> $playerinfo[player_id] AND sector_id = $row[link_dest] ORDER BY time DESC LIMIT 1");
         if(!$resx)
         {
            echo "<TD>None</TD>";
@@ -107,7 +107,7 @@ if($sector == "*")
         else
         {
            $myrow = $resx->fields;
-           echo "<TD>" . get_player($myrow[ship_id]) . "</TD>";
+           echo "<TD>" . get_player($myrow[player_id]) . "</TD>";
         }
     }
     echo "</TR>";
@@ -221,7 +221,7 @@ else
   if($sector != 0)
   {
     // get ships located in the scanned sector
-    $result4 = $db->Execute("SELECT ship_id,ship_name,character_name,cloak FROM $dbtables[players] WHERE sector='$sector' AND on_planet='N'");
+    $result4 = $db->Execute("SELECT player_id,ship_name,character_name,cloak FROM $dbtables[players] WHERE sector='$sector' AND on_planet='N'");
     if($result4->EOF)
     {
       echo "$l_none";
@@ -305,7 +305,7 @@ else
     }
     else
     {
-      $result5 = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$planet[owner]");
+      $result5 = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$planet[owner]");
       $planet_owner_name = $result5->fields;
       echo " ($planet_owner_name[character_name])";
     }
@@ -329,7 +329,7 @@ else
   {
      echo "<TR BGCOLOR=\"$color_line2\"><TD><B>$l_lss</B></TD></TR>";
      echo "<TR><TD>";
-     $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $playerinfo[ship_id] AND sector_id = $sector ORDER BY time DESC LIMIT 1");
+     $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE player_id <> $playerinfo[player_id] AND sector_id = $sector ORDER BY time DESC LIMIT 1");
      if(!$resx)
      {
         echo "None";
@@ -337,7 +337,7 @@ else
      else
      {
         $myrow = $resx->fields;
-        echo get_player($myrow[ship_id]);
+        echo get_player($myrow[player_id]);
      }
   }
   else

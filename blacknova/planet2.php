@@ -343,7 +343,7 @@ else
 
   $total_holds_needed = $transfer_ore + $transfer_organics + $transfer_goods + $transfer_colonists;
 
-  if($playerinfo[ship_id] != $planetinfo[owner] && $transfer_credits != 0 && $corp_planet_transfers != 1)
+  if($playerinfo[player_id] != $planetinfo[owner] && $transfer_credits != 0 && $corp_planet_transfers != 1)
   {
     echo "$l_planet2_nocorptransfer<p>";
     echo "<A HREF=planet.php?planet_id=$planet_id>$l_clickme</A> $l_toplanetmenu<BR><BR>";
@@ -357,7 +357,7 @@ else
   {
     if(!empty($planetinfo))
     {
-      if($planetinfo[owner] == $playerinfo[ship_id] || ($planetinfo[corp] == $playerinfo[team] && $playerinfo[team] <> 0))
+      if($planetinfo[owner] == $playerinfo[player_id] || ($planetinfo[corp] == $playerinfo[team] && $playerinfo[team] <> 0))
       {
         if($transfer_ore < 0 && $playerinfo[ship_ore] < abs($transfer_ore))
         {
@@ -454,7 +454,7 @@ else
           echo "$l_planet2_noten $l_credits $l_planet2_fortr<BR>";
           $transfer_credits = 0;
         }
-        $update1 = $db->Execute("UPDATE $dbtables[players] SET ship_ore=ship_ore+$transfer_ore, ship_organics=ship_organics+$transfer_organics, ship_goods=ship_goods+$transfer_goods, ship_energy=ship_energy+$transfer_energy, ship_colonists=ship_colonists+$transfer_colonists, torps=torps+$transfer_torps, ship_fighters=ship_fighters+$transfer_fighters, credits=credits+$transfer_credits, turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
+        $update1 = $db->Execute("UPDATE $dbtables[players] SET ship_ore=ship_ore+$transfer_ore, ship_organics=ship_organics+$transfer_organics, ship_goods=ship_goods+$transfer_goods, ship_energy=ship_energy+$transfer_energy, ship_colonists=ship_colonists+$transfer_colonists, torps=torps+$transfer_torps, ship_fighters=ship_fighters+$transfer_fighters, credits=credits+$transfer_credits, turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
         $update2 = $db->Execute("UPDATE $dbtables[planets] SET ore=ore-$transfer_ore, organics=organics-$transfer_organics, goods=goods-$transfer_goods, energy=energy-$transfer_energy, colonists=colonists-$transfer_colonists, torps=torps-$transfer_torps, fighters=fighters-$transfer_fighters, credits=credits-$transfer_credits WHERE planet_id=$planet_id");
         echo "$l_planet2_compl<BR><a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu<BR><BR>";
       }

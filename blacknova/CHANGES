@@ -1,3 +1,14 @@
+SharpBlue (20 June 2002)
+---------------------------------
+Renamed the ships table to players
+Inserted ship_types schema in the db
+Created a newplayer() function to perform DB inserts
+Paving the way of separation of ships/players
+
+19 June 2002
+---------------------------------
+BNT 0.4 was released
+
 SharpBlue (16 June 2002)
 ---------------------------------
 Completely rewrote the IGB consolidator

@@ -45,7 +45,7 @@
         $furcount0++;
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF, NOT ON A PLANET ******
-        $reso0 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and planet_id=0" and ship_id > 1);
+        $reso0 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and planet_id=0" and player_id > 1);
         if (!$reso0->EOF)
         {
           $rowo0 = $reso0->fields;
@@ -59,8 +59,8 @@
             if ($playerinfo[ship_fighters] > $rowo0[ship_fighters])
             {
               $furcount0a++;
-              playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo0[character_name]");
-              furangeetoship($rowo0[ship_id]);
+              playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo0[character_name]");
+              furangeetoship($rowo0[player_id]);
               if ($furangeeisdead>0) {
                 $res->MoveNext();
                 continue;
@@ -70,8 +70,8 @@
           elseif ($playerinfo[aggression] == 2)        // ****** O = 0 & AGRESSION = 2 ATTACK ALLWAYS ******
           {
             $furcount0a++;
-            playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo0[character_name]");
-            furangeetoship($rowo0[ship_id]);
+            playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo0[character_name]");
+            furangeetoship($rowo0[player_id]);
             if ($furangeeisdead>0) {
               $res->MoveNext();
               continue;
@@ -94,7 +94,7 @@
         }
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF ******
-        $reso1 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
+        $reso1 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and player_id > 1");
         if (!$reso1->EOF)
         {
           $rowo1= $reso1->fields;
@@ -108,8 +108,8 @@
             if ($playerinfo[ship_fighters] > $rowo1[ship_fighters] && $rowo1[planet_id] == 0)
             {
               $furcount1a++;
-              playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo1[character_name]");
-              furangeetoship($rowo1[ship_id]);
+              playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo1[character_name]");
+              furangeetoship($rowo1[player_id]);
               if ($furangeeisdead>0) {
                 $res->MoveNext();
                 continue;
@@ -119,11 +119,11 @@
           elseif ($playerinfo[aggression] == 2)        // ****** O = 1 & AGRESSION = 2 ATTACK ALLWAYS ******
           {
             $furcount1a++;
-            playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo1[character_name]");
+            playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo1[character_name]");
             if (!$rowo1[planet_id] == 0) {              // *** IS ON PLANET ***
               furangeetoplanet($rowo1[planet_id]);
             } else {
-              furangeetoship($rowo1[ship_id]);
+              furangeetoship($rowo1[player_id]);
             }
             if ($furangeeisdead>0) {
               $res->MoveNext();
@@ -149,7 +149,7 @@
         furangeetrade();
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF ******
-        $reso2 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
+        $reso2 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and player_id > 1");
         if (!$reso2->EOF)
         {
           $rowo2=$reso2->fields;
@@ -163,8 +163,8 @@
             if ($playerinfo[ship_fighters] > $rowo2[ship_fighters] && $rowo2[planet_id] == 0)
             {
               $furcount2a++;
-              playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo2[character_name]");
-              furangeetoship($rowo2[ship_id]);
+              playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo2[character_name]");
+              furangeetoship($rowo2[player_id]);
               if ($furangeeisdead>0) {
                 $res->MoveNext();
                 continue;
@@ -174,11 +174,11 @@
           elseif ($playerinfo[aggression] == 2)        // ****** O = 2 & AGRESSION = 2 ATTACK ALLWAYS ******
           {
             $furcount2a++;
-            playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo2[character_name]");
+            playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo2[character_name]");
             if (!$rowo2[planet_id] == 0) {              // *** IS ON PLANET ***
               furangeetoplanet($rowo2[planet_id]);
             } else {
-              furangeetoship($rowo2[ship_id]);
+              furangeetoship($rowo2[player_id]);
             }
             if ($furangeeisdead>0) {
               $res->MoveNext();
@@ -215,7 +215,7 @@
           }
           // ****** FIND A TARGET ******
           // ****** IN MY SECTOR, NOT MYSELF ******
-          $reso3 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and ship_id > 1");
+          $reso3 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and player_id > 1");
           if (!$reso3->EOF)
           {
             $rowo3=$reso3->fields;
@@ -229,8 +229,8 @@
               if ($playerinfo[ship_fighters] > $rowo3[ship_fighters] && $rowo3[planet_id] == 0)
               {
                 $furcount3a++;
-                playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo3[character_name]");
-                furangeetoship($rowo3[ship_id]);
+                playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo3[character_name]");
+                furangeetoship($rowo3[player_id]);
                 if ($furangeeisdead>0) {
                   $res->MoveNext();
                   continue;
@@ -240,11 +240,11 @@
             elseif ($playerinfo[aggression] == 2)        // ****** O = 3 & AGRESSION = 2 ATTACK ALLWAYS ******
             {
               $furcount3a++;
-              playerlog($playerinfo[ship_id], LOG_FURANGEE_ATTACK, "$rowo3[character_name]");
+              playerlog($playerinfo[player_id], LOG_FURANGEE_ATTACK, "$rowo3[character_name]");
               if (!$rowo3[planet_id] == 0) {              // *** IS ON PLANET ***
                 furangeetoplanet($rowo3[planet_id]);
               } else {
-                furangeetoship($rowo3[ship_id]);
+                furangeetoship($rowo3[player_id]);
               }
               if ($furangeeisdead>0) {
                 $res->MoveNext();

@@ -52,14 +52,14 @@ if($defenceinfo['sector_id'] <> $playerinfo['sector'])
    include("footer.php");
    die();
 }
-if($defenceinfo['ship_id'] == $playerinfo['ship_id'])
+if($defenceinfo['player_id'] == $playerinfo['player_id'])
 {
    $defence_owner = $l_md_you;
 }
 else
 {
-   $defence_ship_id = $defenceinfo['ship_id'];
-   $resulta = $db->Execute ("SELECT * FROM $dbtables[players] WHERE ship_id = $defence_ship_id ");
+   $defence_player_id = $defenceinfo['player_id'];
+   $resulta = $db->Execute ("SELECT * FROM $dbtables[players] WHERE player_id = $defence_player_id ");
    $ownerinfo = $resulta->fields;
    $defence_owner = $ownerinfo['character_name'];
 }
@@ -79,7 +79,7 @@ else
 switch($response) {
    case "fight":
       bigtitle();
-      if($defenceinfo['ship_id'] == $playerinfo['ship_id'])
+      if($defenceinfo['player_id'] == $playerinfo['player_id'])
       {
          echo "$l_md_yours<BR><BR>";
          TEXT_GOTOMAIN();
@@ -110,7 +110,7 @@ switch($response) {
             $playerbeams=$total_sector_mines;
          }
          echo "$l_md_bmines $playerbeams $l_mines<BR>";
-         $update4b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=ship_energy-$playerbeams WHERE ship_id=$playerinfo[ship_id]");
+         $update4b = $db->Execute ("UPDATE $dbtables[players] SET ship_energy=ship_energy-$playerbeams WHERE player_id=$playerinfo[player_id]");
          explode_mines($sector,$playerbeams);
          $char_name = $playerinfo['character_name'];
          $l_md_msgdownerb=str_replace("[sector]",$sector,$l_md_msgdownerb);
@@ -122,7 +122,7 @@ switch($response) {
       }
       break;
    case "retrieve":
-      if($defenceinfo['ship_id'] <> $playerinfo['ship_id'])
+      if($defenceinfo['player_id'] <> $playerinfo['player_id'])
       {
          echo "$l_md_notyours<BR><BR>";
          TEXT_GOTOMAIN();
@@ -151,23 +151,23 @@ switch($response) {
             $quantity = $torpedo_max;
          }
       }
-      $ship_id = $playerinfo[ship_id];
+      $player_id = $playerinfo[player_id];
       if($quantity > 0)
       {
          $db->Execute("UPDATE $dbtables[sector_defence] SET quantity=quantity - $quantity WHERE defence_id = $defence_id");
          if($defenceinfo['defence_type'] == 'M')
          {
-            $db->Execute("UPDATE $dbtables[players] set torps=torps + $quantity where ship_id = $ship_id");
+            $db->Execute("UPDATE $dbtables[players] set torps=torps + $quantity where player_id = $player_id");
          }
          else
          {
-            $db->Execute("UPDATE $dbtables[players] set ship_fighters=ship_fighters + $quantity where ship_id = $ship_id");
+            $db->Execute("UPDATE $dbtables[players] set ship_fighters=ship_fighters + $quantity where player_id = $player_id");
          }
          $db->Execute("DELETE FROM $dbtables[sector_defence] WHERE quantity <= 0");
       }
       $stamp = date("Y-m-d H-i-s");
 
-      $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$playerinfo[sector] where ship_id=$playerinfo[ship_id]");
+      $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$playerinfo[sector] where player_id=$playerinfo[player_id]");
       bigtitle();
       echo "$l_md_retr $quantity $defence_type.<BR>";
       TEXT_GOTOMAIN();
@@ -175,7 +175,7 @@ switch($response) {
       break;
    case "change":
       bigtitle();
-      if($defenceinfo['ship_id'] <> $playerinfo['ship_id'])
+      if($defenceinfo['player_id'] <> $playerinfo['player_id'])
       {
          echo "$l_md_notyours<BR><BR>";
          TEXT_GOTOMAIN();
@@ -184,7 +184,7 @@ switch($response) {
       }
       $db->Execute("UPDATE $dbtables[sector_defence] SET fm_setting = '$mode' where defence_id = $defence_id");
       $stamp = date("Y-m-d H-i-s");
-      $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$playerinfo[sector] where ship_id=$playerinfo[ship_id]");
+      $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$playerinfo[sector] where player_id=$playerinfo[player_id]");
       if($mode == 'attack')
         $mode = $l_md_attack;
       else
@@ -201,7 +201,7 @@ switch($response) {
       $l_md_consist=str_replace("[owner]",$defence_owner,$l_md_consist);
       echo "$l_md_consist<BR>";
 
-      if($defenceinfo['ship_id'] == $playerinfo['ship_id'])
+      if($defenceinfo['player_id'] == $playerinfo['player_id'])
       {
          echo "$l_md_youcan:<BR>";
          echo "<FORM ACTION=modify-defences.php METHOD=POST>";
@@ -224,8 +224,8 @@ switch($response) {
       }
       else
       {
-         $ship_id = $defenceinfo['ship_id'];
-         $result2 = $db->Execute("SELECT * from $dbtables[players] where ship_id=$ship_id");
+         $player_id = $defenceinfo['player_id'];
+         $result2 = $db->Execute("SELECT * from $dbtables[players] where player_id=$player_id");
          $fighters_owner = $result2->fields;
 
          if($fighters_owner[team] != $playerinfo[team] || $playerinfo[team] == 0)

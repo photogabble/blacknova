@@ -68,7 +68,7 @@ function go_build_base($planet_id, $sector_id)
     // ** Create The Base
     $update1 = $db->Execute("UPDATE $dbtables[planets] SET base='Y', ore=$planetinfo[ore]-$base_ore, organics=$planetinfo[organics]-$base_organics, goods=$planetinfo[goods]-$base_goods, credits=$planetinfo[credits]-$base_credits WHERE planet_id=$planet_id");
     // ** Update User Turns
-    $update1b = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1 where ship_id=$playerinfo[ship_id]");
+    $update1b = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1 where player_id=$playerinfo[player_id]");
     // ** Refresh Plant Info
     $result3 = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
     $planetinfo=$result3->fields;
@@ -137,14 +137,14 @@ function change_planet_production($prodpercentarray)
 // **  
 // **  We need to track what the player_id is and what corp they belong to if they belong to a corp,
 // **    these two values are not passed in as arrays
-// **    ship_id = the owner of the planet          ($ship_id = $prodpercentarray[ship_id])
-// **    team_id = the corperation creators ship_id ($team_id = $prodpercentarray[team_id])
+// **    player_id = the owner of the planet          ($player_id = $prodpercentarray[player_id])
+// **    team_id = the corperation creators player_id ($team_id = $prodpercentarray[team_id])
 // **
 // **  First we generate a list of values based on the commodity
 // **    (ore, organics, goods, energy, fighters, torps, corp, team, sells)
 // **
 // **  Second we generate a second list of values based on the planet_id
-// **  Because team and ship_id are not arrays we do not pass them through the second list command.
+// **  Because team and player_id are not arrays we do not pass them through the second list command.
 // **  When we write the ore production percent we also clear the selling and corp values out of the db
 // **  When we pass through the corp array we set the value to $team we grabbed out of the array.
 // **  in the sells and corp the prodpercent = the planet_id.
@@ -160,14 +160,14 @@ function change_planet_production($prodpercentarray)
   global $db, $dbtables;
   global $default_prod_ore, $default_prod_organics, $default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp;
 
-  $ship_id = $prodpercentarray[ship_id];
+  $player_id = $prodpercentarray[player_id];
   $team_id = $prodpercentarray[team_id]; 
 
   echo "Click <A HREF=planet-report.php?PRepType=2>here</A> to return to the Change Planet Production Report<br><br>";
 
   while(list($commod_type, $valarray) = each($prodpercentarray))
   {
-    if($commod_type != "team_id" && $commod_type != "ship_id")
+    if($commod_type != "team_id" && $commod_type != "player_id")
     {
       while(list($planet_id, $prodpercent) = each($valarray))
       {  
@@ -197,7 +197,7 @@ function change_planet_production($prodpercentarray)
   echo "Production Percentages Updated <BR><BR>";
   echo "Checking Values for excess of 100% and negative production values <BR><BR>";
 
-  $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE owner=$ship_id ORDER BY sector_id");
+  $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE owner=$player_id ORDER BY sector_id");
   $i = 0;
   if($res)
   {
@@ -267,7 +267,7 @@ function Take_Credits($sector_id, $planet_id)
     if($playerinfo[turns] >= 1)
     {
       // verify player owns the planet to take credits from
-      if($planetinfo[owner] == $playerinfo[ship_id])
+      if($planetinfo[owner] == $playerinfo[player_id])
       {
         // get number of credits from the planet and current number player has on ship
         $CreditsTaken = $planetinfo[credits];
@@ -390,7 +390,7 @@ function Real_Space_Move($destination)
     $l_rs_movetime=str_replace("[triptime]",NUMBER($triptime),$l_rs_movetime);
     echo "$l_rs_movetime<BR><BR>";
     echo "$l_rs_noturns";
-    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where player_id=$playerinfo[player_id]");
 
     $retval = "BREAK-TURNS";
   }
@@ -403,7 +403,7 @@ function Real_Space_Move($destination)
     if($ok>0)
     {
        $stamp = date("Y-m-d H-i-s");
-       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',sector=$destination,ship_energy=ship_energy+$energyscooped,turns=turns-$triptime,turns_used=turns_used+$triptime WHERE ship_id=$playerinfo[ship_id]");
+       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',sector=$destination,ship_energy=ship_energy+$energyscooped,turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
        $l_rs_ready=str_replace("[sector]",$destination,$l_rs_ready);
        $l_rs_ready=str_replace("[triptime]",NUMBER($triptime),$l_rs_ready);
        $l_rs_ready=str_replace("[energy]",NUMBER($energyscooped),$l_rs_ready);

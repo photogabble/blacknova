@@ -37,7 +37,7 @@ if($playerinfo[on_planet] == "Y")
   if($sectorinfo[planet] == "Y")
   {
     echo "Click <A HREF=planet.php>here</A> to go to the planet menu.<BR>"; 
-    echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=planet.php?id=" . $playerinfo[ship_id] . "\">";
+    echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=planet.php?id=" . $playerinfo[player_id] . "\">";
     mysql_query("UNLOCK TABLES");
     //-------------------------------------------------------------------------------------------------
     die();
@@ -129,13 +129,13 @@ echo "<BR>";
 /* Get a list of the ships in this sector */
 if($playerinfo[sector] != 0)
 {
-  $res = mysql_query("SELECT ship_id,ship_name,character_name,cloak FROM ships WHERE ship_id<>$playerinfo[ship_id] AND sector=$playerinfo[sector] AND on_planet='N' ORDER BY ship_name ASC");
+  $res = mysql_query("SELECT player_id,ship_name,character_name,cloak FROM ships WHERE player_id<>$playerinfo[player_id] AND sector=$playerinfo[sector] AND on_planet='N' ORDER BY ship_name ASC");
   $i = 0;
   if($res > 0)
   {
     while($row = mysql_fetch_array($res))
     {
-      $ship_id[$i] = $row[ship_id];
+      $player_id[$i] = $row[player_id];
       $ships[$i] = $row[ship_name];
       $character_name[$i] = $row[character_name];
       $ship_cloak[$i] = $row[cloak];
@@ -175,7 +175,7 @@ if($playerinfo[sector] != 0)
           echo ", ";
         }
         $num_detected++;
-        echo "$ships[$i] ($character_name[$i]) [<A HREF=scan.php?ship_id=$ship_id[$i]>scan</A>/<A HREF=attack.php?ship_id=$ship_id[$i]>attack</A>]";
+        echo "$ships[$i] ($character_name[$i]) [<A HREF=scan.php?player_id=$player_id[$i]>scan</A>/<A HREF=attack.php?player_id=$player_id[$i]>attack</A>]";
       }
     }
     if(!$num_detected)
@@ -233,7 +233,7 @@ if($sectorinfo[planet] == "Y" && $sectorinfo[sector_id] != 0)
   }
   else
   {
-    $res = mysql_query("SELECT character_name FROM ships WHERE ship_id=$sectorinfo[planet_owner]");
+    $res = mysql_query("SELECT character_name FROM ships WHERE player_id=$sectorinfo[planet_owner]");
     $planet_owner_name = mysql_fetch_array($res);
     mysql_free_result($res);
     echo "$planet_owner_name[character_name]";
@@ -302,7 +302,7 @@ echo "<BR>Last System Update:  ";
 $lastupdate = filemtime("cron.txt");
 print(date("l dS of F Y h:i:s A",$lastupdate)) ; 
 echo "<BR>Updates happen every 6 minutes.";
-//gen_score($playerinfo[ship_id]);
+//gen_score($playerinfo[player_id]);
 $rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
 echo $link_bnthelper_string;
 echo $port_bnthelper_string;

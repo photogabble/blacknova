@@ -111,7 +111,7 @@ if($result3 > 0)
   else
   {
     $insert1 = $db->Execute ("INSERT INTO $dbtables[links] SET link_start=$playerinfo[sector], link_dest=$target_sector");
-    $update1 = $db->Execute ("UPDATE $dbtables[players] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
+    $update1 = $db->Execute ("UPDATE $dbtables[players] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
     if($oneway)
     {
       echo "$l_warp_coneway $target_sector.<BR><BR>";

@@ -64,14 +64,14 @@ if ($flag==1)
     include("check_fighters.php");
     if($ok>0){
        $stamp = date("Y-m-d H-i-s");
-       $query="UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$sector where ship_id=$playerinfo[ship_id]";
-       log_move($playerinfo[ship_id],$sector);
+       $query="UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$sector where player_id=$playerinfo[player_id]";
+       log_move($playerinfo[player_id],$sector);
        $move_result = $db->Execute ("$query");
   	if (!$move_result)
 	{
 	// is this really STILL needed?
 	    $error = $db->ErrorMsg();
-	    mail ($admin_mail,"Move Error", "Start Sector: $sectorinfo[sector_id]\nEnd Sector: $sector\nPlayer: $playerinfo[character_name] - $playerinfo[ship_id]\n\nQuery:  $query\n\nSQL error: $error");
+	    mail ($admin_mail,"Move Error", "Start Sector: $sectorinfo[sector_id]\nEnd Sector: $sector\nPlayer: $playerinfo[character_name] - $playerinfo[player_id]\n\nQuery:  $query\n\nSQL error: $error");
 	}
     }
     /* enter code for checking dangers in new sector */
@@ -84,7 +84,7 @@ if ($flag==1)
 else
 {
     echo "$l_move_failed<BR><BR>";
-    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where player_id=$playerinfo[player_id]");
    
     TEXT_GOTOMAIN();
 }

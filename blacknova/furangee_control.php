@@ -157,7 +157,7 @@ else
           echo "<TR><TD>Furangee name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
           echo "<TR><TD>Active?</TD><TD><INPUT TYPE=CHECKBOX NAME=active VALUE=ON " . CHECKED($row[active]) . "></TD></TR>";
           echo "<TR><TD>E-mail</TD><TD>$row[email]</TD></TR>";
-          echo "<TR><TD>ID</TD><TD>$row[ship_id]</TD></TR>";
+          echo "<TR><TD>ID</TD><TD>$row[player_id]</TD></TR>";
           echo "<TR><TD>Ship</TD><TD><INPUT TYPE=TEXT NAME=ship_name VALUE=\"$row[ship_name]\"></TD></TR>";
           echo "<TR><TD>Destroyed?</TD><TD><INPUT TYPE=CHECKBOX NAME=ship_destroyed VALUE=ON " . CHECKED($row[ship_destroyed]) . "></TD></TR>";
           echo "<TR><TD>Orders</TD><TD>";
@@ -233,7 +233,7 @@ else
           echo "<HR>";
           echo "<span style=\"font-family : courier, monospace; font-size: 12pt; color: #00FF00;\">Log Data For This Furangee</span><BR>";
 
-          $logres = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$row[ship_id] ORDER BY time DESC, type DESC");   
+          $logres = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$row[player_id] ORDER BY time DESC, type DESC");   
           while(!$logres->EOF)
           {
             $logrow = $logres->fields;
@@ -350,12 +350,12 @@ else
       }
       elseif($operation == "clearfurlog")
       {
-        $res = $db->Execute("SELECT email,ship_id FROM $dbtables[players] WHERE email LIKE '%@furangee'");
+        $res = $db->Execute("SELECT email,player_id FROM $dbtables[players] WHERE email LIKE '%@furangee'");
         while(!$res->EOF)
         {
           $row = $res->fields;
-          $db->Execute("DELETE FROM $dbtables[logs] WHERE ship_id=$row[ship_id]");
-          echo "Log for ship_id $row[ship_id] cleared.<BR>";
+          $db->Execute("DELETE FROM $dbtables[logs] WHERE player_id=$row[player_id]");
+          echo "Log for player_id $row[player_id] cleared.<BR>";
           $res->MoveNext();
         }
       }

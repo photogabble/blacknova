@@ -57,10 +57,10 @@ if($zoneinfo[allow_warpedit] == 'L')
   $result3 = $db->Execute("SELECT * FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
   $zoneowner_info = $result3->fields;
 
-  $result5 = $db->Execute("SELECT team FROM $dbtables[players] WHERE ship_id='$zoneowner_info[owner]'");
+  $result5 = $db->Execute("SELECT team FROM $dbtables[players] WHERE player_id='$zoneowner_info[owner]'");
   $zoneteam = $result5->fields;
 
-  if($zoneowner_info[owner] != $playerinfo[ship_id])
+  if($zoneowner_info[owner] != $playerinfo[player_id])
   {
     if(($zoneteam[team] != $playerinfo[team]) || ($playerinfo[team] == 0))
     {

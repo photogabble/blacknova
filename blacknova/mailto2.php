@@ -60,7 +60,7 @@ if (strpos($to, $l_sendm_ally)===false)
   $target_info = $res->fields;
   $content = htmlspecialchars($content);
   $subject = htmlspecialchars($subject);
-  $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, sent, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$target_info[ship_id]."', '".$timestamp."', '".$subject."', '".$content."')");
+  $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, sent, subject, message) VALUES ('".$playerinfo[player_id]."', '".$target_info[player_id]."', '".$timestamp."', '".$subject."', '".$content."')");
 }
 else
 {
@@ -77,7 +77,7 @@ else
      while (!$res2->EOF)
      {
         $row2 = $res2->fields;
-        $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, sent, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$row2[ship_id]."', '".$timestamp."', '".$subject."', '".$content."')");
+        $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, sent, subject, message) VALUES ('".$playerinfo[player_id]."', '".$row2[player_id]."', '".$timestamp."', '".$subject."', '".$content."')");
         $res2->MoveNext();
      }
 
