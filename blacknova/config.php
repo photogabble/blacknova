@@ -81,9 +81,9 @@ $allow_genesis_destroy = true;         // Genesis torps can destroy planets
 
 $ibank_interest = 0.0003;			// Interest rate for account funds NOTE: this is calculated every system update!
 $ibank_paymentfee = 0.05; 		// Paymentfee
-$ibank_loaninterest = 0.0006;		// Loan interest i.e 8%
-$ibank_loanfactor = 10;			// x Times what the user currently have in account
-$ibank_loanlimit = 250000000;		// This minus already existing loans is the maximum.
+$ibank_loaninterest = 0.0010;		// Loan interest (good idea to put double what you get on a planet)
+$ibank_loanfactor = 0.10;			// One-time loan fee
+$ibank_loanlimit = 0.25;		// Maximum loan allowed, percent of net worth
 
 // Information displayed on the 'Manage Own Account' section
 $ibank_ownaccount_info = "Interest rate is " . $ibank_interest * 100 . "%<BR>Loan rate is " .
@@ -202,6 +202,7 @@ $avail_lang[4][name] = 'Cesky';
 $IGB_min_turns = $start_turns; //Turns a player has to play before ship transfers are allowed 0=disable
 $IGB_svalue = 0.15; //Max amount of sender's value allowed for ship transfers 0=disable
 $IGB_trate = 1440; //Time (in minutes) before two similar transfers are allowed for ship transfers.0=disable
+$IGB_lrate = 1440; //Time (in minutes) players have to repay a loan
 $corp_planet_transfers = 0; //If transferring credits to/from corp planets is allowed. 1=enable
 $min_value_capture = 0; //Percantage of planet's value a ship must be worth to be able to capture it. 0=disable
 $defence_degrade_rate = 0.05;
@@ -215,6 +216,7 @@ $sched_type = 0; // 0 = Cron based, 1 = player triggered.
 $max_credits_without_base = $base_credits; // Max amount of credits allowed on a planet without a base
 $sofa_on = false;
 $ksm_allowed = true;
+
 
 include("global_funcs.php");
 ?>

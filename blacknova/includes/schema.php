@@ -191,7 +191,8 @@ $db->Execute("CREATE TABLE $dbtables[ibank_accounts](" .
              "ship_id bigint(20) DEFAULT '0' NOT NULL," .
              "balance bigint(20) DEFAULT '0'," .
              "loan bigint(20)  DEFAULT '0'," .
-             "PRIMARY KEY(ship_id)" .
+             "loantime TIMESTAMP(14)," .
+			 "PRIMARY KEY(ship_id)" .
              ")");
 echo "- created successfully.<BR>";
 

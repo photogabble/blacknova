@@ -918,6 +918,26 @@ $l_igb_nozeroamount3    = "Amount to withdraw must not be zero.";
 $l_igb_creditstoyourship        = "Credits have been transfered to your ship account.";
 $l_igb_igberrreport     = "IGB Error Report";
 $l_igb_source   = "Source";
+$l_igb_loans = "Loans";
+$l_igb_loanstatus = "Loans Status";
+$l_igb_currentloan = "Total Current Loan";
+$l_igb_maxloanpercent = "Maximum loan allowed ([igb_percent]% of net worth)";
+$l_igb_loanamount = "Enter the loan amount";
+$l_igb_borrow = "Borrow";
+$l_igb_loanrates     = "All loans incur a one-time fee of [factor]% of total loan amount. Additionally, you will be charged [interest]% in interests each turn until you repay.";
+$l_igb_invalidamount = "You entered an invalid amount.";
+$l_igb_notwoloans = "You cannot take a loan without repaying your first one.";
+$l_igb_loantoobig = "You are not allowed to borrow that many credits.";
+$l_igb_takenaloan = "Taken a Loan";
+$l_igb_loancongrats = "Congratulation! You have just taken a loan with the friendliest banking consortium around!";
+$l_igb_loantransferred = "Amount transferred to your ship account";
+$l_igb_loanfee = "One-time loan fee";
+$l_igb_amountowned = "Total amount owned to the IGB";
+$l_igb_loanreminder = "Friendly reminder: if you have not repayed your loan in totality in [hours]h [mins]m, we will be forced to render your ship's account invalid in special ports.<br><br>\"The IGB, fullfiller of your dreams\"";
+$l_igb_loantimeleft = "Time left until full payment is due";
+$l_igb_loanlate = "Payment is late!";
+$l_igb_repayamount = "Enter the amount to repay";
+$l_igb_repay = "Repay";
 
 // combat.php
 

@@ -56,6 +56,10 @@ elseif($command == 'transfer2') //specific transfer menu (ship or planet)
   IGB_transfer2();
 elseif($command == 'transfer3') //transfer operation
   IGB_transfer3();
+elseif($command == 'loans') //loans menu
+  IGB_loans();
+elseif($command == 'borrow') //borrow operation
+  IGB_borrow();
 else
 {
   echo "
@@ -107,14 +111,14 @@ function IGB_login()
   global $account;
   global $l_igb_welcometoigb, $l_igb_accountholder, $l_igb_back, $l_igb_logout;
   global $l_igb_igbaccount, $l_igb_shipaccount, $l_igb_withdraw, $l_igb_transfer;
-  global $l_igb_deposit, $l_igb_credit_symbol; $l_igb_operations;
+  global $l_igb_deposit, $l_igb_credit_symbol, $l_igb_operations, $l_igb_loans;
 
   echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_welcometoigb<br>---------------------------------</td></tr>" .
        "<tr valign=top>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_accountholder :<br><br>$l_igb_shipaccount :<br>$l_igb_igbaccount&nbsp;&nbsp;:</td>" .
        "<td align=right><font size=2 face=\"courier new\" color=#00FF00>$playerinfo[character_name]&nbsp;&nbsp;<br><br>".NUMBER($playerinfo[credits]) . " $l_igb_credit_symbol<br>" . NUMBER($account[balance]) . " $l_igb_credit_symbol<br></td>" .
        "</tr>" .
-       "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>$l_igb_operations<br>---------------------------------<br><br><a href=\"IGB.php?command=withdraw\">$l_igb_withdraw</a><br><a href=\"IGB.php?command=deposit\">$l_igb_deposit</a><br><a href=\"IGB.php?command=transfer\">$l_igb_transfer</a><br>&nbsp;</td></tr>" .
+       "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>$l_igb_operations<br>---------------------------------<br><br><a href=\"IGB.php?command=withdraw\">$l_igb_withdraw</a><br><a href=\"IGB.php?command=deposit\">$l_igb_deposit</a><br><a href=\"IGB.php?command=transfer\">$l_igb_transfer</a><br><a href=\"IGB.php?command=loans\">$l_igb_loans</a><br>&nbsp;</td></tr>" .
        "<tr valign=bottom>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
        "</tr>";
@@ -794,6 +798,140 @@ function IGB_withdraw2()
   $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance-$amount WHERE ship_id=$playerinfo[ship_id]");
   $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
 }
+
+function IGB_loans()
+{
+  global $playerinfo, $account;
+  global $ibank_loanlimit, $ibank_loanfactor, $ibank_loaninterest; 
+  global $l_igb_loanstatus,$l_igb_shipaccount, $l_igb_currentloan, $l_igb_repay;
+  global $l_igb_maxloanpercent, $l_igb_loanamount, $l_igb_borrow, $l_igb_loanrates;
+  global $l_igb_back, $l_igb_logout, $IGB_lrate, $l_igb_loantimeleft, $l_igb_loanlate, $l_igb_repayamount;
+  global $db, $dbtables;
+
+  echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loanstatus<br>---------------------------------</td></tr>" .
+       "<tr valign=top><td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_shipaccount :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($playerinfo[credits]) . " C</td></tr>" .
+       "<tr valign=top><td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_currentloan :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($account[loan]) . " C</td></tr>";
+
+  if($account[loan] != 0)
+  {
+    $curtime = time();
+    $res = $db->Execute("SELECT UNIX_TIMESTAMP(loantime) as time FROM $dbtables[ibank_accounts] WHERE ship_id=$playerinfo[ship_id]");
+    if(!$res->EOF)
+    {
+      $time = $res->fields;
+    }
+    
+    $difftime = ($curtime - $time[time]) / 60;
+
+    echo "<tr valign=top><td nowrap><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loantimeleft :</td>";
+    
+    if($difftime > $IGB_lrate)
+      echo "<td align=right><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loanlate</td></tr>";
+    else
+    {
+      $difftime=$IGB_lrate - $difftime;
+      $hours = $difftime / 60;
+      $hours = (int) $hours;
+      $mins = $difftime % 60;
+      echo "<td align=right><font size=2 face=\"courier new\" color=#00FF00>${hours}h ${mins}m</td></tr>";
+    }
+
+    $factor = $ibank_loanfactor *=100;
+    $interest = $ibank_loaninterest *=100;
+
+    $l_igb_loanrates = str_replace("[factor]", $factor, $l_igb_loanrates);
+    $l_igb_loanrates = str_replace("[interest]", $interest, $l_igb_loanrates);
+    
+    echo "<form action=IGB.php?command=repay method=POST>" .
+         "<tr valign=top>" .
+         "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_repayamount :</td>" .
+         "<td align=right><br><input class=term type=text size=15 maxlength=20 name=amount value=0><br>" .
+         "<br><input class=term type=submit value=$l_igb_repay></td>" .
+         "</form>" .
+         "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" .
+         "$l_igb_loanrates";
+  }
+  else
+  {
+    $percent = $ibank_loanlimit * 100;
+    $score = gen_score($playerinfo[ship_id]);
+    $maxloan = $score * $score * $ibank_loanlimit;
+
+    $l_igb_maxloanpercent = str_replace("[igb_percent]", $percent, $l_igb_maxloanpercent);
+    echo "<tr valign=top><td nowrap><font size=2 face=\"courier new\" color=#00FF00>$l_igb_maxloanpercent :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($maxloan) . " C</td></tr>";
+  
+    $factor = $ibank_loanfactor *=100;
+    $interest = $ibank_loaninterest *=100;
+
+    $l_igb_loanrates = str_replace("[factor]", $factor, $l_igb_loanrates);
+    $l_igb_loanrates = str_replace("[interest]", $interest, $l_igb_loanrates);
+    
+    echo "<form action=IGB.php?command=borrow method=POST>" .
+         "<tr valign=top>" .
+         "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loanamount :</td>" .
+         "<td align=right><br><input class=term type=text size=15 maxlength=20 name=amount value=0><br>" .
+         "<br><input class=term type=submit value=$l_igb_borrow></td>" .
+         "</form>" .
+         "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" .
+         "$l_igb_loanrates";
+  }
+  
+  echo "<tr valign=bottom>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
+       "</tr>";
+}
+
+function IGB_borrow()
+{
+  global $playerinfo, $account, $amount, $ibank_loanlimit, $ibank_loanfactor;
+  global $l_igb_invalidamount,$l_igb_notwoloans, $l_igb_loantoobig;
+  global $l_igb_takenaloan, $l_igb_loancongrats, $l_igb_loantransferred;
+  global $l_igb_loanfee, $l_igb_amountowned, $IGB_lrate, $l_igb_loanreminder;
+  global $db, $dbtables, $l_igb_back, $l_igb_logout;
+
+  $amount = StripNonNum($amount);
+  if(($amount * 1) != $amount)
+    IGB_error($l_igb_invalidamount, "IGB.php?command=loans");
+
+  if($amount == 0)
+    IGB_error($l_igb_invalidamount, "IGB.php?command=loans");
+
+  if($account[loan] != 0)
+    IGB_error($l_igb_notwoloans, "IGB.php?command=loans");
+
+  $score = gen_score($playerinfo[ship_id]);
+  $maxtrans = $score * $score * $ibank_loanlimit;
+
+  if($amount > $maxtrans)
+    IGB_error($l_igb_loantoobig, "IGB.php?command=loans");
+
+  $amount2 = $amount * $ibank_loanfactor;
+  $amount3= $amount + $amount2;
+
+  $hours = $IGB_lrate / 60;
+  $mins = $IGB_lrate % 60;
+
+  $l_igb_loanreminder = str_replace("[hours]", $hours, $l_igb_loanreminder);
+  $l_igb_loanreminder = str_replace("[mins]", $mins, $l_igb_loanreminder);
+
+  echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_takenaloan<br>---------------------------------</td></tr>" .
+       "<tr valign=top><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loancongrats<br><br></tr>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loantransferred :</td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount) . " C<br>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_loanfee :</td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount2) . " C<br>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_amountowned :</td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount3) . " C<br>" .
+       "<tr valign=top>" .
+       "<td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>---------------------------------<br><br>$l_igb_loanreminder</td>" .
+       "<tr valign=top>" .
+       "<td nowrap><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<a href=\"main.php\">$l_igb_logout</a></td>" .
+       "</tr>";
+
+  $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=$amount3, loantime=NOW() WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
+}
+
 
 function IGB_error($errmsg, $backlink, $title="Error!")
 {
