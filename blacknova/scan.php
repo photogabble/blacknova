@@ -73,7 +73,7 @@ else
          $resx = $hasbounty->fields;
          if($resx[btytotal] > 0) 
          {
-            $btyamount = NUMBER($resx[btytoal]);
+            $btyamount = NUMBER($resx[btytotal]);
             $l_scan_bounty=str_replace("[amount]",$btyamount,$l_scan_bounty);
             echo $l_scan_bounty . "<BR>";
             $btyamount = 0;
