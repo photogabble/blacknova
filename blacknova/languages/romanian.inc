@@ -1414,4 +1414,5 @@ $l_insignia[19] = "Admiral";
 // shipyard.php
 
 $l_shipyard_title = "Shipyard";
+$l_planet = "Planet";
 ?>
