@@ -206,13 +206,15 @@ else
       echo "<FORM ACTION=admin.php METHOD=POST>";
       if(empty($sector))
       {
-        echo "<H5>Note: Cannot Edit Sector 0</H5>";
         echo "<SELECT SIZE=20 NAME=sector>";
         $res = $db->Execute("SELECT sector_id FROM $dbtables[universe] ORDER BY sector_id");
         while(!$res->EOF)
         {
           $row=$res->fields;
+          if ($row[sector_id] > 1 )
+          {
           echo "<OPTION VALUE=$row[sector_id]> $row[sector_id] </OPTION>";
+          }
           $res->MoveNext();
         }
         echo "</SELECT>";
