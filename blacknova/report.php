@@ -60,7 +60,7 @@ echo "
     </b></font>
     </td>
     <td width=50% align=center valign=center>
-    <img src=/images/$classinfo[image]></td>
+    <img src=images/$classinfo[image]></td>
   </tr>
 </table>
 
@@ -440,12 +440,12 @@ function MakeBars($level, $max)
     $bright = floor($i / 5) + 1;
     if($bright > 5)
       $bright = 5;
-    $img .= "<img src=/images/dialon$bright.gif>&nbsp;";
+    $img .= "<img src=images/dialon$bright.gif>&nbsp;";
   }
 
   for ($i=0;$i<$diff;$i++)
   {
-    $img .= "<img src=/images/dialoff.gif>&nbsp;";
+    $img .= "<img src=images/dialoff.gif>&nbsp;";
   }
 
   if($img == "")
