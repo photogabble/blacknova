@@ -224,12 +224,15 @@ switch ($teamwhat) {
 
         $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[player_id] AND base='Y'");
         $i=0;
-        while(!$res->EOF)
+        if($res)
         {
-          $row = $res->fields;
-          $sectors[$i] = $row[sector_id];
-          $i++;
-          $res->MoveNext();
+           while(!$res->EOF)
+           {
+             $row = $res->fields;
+             $sectors[$i] = $row[sector_id];
+             $i++;
+             $res->MoveNext();
+           }
         }
 
         $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE owner=$playerinfo[player_id]");
