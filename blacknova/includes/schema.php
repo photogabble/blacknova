@@ -326,8 +326,20 @@ $db->Execute("CREATE TABLE $dbtables[planet_log](" .
               "action int DEFAULT '0' NOT NULL," .
               "time TIMESTAMP(14) ," .
               "PRIMARY KEY (planetlog_id)," .
-              "KEY ship_id (ship_id)," .
+              "KEY player_id (player_id)," .
               "KEY planet_id (planet_id)" .
+              ")");
+db_create_result();
+
+echo "Creating table: ip_log ";
+$db->Execute("CREATE TABLE $dbtables[ip_log](" .
+              "log_id unsigned DEFAULT '0' NOT NULL auto_increment," .
+              "player_id int DEFAULT '0' NOT NULL," .
+              "ip_address tinytext NOT NULL," .
+              "time TIMESTAMP(14) ," .
+              "PRIMARY KEY (log_id)," .
+              "KEY ship_id (player_id)," .
+              "KEY planet_id (ip_address)" .
               ")");
 db_create_result();
 
