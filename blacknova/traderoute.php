@@ -454,7 +454,7 @@ function traderoute_new($traderoute_id)
   global $l_tdr_editerr, $l_tdr_maxtdr, $l_tdr_createnew, $l_tdr_editinga, $l_tdr_traderoute, $l_tdr_unnamed;
   global $l_tdr_cursector, $l_tdr_selspoint, $l_tdr_port, $l_tdr_planet, $l_tdr_none, $l_tdr_insector, $l_tdr_selendpoint;
   global $l_tdr_selmovetype, $l_tdr_realspace, $l_tdr_warp, $l_tdr_selcircuit, $l_tdr_oneway, $l_tdr_bothways, $l_tdr_create;
-  global $l_tdr_modify, $l_tdr_returnmenu;
+  global $l_tdr_modify, $l_tdr_returnmenu, $l_tdr_none;
   global $l_footer_until_update, $l_footer_players_on_1, $l_footer_players_on_2, $l_footer_one_player_on, $sched_ticks;
   global $db, $dbtables;
 
@@ -494,7 +494,7 @@ function traderoute_new($traderoute_id)
     $result->MoveNext();
   }
 
-  $result = $db->Execute("SELECT * FROM $dbtables[planets] WHERE corp=$playerinfo[team] AND owner<>$playerinfo[ship_id] ORDER BY sector_id");
+  $result = $db->Execute("SELECT * FROM $dbtables[planets] WHERE corp=$playerinfo[team] AND corp!=0 AND owner<>$playerinfo[ship_id] ORDER BY sector_id");
   $num_corp_planets = $result->RecordCount();
   $i=0;
   while (!$result->EOF)
@@ -566,7 +566,7 @@ function traderoute_new($traderoute_id)
 //----------------------- Corp Planet
     echo "
     </tr><tr>
-    <td align=right><font size=2>Copporate $l_tdr_planet : </font></td>
+    <td align=right><font size=2>Corporate $l_tdr_planet : </font></td>
     <td><input type=radio name=\"ptype1\" value=\"corp_planet\"
     ";
 
@@ -578,7 +578,7 @@ function traderoute_new($traderoute_id)
     <td>&nbsp;&nbsp;<select name=corp_planet_id1>
     ';
 
-  if($num_planets == 0)
+  if($num_corp_planets == 0)
     echo "<option value=none>$l_tdr_none</option>";
   else
   {
@@ -652,7 +652,7 @@ function traderoute_new($traderoute_id)
 //----------------------- Corp Planet
   echo "
     </tr><tr>
-    <td align=right><font size=2>Copporate $l_tdr_planet : </font></td>
+    <td align=right><font size=2>Corporate $l_tdr_planet : </font></td>
     <td><input type=radio name=\"ptype2\" value=\"corp_planet\"
     ";
 
@@ -664,7 +664,7 @@ function traderoute_new($traderoute_id)
     <td>&nbsp;&nbsp;<select name=corp_planet_id2>
     ';
 
-  if($num_planets == 0)
+  if($num_corp_planets == 0)
     echo "<option value=none>$l_tdr_none</option>";
   else
   {

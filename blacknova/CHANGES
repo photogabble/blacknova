@@ -49,17 +49,8 @@ Removed new enum from ships table due to it breaking creating players.  Will hav
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------
 mypw wrap-around - thanks dave! *please check extensively - especially the IGB*
-
-L. Patrick Smallwood (10 June 2002)
----------------------------------
 Quick addition to ranking.php - Adds efficiency rate for each player. 
-
-L. Patrick Smallwood (10 June 2002)
----------------------------------
 Quick fix to planet-report-CE.php. Used faulty code from another file I fixed. :) Sourceforge bug #566757
-
-L. Patrick Smallwood (10 June 2002)
----------------------------------
 Fader link path should be based on gamepath. Thanks MightyDude: http://forums.blacknova.net/viewtopic.php?topic=800&forum=1&11
 
 Torr (10 JUNE 2002)
@@ -73,18 +64,18 @@ Added player name to the alliance planet report [feature requesta #542620]
 L. Patrick Smallwood (8 June 2002)
 ---------------------------------
 Sourceforge bug #566411: Simple fix to main.php
-
-L. Patrick Smallwood (8 June 2002)
----------------------------------
 Sourceforge bug #500446 and more: news forward/back links fixed, footer text no longer hard-coded.
-
-L. Patrick Smallwood (8 June 2002)
----------------------------------
 Put game version on settings.php, as it was a FAQ. (http://forums.blacknova.net/viewtopic.php?topic=789&forum=2&1)
 
 L. Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #552750 - Combat Stats, show accurate energy used.
+Sourceforge bug #552750 - Fix l_commodities in scanning planet.
+Sourceforge bug #552193 - Fix for mailto.php - actually get a select from the dropdown. Yay.
+Sourceforge bug #558626 - Fix for login.php - actually get a select from the dropdown. Yay.
+Sourceforge bug #565233 - Fix turn usage in planet, and attack
+Sourceforge bug #542401 - Fix logging for illegal values in traderoutes.
+Sourceforge bug #497388 - Add alliance planets as option for traderoutes.
 
 Torr (7 June 2002)
 ---------------------------------
@@ -95,36 +86,9 @@ Added change to database to allow for corp traderoutes (enum dest/source type)
 Added field to messages table to allow for timestamping of messages
 Added support for time stamping to mailto2.php and readmial.php
 
-L. Patrick Smallwood (7 June 2002)
----------------------------------
-Sourceforge bug #552750 - Fix l_commodities in scanning planet.
-
-L. Patrick Smallwood (7 June 2002)
----------------------------------
-Sourceforge bug #552193 - Fix for mailto.php - actually get a select from the dropdown. Yay.
-
-L. Patrick Smallwood (7 June 2002)
----------------------------------
-Sourceforge bug #558626 - Fix for login.php - actually get a select from the dropdown. Yay.
-
-L. Patrick Smallwood (7 June 2002)
----------------------------------
-Sourceforge bug #565233 - Fix turn usage in planet, and attack
-
-L. Patrick Smallwood (7 June 2002)
----------------------------------
-Sourceforge bug #542401 - Fix logging for illegal values in traderoutes.
-
-L. Patrick Smallwood (7 June 2002)
----------------------------------
-Sourceforge bug #497388 - Add alliance planets as option for traderoutes.
-
 L. Patrick Smallwood (21 May 2002)
 ---------------------------------
 Cleanup of the fader styles, names, etc.
-
-L. Patrick Smallwood (21 May 2002)
----------------------------------
 Added the first revision of the news fader for main.
 
 L. Patrick Smallwood (19 May 2002)
@@ -134,18 +98,9 @@ Made the known space map a config.php option.
 L. Patrick Smallwood (9 May 2002)
 ---------------------------------
 Additional cleanup of port's bound checking, faster, better, and more compact.
-
-L. Patrick Smallwood (9 May 2002)
----------------------------------
-Huge revamp of port.php and port2.php, adding dropdowns, multiple-level upgrades, click-to-max, and onchange additions.
-
-L. Patrick Smallwood (9 May 2002)
----------------------------------
-License change to GPL
-
-L. Patrick Smallwood (9 May 2002)
----------------------------------
 Huge cleanup, touching lots of files, be careful of breakage: Removes *all* windows newlines from code.
+Huge revamp of port.php and port2.php, adding dropdowns, multiple-level upgrades, click-to-max, and onchange additions.
+License change to GPL
 
 L. Patrick Smallwood (1 May 2002)
 ---------------------------------
@@ -155,9 +110,6 @@ footer.
 L. Patrick Smallwood (1 May 2002)
 ---------------------------------
 HUGE cleanup and redesign of create universe.
-
-L. Patrick Smallwood (1 May 2002)
----------------------------------
 Fixed "no more than 500 goods ports ever" bug, thanks to heath@foomafia.com.
 
 Ron Harwood & David Rowlands (1 May 2002)
@@ -169,16 +121,10 @@ L. Patrick Smallwood (29 April 2002)
 ---------------------------------
 Added schema file with details on changes required to add lssd. 
 These changes may not be correct, and should be examined closely. I beleive them to be functional however.
-
-L. Patrick Smallwood (29 April 2002)
----------------------------------
 Added device "Last ship seen in sector" device. Purchase at special port. Accessible in device menu.
 Automatically adds functionality to both scan types. Automatically ignores your presence in sectors
 when reporting. Beginning cost: 1 mil. Future functionality: add timestamp/aging so it is only visible
 for three days.
-
-L. Patrick Smallwood (29 April 2002)
----------------------------------
 Minor fixes for HTML glitches in main.php to correct the results of "Fighters in sector".
 
 Version 0.36 Released 29 April 2002
@@ -211,8 +157,6 @@ Added code to limit credits on a planet without a base to a configurable amount.
 Fixed starvation log message - was logging fractional people (bug 536132)
 Fixed incorrect message on bounties (bug 542401)
 
-
-
 David Rowlands (25 March 2002)
 ---------------
 Space plague not logging percentage lost correctly.
@@ -230,9 +174,9 @@ David Rowlands ( 6 March 2002)
 --------------
 Fixed corporate planet exploit.
 
-
 Version 0.3.5 Released (5 March 2002)
 ----------------------
+
 Richard Gowen (14 Febuary 2002)
 -------------------------------
 Furangee can attack sector defenses
