@@ -1,5 +1,5 @@
 <?
-if (preg_match("/global_funcs.php/i", $PHP_SELF)) { echo "You can not access this module directly!";die();}
+if (preg_match("/globalmailer.php/i", $PHP_SELF)) { echo "You can not access this module directly!";die();}
 
 ################################################################################
 ## This script is ©1996 2002 Paul Kirby AKA TheMightyDude                     ##

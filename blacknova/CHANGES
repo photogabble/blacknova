@@ -1,3 +1,7 @@
+TheMightyDude (14 July 2002)
+--------------------------------
+Just fixed/Added if (preg_match("/...../i", $PHP_SELF)) to the new module files which I had entered wrong :D
+
 Ouroborus (14 July 2002)
 --------------------------------
 Converted Distance calcs to Cartesian - no more float! (angle_a, angle_b, and distance are x,y,z - all ints now).
