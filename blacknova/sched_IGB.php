@@ -10,7 +10,7 @@
 
   echo "<B>IBANK</B><p>";
 
-  $ibank_result = $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance * $exponinter, loan=loan * $expoloan");
+  $ibank_result = $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance * $exponinter, loan=loan * $expoloan, loantime=loantime");
   echo "All IGB accounts updated ($multiplier times).<p>";
 
   $multiplier = 0;
