@@ -62,6 +62,12 @@ elseif($command == 'borrow') //borrow operation
   IGB_borrow();
 elseif($command == 'repay') //repay operation
   IGB_repay();
+elseif($command == 'consolidate') //consolidate menu
+  IGB_consolidate();
+elseif($command == 'consolidate2') //consolidate compute
+  IGB_consolidate2();
+elseif($command == 'consolidate3') //consolidate operation
+  IGB_consolidate3();
 else
 {
   echo "
@@ -176,8 +182,8 @@ function IGB_transfer()
 {
   global $playerinfo;
   global $account;
-  global $l_igb_transfertype, $l_igb_toanothership, $l_igb_shiptransfer, $l_igb_fromplanet, $l_igb_source;
-  global $l_igb_unnamed, $l_igb_in, $l_igb_none, $l_igb_planettransfer, $l_igb_back, $l_igb_logout, $l_igb_destination;
+  global $l_igb_transfertype, $l_igb_toanothership, $l_igb_shiptransfer, $l_igb_fromplanet, $l_igb_source, $l_igb_consolidate;
+  global $l_igb_unnamed, $l_igb_in, $l_igb_none, $l_igb_planettransfer, $l_igb_back, $l_igb_logout, $l_igb_destination, $l_igb_conspl;
   global $db, $dbtables;
 
   $res = $db->Execute("SELECT character_name, ship_id FROM $dbtables[ships] ORDER BY character_name ASC");
@@ -253,11 +259,9 @@ function IGB_transfer()
 
 // ---- begin Consol Credits form    // ---- added by Torr 
   echo "<tr valign=top>" .
-       "<td><br><font size=2 face=\"courier new\" color=#00FF00>Consolidate Credits to a single planet :" .
-       "<form action=IGB.php?command=transfer2 method=POST>" .
+       "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_conspl :<br><br>" .
+       "<form action=IGB.php?command=consolidate method=POST>" .
        "$l_igb_destination <select class=term name=dplanet_id>";
-
-  unset($splanet_id);
 
   if(isset($planets))
   {
@@ -273,8 +277,8 @@ function IGB_transfer()
      echo "<option value=none>$l_igb_none</option>";
   }
 
-  echo "</select></td><td valign=center align=right>" .
-       "<br><br><br><input class=term type=submit name=planetc value=\"  Consolidate  \">" .
+  echo "</select></td><td valign=top align=right>" .
+       "<br><input class=term type=submit name=planetc value=\"  $l_igb_consolidate  \">" .
        "</td></tr>" .
        "</form>";
 // ---- End Consol Credits form ---
@@ -377,69 +381,6 @@ function IGB_transfer2()
          "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=transfer>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
          "</tr>";
   }
-// /-------------------- consolidate credit if stated
-// for this to work we must "unset($splanet_id) when the consolidate button is clicked --- this may be a problem"
-//
-  elseif(isset($dplanet_id) && !isset($splanet_id))
-  {
-    $splanet_id = -1;
-    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM $dbtables[planets] WHERE planet_id=$dplanet_id");
-    if(!$res || $res->EOF)
-      IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
-    $dest = $res->fields;
-
-    if(empty($dest[name]))
-      $dest[name]=$l_igb_unnamed;
-
-    if($dest[owner] != $playerinfo[ship_id])
-      IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
-
-    $percent = $ibank_paymentfee * 100;
-
-    $l_igb_transferrate2 = str_replace("[igb_num_percent]", NUMBER($percent,1), $l_igb_transferrate2);
-
-    // credit count fom all the planets you own
-       // set a few local variabls to use
-    $destplanetcreds  = $dest[credits];
-    $totalplanetcreds = 0;
-
-       // populate a structure and run a loop to  to calcualte total credist to transfer minus the destination planets credits
-    $res = $db->Execute("SELECT name, planet_id, sector_id, credits FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id] ORDER BY sector_id ASC");
-    while(!$res->EOF)
-    {
-      $planets[]=$res->fields;
-      $res->MoveNext();
-    }
-
-    foreach($planets as $planet)
-    {
-      $totalplanetcreds = $totalplanetcreds + $planet[credits];
-    }
-
-    $totaltranscreds  = $totalplanetcreds - $destplanetcreds;
- 
-    echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_planettransfer<br>---------------------------------</td></tr>" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>Src -> Total Credits to consolidate  :" .
-         "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($totaltranscreds) . " C" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_destplanet $dest[name] $l_igb_in $dest[sector_id] :" .
-         "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($dest[credits]) . " C" .
-         "<form action=IGB.php?command=transfer3 method=POST>" .
-         "<tr valign=top>" .
-         "<td><br><font size=2 face=\"courier new\" color=#00FF00>Are you sure you wish to consolidate your credits to $dest[name] $l_igb_in $dest[sector_id] :</td>" .
-         "<td align=right><br><br>" .
-         "<br><input class=term type=submit value=\"  Consolidate  \"></td>" .
-         "<input type=hidden name=splanet_id value=$splanet_id>" .
-         "<input type=hidden name=dplanet_id value=$dplanet_id>" .
-         "</form>" .
-         "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" .
-         "$l_igb_transferrate2" .
-         "<tr valign=bottom>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=transfer>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
-         "</tr>";
-   }
-// /--------------------
   else
   {
     if($splanet_id == $dplanet_id)
@@ -604,74 +545,7 @@ function IGB_transfer3()
 
     $db->Execute("INSERT INTO $dbtables[IGB_transfers] VALUES('', $playerinfo[ship_id], $target[ship_id], NOW())");
     echo $db->ErrorMsg();
-    //TODO: Log transfers.
   }
-// /-------------------- consolidate credit
-// for this to work we must "unset($splanet_id) when the consolidate button is clicked"
-//
-  elseif(isset($dplanet_id) && ($splanet_id == -1))
-  {
-    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM $dbtables[planets] WHERE planet_id=$dplanet_id");
-    if(!$res || $res->EOF)
-    {
-      IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
-    }
-    $dest = $res->fields;
-
-    if(empty($dest[name]))
-      $dest[name]=$l_igb_unnamed;
-
-    if($dest[owner] != $playerinfo[ship_id])
-      IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
-
-
-    // credit count fom all the planets you own
-       // set a few local variabls to use
-    $destplanetcreds  = $dest[credits];
-    $totalplanetcreds = 0;
-
-       // populate a structure with data of the players planets
-    $res = $db->Execute("SELECT credits, owner, planet_id FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id]");
-    while(!$res->EOF)
-    {
-      $planets[]=$res->fields;
-      $res->MoveNext();
-    }
-
-       // calculate out total transfered credits
-    foreach($planets as $planet)
-    {
-      $totalplanetcreds = $totalplanetcreds + $planet[credits];
-    }
-
-    $percent = $ibank_paymentfee * 100;
-
-    $totaltranscreds = $totalplanetcreds - $destplanetcreds;
-    $amount2 = $totaltranscreds * $ibank_paymentfee;
-    $transfer = $totaltranscreds - $amount2;
-    $dest[credits] += $transfer;
-   
-    echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_transfersuccessful<br>---------------------------------</td></tr>" .
-         "<tr valign=top><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($transfer) . " $l_igb_ctransferredfrom $source[name] $l_igb_to $dest[name].</tr>" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_transferamount :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($totaltranscreds) . " C<br>" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_transferfee :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount2) . " C<br>" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_amounttransferred :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($transfer) . " C<br>" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>Desination planet original credits :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($dest[credits]-$transfer) . " C<br>" .
-         "<tr valign=top>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_destplanet $dest[name] $l_igb_in $dest[sector_id] :</td><td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($dest[credits]) . " C<br>" .
-         "<tr valign=bottom>" .
-         "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
-         "</tr>";
-
-    foreach($planets as $planet)
-       $db->Execute("UPDATE $dbtables[planets] SET credits=0 WHERE planet_id=$planet[planet_id]");
-    $db->Execute("UPDATE $dbtables[planets] SET credits=$destplanetcreds+$transfer WHERE planet_id=$dplanet_id");
-  }
-// /--------------------
   else
   {
     if($splanet_id == $dplanet_id)
@@ -979,6 +853,187 @@ function IGB_repay()
 
   $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=loan-$amount,loantime=$account[loantime] WHERE ship_id=$playerinfo[ship_id]");
   $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
+}
+
+function IGB_consolidate()
+{
+  global $playerinfo, $account;
+  global $db, $dbtables;
+  global $l_igb_errunknownplanet, $l_igb_errnotyourplanet, $l_igb_transferrate3;
+  global $l_igb_planettransfer, $l_igb_destplanet, $l_igb_in, $IGB_tconsolidate;
+  global $dplanet_id, $l_igb_unnamed, $l_igb_currentpl, $l_igb_consolrates;
+  global $l_igb_minimum, $l_igb_maximum, $l_igb_back, $l_igb_logout;
+  global $l_igb_planetconsolidate, $l_igb_compute, $ibank_paymentfee;
+
+  $percent = $ibank_paymentfee * 100;
+
+  $l_igb_transferrate3 = str_replace("[igb_num_percent]", NUMBER($percent,1), $l_igb_transferrate3);
+  $l_igb_transferrate3 = str_replace("[nbplanets]", $IGB_tconsolidate, $l_igb_transferrate3);
+
+  $destplanetcreds  = $dest[credits];
+ 
+  echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_planetconsolidate<br>---------------------------------</td></tr>" .
+       "<form action=IGB.php?command=consolidate2 method=POST>" .
+       "<tr valign=top>" .
+       "<td colspan=2><font size=2 face=\"courier new\" color=#00FF00>$l_igb_consolrates :</td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_minimum :<br>" .
+       "<br>$l_igb_maximum :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" .
+       "<input class=term type=text size=15 maxlength=20 name=minimum value=0><br><br>" .
+       "<input class=term type=text size=15 maxlength=20 name=maximum value=0><br><br>" .
+       "<input class=term type=submit value=\"$l_igb_compute\"></td>" .
+       "<input type=hidden name=dplanet_id value=$dplanet_id>" .
+       "</form>" .
+       "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" .
+       "$l_igb_transferrate3" .
+       "<tr valign=bottom>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=transfer>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
+       "</tr>";
+}
+
+function IGB_consolidate2()
+{
+  global $playerinfo, $account;
+  global $db, $dbtables;
+  global $dplanet_id, $minimum, $maximum, $IGB_tconsolidate, $ibank_paymentfee;
+  global $l_igb_planetconsolidate, $l_igb_back, $l_igb_logout;
+  global $l_igb_errunknownplanet, $l_igb_unnamed, $l_igb_errnotyourplanet;
+  global $l_igb_currentpl, $l_igb_in, $l_igb_transferamount, $l_igb_plaffected;
+  global $l_igb_transferfee, $l_igb_turncost, $l_igb_amounttransferred;
+  global $l_igb_consolidate;
+
+  $res = $db->Execute("SELECT name, credits, owner, sector_id FROM $dbtables[planets] WHERE planet_id=$dplanet_id");
+  if(!$res || $res->EOF)
+      IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
+  $dest = $res->fields;
+
+  if(empty($dest[name]))
+    $dest[name]=$l_igb_unnamed;
+
+  if($dest[owner] != $playerinfo[ship_id])
+    IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
+
+  $minimum = StripNonNum($minimum);
+  $maximum = StripNonNum($maximum);
+
+  $query = "SELECT SUM(credits) as total, COUNT(*) as count from $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND credits != 0";
+
+  if($minimum != 0)
+    $query .= " AND credits >= $minimum";
+
+  if($maximum != 0)
+    $query .= " AND credits <= $maximum";
+
+  $query .= " AND planet_id != $dplanet_id";
+
+  $res = $db->Execute($query);
+  $amount = $res->fields;
+
+  $fee = $ibank_paymentfee * $amount[total];
+
+  $tcost = ceil($amount[count] / $IGB_tconsolidate);
+  $transfer = $amount[total] - $fee;
+
+  echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_planetconsolidate<br>---------------------------------</td></tr>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_currentpl $dest[name] $l_igb_in $dest[sector_id] :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($dest[credits]) . " C</td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_transferamount :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount[total]) . " C</td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_transferfee :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($fee) . " C </td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_plaffected :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($amount[count]) . "</td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_turncost :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($tcost) . "</td>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_amounttransferred :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($transfer) . " C</td>" .
+       "<tr valign=top><td colspan=2 align=right>" .
+       "<form action=IGB.php?command=consolidate3 method=POST>" .
+       "<input type=hidden name=minimum value=$minimum><br>" .
+       "<input type=hidden name=maximum value=$maximum><br>" .
+       "<input type=hidden name=dplanet_id value=$dplanet_id>" .
+       "<input class=term type=submit value=\"$l_igb_consolidate\"></td>" .
+       "</form>" .
+       "<tr valign=bottom>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=transfer>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
+       "</tr>";
+}
+
+function IGB_consolidate3()
+{
+  global $playerinfo;
+  global $db, $dbtables;
+  global $dplanet_id, $minimum, $maximum, $IGB_tconsolidate, $ibank_paymentfee;
+  global $l_igb_notenturns, $l_igb_back, $l_igb_logout, $l_igb_transfersuccessful;
+  global $l_igb_currentpl, $l_igb_in, $l_igb_turncost, $l_igb_unnamed;
+
+  $res = $db->Execute("SELECT name, credits, owner, sector_id FROM $dbtables[planets] WHERE planet_id=$dplanet_id");
+  if(!$res || $res->EOF)
+      IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
+  $dest = $res->fields;
+
+  if(empty($dest[name]))
+    $dest[name]=$l_igb_unnamed;
+
+  if($dest[owner] != $playerinfo[ship_id])
+    IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
+
+  $minimum = StripNonNum($minimum);
+  $maximum = StripNonNum($maximum);
+
+  $query = "SELECT SUM(credits) as total, COUNT(*) as count from $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND credits != 0";
+
+  if($minimum != 0)
+    $query .= " AND credits >= $minimum";
+
+  if($maximum != 0)
+    $query .= " AND credits <= $maximum";
+
+  $query .= " AND planet_id != $dplanet_id";
+
+  $res = $db->Execute($query);
+  $amount = $res->fields;
+
+  $fee = $ibank_paymentfee * $amount[total];
+
+  $tcost = ceil($amount[count] / $IGB_tconsolidate);
+  $transfer = $amount[total] - $fee;
+
+  $cplanet = $transfer + $dest[credits];
+
+  if($tcost > $playerinfo[turns])
+    IGB_error($l_igb_notenturns, "IGB.php?command=transfer");
+
+  echo "<tr><td colspan=2 align=center valign=top><font size=2 face=\"courier new\" color=#00FF00>$l_igb_transfersuccessful<br>---------------------------------</td></tr>" .
+       "<tr valign=top>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_currentpl $dest[name] $l_igb_in $dest[sector_id] :<br><br>" .
+       "$l_igb_turncost :</td>" .
+       "<td align=right><font size=2 face=\"courier new\" color=#00FF00>" . NUMBER($cplanet) . " C<br><br>" .
+       NUMBER($tcost) . "</td>" .
+       "<tr valign=bottom>" .
+       "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
+       "</tr>";
+
+  $query = "UPDATE $dbtables[planets] SET credits=0 WHERE owner=$playerinfo[ship_id] AND credits != 0";
+
+  if($minimum != 0)
+    $query .= " AND credits >= $minimum";
+
+  if($maximum != 0)
+    $query .= " AND credits <= $maximum";
+
+  $query .= " AND planet_id != $dplanet_id";
+
+  $res = $db->Execute($query);
+  $res = $db->Execute("UPDATE $dbtables[planets] SET credits=credits + $transfer WHERE planet_id=$dplanet_id");
+  $res = $db->Execute("UPDATE $dbtables[ships] SET turns=turns - $tcost WHERE ship_id = $playerinfo[ship_id]");
 }
 
 function IGB_error($errmsg, $backlink, $title="Error!")

@@ -685,8 +685,8 @@ if($allow_ibank)
 {
   echo "$l_ifyouneedplan <A HREF=\"IGB.php?planet_id=$planet_id\">$l_igb_term</A>.<BR><BR>";
 }
-echo "<A HREF =\"bounty.php\">$l_by_placebounty</A><BR>";
-echo "<A HREF =\"credittrans.php\">Do a bulk credit transfer from planets.</A><BR><BR>";
+echo "<A HREF =\"bounty.php\">$l_by_placebounty</A><p>";
+
 //-------------------------------------------------------------------------------------------------
 TEXT_GOTOMAIN();
 

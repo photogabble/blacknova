@@ -1,3 +1,9 @@
+SharpBlue (16 June 2002)
+---------------------------------
+Completely rewrote the IGB consolidator
+Got rid of the credits sweeper
+Fixed cookie bug for Mozilla
+
 David Rowlands (17 June 2002)
 -----------------------------
 Score was not calculating due to pow() substitution.

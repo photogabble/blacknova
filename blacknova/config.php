@@ -197,11 +197,11 @@ $avail_lang[3][name] = 'Romanian';
 $avail_lang[4][file] = 'czech';
 $avail_lang[4][name] = 'Cesky';
 
-// Anti-cheat settings
 $IGB_min_turns = $start_turns; //Turns a player has to play before ship transfers are allowed 0=disable
 $IGB_svalue = 0.15; //Max amount of sender's value allowed for ship transfers 0=disable
 $IGB_trate = 1440; //Time (in minutes) before two similar transfers are allowed for ship transfers.0=disable
 $IGB_lrate = 1440; //Time (in minutes) players have to repay a loan
+$IGB_tconsolidate = 10; //Cost in turns for consolidate : 1/$IGB_consolidate
 $corp_planet_transfers = 0; //If transferring credits to/from corp planets is allowed. 1=enable
 $min_value_capture = 0; //Percantage of planet's value a ship must be worth to be able to capture it. 0=disable
 $defence_degrade_rate = 0.05;

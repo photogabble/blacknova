@@ -942,6 +942,19 @@ $l_igb_notrepay = "You have no loans to repay";
 $l_igb_notenoughrepay = "You do not have enough credits in your ship account to perform this operation.";
 $l_igb_payloan = "Loan Payment";
 $l_igb_loanthanks = "Your payment has been received. Thank you for doing business with the IGB.";
+$l_igb_credsconsol = "Src -> Total Credits to consolidate";
+$l_igb_transferrate3     = "Current rate for consolidating is [igb_num_percent]% of total amount. It will automatically be deduced from the amount consolidated. The transfer will cost one turn for every [nbplanets] planets affected.";
+$l_igb_currentpl = "Credits on planet";
+$l_igb_consolrates = "You can specify a credit range. Planets with less credits than Minimum and with more credits than Maximum will not be affected. Set to 0 for no limits";
+$l_igb_minimum = "Minimum";
+$l_igb_maximum = "Maximum";
+$l_igb_planetconsolidate = "Planet Consolidate";
+$l_igb_compute = "Compute";
+$l_igb_plaffected = "Total planets affected";
+$l_igb_turncost = "Total turns cost";
+$l_igb_consolidate = "Consolidate";
+$l_igb_conspl = "Consolidate Credits to a single planet";
+$l_igb_notenturns = "You do not have enough turns to perform this operation";
 
 // combat.php
 

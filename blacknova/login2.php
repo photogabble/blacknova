@@ -24,11 +24,6 @@ if(empty($lang))
 SetCookie("lang",$lang,time()+(3600*24)*365,$gamepath,$gamedomain);
 include("languages/$lang" . ".inc");
 
-/* first placement of cookie - don't use updatecookie. */
-$userpass = $email."+".$pass;
-SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
-
-
 /* took out the old interface, its not used anymore i guess
 if($playerinfo[interface]=="N")
 {
@@ -44,6 +39,11 @@ else
 
 setcookie("interface", $mainfilename);
 setcookie("screenres", $screen_res);
+
+/* first placement of cookie - don't use updatecookie. */
+$userpass = $email."+".$pass;
+SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
+
 $banned = 0;
 $res = $db->Execute("SELECT * FROM $dbtables[ip_bans] WHERE '$ip' LIKE ban_mask OR '$playerinfo[ip_address]' LIKE ban_mask");
 if($res->RecordCount() != 0)
