@@ -115,7 +115,7 @@ if($playerfound)
         // Check if $newbie_nice is set, if so, verify ship limits
       if ($newbie_nice == "YES")
       {
-        $newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE player_id='$playerinfo[player_id]' AND $ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
+        $newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE player_id='$playerinfo[player_id]' AND ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
         $num_rows = $newbie_info->RecordCount();
 
         if ($num_rows)
