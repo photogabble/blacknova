@@ -332,8 +332,9 @@ echo "&nbsp;<a class=dis href=\"lrscan.php?sector=*\">[$l_fullscan]</a>&nbsp;<br
 if($sectorinfo[port_type] != "none")
 {
   echo "<a href=port.php>", ucfirst(t_port($sectorinfo[port_type])), "</a>";
-  if($sectorinfo[port_type] == 'special')
-    echo "<p>$l_main_shipyard";
+// Commenting out for the .41 release ONLY
+/*  if($sectorinfo[port_type] == 'special')
+    echo "<p>$l_main_shipyard"; */
   $port_bnthelper_string="<!--port:" . $sectorinfo[port_type] . ":" . $sectorinfo[port_ore] . ":" . $sectorinfo[port_organics] . ":" . $sectorinfo[port_goods] . ":" . $sectorinfo[port_energy] . ":-->";
 }
 else

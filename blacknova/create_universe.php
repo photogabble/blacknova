@@ -705,25 +705,25 @@ switch ($step) {
                    "0, " .                //cost_organics
                    "10, " .               //turnstobuild
                    "0, " .                //minhull
-                   "5, " .                //maxhull
+                   "54, " .                //maxhull
                    "0, " .                //minengines
-                   "4, " .                //maxengines
+                   "54, " .                //maxengines
                    "0, " .                //minpower
-                   "1, " .                //maxpower (that's MISTER power for you) ;)
+                   "54, " .                //maxpower (that's MISTER power for you) ;)
                    "0, " .                //mincomputer
-                   "1, " .                //maxcomputer
+                   "54, " .                //maxcomputer
                    "0, " .                //minsensors
-                   "2, " .                //maxsensors
+                   "54, " .                //maxsensors
                    "0, " .                //minbeams
-                   "0, " .                //maxbeams
+                   "54, " .                //maxbeams
                    "0, " .                //mintorp_launchers
-                   "0, " .                //maxtorp_launchers
+                   "54, " .                //maxtorp_launchers
                    "0, " .                //minshields
-                   "0, " .                //maxshields
+                   "54, " .                //maxshields
                    "0, " .                //minarmour
-                   "2, " .                //maxarmour
+                   "54, " .                //maxarmour
                    "0, " .                //mincloak
-                   "4  " .                //maxcloak
+                   "54  " .                //maxcloak
                    ")");
       echo "done<br>";
 
