@@ -1383,4 +1383,35 @@ $l_map = "Map";
 $l_lss = "Last ship seen in this sector";
 $l_igb_errnobase = "The IGB can not transfer credits to a planet without a base.";
 
+/Footer text
+$l_footer_one_player_on = "There is 1 player online.";
+$l_footer_players_on_1 = "There are";
+$l_footer_players_on_2 = "players online.";
+$l_footer_until_update = "seconds until next update.";
+
+//Ship officer insignia
+$l_insignia[0] = "New Recruit";
+$l_insignia[1] = "Crewman";
+$l_insignia[2] = "Crewman First Class";
+$l_insignia[3] = "Petty Officer 3rd Class";
+$l_insignia[4] = "Petty Officer 2nd Class";
+$l_insignia[5] = "Petty Officer 1st Class";
+$l_insignia[6] = "Chief Petty Officer";
+$l_insignia[7] = "Senior Chief Petty Officer";
+$l_insignia[8] = "Master Chief Petty Officer";
+$l_insignia[9] = "Ensign";
+$l_insignia[10] = "Lieutenant Junior Grade";
+$l_insignia[11] = "Lieutenant";
+$l_insignia[12] = "Lieutenant Commander";
+$l_insignia[13] = "Commander";
+$l_insignia[14] = "Captain";
+$l_insignia[15] = "Fleet Captain";
+$l_insignia[16] = "Commodore";
+$l_insignia[17] = "Rear Admiral";
+$l_insignia[18] = "Vice Admiral";
+$l_insignia[19] = "Admiral";
+
+// shipyard.php
+
+$l_shipyard_title = "Shipyard";
 ?>
