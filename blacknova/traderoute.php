@@ -1250,15 +1250,16 @@ function traderoute_engage($j)
 // ********************************
 // ***** Check tech on source *****
 // ********************************
-  if(!checkavgtech($traderoute['source_id'])){
-    do_tow(); traderoute_die("Traderoute interupted!");}
+  if($traderoute['source_type'] !="L"){
+    if(!checkavgtech($traderoute['source_id'])){
+      do_tow(); traderoute_die("Traderoute interupted!");}}
 
 // ******************************
 // ***** Check tech on dest *****
 // ******************************
-  if(!checkavgtech($traderoute['dest_id'])){
-    traderoute_die("Traderoute interupted!");}
-
+  if($traderoute['dest_type'] !="L"){
+    if(!checkavgtech($traderoute['dest_id'])){
+      traderoute_die("Traderoute interupted!");}}
 
 // ******************************************
 // ***** Just a test to see who owns it *****

@@ -1,5 +1,11 @@
 TheMightyDude (28 August 2003)
 --------------------------------
+Fixed Border Patrol check in traderoute.php
+Was freaking out when planet_id was the same as a federation sector_id :(
+This will prob need changing later :)
+
+TheMightyDude (28 August 2003)
+--------------------------------
 Fixed that Calc - Sector ownership didn't change message when ever you Real Space moved :(
 Was a missed debug line Sorry :(
 
