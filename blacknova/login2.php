@@ -40,7 +40,7 @@ SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
 //}
 setcookie("interface", $mainfilename);
 setcookie("screenres", $screen_res);
-
+$banned = 0;
 $res = $db->Execute("SELECT * FROM $dbtables[ip_bans] WHERE '$ip' LIKE ban_mask OR '$playerinfo[ip_address]' LIKE ban_mask");
 if($res->RecordCount() != 0)
 {
