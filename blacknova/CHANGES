@@ -1,3 +1,12 @@
+TheMightyDude (14 July 2002)
+--------------------------------
+Added the following which was descused and requested in irc.
+Added Modular Module to enable bnt to be able to use add-on modules and to be controllable with ease.
+Added Internal Module Global Mailer into admin.php and modules/globalmailer.php.
+Added Mixed Module Email Logger into admin.php and modules/emaillogger.php.
+TEMP Fixed admin.php <--- User Editor to Display/Edit Players Ship. Also added Ship Class Image and Name to the User Editor.
+Added Module information, Game Status, Game Options in settings.php
+
 L. Patrick Smallwood (04+07 July 2002)
 --------------------------------
 Added MightyDude's db status stuff for create and drop tables - which uncovered the old gen_id function and table 
