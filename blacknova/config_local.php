@@ -2,7 +2,7 @@
 
 // Path on the filesystem where the blacknova files
 // will reside:
-$gameroot = "/var/www/html/blacknova";
+$gameroot = "/usr/local/www/blacknova";
 
 // The ADOdb db module is now required to run BNT. You
 // can find it at http://php.weblogs.com/ADODB. Enter the
@@ -17,7 +17,7 @@ $ADOdbpath = "ADOdb";
 // Do not enter slashes for $gamedomain or anything that would come after a slash
 // if you get weird errors with cookies then make sure the game domain has TWO dots
 // i.e. if you reside your game on http://www.blacknova.net put .blacknova.net as $gamedomain. If your game is on http://www.some.site.net put .some.site.net as your game domain. Do not put port numbers in $gamedomain.
-$gamedomain = ".server.davidrowlands.com";
+$gamedomain = ".blacknova.net";
 
 // This is the trailing part of the URL, that is not part of the domain.
 // If you enter www.blah.com/blacknova to access the game, you would leave the line as it is.
@@ -33,11 +33,11 @@ $dbhost = "localhost";
 $dbport = "";
 
 // Username and password to connect to the database:
-$dbuname = "blacknova";
-$dbpass = "sabre150";
+$dbuname = "blacknova_user";
+$dbpass = "blacknova_pass";
 
 // Name of the SQL database:
-$dbname = "blacknova";
+$dbname = "blacknova_db";
 
 // Type of the SQL database. This can be anything supported by ADOdb. Here are a few:
 // "access" for MS Access databases. You need to create an ODBC DSN.
@@ -64,8 +64,8 @@ $db_prefix = "bnt_";
 
 // Administrator's password and email:
 // Be sure to change these. Don't leave them as is.
-$adminpass = "sabre150";
-$admin_mail = "dave@trinity.yi.org";
+$adminpass = "secret";
+$admin_mail = "billg@microsoft.com";
 
 // Address the forum link, link's to:
 $link_forums = "http://forums.blacknova.net";
