@@ -236,7 +236,7 @@ $db->Execute("CREATE TABLE $dbtables[messages] (" .
              "sender_id bigint(20) NOT NULL default '0'," .
              "recp_id bigint(20) NOT NULL default '0'," .
              "subject varchar(250) NOT NULL default ''," .
-             "subject varchar(19) NOT NULL defaul'0000-00-00 00:00:00'," .
+             "sent varchar(19) NULL," .
              "message longtext NOT NULL," .
              "notified enum('Y','N') NOT NULL default 'N'," .
              "PRIMARY KEY  (ID) " .
