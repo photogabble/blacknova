@@ -10,7 +10,7 @@
      	              $playerbeams = NUM_BEAMS($shipinfo[beams]);
                     if($calledfrom == 'rsmove.php')
                     {
-                       $shipinfo[enery] += $energyscooped;
+                       $shipinfo[energy] += $energyscooped;
                     }
                     if($playerbeams>$shipinfo[energy])
                     {
