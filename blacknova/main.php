@@ -74,7 +74,7 @@ srand((double)microtime() * 1000000);
 
 if($playerinfo[on_planet] == "Y")
 {
-  $res2 = $db->Execute("SELECT planet_id FROM $dbtables[planets] WHERE planet_id=$playerinfo[planet_id]");
+  $res2 = $db->Execute("SELECT planet_id, owner FROM $dbtables[planets] WHERE planet_id=$playerinfo[planet_id]");
   if($res2->RecordCount() != 0)
   {
     echo "<A HREF=planet.php?planet_id=$playerinfo[planet_id]>$l_clickme</A> $l_toplanetmenu    <BR>";
