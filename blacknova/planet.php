@@ -45,7 +45,7 @@ if(!empty($planetinfo))
   if($planetinfo[owner] == 0 && $command != "capture")
   {
     echo "$l_planet_unowned.<BR><BR>";
-    $update = $db->Execute("UPDATE $dbtables[planets] SET fighters=0, defeated='Y' WHERE planet_id=$planet_id]");
+    $update = $db->Execute("UPDATE $dbtables[planets] SET fighters=0, defeated='Y' WHERE planet_id=$planet_id");
     $capture_link="<a href=planet.php?planet_id=$planet_id&command=capture>$l_planet_capture1</a>";
     $l_planet_capture2=str_replace("[capture]",$capture_link,$l_planet_capture2);
     echo "$l_planet_capture2.<BR><BR>";
