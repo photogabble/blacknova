@@ -10,7 +10,10 @@ $no_body=1;
 include("header.php");
 
 connectdb();
-
+if(checklogin())
+{
+  die();
+}
 $res = $db->Execute("SELECT character_name, ship_id, dhtml FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
