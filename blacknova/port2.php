@@ -584,7 +584,10 @@ else
 echo "<BR><BR>";
 TEXT_GOTOMAIN();
 
-echo "<BR><BR>Click <A HREF=port.php>here</A> to return to the supply depot.";
+if($sectorinfo[port_type] == "special")
+ {
+ echo "<BR><BR>Click <A HREF=port.php>here</A> to return to the supply depot.";
+ }
 
 include("footer.php");
 
