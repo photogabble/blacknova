@@ -149,12 +149,12 @@ function change_planet_production($prodpercentarray)
 // **  When we pass through the corp array we set the value to $team we grabbed out of the array.
 // **  in the sells and corp the prodpercent = the planet_id.
 // **
-// **  We run through the database checking to see if any planet production is greater than 100,
+// **  We run through the database checking to see if any planet production is greater than 100, or possibly negative
 // **    if so we set the planet to the default values and report it to the player.
 // **
 // **  There has got to be a better way, but at this time I am not sure how to do it.
 // **  Off the top of my head if we could sort the data passed in, in order of planets we could check before we do the writes
-// **    This would save us from having to run through the database at all.
+// **    This would save us from having to run through the database a second time checking our work.
 // **  
 
   global $db, $dbtables;
@@ -194,10 +194,10 @@ function change_planet_production($prodpercentarray)
   }
 
   echo "<BR>";
-  echo "Production Percentages Updated     <BR><BR>";
-  echo "Checking Values for excess of 100% <BR><BR>";
+  echo "Production Percentages Updated <BR><BR>";
+  echo "Checking Values for excess of 100% and negative production values <BR><BR>";
 
-  $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE owner=$ship_id");
+  $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE owner=$ship_id ORDER BY sector_id");
   $i = 0;
   if($res)
   {
@@ -216,9 +216,23 @@ function change_planet_production($prodpercentarray)
       $planet[name] = $l_unnamed;
     }
 
+    if($planet[prod_ore] < 0)
+      $planet[prod_ore] = 110;
+    if($planet[prod_organics] < 0)
+      $planet[prod_organics] = 110;
+    if($planet[prod_goods] < 0)
+      $planet[prod_goods] = 110;
+    if($planet[prod_energy] < 0)
+      $planet[prod_energy] = 110;
+    if($planet[prod_fighters] < 0)
+      $planet[prod_fighters] = 110;
+    if($planet[prod_torp] < 0)
+      $planet[prod_torp] = 110;
+
+
     if($planet[prod_ore] + $planet[prod_organics] + $planet[prod_goods] + $planet[prod_energy] + $planet[prod_fighters] + $planet[prod_torp] > 100)
     {
-      echo "Planet $planet[name] in sector $planet[sector_id] exceeds 100% production.  Resetting to default production values   -- ID = $planet[planet_id]<BR>";
+      echo "Planet $planet[name] in sector $planet[sector_id] has a negative production value or exceeds 100% production.  Resetting to default production values<BR>";
       $db->Execute("UPDATE $dbtables[planets] SET prod_ore=$default_prod_ore           WHERE planet_id=$planet[planet_id]");
       $db->Execute("UPDATE $dbtables[planets] SET prod_organics=$default_prod_organics WHERE planet_id=$planet[planet_id]");
       $db->Execute("UPDATE $dbtables[planets] SET prod_goods=$default_prod_goods       WHERE planet_id=$planet[planet_id]");
@@ -226,6 +240,7 @@ function change_planet_production($prodpercentarray)
       $db->Execute("UPDATE $dbtables[planets] SET prod_fighters=$default_prod_fighters WHERE planet_id=$planet[planet_id]");
       $db->Execute("UPDATE $dbtables[planets] SET prod_torp=$default_prod_torp         WHERE planet_id=$planet[planet_id]");
     }
+
   }
 }
 
