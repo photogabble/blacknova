@@ -306,7 +306,7 @@ function IGB_transfer2()
   global $l_igb_seltransferamount, $l_igb_transfer, $l_igb_back, $l_igb_logout, $l_igb_in;
   global $l_igb_errplanetsrcanddest, $l_igb_errunknownplanet, $l_igb_unnamed;
   global $l_igb_errnotyourplanet, $l_igb_planettransfer, $l_igb_srcplanet, $l_igb_destplanet;
-  global $l_igb_transferrate2, $l_igb_seltransferamount;
+  global $l_igb_transferrate2, $l_igb_seltransferamount, $l_igb_errnobase;
   global $db, $dbtables;
 
   if(isset($player_id)) //ship transfer
@@ -391,7 +391,6 @@ function IGB_transfer2()
     if(!$res || $res->EOF)
       IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
     $source = $res->fields;
-    
 
     if(empty($source[name]))
       $source[name]=$l_igb_unnamed;
@@ -405,8 +404,6 @@ function IGB_transfer2()
       $dest[name]=$l_igb_unnamed;
     if($dest[base] == 'N')
       IGB_error($l_igb_errnobase, "IGB.php?command=transfer");
-
-    
 
     if($source[owner] != $playerinfo[player_id] || $dest[owner] != $playerinfo[player_id])
       IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
