@@ -794,13 +794,13 @@ else
     {
       if (empty($content))
       {
-        $ver = X_Version;
+        $ver = GlobalMailer_Version;
         $selfpath = basename($PHP_SELF);
         echo "<div align=\"left\">\n";
         echo "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"1\" width=\"100%\">\n";
         echo "    <tr>\n";
         echo "      <td width=\"50%\" nowrap><b>Global Email Message</b></td>\n";
-        echo "      <td width=\"50%\" nowrap align=\"right\"><a href=".X_Website." target=\"_blank\"><img border=\"0\" src=\"images/E-Script_s.gif\"></a></td>\n";
+        echo "      <td width=\"50%\" nowrap align=\"right\"><a href=".GlobalMailer_Website." target=\"_blank\"><img border=\"0\" src=\"images/E-Script_s.gif\"></a></td>\n";
         echo "    </tr>\n";
         echo "  </table>\n";
 		echo "</div>\n";
@@ -860,13 +860,13 @@ else
 # Email Viewer
     elseif($module == "emailview" AND $Enable_EmailLoggerModule AND $modules['ELM'])
     {
-      $ver = E_Logger_Version;
+      $ver = EmailLogger_Version;
       $selfpath = basename($PHP_SELF);
       echo "<div align=\"left\">\n";
       echo "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"1\" width=\"100%\">\n";
       echo "    <tr>\n";
       echo "      <td width=\"50%\" nowrap><b>Email Log Viewer</b></td>\n";
-      echo "      <td width=\"50%\" nowrap align=\"right\"><a href=".X_Website." target=\"_blank\"><img border=\"0\" src=\"images/E-Script_s.gif\"></a></td>\n";
+      echo "      <td width=\"50%\" nowrap align=\"right\"><a href=".EmailLogger_Website." target=\"_blank\"><img border=\"0\" src=\"images/E-Script_s.gif\"></a></td>\n";
       echo "    </tr>\n";
       echo "  </table>\n";
       echo "</div>\n";
