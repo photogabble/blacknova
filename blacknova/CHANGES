@@ -1,5 +1,10 @@
 TheMightyDude (28 August 2003)
 --------------------------------
+Fixed that Calc - Sector ownership didn't change message when ever you Real Space moved :(
+Was a missed debug line Sorry :(
+
+TheMightyDude (28 August 2003)
+--------------------------------
 Fixed Self-Destruct code, So now it accepts your password :)
 Removed duplacates variables and cleaned it up a little.
 
