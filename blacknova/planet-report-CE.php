@@ -83,6 +83,7 @@ function go_build_base($planet_id, $sector_id)
   }
 }
 
+
 function collect_credits($planetarray)
 {
   global $db, $dbtables, $username;
@@ -126,35 +127,108 @@ function collect_credits($planetarray)
   echo "Click <A HREF=planet-report.php?PRepType=1>here</A> to return to the Planet Status Report<br>";
 }
 
+
 function change_planet_production($prodpercentarray)
 {
+// **************************************************
+// **  NOTES on what this function does and how
+// **  Declares some global variables so they are accessable
+// **    $db, $dbtables and default production values from the config.php file
+// **  
+// **  We need to track what the player_id is and what corp they belong to if they belong to a corp,
+// **    these two values are not passed in as arrays
+// **    ship_id = the owner of the planet          ($ship_id = $prodpercentarray[ship_id])
+// **    team_id = the corperation creators ship_id ($team_id = $prodpercentarray[team_id])
+// **
+// **  First we generate a list of values based on the commodity
+// **    (ore, organics, goods, energy, fighters, torps, corp, team, sells)
+// **
+// **  Second we generate a second list of values based on the planet_id
+// **  Because team and ship_id are not arrays we do not pass them through the second list command.
+// **  When we write the ore production percent we also clear the selling and corp values out of the db
+// **  When we pass through the corp array we set the value to $team we grabbed out of the array.
+// **  in the sells and corp the prodpercent = the planet_id.
+// **
+// **  We run through the database checking to see if any planet production is greater than 100,
+// **    if so we set the planet to the default values and report it to the player.
+// **
+// **  There has got to be a better way, but at this time I am not sure how to do it.
+// **  Off the top of my head if we could sort the data passed in, in order of planets we could check before we do the writes
+// **    This would save us from having to run through the database at all.
+// **  
+
   global $db, $dbtables;
+  global $default_prod_ore, $default_prod_organics, $default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp;
+
+  $ship_id = $prodpercentarray[ship_id];
+  $team_id = $prodpercentarray[team_id]; 
 
   echo "Click <A HREF=planet-report.php?PRepType=2>here</A> to return to the Change Planet Production Report<br><br>";
 
   while(list($commod_type, $valarray) = each($prodpercentarray))
   {
-    while(list($planet_id, $prodpercent) = each($valarray))
-    {  
-      if($commod_type == "prod_ore")
-      {
-        $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id");
-        $db->Execute("UPDATE $dbtables[planets] SET sells='N' WHERE planet_id=$planet_id");
-      }
-      elseif($commod_type == "sells")
-      {
-        $db->Execute("UPDATE $dbtables[planets] SET sells='Y' WHERE planet_id=$prodpercent");
-      }
-      else
-      {
-        $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id");
+    if($commod_type != "team_id" && $commod_type != "ship_id")
+    {
+      while(list($planet_id, $prodpercent) = each($valarray))
+      {  
+        if($commod_type == "prod_ore")
+        {
+          $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id");
+          $db->Execute("UPDATE $dbtables[planets] SET sells='N' WHERE planet_id=$planet_id");
+          $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE planet_id=$planet_id");
+        }
+        elseif($commod_type == "sells")
+        {
+          $db->Execute("UPDATE $dbtables[planets] SET sells='Y' WHERE planet_id=$prodpercent");
+        }
+        elseif($commod_type == "corp")
+        {
+          $db->Execute("UPDATE $dbtables[planets] SET corp=$team_id WHERE planet_id=$prodpercent");
+        }
+        else
+        {
+          $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id");
+        }
       }
     }
   }
 
-  echo "Production Percentages Updated<BR>";
+  echo "<BR>";
+  echo "Production Percentages Updated     <BR><BR>";
+  echo "Checking Values for excess of 100% <BR><BR>";
 
+  $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE owner=$ship_id");
+  $i = 0;
+  if($res)
+  {
+    while(!$res->EOF)
+    {
+      $planets[$i] = $res->fields;
+      $i++;
+      $res->MoveNext();
+    }
+  }
+
+  foreach($planets as $planet)
+  {
+    if(empty($planet[name]))
+    {
+      $planet[name] = $l_unnamed;
+    }
+
+    if($planet[prod_ore] + $planet[prod_organics] + $planet[prod_goods] + $planet[prod_energy] + $planet[prod_fighters] + $planet[prod_torp] > 100)
+    {
+      echo "Planet $planet[name] in sector $planet[sector_id] exceeds 100% production.  Resetting to default production values   -- ID = $planet[planet_id]<BR>";
+      $db->Execute("UPDATE $dbtables[planets] SET prod_ore=$default_prod_ore           WHERE planet_id=$planet[planet_id]");
+      $db->Execute("UPDATE $dbtables[planets] SET prod_organics=$default_prod_organics WHERE planet_id=$planet[planet_id]");
+      $db->Execute("UPDATE $dbtables[planets] SET prod_goods=$default_prod_goods       WHERE planet_id=$planet[planet_id]");
+      $db->Execute("UPDATE $dbtables[planets] SET prod_energy=$default_prod_energy     WHERE planet_id=$planet[planet_id]");
+      $db->Execute("UPDATE $dbtables[planets] SET prod_fighters=$default_prod_fighters WHERE planet_id=$planet[planet_id]");
+      $db->Execute("UPDATE $dbtables[planets] SET prod_torp=$default_prod_torp         WHERE planet_id=$planet[planet_id]");
+    }
+  }
 }
+
 
 function Take_Credits($sector_id, $planet_id)
 {

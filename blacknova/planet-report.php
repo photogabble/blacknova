@@ -164,6 +164,8 @@ function standard_report()
     echo "<TD ALIGN=CENTER><B><A HREF=planet-report.php?PRepType=1&sort=fighters>$l_fighters</A></B></TD>";
     echo "<TD ALIGN=CENTER><B><A HREF=planet-report.php?PRepType=1&sort=torp>$l_torps</A></B></TD>";
     echo "<TD ALIGN=RIGHT><B>$l_base?</B></TD>";
+    if($playerinfo[team] > 0)
+      echo "<TD ALIGN=RIGHT><B>Corp?</B></TD>";
     echo "<TD ALIGN=RIGHT><B>$l_selling?</B></TD>";
 
     // ------ next block of echo's fils the table and calculates the totals of all the commoditites as well as counting the bases and selling planets
@@ -177,6 +179,7 @@ function standard_report()
     $total_fighters = 0;
     $total_torp = 0;
     $total_base = 0;
+    $total_corp = 0;
     $total_selling = 0;
     $color = $color_line1;
     for($i=0; $i<$num_planets; $i++)
@@ -192,6 +195,10 @@ function standard_report()
       if($planet[$i][base] == "Y")
       {
         $total_base += 1;
+      }
+      if($planet[$i][corp] > 0)
+      {
+        $total_corp += 1;
       }
       if($planet[$i][sells] == "Y")
       {
@@ -214,6 +221,8 @@ function standard_report()
       echo "<TD ALIGN=RIGHT>"  . NUMBER($planet[$i][fighters]) . "</TD>";
       echo "<TD ALIGN=RIGHT>"  . NUMBER($planet[$i][torps]) . "</TD>";
       echo "<TD ALIGN=CENTER>" . base_build_check($planet, $i) . "</TD>";
+      if($playerinfo[team] > 0)
+        echo "<TD ALIGN=CENTER>" . ($planet[$i][corp] > 0  ? "$l_yes" : "$l_no") . "</TD>";
       echo "<TD ALIGN=CENTER>" . ($planet[$i][sells] == 'Y' ? "$l_yes" : "$l_no") . "</TD>";
       echo "</TR>";
 
@@ -240,6 +249,8 @@ function standard_report()
     echo "<TD ALIGN=RIGHT>"  . NUMBER($total_fighters) . "</TD>";
     echo "<TD ALIGN=RIGHT>"  . NUMBER($total_torp) . "</TD>";
     echo "<TD ALIGN=CENTER>" . NUMBER($total_base) . "</TD>";
+    if($playerinfo[team] > 0)
+      echo "<TD ALIGN=CENTER>" . NUMBER($total_corp) . "</TD>";
     echo "<TD ALIGN=CENTER>" . NUMBER($total_selling) . "</TD>";
     echo "</TR>";
     echo "</TABLE>";
@@ -345,15 +356,15 @@ function planet_production_change()
     echo "<TD ALIGN=RIGHT> <B><A HREF=planet-report.php?PRepType=2&sort=credits>$l_credits</A></B></TD>";
     echo "<TD ALIGN=CENTER><B><A HREF=planet-report.php?PRepType=2&sort=fighters>$l_fighters</A></B></TD>";
     echo "<TD ALIGN=CENTER><B><A HREF=planet-report.php?PRepType=2&sort=torp>$l_torps</A></B></TD>";
-    echo "<TD ALIGN=CENTER><B>$l_base?</B></TD>";
+//    echo "<TD ALIGN=CENTER><B>$l_base?</B></TD>";
+    if($playerinfo[team] > 0)
+      echo "<TD ALIGN=CENTER><B>Corp?</B></TD>";
     echo "<TD ALIGN=CENTER><B>$l_selling?</B></TD>";
-
     echo "</TR>";
 
     $total_colonists = 0;
     $total_credits = 0;
-    $total_base = 0;
-    $total_selling = 0;
+    $total_corp = 0;
     
     $temp_var = 0;
 
@@ -363,10 +374,6 @@ function planet_production_change()
     {
       $total_colonists += $planet[$i][colonists];
       $total_credits += $planet[$i][credits];
-      if($planet[$i][base] == "Y")
-      {
-        $total_base += 1;
-      }
       if(empty($planet[$i][name]))
       {
         $planet[$i][name] = $l_unnamed;
@@ -378,12 +385,13 @@ function planet_production_change()
       echo "<TD ALIGN=CENTER>" . "<input size=6 type=text name=\"prod_organics[" . $planet[$i]["planet_id"] . "]\" value=\"" . $planet[$i]["prod_organics"] . "\">" . "</TD>";
       echo "<TD ALIGN=CENTER>" . "<input size=6 type=text name=\"prod_goods["    . $planet[$i]["planet_id"] . "]\" value=\"" . $planet[$i]["prod_goods"]    . "\">" . "</TD>";
       echo "<TD ALIGN=CENTER>" . "<input size=6 type=text name=\"prod_energy["   . $planet[$i]["planet_id"] . "]\" value=\"" . $planet[$i]["prod_energy"]   . "\">" . "</TD>";
-      echo "<TD ALIGN=RIGHT>"  . $planet[$i][colonists]        . "</TD>";
-      echo "<TD ALIGN=RIGHT>"  . NUMBER($planet[$i][credits])  . "</TD>";
+      echo "<TD ALIGN=RIGHT>"  . $planet[$i][colonists]              . "</TD>";
+      echo "<TD ALIGN=RIGHT>"  . NUMBER($planet[$i][credits])        . "</TD>";
       echo "<TD ALIGN=CENTER>" . "<input size=6 type=text name=\"prod_fighters[" . $planet[$i]["planet_id"] . "]\" value=\"" . $planet[$i]["prod_fighters"] . "\">" . "</TD>";
       echo "<TD ALIGN=CENTER>" . "<input size=6 type=text name=\"prod_torp["     . $planet[$i]["planet_id"] . "]\" value=\"" . $planet[$i]["prod_torp"]     . "\">" . "</TD>";
-      echo "<TD ALIGN=CENTER>" . base_build_check($planet, $i)   . "</TD>";
-      echo "<TD ALIGN=CENTER>" . selling_checkboxes($planet, $i) . "</TD>";
+      if($playerinfo[team] > 0)
+        echo "<TD ALIGN=CENTER>" . corp_planet_checkboxes($planet, $i) . "</TD>";
+      echo "<TD ALIGN=CENTER>" . selling_checkboxes($planet, $i)     . "</TD>";
       echo "</TR>";
 
       if($color == $color_line1)
@@ -405,15 +413,26 @@ function planet_production_change()
     echo "<TD ALIGN=RIGHT>" . NUMBER($total_credits)   . "</TD>";
     echo "<TD>" . "" . "</TD>";
     echo "<TD>" . "" . "</TD>";
-    echo "<TD ALIGN=CENTER>" . NUMBER($total_base)     . "</TD>";
+    if($playerinfo[team] > 0)
+      echo "<TD></TD>";
     echo "<TD></TD>";
     echo "</TR>";
     echo "</TABLE>";
 
     echo "<BR>";
+    echo "<INPUT TYPE=HIDDEN NAME=ship_id VALUE=$playerinfo[ship_id]>";
+    echo "<INPUT TYPE=HIDDEN NAME=team_id   VALUE=$playerinfo[team]>";
     echo "<INPUT TYPE=SUBMIT VALUE=SUBMIT>  <INPUT TYPE=RESET VALUE=RESET>";
     echo "</FORM>";
   }
+}
+
+function corp_planet_checkboxes($planet, $i)
+{
+ if($planet[$i][corp] <= 0)
+    return("<INPUT TYPE=CHECKBOX NAME=corp[] VALUE=\"" . $planet[$i]["planet_id"] . "\">");
+  elseif($planet[$i][corp] > 0)
+    return("<INPUT TYPE=CHECKBOX NAME=corp[] VALUE=\"" . $planet[$i]["planet_id"] . "\" CHECKED>");
 }
 
 function selling_checkboxes($planet, $i)
