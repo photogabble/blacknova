@@ -751,8 +751,8 @@ else
       $i++;
     }
   }
-  $previous_sector = $shipinfo[sector_id] - 1; 
-  $next_sector = $shipinfo[sector_id] + 1; 
+  $previous_sector = $sectorinfo[sector_id] - 1; 
+  $next_sector = $sectorinfo[sector_id] + 1; 
   if($previous_sector <0) $previous_sector = $sector_max; 
   if($next_sector > $sector_max) $next_sector = 0; 
 
