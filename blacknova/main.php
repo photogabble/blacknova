@@ -663,6 +663,14 @@ else
     $num_traderoutes++;
     $query->MoveNext();
   }
+  $query = $db->Execute("SELECT * FROM $dbtables[planets], $dbtables[traderoutes] WHERE source_type='C' AND source_id=$dbtables[planets].planet_id AND $dbtables[planets].sector_id=$playerinfo[sector] AND $dbtables[traderoutes].owner=$playerinfo[ship_id]");
+  while(!$query->EOF)
+  {
+    $traderoutes[$i]=$query->fields;
+    $i++;
+    $num_traderoutes++;
+    $query->MoveNext();
+  }
 
   if($num_traderoutes == 0)
     echo "<center><a class=dis>&nbsp;$l_none &nbsp;</a></center>";

@@ -53,13 +53,19 @@ else
 {
   echo "$l_sendm_sent<BR><BR>";
 
-if (strpos($to, $l_sendm_ally)===false) {
+if (strpos($to, $l_sendm_ally)===false)
+{
+  $timestamp = date("Y\-m\-d H\:i\:s");
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE character_name='$to'");
   $target_info = $res->fields;
   $content = htmlspecialchars($content);
   $subject = htmlspecialchars($subject);
-  $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$target_info[ship_id]."', '".$subject."', '".$content."')");
-     } else {
+  $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, sent, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$target_info[ship_id]."', '".$timestamp."', '".$subject."', '".$content."')");
+}
+else
+{
+  $timestamp = date("Y\-m\-d H\:i\:s");
+
      $to = str_replace ($l_sendm_ally, "", $to);
      $to = trim($to);
      $to = addslashes($to);
@@ -71,7 +77,7 @@ if (strpos($to, $l_sendm_ally)===false) {
      while (!$res2->EOF)
      {
         $row2 = $res2->fields;
-        $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$row2[ship_id]."', '".$subject."', '".$content."')");
+        $db->Execute("INSERT INTO $dbtables[messages] (sender_id, recp_id, sent, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$row2[ship_id]."', '".$timestamp."', '".$subject."', '".$content."')");
         $res2->MoveNext();
      }
 

@@ -26,17 +26,21 @@ if ($action=="delete")
 <?
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[messages] WHERE recp_id='".$playerinfo[ship_id]."'");
+$res = $db->Execute("SELECT * FROM $dbtables[messages] WHERE recp_id='".$playerinfo[ship_id]."' ORDER BY sent DESC");
  if ($res->EOF)
  {
   echo "$l_readm_nomessage";
  }
  else
  {
+$cur_D = date("Y-m-d");
+$cur_T = date("H:i:s");
 ?>
-<Table width="75%">
+
+<Table >
 <TR>
 <TD colspan="2" BGCOLOR="<? echo $color_header; ?>"><? echo $l_readm_center ?></TD>
+<TD rowspan="2" width=75><? echo "<font size=-1>$cur_D<BR>$cur_T</font>" ?></TD>
 </TR>
 <TR BGCOLOR="<? echo $color_line1; ?>">
 <TD>
@@ -66,11 +70,11 @@ else
  $line_counter = true;
 }
 ?>">
-<TD>
-<? echo $sender[character_name]; ?><HR><? echo $l_readm_captn ?><BR><? echo $sender[ship_name]; ?>
+<TD VALIGN=TOP width=150>
+<? echo $sender[character_name]; ?><HR><? echo $l_readm_captn ?><BR><? echo $sender[ship_name] ?><BR><BR><? echo "<font size=-1>$msg[sent]</font>" ?>
 </TD>
-<TD>
-<UL><B><? echo $msg[subject]; ?></B></UL><HR><? echo nl2br($msg[message]); ?>
+<TD VALIGN=TOP>
+<B><? echo $msg[subject]; ?></B><HR><? echo nl2br($msg[message]); ?>
 </TD>
 <TD>
 <A HREF="readmail.php?action=delete&ID=<? echo $msg[ID]; ?>"><? echo $l_readm_del ?></A><BR>
