@@ -71,10 +71,8 @@ $admin_mail = "billg@microsoft.com";
 // Address the forum link, link's to:
 $link_forums = "http://forums.blacknova.net";
 $bnt_ls = true;
-$bnt_ls_key = "myKey"; // enter an authentification key here (always use the sam
-e key for the same server/game)
+$bnt_ls_key = "myKey"; // enter an authentification key here (always use the sam e key for the same server/game)
 $bnt_ls_url = "http://www.rednova.de/";
-$max_team_members = 6; // Max Members per Team (if limit reached, the INVITE Lin
-k is disabled.
+$max_team_members = 6; // Max Members per Team (if limit reached, the INVITE Lin k is disabled.
 $servertimezone = "CET [GMT+1]";
 ?>
