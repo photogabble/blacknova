@@ -250,10 +250,12 @@ function checkbanned()
       die();
    }
 }
-
+$connectedtodb = false;
 function connectdb()
 {
   /* connect to database - and if we can't stop right there */
+  global $connectedtodb;
+  if ($connectedtodb) { return; } else { $connectedtodb = true; }
   global $dbhost;
   global $dbport;
   global $dbuname;
