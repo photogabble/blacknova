@@ -88,7 +88,7 @@ if(!empty($planetinfo))
        } 
        elseif($destroy==2 && $allow_genesis_destroy) 
        { 
-          if($shipinfo[dev_genesis] > 0) 
+          if($shipinfo[dev_genesis] > 0 && $playerinfo[turns] > 0) 
           { 
              $update = $db->Execute("delete from $dbtables[planets] where planet_id=$planet_id"); 
              
@@ -102,7 +102,10 @@ if(!empty($planetinfo))
           } 
           else 
           { 
-             echo "$l_gns_nogenesis<br>"; 
+             if($shipinfo[dev_genesis] < 1)
+                echo "$l_gns_nogenesis<br>"; 
+             if($playerinfo[turns] < 1)
+                echo "$l_gns_turn<br>";
           } 
        } 
        elseif($allow_genesis_destroy) 

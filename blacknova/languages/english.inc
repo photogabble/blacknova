@@ -2,7 +2,6 @@
 
 
 //general
-
 $l_yes 			 = "Yes";
 $l_no			 = "No";
 $l_here			 = "here";
