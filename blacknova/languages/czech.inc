@@ -1150,7 +1150,7 @@ $l_new_pwsent			="Heslo bylo odeslano k $username.";
 $l_new_login			="na prihlasovaci stranku.";
 $l_new_err			="Vratte se zpatky nebo to <a href=new.php>zkuste znovu</a>.";
 $l_new_topic			="Heslo do BlackNova Traders";
-$l_new_message			="Dobry den,\n\nNekdo z IP adresy $ip si vyzadal zaslani hesla do BlackNova Traders.\n\nVase heslo je: [pass]\n\nDekujeme Vam\n\nBlackNova Traders web tym.";
+$l_new_message			="Dobry den,\r\n\r\nNekdo z IP adresy $ip si vyzadal zaslani hesla do BlackNova Traders.\r\n\r\nVase heslo je: [pass]\r\n\r\nDekujeme Vam\r\n\r\nBlackNova Traders web tym.";
 
 // logout.php
 
@@ -1163,7 +1163,7 @@ $l_mail_title			="Poslat heslo e-mailem";
 $l_mail_noplayer		="Hrac nenalezen! - Zde muzete <a href=new.php>vytvorit noveho hrace</a>.";
 $l_mail_sent			="Heslo bylo odeslano na ";
 $l_mail_topic			="Heslo do $game_name";
-$l_mail_message			="Dobry den,\n\nnekdo z IP adresy $ip si vyzadal zaslani hesla do $game_name na tuto adresu.\n\nVase heslo je: [pass]\n\nDekujeme Vam\n\n$game_name web tym.";
+$l_mail_message			="Dobry den,\r\n\r\nnekdo z IP adresy $ip si vyzadal zaslani hesla do $game_name na tuto adresu.\r\n\r\nVase heslo je: [pass]\r\n\r\nDekujeme Vam\r\n\r\n$game_name web tym.";
 
 // global_funcs.php
 

@@ -1206,7 +1206,7 @@ $l_new_pwsent			="Password has been sent to ${HTTP_POST_VARS['username']}.";
 $l_new_login			="to go to the login screen.";
 $l_new_err			="Please go back or <a href=new.php>click here</a> and try again.";
 $l_new_topic			="Traders Password";
-$l_new_message			="Greetings,\n\nSomeone from the IP address $ip requested that your password for Traders be sent to you.\n\nYour password is: [pass]\n\nThank you\n\nThe Traders web team.";
+$l_new_message			="Greetings,\r\n\r\nSomeone from the IP address $ip requested that your password for Traders be sent to you.\r\n\r\nYour password is: [pass]\r\n\r\nThank you\r\n\r\nThe Traders web team.";
 
 // logout.php
 
@@ -1219,7 +1219,7 @@ $l_mail_title			="Mail Password";
 $l_mail_noplayer		="No Such Player! - Create a new player <a href=new.php>here</a>.";
 $l_mail_sent			="Password has been sent to";
 $l_mail_topic			="$game_name Password";
-$l_mail_message			="Greetings,\n\nSomeone from the IP address $ip requested that your password for $game_name be sent to you.\n\nYour password is: [pass]\n\nThank you\n\nThe $game_name web team.";
+$l_mail_message			="Greetings,\r\n\r\nSomeone from the IP address $ip requested that your password for $game_name be sent to you.\r\n\r\nYour password is: [pass]\r\n\r\nThank you\r\n\r\nThe $game_name web team.";
 
 // global_funcs.php
 

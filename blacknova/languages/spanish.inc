@@ -1196,7 +1196,7 @@ $l_new_pwsent			= "La contraseña ha sido enviada a ${HTTP_POST_VARS['username']}
 $l_new_login			= "para ir a la pantalla de conexión"; 
 $l_new_err			= "Por favor, ve atrás o <a href=new.php>pulsa aquí</a> e inténtalo de nuevo."; 
 $l_new_topic			= "Contraseña de Traders"; 
-$l_new_message			= "Saludos,\n\nAlguien desde la dirección IP $ip ha solicitado tu contraseña para Traders te sea enviada.\n\nTu contraseña es: [pass]\n\nGracias\n\nEl equipo web de Traders."; 
+$l_new_message			= "Saludos,\r\n\r\nAlguien desde la dirección IP $ip ha solicitado tu contraseña para Traders te sea enviada.\r\n\r\nTu contraseña es: [pass]\r\n\r\nGracias\r\n\r\nEl equipo web de Traders."; 
 
 // logout.php
 
@@ -1209,7 +1209,7 @@ $l_mail_title			= "Enviar Contraseña";
 $l_mail_noplayer		= "¡No existe ese jugador! - Crea un nuevo jugador desde <a href=new.php>aquí</a>."; 
 $l_mail_sent			= "La contraseña ha sido enviada a"; 
 $l_mail_topic			= "Contraseña de $game_name"; 
-$l_mail_message			= "Saludos,\n\nAlguien desde la dirección IP $ip ha solicitado que tu contraseña para $game_name te sea enviada.\n\nTu contraseña es: [pass]\n\nGracias\n\nEl equipo web de $game_name."; 
+$l_mail_message			= "Saludos,\r\n\r\nAlguien desde la dirección IP $ip ha solicitado que tu contraseña para $game_name te sea enviada.\r\n\r\nTu contraseña es: [pass]\r\n\r\nGracias\r\n\r\nEl equipo web de $game_name."; 
 
 // global_funcs.php
 

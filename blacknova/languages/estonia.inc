@@ -1213,7 +1213,7 @@ $l_new_pwsent			="Parool on saadetud aadressile ${HTTP_POST_VARS['username']}.";
 $l_new_login			="et minna sisse logimise men&uuml;&uuml;sse.";
 $l_new_err			="Palun mine tagasi v&otilde;i <a href=new.php>vajuta siia</a> ja proovi uuesti.";
 $l_new_topic			="Traders parool";
-$l_new_message			="Tervitus,\n\nKeegi aadressilt $ip soovis, et Sulle saadetaks Sinu 'Traders' parool.\n\nSu parool on: [pass]\n\nAit&auml;h\n\n$game_name veebitiim.";
+$l_new_message			="Tervitus,\r\n\r\nKeegi aadressilt $ip soovis, et Sulle saadetaks Sinu 'Traders' parool.\r\n\r\nSu parool on: [pass]\r\n\r\nAit&auml;h\r\n\r\n$game_name veebitiim.";
 
 // logout.php
 
@@ -1226,7 +1226,7 @@ $l_mail_title			="Parooli saatmine";
 $l_mail_noplayer		="Sellist m&auml;ngijat ei ole! - Tee <A HREF=new.php>siin</A> uus m&auml;ngija.";
 $l_mail_sent			="Parool on saadetud aadressile";
 $l_mail_topic			="$game_name parool";
-$l_mail_message			="Tervitus,\n\nKeegi aadressilt $ip soovis saada parooli m&auml;ngule $game_name.\n\nSu parool on: [pass]\n\nAit&auml;h\n\n$game_name veebitiim.";
+$l_mail_message			="Tervitus,\r\n\r\nKeegi aadressilt $ip soovis saada parooli m&auml;ngule $game_name.\r\n\r\nSu parool on: [pass]\r\n\r\nAit&auml;h\r\n\r\n$game_name veebitiim.";
 
 // global_funcs.php
 

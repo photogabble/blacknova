@@ -1158,7 +1158,7 @@ $l_new_pwsent			="Le mot de passe a été envoyé à $username.";
 $l_new_login			="pour aller à l'écran de connection.";
 $l_new_err			="S'il vous plaît cliquez <a href=new.php>ici</a> pour réessayer.";
 $l_new_topic			="Mot de passe pour Blacknova Traders";
-$l_new_message			="Salutations,\n\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\n\nVotre mot de passe est: [pass]\n\nMerci\n\nL'équipe de Blacknova Traders.";
+$l_new_message			="Salutations,\r\n\r\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\r\n\r\nVotre mot de passe est: [pass]\r\n\r\nMerci\r\n\r\nL'équipe de Blacknova Traders.";
 
 // logout.php
 
@@ -1171,7 +1171,7 @@ $l_mail_title			="Envoyer le mot de passe";
 $l_mail_noplayer		="Ce joueur n'existe pas! - Créer un nouveau joueur <a href=new.php>ici</a>.";
 $l_mail_sent			="Le mot de passe a été envoyé à";
 $l_mail_topic			="Mot de passe pour $game_name";
-$l_mail_message			="Salutations,\n\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\n\nVotre mot de passe est: [pass]\n\nMerci\n\nL'équipe de Blacknova Traders.";
+$l_mail_message			="Salutations,\r\n\r\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\r\n\r\nVotre mot de passe est: [pass]\r\n\r\nMerci\r\n\r\nL'équipe de Blacknova Traders.";
 
 // global_funcs.php
 

@@ -1163,7 +1163,7 @@ $l_new_pwsent			="Passwort wurde an $username geschickt.";
 $l_new_login			="um zum Login zurück zu gelangen.";
 $l_new_err			="Bitte gehe zurück oder <a href=new.php>klicke hier</a> und versuche es noch einmal.";
 $l_new_topic			="BlackNova Passwort";
-$l_new_message			="Langes Leben und Frieden,\n\nJemand mit der IP Adresse $ip hat ein Passwort von BlackNova angefordert.\n\nDeinDein Passwort ist: [pass]\n\nDanke schön\n\nDas BlackNova Team.";
+$l_new_message			="Langes Leben und Frieden,\r\n\r\nJemand mit der IP Adresse $ip hat ein Passwort von BlackNova angefordert.\r\n\r\nDeinDein Passwort ist: [pass]\r\n\r\nDanke schön\r\n\r\nDas BlackNova Team.";
 
 // logout.php
 
@@ -1176,7 +1176,7 @@ $l_mail_title			="Sende Passwort";
 $l_mail_noplayer		="Spieler nicht vorhanden! - Erstelle neuen Spieler <a href=new.php>hier</a>.";
 $l_mail_sent			="Passwort erfolgreich geschickt an:";
 $l_mail_topic			="$game_name Passwort";
-$l_mail_message			="Frieden und langes Leben,\n\nJemand mir der IP Adresse $ip hat ein neues Passwort für $game_name angefordert.\n\nDein Passwort lautet: [pass]\n\nDanke schön\n\nDas $game_name Web Team.";
+$l_mail_message			="Frieden und langes Leben,\r\n\r\nJemand mir der IP Adresse $ip hat ein neues Passwort für $game_name angefordert.\r\n\r\nDein Passwort lautet: [pass]\r\n\r\nDanke schön\r\n\r\nDas $game_name Web Team.";
 
 // global_funcs.php
 
