@@ -1,3 +1,8 @@
+David Rowlands (17 June 2002)
+-----------------------------
+Score was not calculating due to pow() substitution.
+It was possible to view anyones log file.
+
 L. Patrick Smallwood (16 June 2002)
 ---------------------------------
 Make footer update ticker compatible with Mozilla. Thanks to Merlyn!
