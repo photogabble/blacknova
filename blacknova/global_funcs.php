@@ -370,6 +370,7 @@ function gen_score($sid)
      $row = $res->fields;
      $score += ($row[balance] - $row[loan]);
   }
+  if($score<0) $score=0;
   $score = ROUND(SQRT($score));
   $db->Execute("UPDATE $dbtables[players] SET score=$score WHERE player_id=$sid");
 
