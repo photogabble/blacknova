@@ -60,6 +60,7 @@ else
 if (strpos($to, $l_sendm_ally)===false && !isset($to_allies))
 {
   $timestamp = date("Y\-m\-d H\:i\:s");
+  $to = htmlspecialchars($to, ENT_QUOTES); // Fix for when using special characters for players.
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE character_name='$to'");
   $target_info = $res->fields;
   $content = htmlspecialchars($content);
