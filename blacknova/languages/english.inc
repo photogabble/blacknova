@@ -111,7 +111,7 @@ $l_cloak		 = "Cloak";
 $l_holds		 = "Holds";
 $l_deflect		 = "Mine Deflectors";
 $l_ewd			 = "Emegency Warp Device";
-
+$l_shipavg		 = "Average tech level";
 
 $l_arm_weap		 = "Armour & Weapons";
 $l_beacons		 = "Space Beacons";
