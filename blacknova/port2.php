@@ -23,6 +23,9 @@ $playerinfo = $result->fields;
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
 $shipinfo = $res->fields;
 
+$res = $db->Execute("SELECT * FROM $dbtables[ship_types] WHERE type_id=$shipinfo[class]");
+$classinfo = $res->fields;
+
 $result2    = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$shipinfo[sector_id]'");
 $sectorinfo = $result2->fields;
 
@@ -141,51 +144,120 @@ else
     }
 
     $hull_upgrade_cost = 0;
+    if($hull_upgrage > $classinfo[maxhull])
+      $hull_upgrade = $classinfo[maxhull];
+
+    if($hull_upgrade < $classinfo[minhull])
+      $hull_upgrade = $classinfo[minhull];
+
     if($hull_upgrade > $shipinfo[hull])
     {
       $hull_upgrade_cost = phpChangeDelta($hull_upgrade, $shipinfo[hull]);
     }
+
     $engine_upgrade_cost = 0;
+    if($engine_upgrage > $classinfo[maxengines])
+      $engine_upgrade = $classinfo[maxengines];
+
+    if($engine_upgrade < $classinfo[minengines])
+      $engine_upgrade = $classinfo[minengines];
+
     if($engine_upgrade > $shipinfo[engines])
     {
       $engine_upgrade_cost = phpChangeDelta($engine_upgrade, $shipinfo[engines]);
     }
+
     $power_upgrade_cost = 0;
+    if($power_upgrage > $classinfo[maxpower])
+      $power_upgrade = $classinfo[maxpower];
+
+    if($power_upgrade < $classinfo[minpower])
+      $power_upgrade = $classinfo[minpower];
+
     if($power_upgrade > $shipinfo[power])
     {
       $power_upgrade_cost = phpChangeDelta($power_upgrade, $shipinfo[power]);
     }
+
     $computer_upgrade_cost = 0;
+    if($computer_upgrage > $classinfo[maxcomputer])
+      $computer_upgrade = $classinfo[maxcomputer];
+
+    if($computer_upgrade < $classinfo[mincomputer])
+      $computer_upgrade = $classinfo[mincomputer];
+
     if($computer_upgrade > $shipinfo[computer])
     {
       $computer_upgrade_cost = phpChangeDelta($computer_upgrade, $shipinfo[computer]);
     }
+
     $sensor_upgrade_cost = 0;
+    if($sensors_upgrage > $classinfo[maxsensors])
+      $sensors_upgrade = $classinfo[maxsensors];
+
+    if($sensors_upgrade < $classinfo[minsensors])
+      $sensors_upgrade = $classinfo[minsensors];
+
     if($sensors_upgrade > $shipinfo[sensors])
     {
       $sensors_upgrade_cost = phpChangeDelta($sensors_upgrade, $shipinfo[sensors]);
     }
+
     $beams_upgrade_cost = 0;
+    if($beams_upgrage > $classinfo[maxbeams])
+      $beams_upgrade = $classinfo[maxbeams];
+
+    if($beams_upgrade < $classinfo[minbeams])
+      $beams_upgrade = $classinfo[minbeams];
+
     if($beams_upgrade > $shipinfo[beams])
     {
       $beams_upgrade_cost = phpChangeDelta($beams_upgrade, $shipinfo[beams]);
     }
+
     $armour_upgrade_cost = 0;
+    if($armour_upgrage > $classinfo[maxarmour])
+      $armour_upgrade = $classinfo[maxarmour];
+
+    if($armour_upgrade < $classinfo[minarmour])
+      $armour_upgrade = $classinfo[minarmour];
+
     if($armour_upgrade > $shipinfo[armour])
     {
       $armour_upgrade_cost = phpChangeDelta($armour_upgrade, $shipinfo[armour]);
     }
+
     $cloak_upgrade_cost = 0;
+    if($cloak_upgrage > $classinfo[maxcloak])
+      $cloak_upgrade = $classinfo[maxcloak];
+
+    if($cloak_upgrade < $classinfo[mincloak])
+      $cloak_upgrade = $classinfo[mincloak];
+
     if($cloak_upgrade > $shipinfo[cloak])
     {
       $cloak_upgrade_cost = phpChangeDelta($cloak_upgrade, $shipinfo[cloak]);
     }
+
     $torp_launchers_upgrade_cost = 0;
+    if($torp_launchers_upgrage > $classinfo[maxtorp_launchers])
+      $torp_launchers_upgrade = $classinfo[maxtorp_launchers];
+
+    if($torp_launchers_upgrade < $classinfo[mintorp_launchers])
+      $torp_launchers_upgrade = $classinfo[mintorp_launchers];
+
     if($torp_launchers_upgrade > $shipinfo[torp_launchers])
     {
       $torp_launchers_upgrade_cost = phpChangeDelta($torp_launchers_upgrade, $shipinfo[torp_launchers]);
     }
+
     $shields_upgrade_cost = 0;
+    if($shields_upgrage > $classinfo[maxshields])
+      $shields_upgrade = $classinfo[maxshields];
+
+    if($shields_upgrade < $classinfo[minshields])
+      $shields_upgrade = $classinfo[minshields];
+
     if($shields_upgrade > $shipinfo[shields])
     {
       $shields_upgrade_cost = phpChangeDelta($shields_upgrade, $shipinfo[shields]);

@@ -119,6 +119,8 @@ $l_warpedit		 = "Warp Editors";
 $l_genesis		 = "Genesis Torpedoes";
 $l_escape_pod		 = "Escape Pod";
 $l_fuel_scoop		 = "Fuel Scoop";
+$l_total_cargo  = "Total Cargo";
+$l_installed = "Installed";
 
 // device.php
 
@@ -1386,7 +1388,7 @@ $l_bigtorps = "A large explosion blossoms in the upper air of the planet.  Your 
 $l_strafesuccess = "It looks like some of your fighters made it through, although you can't tell how many from here.";
 $l_log_text[LOG_PLANET_BOMBED] = "Your planet [planet_name] in sector [sector] was bombed by [name]. You used [beams] energy and [torps] torpedoes in your defense.  You lost [figs] fighters.";
 $l_log_title[LOG_PLANET_BOMBED] = "<font color=red>Planet bombed!</font>";
-$l_lssd = "Last ship seen device";
+$l_lssd = "Last Ship Seen Device";
 $l_lss = "Last ship seen in this sector";
 $l_map = "Map";
 $l_igb_errnobase = "The IGB can not transfer credits to a planet without a base.";

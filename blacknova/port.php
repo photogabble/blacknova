@@ -23,6 +23,9 @@ $playerinfo = $res->fields;
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
 $shipinfo = $res->fields;
 
+$res = $db->Execute("SELECT * FROM $dbtables[ship_types] WHERE type_id=$shipinfo[class]");
+$classinfo = $res->fields;
+
 // fix negative quantities, i guess theres a better way to do but i'm in a hurry
 // i dont know how the quantities acutally get negative ...
 
@@ -472,13 +475,13 @@ echo "+ changeDelta(form.shields_upgrade.value,$shipinfo[shields])\n";
   $onclick =  "ONCLICK=\"countTotal()\"";
 
 // Create dropdowns when called
-function dropdown($element_name,$current_value)
+function dropdown($element_name,$current_value, $max_value)
 {
 global $onchange;
 $i = $current_value;
 $dropdownvar = "<select size='1' name='$element_name'";
 $dropdownvar = "$dropdownvar $onchange>\n";
-while ($i < 60)
+while ($i <= $max_value)
  {
  if ($current_value == $i)
   {
@@ -530,7 +533,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts1' name=hull_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[hull]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("hull_upgrade",$shipinfo[hull]);
+  echo dropdown("hull_upgrade",$shipinfo[hull], $classinfo[maxhull]);
   echo "    </TD>\n";
   echo "   </TR>\n";
   echo "   <TR BGCOLOR=\"$color_line2\">\n";
@@ -543,7 +546,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts2' size=10 name=engine_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[engines]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("engine_upgrade",$shipinfo[engines]);
+  echo dropdown("engine_upgrade",$shipinfo[engines], $classinfo[maxengines]);
   echo "    </TD>\n";
   echo "   </TR>\n";
   echo "   <TR BGCOLOR=\"$color_line1\">\n";
@@ -567,7 +570,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts1' name=power_costper VALUE='0' tabindex='-1' $onblur></td>\n";
   echo "    <TD>" . NUMBER($shipinfo[power]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("power_upgrade",$shipinfo[power]);
+  echo dropdown("power_upgrade",$shipinfo[power], $classinfo[maxpower]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line2\">\n";
@@ -578,7 +581,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts2' name=computer_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[computer]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("computer_upgrade",$shipinfo[computer]);
+  echo dropdown("computer_upgrade",$shipinfo[computer], $classinfo[maxcomputer]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line1\">\n";
@@ -591,7 +594,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts1' name=sensors_costper VALUE='0' tabindex='-1' $onblur></td>\n";
   echo "    <TD>" . NUMBER($shipinfo[sensors]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("sensors_upgrade",$shipinfo[sensors]);
+  echo dropdown("sensors_upgrade",$shipinfo[sensors], $classinfo[maxsensors]);
   echo "    </TD>\n";
   echo "  </TR>";
   echo "  <TR BGCOLOR=\"$color_line2\">\n";
@@ -604,7 +607,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts2' name=beams_costper VALUE='0' tabindex='-1' $onblur></td>";
   echo "    <TD>" . NUMBER($shipinfo[beams]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("beams_upgrade",$shipinfo[beams]);
+  echo dropdown("beams_upgrade",$shipinfo[beams], $classinfo[maxbeams]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line1\">\n";
@@ -626,7 +629,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts1' name=armour_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[armour]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("armour_upgrade",$shipinfo[armour]);
+  echo dropdown("armour_upgrade",$shipinfo[armour], $classinfo[maxarmour]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line2\">\n";
@@ -648,7 +651,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts2' name=cloak_costper VALUE='0' tabindex='-1' $onblur $onfocus></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[cloak]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("cloak_upgrade",$shipinfo[cloak]);
+  echo dropdown("cloak_upgrade",$shipinfo[cloak], $classinfo[maxcloak]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line1\">\n";
@@ -670,7 +673,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts1' name=torp_launchers_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[torp_launchers]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("torp_launchers_upgrade",$shipinfo[torp_launchers]);
+  echo dropdown("torp_launchers_upgrade",$shipinfo[torp_launchers], $classinfo[maxtorp_launchers]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line2\">\n";
@@ -683,7 +686,7 @@ return $dropdownvar;
   echo "    <TD><input type=text readonly class='portcosts2' name=shields_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($shipinfo[shields]) . "</TD>\n";
   echo "    <TD>\n       ";
-  echo dropdown("shields_upgrade",$shipinfo[shields]);
+  echo dropdown("shields_upgrade",$shipinfo[shields], $classinfo[maxshields]);
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo " </TABLE>\n";

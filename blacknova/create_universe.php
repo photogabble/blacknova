@@ -606,10 +606,11 @@ switch ($step) {
       echo "<B><BR>Configuring ship types<p></B>";
 
       echo "Inserting ship type: Spacewagon..."; //starting ship
-      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
                    "1, " .                //type_id
                    "'Spacewagon', " .     //name
                    "'spacewagon.gif', " . //image
+                   "'The Spacewagon ship class is often referred to as \"flying trash can\". The surname certainly befits its appearance, as well as functionnality. This is the standard ship issued by the Federation to new colonists departing Earth. This class of ship possesses minimum cargo and weapons space. In addition, its short range engines are not suited for long space travel. Hopping along warp lanes is the only viable way of moving through the universe using this ship.'," .
                    "'Y', " .              //buyable
                    "1000, " .             //cost_credits
                    "0, " .                //cost_ore

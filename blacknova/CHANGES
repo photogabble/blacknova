@@ -1,3 +1,10 @@
+SharpBlue (29 June 2002)
+---------------------------------
+New ship report screen.
+Continued implementation of ship classes logic
+Port.php, port2.php now obey the maximum component level for ship classes
+Added various pics
+
 SharpBlue (27 June 2002)
 ---------------------------------
 Separation of ships/players in the database is now complete.

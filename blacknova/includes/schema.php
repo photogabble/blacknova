@@ -297,6 +297,7 @@ $db->Execute("CREATE TABLE $dbtables[ship_types] (" .
              "type_id int unsigned DEFAULT '1' NOT NULL," .
              "name char(20)," .
              "image char(20)," .
+             "description text," .
              "buyable enum('Y','N') DEFAULT 'Y' NOT NULL," .
              "cost_credits bigint(20) unsigned DEFAULT '0' NOT NULL," . 
              "cost_ore bigint(20) unsigned DEFAULT '0' NOT NULL," . 
