@@ -44,9 +44,10 @@
       if ($playerinfo[orders] == 0)
       {
         $furcount0++;
+        $targetlink = $playerinfo[sector_id];
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF, NOT ON A PLANET ******
-        $reso0 = $db->Execute("SELECT * FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE sector_id=$playerinfo[sector_id] and email!='$playerinfo[email]' AND planet_id=0" AND $dbtables[players].player_id > 1);
+        $reso0 = $db->Execute("SELECT * FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE sector_id=$targetlink and email!='$playerinfo[email]' AND planet_id=0 AND $dbtables[players].player_id > 1");
         if (!$reso0->EOF)
         {
           $rowo0 = $reso0->fields;
