@@ -240,6 +240,7 @@ if($zoneinfo[zone_id] < 5)
 &nbsp;<a class=mnu href="readmail.php"><? echo $l_read_msg ?></A>&nbsp;<br>
 &nbsp;<a class=mnu href="mailto2.php"><? echo $l_send_msg ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="ranking.php"><? echo $l_rankings ?></a>&nbsp;<br>
+&nbsp;<a class=mnu href="settings.php"><? echo $l_login_settings ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="teams.php"><? echo $l_teams ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="self-destruct.php"><? echo $l_ohno ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="options.php"><? echo $l_options ?></a>&nbsp;<br>
