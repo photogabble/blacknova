@@ -339,126 +339,114 @@ echo "}\n";
 
 echo "function countTotal()\n";
 echo "{\n";
-echo "// Here we set all 'Max' items to 0 if they are negative, NaN, or over max - player amt.\n";
-echo "if (($emerwarp_free < document.forms[0].elements['dev_emerwarp_number'].value) || (document.forms[0].elements['dev_emerwarp_number'].value < 0) || (isNaN(document.forms[0].elements['dev_emerwarp_number'].value)))\n";
+echo "// Here we cycle through all form values (other than buy, or full), and regexp out all non-numerics. (1,000 = 1000)\n";
+echo "// Then, if its become a null value (type in just a, it would be a blank value. blank is bad.) we set it to zero.\n";
+echo "var form = document.forms[0];\n";
+echo "var i = form.elements.length;\n";
+echo "while (i > 0)\n";
+echo " {\n";
+echo " if ((form.elements[i-1].value != 'Buy') && (form.elements[i-1].value != 'Full'))\n";
 echo "  {\n";
-echo "  if (document.forms[0].elements['dev_emerwarp_number'].value != 'Full')\n";
+echo "  var tmpval = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
+echo "  if (tmpval != form.elements[i-1].value)\n";
 echo "   {\n";
-echo "  document.forms[0].elements['dev_emerwarp_number'].value=0\n";
+echo "   form.elements[i-1].value = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
 echo "   }\n";
 echo "  }\n";
-echo "if (($fighter_free < document.forms[0].elements['fighter_number'].value) || (document.forms[0].elements['fighter_number'].value < 0) || (isNaN(document.forms[0].elements['fighter_number'].value)))\n";
+echo " if (form.elements[i-1].value == '')\n";
 echo "  {\n";
-echo "  if (document.forms[0].elements['fighter_number'].value != 'Full')\n";
-echo "   {\n";
-echo "   document.forms[0].elements['fighter_number'].value=0\n";
-echo "   }\n";
+echo "  form.elements[i-1].value ='0';\n";
 echo "  }\n";
-echo "if (($torpedo_free < document.forms[0].elements['torpedo_number'].value) || (document.forms[0].elements['torpedo_number'].value < 0) || (isNaN(document.forms[0].elements['torpedo_number'].value)))\n";
+echo " i--;\n";
+echo "}\n";
+echo "// Here we set all 'Max' items to 0 if they are over max - player amt.\n";
+echo "if (($emerwarp_free < form.dev_emerwarp_number.value) && (form.dev_emerwarp_number.value != 'Full'))\n";
+echo " {\n";
+echo " form.dev_emerwarp_number.value=0\n";
+echo " }\n";
+echo "if (($fighter_free < form.fighter_number.value) && (form.fighter_number.value != 'Full'))\n";
+echo " {\n";
+echo " form.fighter_number.value=0\n";
+echo " }\n";
+echo "if (($torpedo_free < form.torpedo_number.value) && (form.torpedo_number.value != 'Full'))\n";
 echo "  {\n";
-echo "  if (document.forms[0].elements['torpedo_number'].value != 'Full')\n";
-echo "   {\n";
-echo "   document.forms[0].elements['torpedo_number'].value=0\n";
-echo "   }\n";
+echo "  form.torpedo_number.value=0\n";
 echo "  }\n";
-echo "if (($armour_free < document.forms[0].elements['armour_number'].value) || (document.forms[0].elements['armour_number'].value < 0 ) || (isNaN(document.forms[0].elements['armour_number'].value)))\n";
+echo "if (($armour_free < form.armour_number.value) && (form.armour_number.value != 'Full'))\n";
 echo "  {\n";
-echo "  if (document.forms[0].elements['armour_number'].value != 'Full')\n";
-echo "   {\n";
-echo "   document.forms[0].elements['armour_number'].value=0\n";
-echo "   }\n";
+echo "  form.armour_number.value=0\n";
 echo "  }\n";
-echo "if (($colonist_free < document.forms[0].elements['colonist_number'].value) || (document.forms[0].elements['colonist_number'].value < 0 ) || (isNaN(document.forms[0].elements['colonist_number'].value)))\n";
+echo "if (($colonist_free < form.colonist_number.value) && (form.colonist_number.value != 'Full' ))\n";
 echo "  {\n";
-echo "  if (document.forms[0].elements['colonist_number'].value != 'Full')\n";
-echo "   {\n";
-echo "   document.forms[0].elements['colonist_number'].value=0\n";
-echo "   }\n";
+echo "  form.colonist_number.value=0\n";
 echo "  }\n";
-echo "// Ditto for all the 'unlimited' items\n";
-echo "if ((document.forms[0].elements['dev_genesis_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_genesis_number'].value)))\n";
-echo "  {\n";
-echo "  document.forms[0].elements['dev_genesis_number'].value=0\n";
-echo "  }\n";
-echo "if ((document.forms[0].elements['dev_beacon_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_beacon_number'].value)))\n";
-echo "  {\n";
-echo "  document.forms[0].elements['dev_beacon_number'].value=0\n";
-echo "  }\n";
-echo "if ((document.forms[0].elements['dev_warpedit_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_warpedit_number'].value)))\n";
-echo "  {\n";
-echo "  document.forms[0].elements['dev_warpedit_number'].value=0\n";
-echo "  }\n";
-echo "if ((document.forms[0].elements['dev_minedeflector_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_minedeflector_number'].value)))\n";
-echo "  {\n";
-echo "  document.forms[0].elements['dev_minedeflector_number'].value=0\n";
-echo "  }\n";
-echo "// Done with the silly bounds checking\n";
-echo "document.forms[0].elements['total_cost'].value = document.forms[0].elements['dev_genesis_number'].value * $dev_genesis_price + \n";
-echo "document.forms[0].elements['dev_beacon_number'].value * $dev_beacon_price + \n";
+echo "// Done with the bounds checking\n";
+echo "form.total_cost.value = form.dev_genesis_number.value * $dev_genesis_price + \n";
+echo "form.dev_beacon_number.value * $dev_beacon_price + \n";
 if($emerwarp_free > 0)
 {
-  echo "document.forms[0].elements['dev_emerwarp_number'].value * $dev_emerwarp_price + \n";
+  echo "form.dev_emerwarp_number.value * $dev_emerwarp_price + \n";
 }
-echo "document.forms[0].elements['dev_warpedit_number'].value * $dev_warpedit_price + \n";
-echo "document.forms[0].elements['dev_minedeflector_number'].value * $dev_minedeflector_price + \n";
+echo "form.dev_warpedit_number.value * $dev_warpedit_price + \n";
+echo "form.elements['dev_minedeflector_number'].value * $dev_minedeflector_price + \n";
 if($playerinfo[dev_escapepod] == 'N')
 {
-  echo "(document.forms[0].elements['escapepod_purchase'].checked ?  $dev_escapepod_price : 0) + \n";
+  echo "(form.escapepod_purchase.checked ?  $dev_escapepod_price : 0) + \n";
 }
 if($playerinfo[dev_fuelscoop] == 'N')
 {
-  echo "(document.forms[0].elements['fuelscoop_purchase'].checked ?  $dev_fuelscoop_price : 0) + \n";
+  echo "(form.fuelscoop_purchase.checked ?  $dev_fuelscoop_price : 0) + \n";
 }
 if($playerinfo[dev_lssd] == 'N')
 {
-  echo "(document.forms[0].elements['lssd_purchase'].checked ?  $dev_lssd_price : 0) + \n";
+  echo "(form.lssd_purchase.checked ?  $dev_lssd_price : 0) + \n";
 }
 
-echo "changeDelta(document.forms[0].elements['hull_upgrade'].value,$playerinfo[hull]) + \n";
-echo "changeDelta(document.forms[0].elements['engine_upgrade'].value,$playerinfo[engines]) + \n";
-echo "changeDelta(document.forms[0].elements['power_upgrade'].value,$playerinfo[power]) + \n";
-echo "changeDelta(document.forms[0].elements['computer_upgrade'].value,$playerinfo[computer]) + \n";
-echo "changeDelta(document.forms[0].elements['sensors_upgrade'].value,$playerinfo[sensors]) + \n";
-echo "changeDelta(document.forms[0].elements['beams_upgrade'].value,$playerinfo[beams]) + \n";
-echo "changeDelta(document.forms[0].elements['armour_upgrade'].value,$playerinfo[armour]) + \n";
-echo "changeDelta(document.forms[0].elements['cloak_upgrade'].value,$playerinfo[cloak]) + \n";
-echo "changeDelta(document.forms[0].elements['torp_launchers_upgrade'].value,$playerinfo[torp_launchers]) + \n";
-echo "changeDelta(document.forms[0].elements['shields_upgrade'].value,$playerinfo[shields]) + \n";
+echo "changeDelta(form.hull_upgrade.value,$playerinfo[hull]) + \n";
+echo "changeDelta(form.engine_upgrade.value,$playerinfo[engines]) + \n";
+echo "changeDelta(form.power_upgrade.value,$playerinfo[power]) + \n";
+echo "changeDelta(form.computer_upgrade.value,$playerinfo[computer]) + \n";
+echo "changeDelta(form.sensors_upgrade.value,$playerinfo[sensors]) + \n";
+echo "changeDelta(form.beams_upgrade.value,$playerinfo[beams]) + \n";
+echo "changeDelta(form.armour_upgrade.value,$playerinfo[armour]) + \n";
+echo "changeDelta(form.cloak_upgrade.value,$playerinfo[cloak]) + \n";
+echo "changeDelta(form.torp_launchers_upgrade.value,$playerinfo[torp_launchers]) + \n";
+echo "changeDelta(form.shields_upgrade.value,$playerinfo[shields]) + \n";
 
   if($playerinfo[ship_fighters] != $fighter_max)
   {
-    echo "document.forms[0].elements['fighter_number'].value * $fighter_price + \n";
+    echo "form.fighter_number.value * $fighter_price + \n";
   }
   if($playerinfo[torps] != $torpedo_max)
   {
-    echo "document.forms[0].elements['torpedo_number'].value * $torpedo_price + \n";
+    echo "form.torpedo_number.value * $torpedo_price + \n";
   }
   if($playerinfo[armour_pts] != $armour_max)
   {
-    echo "document.forms[0].elements['armour_number'].value * $armour_price + \n";
+    echo "form.armour_number.value * $armour_price + \n";
   }
   if($playerinfo[ship_colonists] != $colonist_max)
   {
-    echo "document.forms[0].elements['colonist_number'].value * $colonist_price;\n";
+    echo "form.colonist_number.value * $colonist_price;\n";
   }
   echo "\n";
-  echo "  if(document.forms[0].elements['total_cost'].value > $playerinfo[credits])\n";
+  echo "  if(form.total_cost.value > $playerinfo[credits])\n";
   echo "  {\n";
-  echo "    document.forms[0].elements['total_cost'].value = '$l_no_credits';\n";
-//  echo "    document.forms[0].elements['total_cost'].value = 'You are short '+(document.forms[0].elements['total_cost'].value - $playerinfo[credits]) +' credits';\n";
+  echo "    form.total_cost.value = '$l_no_credits';\n";
+//  echo "    form.total_cost.value = 'You are short '+(form.total_cost.value - $playerinfo[credits]) +' credits';\n";
   echo "  }\n";
-  echo "  document.forms[0].elements['total_cost'].length = document.forms[0].elements['total_cost'].value.length;\n";
+  echo "  form.total_cost.length = form.total_cost.value.length;\n";
   echo "\n";
-  echo "document.forms[0].elements['engine_costper'].value=changeDelta(document.forms[0].elements['engine_upgrade'].value,$playerinfo[engines]);\n";
-  echo "document.forms[0].elements['power_costper'].value=changeDelta(document.forms[0].elements['power_upgrade'].value,$playerinfo[power]);\n";
-  echo "document.forms[0].elements['computer_costper'].value=changeDelta(document.forms[0].elements['computer_upgrade'].value,$playerinfo[computer]);\n";
-  echo "document.forms[0].elements['sensors_costper'].value=changeDelta(document.forms[0].elements['sensors_upgrade'].value,$playerinfo[sensors]);\n";
-  echo "document.forms[0].elements['beams_costper'].value=changeDelta(document.forms[0].elements['beams_upgrade'].value,$playerinfo[beams]);\n";
-  echo "document.forms[0].elements['armour_costper'].value=changeDelta(document.forms[0].elements['armour_upgrade'].value,$playerinfo[armour]);\n";
-  echo "document.forms[0].elements['cloak_costper'].value=changeDelta(document.forms[0].elements['cloak_upgrade'].value,$playerinfo[cloak]);\n";
-  echo "document.forms[0].elements['torp_launchers_costper'].value=changeDelta(document.forms[0].elements['torp_launchers_upgrade'].value,$playerinfo[torp_launchers]);\n";
-  echo "document.forms[0].elements['hull_costper'].value=changeDelta(document.forms[0].elements['hull_upgrade'].value,$playerinfo[hull]);\n";
-  echo "document.forms[0].elements['shields_costper'].value=changeDelta(document.forms[0].elements['shields_upgrade'].value,$playerinfo[shields]);\n";
+  echo "form.engine_costper.value=changeDelta(form.engine_upgrade.value,$playerinfo[engines]);\n";
+  echo "form.power_costper.value=changeDelta(form.power_upgrade.value,$playerinfo[power]);\n";
+  echo "form.computer_costper.value=changeDelta(form.computer_upgrade.value,$playerinfo[computer]);\n";
+  echo "form.sensors_costper.value=changeDelta(form.sensors_upgrade.value,$playerinfo[sensors]);\n";
+  echo "form.beams_costper.value=changeDelta(form.beams_upgrade.value,$playerinfo[beams]);\n";
+  echo "form.armour_costper.value=changeDelta(form.armour_upgrade.value,$playerinfo[armour]);\n";
+  echo "form.cloak_costper.value=changeDelta(form.cloak_upgrade.value,$playerinfo[cloak]);\n";
+  echo "form.torp_launchers_costper.value=changeDelta(form.torp_launchers_upgrade.value,$playerinfo[torp_launchers]);\n";
+  echo "form.hull_costper.value=changeDelta(form.hull_upgrade.value,$playerinfo[hull]);\n";
+  echo "form.shields_costper.value=changeDelta(form.shields_upgrade.value,$playerinfo[shields]);\n";
   echo "}";
   TEXT_JAVASCRIPT_END();
 
