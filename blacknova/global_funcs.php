@@ -104,6 +104,7 @@ define(LOG_PLANET_BOMBED,53);     //Sent after bombing a planet
 define(LOG_ADMIN_ILLEGVALUE, 54);        //sent to admin on planet destruction instead of capture
 define(LOG_CHEAT_TEAM,55);            // Sent when someone attempts the kick any team member cheat
 
+
 // Database tables variables
 $dbtables['links'] = "${db_prefix}links";
 $dbtables['planets'] = "${db_prefix}planets";
@@ -127,6 +128,7 @@ $dbtables['movement_log'] = "${db_prefix}movement_log";
 $dbtables['ship_types'] = "${db_prefix}ship_types";               
 $dbtables['ships'] = "${db_prefix}ships";
 $dbtables['planet_log'] = "${db_prefix}planet_log";
+$dbtables['ip_log'] = "${db_prefix}ip_log";
 
 function mypw($one,$two)
 {
@@ -1198,10 +1200,22 @@ function newplayer($email, $char, $pass, $ship_name)
 }
 function planet_log($planet,$owner,$player_id,$action)
 {
-   global $db, $dbtables;
-   $res = $db->Execute("SELECT ip_address from $dbtables[players] WHERE player_id=$player_id");
-   $ip = $res->fields[ip_address];
-   $db->Execute("INSERT INTO $dbtables[planet_log] (planet_id,player_id,owner_id,ip_address,action,time) VALUES ($planet,$player_id,$owner,'$ip',$action,NOW())");
+   global $db, $dbtables,$enhanced_logging;
+   if($enhanced_logging)
+   {
+      $res = $db->Execute("SELECT ip_address from $dbtables[players] WHERE player_id=$player_id");
+      $ip = $res->fields[ip_address];
+      $db->Execute("INSERT INTO $dbtables[planet_log] (planet_id,player_id,owner_id,ip_address,action,time) VALUES ($planet,$player_id,$owner,'$ip',$action,NOW())");
+   }
    
+}
+
+function ip_log($player_id,$ip_address)
+{
+   global $db, $dbtables,$enhanced_logging;
+   if($enhanced_logging)
+   {
+      $res = $db->Execute("INSERT INTO $dbtables[ip_log] (player_id,ip_address) VALUES ($player_id,'$ip_address')");
+   }
 }
 ?>

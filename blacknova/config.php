@@ -216,6 +216,7 @@ $sched_type = 0; // 0 = Cron based, 1 = player triggered.
 $max_credits_without_base = $base_credits; // Max amount of credits allowed on a planet without a base
 $sofa_on = false;
 $ksm_allowed = true;
+$enhanced_logging = true; // Set enhanced logging (ip and planet activity) on or off
 
 include("global_funcs.php");
 ?>

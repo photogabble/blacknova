@@ -22,9 +22,10 @@ function YESNO($onoff)
 }
 
 $module = $menu;
-
+$login_ip = getenv("REMOTE_ADDR");
 if($swordfish != $adminpass)
 {
+  adminlog(LOG_RAW,"Admin Login attempt from $login_ip");
   echo "<FORM ACTION=admin.php METHOD=POST>";
   echo "Password: <INPUT TYPE=PASSWORD NAME=swordfish SIZE=20 MAXLENGTH=20>&nbsp;&nbsp;";
   echo "<INPUT TYPE=SUBMIT VALUE=Submit><INPUT TYPE=RESET VALUE=Reset>";
@@ -34,6 +35,7 @@ else
 {
   if(empty($module))
   {
+    adminlog(LOG_RAW,"Admin Login successful from $login_ip");
     echo "Welcome to the BlackNova Traders administration module<BR><BR>";
     echo "Select a function from the list below:<BR>";
     echo "<FORM ACTION=admin.php METHOD=POST>";
