@@ -3,10 +3,7 @@ include("config.php");
 updatecookie();
 include("languages/$lang");
 
-
 connectdb();
-
-
 
 $title=$l_teamplanet_title;
 include("header.php");
@@ -15,7 +12,6 @@ if(checklogin())
 {
   die();
 }
-
 
 $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
@@ -30,7 +26,6 @@ if ($playerinfo[team]==0)
 
  return;
 }
-
 
 $query = "SELECT * FROM $dbtables[planets] WHERE corp=$playerinfo[team]";
 if(!empty($sort))

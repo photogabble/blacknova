@@ -435,21 +435,24 @@ else
 
 <?
 
-if($playerinfo[sector_id] != 0)
+if($shipinfo[sector_id] != 0)
 {
-  $result4 = $db->Execute(" SELECT
-                              $dbtables[players].*,
+  
+//  $result4 = $db->Execute("SELECT * FROM $dbtables[ships], $dbtables[players], $dbtables[teams] WHERE $dbtables[players].team = $dbtables[teams].id AND $dbtables[ships].player_id <> $playerinfo[player_id] AND $dbtables[ships].sector_id=$shipinfo[sector_id] AND $dbtables[ships].on_planet='N'");
+
+  $result4 = $db->Execute(" SELECT DISTINCT
                               $dbtables[ships].*,
+                              $dbtables[players].*,
                               $dbtables[teams].team_name,
                               $dbtables[teams].id
-                           FROM $dbtables[players]
-                              LEFT OUTER JOIN $dbtables[teams]
-                              ON $dbtables[players].team = $dbtables[teams].id
-                           WHERE $dbtables[players].player_id<>$playerinfo[player_id] 
-                           AND $dbtables[ships].player_id=$playerinfo[player_id] 
-                           AND $dbtables[ships].currentship=$playerinfo[currentship] 
+                           FROM $dbtables[ships]
+                              LEFT JOIN $dbtables[players] ON $dbtables[ships].player_id=$dbtables[players].player_id
+                              LEFT JOIN $dbtables[teams]
+                              ON $dbtables[players].team = $dbtables[teams].id 
+                              WHERE $dbtables[ships].player_id<>$playerinfo[player_id] 
                            AND $dbtables[ships].sector_id=$shipinfo[sector_id]
                            AND $dbtables[ships].on_planet='N'");
+
    $totalcount=0;
 
    if($result4 > 0)
@@ -491,11 +494,11 @@ if($playerinfo[sector_id] != 0)
             echo "<td align=center valign=top>";
 
             if ($row[team_name]) {
-               echo "<a href=ship.php?player_id=$row[player_id]><img src=\"images/", $shiptypes[$shiplevel],"\" border=0></a><BR><font size=", $basefontsize +1, " color=#ffffff face=\"arial\">$row[ship_name]<br>($row[character_name])&nbsp;(<font color=#33ff00>$row[team_name]</font>)</font>";
+               echo "<a href=ship.php?player_id=$row[player_id]&ship_id=$row[ship_id]><img src=\"images/", $shiptypes[$shiplevel],"\" border=0></a><BR><font size=", $basefontsize +1, " color=#ffffff face=\"arial\">$row[name]<br>($row[character_name])&nbsp;(<font color=#33ff00>$row[team_name]</font>)</font>";
             }
             else
             {
-               echo "<a href=ship.php?player_id=$row[player_id]><img src=\"images/", $shiptypes[$shiplevel],"\" border=0></a><BR><font size=", $basefontsize +1, " color=#ffffff face=\"arial\">$row[ship_name]<br>($row[character_name])</font>";
+               echo "<a href=ship.php?player_id=$row[player_id]&ship_id=$row[ship_id]><img src=\"images/", $shiptypes[$shiplevel],"\" border=0></a><BR><font size=", $basefontsize +1, " color=#ffffff face=\"arial\">$row[name]<br>($row[character_name])</font>";
             }
 
             echo "</td>";

@@ -29,9 +29,10 @@ if(!get_magic_quotes_gpc())
   $shipname = addslashes($shipname);
 }
 
-$result = $db->Execute ("SELECT email, character_name, $dbtables[ships].name AS ship_name FROM $dbtables[players], $dbtables[ships] where email='$username' OR character_name='$character' OR ship_name='$shipname'");
 $flag=0;
 if ($username=='' || $character=='' || $shipname=='' ) { echo "$l_new_blank<BR>"; $flag=1;}
+
+$result = $db->Execute ("SELECT email, character_name FROM $dbtables[players] where email='$username' OR character_name='$character'");
 
 if ($result>0)
 {
@@ -40,7 +41,18 @@ if ($result>0)
     $row = $result->fields;
     if (strtolower($row[email])==strtolower($username)) { echo "$l_new_inuse  $l_new_4gotpw1 <a href=mail.php?mail=$username>$l_clickme</a> $l_new_4gotpw2<BR>"; $flag=1;}
     if (strtolower($row[character_name])==strtolower($character)) { echo "$l_new_inusechar<BR>"; $flag=1;}
-    if (strtolower($row[ship_name])==strtolower($shipname)) { echo "$l_new_inuseship<BR>"; $flag=1;}
+    $result->MoveNext();
+  }
+}
+
+$result = $db->Execute ("SELECT name FROM $dbtables[ships] where name='$shipname'");
+
+if ($result>0)
+{
+  while (!$result->EOF)
+  {
+    $row = $result->fields;
+    if (strtolower($row[name])==strtolower($shipname)) { echo "$l_new_inuseship $l_new_4gotpw1 <a href=mail.php?mail=$username>$l_clickme</a> $l_new_4gotpw2<BR>"; $flag=1;}
     $result->MoveNext();
   }
 }

@@ -4,10 +4,7 @@ include("config.php");
 updatecookie();
 include("languages/$lang");
 
-
 connectdb();
-
-
 
 $title=$l_att_title;
 include("header.php");
@@ -23,6 +20,12 @@ $playerinfo=$result->fields;
 
 $result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE player_id='$player_id'");
 $targetinfo=$result2->fields;
+
+$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+$shipinfo = $result->fields;
+
+$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE player_id=$target_id[player_id] AND ship_id=$playerinfo[currentship]");
+$shipinfo = $result->fields;
 
 $playerscore = gen_score($playerinfo[player_id]);
 $targetscore = gen_score($targetinfo[player_id]);
