@@ -1,3 +1,8 @@
+Torr (13 June 2002)
+---------------------------------
+Correct display of traderoutes on the "main" page.
+Added some foundation work for Sector defense traderoutes.
+
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------
 Quick addition to ranking.php - Adds efficiency rate for each player. 
