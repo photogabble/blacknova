@@ -4,9 +4,9 @@ ob_start("ob_gzhandler");
 
 ?>
 <!doctype html public "-//w3c//dtd html 3.2//en">
-<meta http-equiv="Pragma" content="no-cache">
 <html>
 <head>
+<meta http-equiv="Pragma" content="no-cache">
 <title><? echo $title; ?></title>
  <style type="text/css">
  <!--
@@ -29,7 +29,7 @@ if($interface == "main.php")
   .headlines:hover {text-decoration:none; color:#3366ff;}
   .faderlines {background-color:$color_line2;}";
 }
-echo "\n  body {font-family: Arial, Helvetica, sans-serif; font-size: x-small}\n";
+echo "\n  body {font-family: Arial, Helvetica, sans-serif; font-size: x-small;}\n";
 ?>
  -->
  </style>
@@ -43,7 +43,7 @@ if(empty($no_body))
 
   if($interface=="main.php")
   {
-  	echo "<body background=\"images/bgoutspace1.gif\" bgcolor=#000000 text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
+  	echo "<body background=\"images/bgoutspace1.gif\" bgcolor=\"#000000\" text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
   }
   else
   {
