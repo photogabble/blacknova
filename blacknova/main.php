@@ -4,7 +4,6 @@ include("languages/$lang");
 
 updatecookie();
 
-
 $basefontsize = 0;
 $stylefontsize = "8Pt";
 $picsperrow = 5;

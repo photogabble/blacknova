@@ -168,7 +168,7 @@ elseif($destination <= $sector_max && $engage == 1)
     {
        $stamp = date("Y-m-d H-i-s");
        $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',sector=$destination,ship_energy=ship_energy+$energyscooped,turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
-       log_move($playerinfo[player_id],$destination);
+       log_move($shipinfo[ship_id],$destination);
        $l_rs_ready=str_replace("[sector]",$destination,$l_rs_ready);
        $l_rs_ready=str_replace("[triptime]",NUMBER($triptime),$l_rs_ready);
        $l_rs_ready=str_replace("[energy]",NUMBER($energyscooped),$l_rs_ready);

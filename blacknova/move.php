@@ -70,7 +70,7 @@ if ($flag==1)
        $stamp = date("Y-m-d H-i-s");
        $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1 where player_id=$playerinfo[player_id]");
        $db->Execute("UPDATE $dbtables[ships] SET sector_id=$sector WHERE ship_id=$shipinfo[ship_id]");
-       log_move($playerinfo[player_id],$sector);
+       log_move($shipinfo[ship_id],$sector);
     }
     /* enter code for checking dangers in new sector */
     include("check_mines.php");

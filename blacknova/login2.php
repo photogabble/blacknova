@@ -41,10 +41,10 @@ else
   $mainfilename="maintext.php";
   $interface="maintext.php";
 }
--- End of old interface code */ 
+SetCookie("interface", $mainfilename);
 
-setcookie("interface", $mainfilename);
-setcookie("screenres", $screen_res);
+-- End of old interface code */ 
+SetCookie("screenres", $screen_res);
 
 /* first placement of cookie - don't use updatecookie. */
 $userpass = $email."+".$pass;

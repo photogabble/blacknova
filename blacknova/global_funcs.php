@@ -1010,10 +1010,26 @@ function get_player($player_id)
    }
 }
 
-function log_move($player_id,$sector_id)
+function get_player_from_ship($ship_id)
 {
    global $db,$dbtables;
-   $res = $db->Execute("INSERT INTO $dbtables[movement_log] (player_id,sector_id,time) VALUES ($player_id,$sector_id,NOW())");
+   $res = $db->Execute("SELECT character_name from $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE ship_id = $ship_id");
+   if($res)
+   {
+      $row = $res->fields;
+      $character_name = $row[character_name];
+      return $character_name;
+   }
+   else
+   {
+      return "Unknown";
+   }
+}
+
+function log_move($ship_id,$sector_id)
+{
+   global $db,$dbtables;
+   $res = $db->Execute("INSERT INTO $dbtables[movement_log] (ship_id,sector_id,time) VALUES ($ship_id,$sector_id,NOW())");
 }
 
 function isLoanPending($player_id)

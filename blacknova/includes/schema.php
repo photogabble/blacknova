@@ -283,11 +283,11 @@ echo "- created successfully.<BR>";
 echo "Creating table: movement_log ";
 $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "event_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
-             "player_id int DEFAULT '0' NOT NULL," .
+             "ship_id int DEFAULT '0' NOT NULL," .
              "sector_id int DEFAULT '0'," .
              "time TIMESTAMP(14) ," .
              "PRIMARY KEY (event_id)," .
-             "KEY player_id(player_id)," .
+             "KEY ship_id(ship_id)," .
              "KEY sector_id (sector_id)" .
              ")");
 echo "- created successfully.<BR>";

@@ -15,6 +15,7 @@ if (checklogin()) {die();}
 $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
+
 $result = $db->Execute("SELECT * FROM $dbtables[ibank_accounts] WHERE player_id=$playerinfo[player_id]");
 $account = $result->fields;
 

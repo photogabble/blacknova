@@ -24,6 +24,7 @@
         $query = $db->Execute("UPDATE $dbtables[players] SET sector=$newsector,cleared_defences=' ' where player_id=$row[player_id]");
         playerlog($row[player_id], LOG_TOW, "$row[sector]|$newsector|$row[max_hull]");
         log_move($row[player_id],$newsector);
+//      REMEMBER TO MODIFY LOG_MOVE
         $res->MoveNext();
       }
     }
