@@ -51,18 +51,7 @@ setcookie("screenres", $screen_res);
 $userpass = $email."+".$pass;
 SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
 
-$banned = 0;
-$res = $db->Execute("SELECT * FROM $dbtables[ip_bans] WHERE '$ip' LIKE ban_mask OR '$playerinfo[ip_address]' LIKE ban_mask");
-if($res->RecordCount() != 0)
-{
-  SetCookie("userpass","",0,$gamepath,$gamedomain);
-  SetCookie("userpass","",0); // Delete from default path as well.
-  setcookie("username","",0); // Legacy support, delete the old login cookies.
-  setcookie("password","",0); // Legacy support, delete the old login cookies.
-  setcookie("id","",0);
-  setcookie("res","",0);
-  $banned = 1;
-}
+checkbanned();
 
 if($server_closed)
 {
@@ -75,13 +64,6 @@ $title=$l_login_title2;
 include("header.php");
 
 bigtitle();
-
-if($banned == 1)
-{
-   echo "<center><p><font size=3 color=red>$l_login_banned<p></center>";
-   include("footer.php");
-   die();
-}
 
 if($playerfound)
 {

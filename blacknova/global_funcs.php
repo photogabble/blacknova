@@ -196,7 +196,9 @@ function checklogin()
     echo $l_global_needlogin;
     $flag = 1;
   }
-
+   
+   checkbanned();
+   
   /* Check for destroyed ship */
   if($playerinfo['ship_destroyed'] == "Y")
   {
@@ -228,6 +230,25 @@ function checklogin()
 
 
   return $flag;
+}
+
+function checkbanned()
+{
+   global $l_login_banned,$ip, $db, $dbtables, $playerinfo;
+   
+   $res = $db->Execute("SELECT * FROM $dbtables[ip_bans] WHERE '$ip' LIKE ban_mask OR '$playerinfo[ip_address]' LIKE ban_mask");
+   if($res->RecordCount() != 0)
+   {
+      SetCookie("userpass","",0,$gamepath,$gamedomain);
+      SetCookie("userpass","",0); // Delete from default path as well.
+      setcookie("username","",0); // Legacy support, delete the old login cookies.
+      setcookie("password","",0); // Legacy support, delete the old login cookies.
+      setcookie("id","",0);
+      setcookie("res","",0);
+      echo "<center><p><font size=3 color=red>$l_login_banned<p></center>";
+      include("footer.php");
+      die();
+   }
 }
 
 function connectdb()
