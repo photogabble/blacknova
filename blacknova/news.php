@@ -28,7 +28,7 @@ $nextday = getnextday($startdate);
     </tr>
     <tr>
       <td height="22" width="27%" bgcolor="#00001A">&nbsp;</td>
-      <td height="22" width="73%" bgcolor="#00001A" align="right"><a href="news.php?startdate=<?php echo $previousday ?>\"><?php echo $l_news_prev ?></a> - <a href="news.php?startdate=<?php echo $nextday ?>\"><?php echo $l_news_next ?></a></td>
+      <td height="22" width="73%" bgcolor="#00001A" align="right"><a href="news.php?startdate=<?php echo $previousday ?>"><?php echo $l_news_prev ?></a> - <a href="news.php?startdate=<?php echo $nextday ?>"><?php echo $l_news_next ?></a></td>
     </tr>
 <?php
 

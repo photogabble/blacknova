@@ -1354,4 +1354,9 @@ $l_igb_errnobase = "The IGB can not transfer credits to a planet without a base.
 
 //Changed messages
 $l_log_text[LOG_TOW] = "Your ship has been towed from sector [sector] to sector [newsector] because your average tech level exceeded the limit value of [hull].";
+
+//Footer text
+$l_footer_one_player_on = "There is 1 player online.";
+$l_footer_players_on_1 = "There are";
+$l_footer_players_on_2 = "players online.";
 ?>

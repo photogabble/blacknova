@@ -9,11 +9,15 @@ $online = $row[loggedin];
 <?
 if($online == 1)
 {
-   echo "There is 1 player online.";
+   echo $l_footer_one_player_on;
 }
 else
 {
-echo "There are $online players online.";
+echo $l_footer_players_on_1;
+echo " ";
+echo $online;
+echo " ";
+echo $l_footer_players_on_2;
 }
 ?>
 </CENTER>
