@@ -29,6 +29,7 @@ function line($item, $value)
 
   
   echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=2>";
+   line("Game version:",$game_name);
    line("Average tech level needed to hit mines",$mine_hullsize);
    line("Averaged Tech level When Emergency Warp Degrades",$ewd_maxhullsize);
    
