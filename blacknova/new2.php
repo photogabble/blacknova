@@ -78,6 +78,7 @@ if ($flag==0)
   $l_new_message = str_replace("[pass]", $makepass, $l_new_message);
 
   $msg = "$l_new_message\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
+  $msg = ereg_replace("\r\n.\r\n","\r\n. \r\n",$msg);
   $hdrs .= "From: BlackNova Mailer <$admin_mail>\r\n";
 
   $e_response=mail($username,$l_new_topic, $msg,$hdrs);

@@ -29,6 +29,7 @@ if (empty($content))
 } else {
 
   $msg .= "IP address - $ip\r\nGame Name - $playerinfo[character_name]\r\n\r\n$content\n\nhttp://$SERVER_NAME$gamepath\r\n";
+  $msg = ereg_replace("\r\n.\r\n","\r\n. \r\n",$msg);
   $hdrs .= "From: $playerinfo[character_name] <$playerinfo[email]>\r\n";
 
   $e_response=mail($admin_mail,$l_feedback_subj,$msg,$hdrs);

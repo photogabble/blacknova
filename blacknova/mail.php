@@ -18,6 +18,7 @@ if(!$result->EOF)
 
   $msg = $l_mail_message;
   $msg .="\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
+  $msg = ereg_replace("\r\n.\r\n","\r\n. \r\n",$msg);
   $hdrs = "From: BlackNova Mailer <$admin_mail>\r\n";
   $e_response=mail($mail,$l_mail_topic,$msg,$hdrs);
   if ($Enable_EmailLoggerModule AND $modules['ELM'])
