@@ -53,7 +53,11 @@ else
     echo "</SELECT>";
     echo "<INPUT TYPE=HIDDEN NAME=swordfish VALUE=$swordfish>";
     echo "&nbsp;<INPUT TYPE=SUBMIT VALUE=Submit>";
-    echo "</FORM>";
+    echo "</FORM><BR><BR>\n";
+    echo "Other Admin Modules:<BR>\n";
+    echo "<A HREF='admin_reports.php?swordfish=$swordfish'>Admin Reports page</A><BR>\n";
+    echo "<A HREF='furangee_control.php?swordfish=$swordfish'>Furangee Control page</A><BR>\n";
+    echo "<A HREF='scheduler.php?swordfish=$swordfish'>Run the Scheduler</A><BR>\n";
   }
   else
   {
