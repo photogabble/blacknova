@@ -1,5 +1,6 @@
 L. Patrick Smallwood (16 June 2002)
 ---------------------------------
+Sourceforge bug #542401: Team co-ordinator now displays properly, not the 1st member of the alliance.
 Sourceforge bug #553666: Add average tech level to report, as well as players ship icon.
 Sourceforge bug #503776: Add return to supply depot link to port2.php
 Add seconds until update ticker to footer. Thanks to indiana_x!

@@ -105,7 +105,18 @@ function DISPLAY_ALL_ALLIANCES()
    	echo "<TR BGCOLOR=\"$color\">";
    	echo "<TD><a href=$PHP_SELF?teamwhat=1&whichteam=".$row[id].">".$row[team_name]."</A></TD>";
    	echo "<TD>".$row[number_of_members]."</TD>";
-   	echo "<TD><a href=mailto2.php?name=".$row[character_name].">".$row[character_name]."</A></TD>";
+// This fixes it so that it actually displays the coordinator, and not the first member of the team.
+
+          $sql_query_2 = "SELECT character_name FROM $dbtables[ships] WHERE ship_id = $row[creator]";
+          $res2 = $db->Execute($sql_query_2) or die($db->ErrorMsg());
+          while(!$res2->EOF) {
+           $row2 = $res2->fields;
+           $res2->MoveNext();
+          }
+
+// If there is a way to redo the original sql query instead, please, do so, but I didnt see a way to.
+
+   	echo "<TD><a href=mailto2.php?name=".$row2[character_name].">".$row2[character_name]."</A></TD>";
    	echo "<TD>$row[total_score]</TD>";
    	echo "</TR>";
     $res->MoveNext();
