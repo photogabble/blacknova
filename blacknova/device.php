@@ -13,7 +13,7 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 bigtitle();

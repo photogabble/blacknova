@@ -14,7 +14,7 @@ if (checklogin())
   die();
 }
 
-$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
 $result2 = $db->Execute ("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
@@ -37,7 +37,7 @@ if($playerinfo[dev_beacon] > 0)
     $result3 = $db->Execute("SELECT * FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
     $zoneowner_info = $result3->fields;
 
-    $result5 = $db->Execute("SELECT team FROM $dbtables[ships] WHERE ship_id='$zoneowner_info[owner]'");
+    $result5 = $db->Execute("SELECT team FROM $dbtables[players] WHERE ship_id='$zoneowner_info[owner]'");
     $zoneteam = $result5->fields;
 
      
@@ -86,7 +86,7 @@ if($playerinfo[dev_beacon] > 0)
       $beacon_text = trim(strip_tags($beacon_text));
       echo "$l_beacon_nowreads: \"$beacon_text\".<BR><BR>";
       $update = $db->Execute("UPDATE $dbtables[universe] SET beacon='$beacon_text' WHERE sector_id=$sectorinfo[sector_id]");
-      $update = $db->Execute("UPDATE $dbtables[ships] SET dev_beacon=dev_beacon-1 WHERE ship_id=$playerinfo[ship_id]");
+      $update = $db->Execute("UPDATE $dbtables[players] SET dev_beacon=dev_beacon-1 WHERE ship_id=$playerinfo[ship_id]");
     }
 
   }

@@ -8,7 +8,7 @@
 	include("header.php");
 
 	connectdb();
-        $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+        $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
         $playerinfo = $res->fields;
 
 

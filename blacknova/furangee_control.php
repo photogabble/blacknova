@@ -132,7 +132,7 @@ else
       if(empty($user))
       {
         echo "<SELECT SIZE=20 NAME=user>";
-        $res = $db->Execute("SELECT email,character_name,ship_destroyed,active,sector FROM $dbtables[ships] JOIN $dbtables[furangee] WHERE email=furangee_id ORDER BY sector");
+        $res = $db->Execute("SELECT email,character_name,ship_destroyed,active,sector FROM $dbtables[players] JOIN $dbtables[furangee] WHERE email=furangee_id ORDER BY sector");
         while(!$res->EOF)
         {
           $row=$res->fields;
@@ -151,7 +151,7 @@ else
       {
         if(empty($operation))
         {
-          $res = $db->Execute("SELECT * FROM $dbtables[ships] JOIN $dbtables[furangee] WHERE email=furangee_id AND email='$user'");
+          $res = $db->Execute("SELECT * FROM $dbtables[players] JOIN $dbtables[furangee] WHERE email=furangee_id AND email='$user'");
           $row = $res->fields;
           echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
           echo "<TR><TD>Furangee name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
@@ -262,7 +262,7 @@ else
           $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
           $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
           $_active = empty($active) ? "N" : "Y";
-          $result = $db->Execute("UPDATE $dbtables[ships] SET character_name='$character_name',ship_name='$ship_name',ship_destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',credits='$credits',turns='$turns',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector='$sector',ship_ore='$ship_ore',ship_organics='$ship_organics',ship_goods='$ship_goods',ship_energy='$ship_energy',ship_colonists='$ship_colonists',ship_fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE email='$user'");
+          $result = $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',ship_name='$ship_name',ship_destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',credits='$credits',turns='$turns',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector='$sector',ship_ore='$ship_ore',ship_organics='$ship_organics',ship_goods='$ship_goods',ship_energy='$ship_energy',ship_colonists='$ship_colonists',ship_fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE email='$user'");
           if(!$result) {
             echo "Changes to Furangee ship record have FAILED Due to the following Error:<BR><BR>";
             echo $db->ErrorMsg() . "<br>";
@@ -307,7 +307,7 @@ else
       {
         // Delete all furangee in the ships table
         echo "Deleting furangee records in the ships table...<BR>";
-        $db->Execute("DELETE FROM $dbtables[ships] WHERE email LIKE '%@furangee'");
+        $db->Execute("DELETE FROM $dbtables[players] WHERE email LIKE '%@furangee'");
         echo "deleted.<BR>";
         // Drop furangee table
         echo "Dropping furangee table...<BR>";
@@ -350,7 +350,7 @@ else
       }
       elseif($operation == "clearfurlog")
       {
-        $res = $db->Execute("SELECT email,ship_id FROM $dbtables[ships] WHERE email LIKE '%@furangee'");
+        $res = $db->Execute("SELECT email,ship_id FROM $dbtables[players] WHERE email LIKE '%@furangee'");
         while(!$res->EOF)
         {
           $row = $res->fields;
@@ -386,7 +386,7 @@ else
         $sy3roll = rand(0,19);
         $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
         $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-        $resultnm = $db->Execute ("select character_name from $dbtables[ships] where character_name='$character'");
+        $resultnm = $db->Execute ("select character_name from $dbtables[players] where character_name='$character'");
         $namecheck = $resultnm->fields;
         $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $nametry = 1;
@@ -397,7 +397,7 @@ else
           $sy3roll = rand(0,19);
           $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
           $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-          $resultnm = $db->Execute ("select character_name from $dbtables[ships] where character_name='$character'");
+          $resultnm = $db->Execute ("select character_name from $dbtables[players] where character_name='$character'");
           $namecheck = $resultnm->fields;
           $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
           $nametry++;
@@ -442,7 +442,7 @@ else
         // Create emailname from character
         $emailname = str_replace(" ","_",$character) . "@furangee";
         $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-        $result = $db->Execute ("select email, character_name, ship_name from $dbtables[ships] where email='$emailname' OR character_name='$character' OR ship_name='$shipname'");
+        $result = $db->Execute ("select email, character_name, ship_name from $dbtables[players] where email='$emailname' OR character_name='$character' OR ship_name='$shipname'");
         if ($result>0)
         {
           while (!$result->EOF)
@@ -477,7 +477,7 @@ else
 // *****************************************************************************
 // *** ADD FURANGEE RECORD TO ships TABLE ... MODIFY IF ships SCHEMA CHANGES ***
 // *****************************************************************************
-          $result2 = $db->Execute("INSERT INTO $dbtables[ships] VALUES('','$shipname','N','$character','$makepass','$emailname',$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$maxtorps,$furlevel,$furlevel,$maxarmour,$furlevel,$start_credits,$sector,0,0,0,$maxenergy,0,$maxfighters,$start_turns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','127.0.0.1',0,0,0,0,'Y','N','N','Y','','$default_lang','Y')");
+          $result2 = $db->Execute("INSERT INTO $dbtables[players] VALUES('','$shipname','N','$character','$makepass','$emailname',$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$maxtorps,$furlevel,$furlevel,$maxarmour,$furlevel,$start_credits,$sector,0,0,0,$maxenergy,0,$maxfighters,$start_turns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','127.0.0.1',0,0,0,0,'Y','N','N','Y','','$default_lang','Y')");
           if(!$result2) {
             echo $db->ErrorMsg() . "<br>";
           } else {

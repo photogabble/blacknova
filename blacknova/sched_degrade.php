@@ -10,7 +10,7 @@
   while(!$res->EOF)
   {
      $row = $res->fields;
-     $res3 = $db->Execute("SELECT * from $dbtables[ships] where ship_id = $row[ship_id]");
+     $res3 = $db->Execute("SELECT * from $dbtables[players] where ship_id = $row[ship_id]");
      $sched_playerinfo = $res3->fields;
      $res2 = $db->Execute("SELECT * from $dbtables[planets] where (owner = $row[ship_id] or (corp = $sched_playerinfo[team] AND $sched_playerinfo[team] <> 0)) and sector_id = $row[sector_id] and energy > 0"); 
      if($res2->EOF)

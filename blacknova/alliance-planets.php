@@ -17,7 +17,7 @@ if(checklogin())
 }
 
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if ($playerinfo[team]==0)
@@ -135,7 +135,7 @@ else
       $planet[$i][name] = "$l_unnamed";
     }
     $owner = $planet[$i][owner];
-    $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$owner");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$owner");
     $player = $res->fields[character_name];
 
     echo "<TR BGCOLOR=\"$color\">";

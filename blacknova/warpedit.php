@@ -18,7 +18,7 @@ if(checklogin())
   die();
 }
 
-$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
 $result4 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
@@ -57,7 +57,7 @@ if($zoneinfo[allow_warpedit] == 'L')
   $result3 = $db->Execute("SELECT * FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
   $zoneowner_info = $result3->fields;
 
-  $result5 = $db->Execute("SELECT team FROM $dbtables[ships] WHERE ship_id='$zoneowner_info[owner]'");
+  $result5 = $db->Execute("SELECT team FROM $dbtables[players] WHERE ship_id='$zoneowner_info[owner]'");
   $zoneteam = $result5->fields;
 
   if($zoneowner_info[owner] != $playerinfo[ship_id])

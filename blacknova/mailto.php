@@ -15,14 +15,14 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 bigtitle();
 
 if(empty($content))
 {
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_destroyed = 'N' ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_destroyed = 'N' ORDER BY character_name ASC");
   echo "<FORM ACTION=mailto2.php METHOD=POST>";
   echo "<TABLE>";
   echo "<TR><TD>To:</TD><TD><SELECT NAME=to>";
@@ -53,7 +53,7 @@ else
   $content = htmlspecialchars($content);
   $subject = htmlspecialchars($subject);
 
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE character_name='$to'");
+  $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE character_name='$to'");
   $target_info = $res->fields;
   $db->Execute("INSERT INTO messages (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$target_info[ship_id]."', '".$subject."', '".$content."')");
   #using this three lines to get recipients ship_id and sending the message -- blindcoder

@@ -13,14 +13,14 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 bigtitle();
 
 if(empty($content))
 {
-  $res = $db->Execute("SELECT character_name FROM $dbtables[ships] ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT character_name FROM $dbtables[players] ORDER BY character_name ASC");
   $res2 = $db->Execute("SELECT team_name FROM $dbtables[teams] ORDER BY team_name ASC");
   echo "<FORM ACTION=mailto2.php METHOD=POST>";
   echo "<TABLE>";
@@ -56,7 +56,7 @@ else
 if (strpos($to, $l_sendm_ally)===false)
 {
   $timestamp = date("Y\-m\-d H\:i\:s");
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE character_name='$to'");
+  $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE character_name='$to'");
   $target_info = $res->fields;
   $content = htmlspecialchars($content);
   $subject = htmlspecialchars($subject);
@@ -72,7 +72,7 @@ else
      $res = $db->Execute("SELECT id FROM $dbtables[teams] WHERE team_name='$to'");
      $row = $res->fields;
 
-     $res2 = $db->Execute("SELECT * FROM $dbtables[ships] where team='$row[id]'");
+     $res2 = $db->Execute("SELECT * FROM $dbtables[players] where team='$row[id]'");
 
      while (!$res2->EOF)
      {

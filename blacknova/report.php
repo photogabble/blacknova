@@ -18,7 +18,7 @@ if(checklogin())
   die();
 }
 
-$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 
 $playerinfo=$result->fields;
 

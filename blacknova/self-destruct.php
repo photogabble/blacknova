@@ -16,7 +16,7 @@ if(checklogin())
 
 bigtitle();
 
-$result = $db->Execute("SELECT ship_id,character_name FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT ship_id,character_name FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
 if(!isset($sure))

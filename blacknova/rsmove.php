@@ -18,7 +18,7 @@ if(checklogin())
 //-------------------------------------------------------------------------------------------------
 
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 bigtitle();
@@ -156,7 +156,7 @@ elseif($destination <= $sector_max && $engage == 1)
    $l_rs_movetime=str_replace("[triptime]",NUMBER($triptime),$l_rs_movetime);
     echo "$l_rs_movetime<BR><BR>";
     echo "$l_rs_noturns";
-    $db->Execute("UPDATE $dbtables[ships] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
   }
   else
   {
@@ -167,7 +167,7 @@ elseif($destination <= $sector_max && $engage == 1)
     if($ok>0)
     {
        $stamp = date("Y-m-d H-i-s");
-       $update = $db->Execute("UPDATE $dbtables[ships] SET last_login='$stamp',sector=$destination,ship_energy=ship_energy+$energyscooped,turns=turns-$triptime,turns_used=turns_used+$triptime WHERE ship_id=$playerinfo[ship_id]");
+       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',sector=$destination,ship_energy=ship_energy+$energyscooped,turns=turns-$triptime,turns_used=turns_used+$triptime WHERE ship_id=$playerinfo[ship_id]");
        log_move($playerinfo[ship_id],$destination);
        $l_rs_ready=str_replace("[sector]",$destination,$l_rs_ready);
        $l_rs_ready=str_replace("[triptime]",NUMBER($triptime),$l_rs_ready);
@@ -180,7 +180,7 @@ elseif($destination <= $sector_max && $engage == 1)
 else
 {
   echo "$l_rs_invalid.<BR><BR>";
-  $db->Execute("UPDATE $dbtables[ships] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
 }
 
 

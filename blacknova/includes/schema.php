@@ -79,8 +79,8 @@ $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
              ")") or die ("blerg!");
 echo "- created successfully.<BR>";
 
-echo "Creating table: ships ";
-$db->Execute("CREATE TABLE $dbtables[ships](" .
+echo "Creating table: players ";
+$db->Execute("CREATE TABLE $dbtables[players](" .
              "ship_id int unsigned DEFAULT '0' NOT NULL auto_increment," .
              "ship_name char(20)," .
              "ship_destroyed enum('Y','N') DEFAULT 'N' NOT NULL," .
@@ -324,6 +324,42 @@ $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "PRIMARY KEY (event_id)," .
              "KEY ship_id(ship_id)," .
              "KEY sector_id (sector_id)" .
+             ")");
+echo "- created successfully.<BR>";
+
+echo "Creating table: ship_types ";
+$db->Execute("CREATE TABLE $dbtables[ship_types] (" .
+             "type_id int unsigned DEFAULT '1' NOT NULL," .
+             "name char(20)," .
+             "image char(20)," .
+             "buyable enum('Y','N') DEFAULT 'Y' NOT NULL," .
+             "cost_credits bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "cost_ore bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "cost_goods bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "cost_energy bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "cost_organics bigint(20) unsigned DEFAULT '0' NOT NULL," . 
+             "turnstobuild int unsigned DEFAULT '0' NOT NULL," .
+             "minhull tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxhull tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "minengines tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxengines tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "minpower tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxpower tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "mincomputer tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxcomputer tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "minsensors tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxsensors tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "minbeams tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxbeams tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "mintorp_launchers tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxtorp_launchers tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "minshields tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxshields tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "minarmour tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxarmour tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "mincloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "maxcloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "PRIMARY KEY (type_id)" .
              ")");
 echo "- created successfully.<BR>";
 

@@ -16,7 +16,7 @@ if(checklogin())
   die();
 }
 
-$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
 if($playerinfo[turns] < 1)
@@ -46,7 +46,7 @@ if($zoneinfo[allow_warpedit] == 'N')
 }
 
 $target_sector=round($target_sector);
-$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
 bigtitle();
@@ -111,7 +111,7 @@ if($result3 > 0)
   else
   {
     $insert1 = $db->Execute ("INSERT INTO $dbtables[links] SET link_start=$playerinfo[sector], link_dest=$target_sector");
-    $update1 = $db->Execute ("UPDATE $dbtables[ships] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
+    $update1 = $db->Execute ("UPDATE $dbtables[players] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
     if($oneway)
     {
       echo "$l_warp_coneway $target_sector.<BR><BR>";

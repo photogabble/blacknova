@@ -22,7 +22,7 @@
   // **** MAKE FURANGEE SELECTION ****
   // *********************************
   $furcount = $furcount0 = $furcount0a = $furcount1 = $furcount1a = $furcount2 = $furcount2a = $furcount3 = $furcount3a = $furcount3h = 0;
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] JOIN $dbtables[furangee] WHERE email=furangee_id and active='Y' and ship_destroyed='N' ORDER BY sector");
+  $res = $db->Execute("SELECT * FROM $dbtables[players] JOIN $dbtables[furangee] WHERE email=furangee_id and active='Y' and ship_destroyed='N' ORDER BY sector");
   while(!$res->EOF)
   {
     $furangeeisdead = 0;
@@ -45,7 +45,7 @@
         $furcount0++;
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF, NOT ON A PLANET ******
-        $reso0 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and planet_id=0" and ship_id > 1);
+        $reso0 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and planet_id=0" and ship_id > 1);
         if (!$reso0->EOF)
         {
           $rowo0 = $reso0->fields;
@@ -94,7 +94,7 @@
         }
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF ******
-        $reso1 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
+        $reso1 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
         if (!$reso1->EOF)
         {
           $rowo1= $reso1->fields;
@@ -149,7 +149,7 @@
         furangeetrade();
         // ****** FIND A TARGET ******
         // ****** IN MY SECTOR, NOT MYSELF ******
-        $reso2 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
+        $reso2 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
         if (!$reso2->EOF)
         {
           $rowo2=$reso2->fields;
@@ -215,7 +215,7 @@
           }
           // ****** FIND A TARGET ******
           // ****** IN MY SECTOR, NOT MYSELF ******
-          $reso3 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and ship_id > 1");
+          $reso3 = $db->Execute("SELECT * FROM $dbtables[players] WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and ship_id > 1");
           if (!$reso3->EOF)
           {
             $rowo3=$reso3->fields;

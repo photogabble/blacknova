@@ -29,7 +29,7 @@ if(!get_magic_quotes_gpc())
   $shipname = addslashes($shipname);
 }
 
-$result = $db->Execute ("select email, character_name, ship_name from $dbtables[ships] where email='$username' OR character_name='$character' OR ship_name='$shipname'");
+$result = $db->Execute ("select email, character_name, ship_name from $dbtables[players] where email='$username' OR character_name='$character' OR ship_name='$shipname'");
 $flag=0;
 if ($username=='' || $character=='' || $shipname=='' ) { echo "$l_new_blank<BR>"; $flag=1;}
 
@@ -61,7 +61,7 @@ if ($flag==0)
     }
   }
   $stamp=date("Y-m-d H:i:s");
-  $query = $db->Execute("SELECT MAX(turns_used + turns) AS mturns FROM $dbtables[ships]");
+  $query = $db->Execute("SELECT MAX(turns_used + turns) AS mturns FROM $dbtables[players]");
   $res = $query->fields;
 
   $mturns = $res[mturns];
@@ -69,11 +69,11 @@ if ($flag==0)
   if($mturns > $max_turns)
     $mturns = $max_turns;
 
-  $result2 = $db->Execute("INSERT INTO $dbtables[ships] VALUES('','$shipname','N','$character','$makepass','$username',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$mturns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','$ip',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
+  $result2 = $db->Execute("INSERT INTO $dbtables[players] VALUES('','$shipname','N','$character','$makepass','$username',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$mturns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','$ip',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
   if(!$result2) {
     echo $db->ErrorMsg() . "<br>";
   } else {
-    $result2 = $db->Execute("SELECT ship_id FROM $dbtables[ships] WHERE email='$username'");
+    $result2 = $db->Execute("SELECT ship_id FROM $dbtables[players] WHERE email='$username'");
     $shipid = $result2->fields;
 
  $l_new_message = str_replace("[pass]", $makepass, $l_new_message);

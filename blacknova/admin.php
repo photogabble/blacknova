@@ -63,7 +63,7 @@ else
       if(empty($user))
       {
         echo "<SELECT SIZE=20 NAME=user>";
-        $res = $db->Execute("SELECT ship_id,character_name FROM $dbtables[ships] ORDER BY character_name");
+        $res = $db->Execute("SELECT ship_id,character_name FROM $dbtables[players] ORDER BY character_name");
         while(!$res->EOF)
         {
           $row=$res->fields;
@@ -77,7 +77,7 @@ else
       {
         if(empty($operation))
         {
-          $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=$user");
+          $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_id=$user");
           $row = $res->fields;
           echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
           echo "<TR><TD>Player name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
@@ -138,7 +138,7 @@ else
           $_ship_destroyed = empty($ship_destroyed) ? "N" : "Y";
           $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
           $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
-          $db->Execute("UPDATE $dbtables[ships] SET character_name='$character_name',password='$password2',email='$email',ship_name='$ship_name',ship_destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',credits='$credits',turns='$turns',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector='$sector',ship_ore='$ship_ore',ship_organics='$ship_organics',ship_goods='$ship_goods',ship_energy='$ship_energy',ship_colonists='$ship_colonists',ship_fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE ship_id=$user");
+          $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',password='$password2',email='$email',ship_name='$ship_name',ship_destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',credits='$credits',turns='$turns',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector='$sector',ship_ore='$ship_ore',ship_organics='$ship_organics',ship_goods='$ship_goods',ship_energy='$ship_energy',ship_colonists='$ship_colonists',ship_fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE ship_id=$user");
           echo "Changes saved<BR><BR>";
           echo "<INPUT TYPE=SUBMIT VALUE=\"Return to User editor\">";
           $button_main = false;
@@ -326,7 +326,7 @@ else
           echo "<TABLE BORDER=0 CELLSPACING=2 CELLPADDING=2>";
           echo "<TR><TD><tt>          Planet Owner</tt></TD><TD>";
                                       echo "<SELECT SIZE=1 NAME=owner>";
-                                      $ressuba = $db->Execute("SELECT ship_id,character_name FROM $dbtables[ships] ORDER BY character_name");
+                                      $ressuba = $db->Execute("SELECT ship_id,character_name FROM $dbtables[players] ORDER BY character_name");
                                       echo "<OPTION VALUE=0>No One</OPTION>";
                                       while(!$ressuba->EOF)
                                       {
@@ -504,7 +504,7 @@ else
             echo "<td align=center><font size=2 color=white>$printban</td>" .
                  "<td align=center><font size=2 color=white>";
 
-            $res = $db->Execute("SELECT character_name, ship_id, email FROM $dbtables[ships] WHERE ip_address LIKE '$ban'");
+            $res = $db->Execute("SELECT character_name, ship_id, email FROM $dbtables[players] WHERE ip_address LIKE '$ban'");
             unset($players);
             while(!$res->EOF)
             {
@@ -554,7 +554,7 @@ else
       }
       elseif($command== 'showips')
       {
-        $res = $db->Execute("SELECT DISTINCT ip_address FROM $dbtables[ships]");
+        $res = $db->Execute("SELECT DISTINCT ip_address FROM $dbtables[players]");
         while(!$res->EOF)
         {
           $ips[]=$res->fields[ip_address];
@@ -585,7 +585,7 @@ else
           echo "<td align=center><font size=2 color=white>$ip</td>" .
                "<td align=center><font size=2 color=white>";
 
-          $res = $db->Execute("SELECT character_name, ship_id, email FROM $dbtables[ships] WHERE ip_address='$ip'");
+          $res = $db->Execute("SELECT character_name, ship_id, email FROM $dbtables[players] WHERE ip_address='$ip'");
           unset($players);
           while(!$res->EOF)
           {
@@ -679,7 +679,7 @@ else
         echo "<font size=2 color=white><b>Successfully banned $printban</b>.<p>";
         
         $db->Execute("INSERT INTO $dbtables[ip_bans] VALUES('', '$banmask')");
-        $res = $db->Execute("SELECT DISTINCT character_name FROM $dbtables[ships], $dbtables[ip_bans] WHERE ip_address LIKE ban_mask");
+        $res = $db->Execute("SELECT DISTINCT character_name FROM $dbtables[players], $dbtables[ip_bans] WHERE ip_address LIKE ban_mask");
         echo "Affected players :<p>";
         while (!$res->EOF)
         {
@@ -719,7 +719,7 @@ else
         for( $i = 1; $i < $nbbans ; $i++)
           $query_string = $query_string . " OR ip_address LIKE '" . $bans[$i][ban_mask] . "'";
 
-        $res = $db->Execute("SELECT DISTINCT character_name FROM $dbtables[ships] WHERE $query_string");
+        $res = $db->Execute("SELECT DISTINCT character_name FROM $dbtables[players] WHERE $query_string");
         $nbplayers = $res->RecordCount();
         while(!$res->EOF)
         {
@@ -764,7 +764,7 @@ else
            "<INPUT TYPE=HIDDEN NAME=swordfish VALUE=$swordfish>" .
            "<SELECT name=player>";
 
-      $res = $db->execute("SELECT ship_id, character_name FROM $dbtables[ships] ORDER BY character_name ASC");
+      $res = $db->execute("SELECT ship_id, character_name FROM $dbtables[players] ORDER BY character_name ASC");
       while(!$res->EOF)
       {
         $players[] = $res->fields;

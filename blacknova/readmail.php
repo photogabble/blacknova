@@ -15,7 +15,7 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if ($action=="delete")
@@ -55,7 +55,7 @@ $cur_T = date("H:i:s");
   while(!$res->EOF)
   {
    $msg = $res->fields;
-   $result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id='".$msg[sender_id]."'");
+   $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_id='".$msg[sender_id]."'");
    $sender = $result->fields;
 ?>
 <TR BGCOLOR="<?

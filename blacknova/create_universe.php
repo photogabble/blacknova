@@ -603,13 +603,188 @@ switch ($step) {
       echo "The planetary apocalypse will occur every $sched_apocalypse minutes.<br>";
       $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_apocalypse, 0, 'sched_apocalypse.php', '',unix_timestamp(now()))");
 
+      echo "<B><BR>Configuring ship types<p></B>";
+
+      echo "Inserting ship type: Spacewagon..."; //starting ship
+      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+                   "1, " .                //type_id
+                   "'Spacewagon', " .     //name
+                   "'spacewagon.gif', " . //image
+                   "'Y', " .              //buyable
+                   "1000, " .             //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "10, " .               //turnstobuild
+                   "0, " .                //minhull
+                   "5, " .                //maxhull
+                   "0, " .                //minengines
+                   "4, " .                //maxengines
+                   "0, " .                //minpower
+                   "1, " .                //maxpower (that's MISTER power for you) ;)
+                   "0, " .                //mincomputer
+                   "1, " .                //maxcomputer
+                   "0, " .                //minsensors
+                   "2, " .                //maxsensors
+                   "0, " .                //minbeams
+                   "0, " .                //maxbeams
+                   "0, " .                //mintorp_launchers
+                   "0, " .                //maxtorp_launchers
+                   "0, " .                //minshields
+                   "0, " .                //maxshields
+                   "0, " .                //minarmour
+                   "2, " .                //maxarmour
+                   "4, " .                //mincloak
+                   "4  " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+      echo "Inserting ship type: Stinger..."; //base attack ship
+      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+                   "2, " .                //type_id
+                   "'Stinger', " .        //name
+                   "'stinger.gif', " .    //image
+                   "'Y', " .              //buyable
+                   "80000, " .            //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "50, " .               //turnstobuild
+                   "3, " .                //minhull
+                   "4, " .                //maxhull
+                   "4, " .                //minengines
+                   "8, " .                //maxengines
+                   "4, " .                //minpower
+                   "8, " .                //maxpower (that's MISTER power for you) ;)
+                   "4, " .                //mincomputer
+                   "8, " .                //maxcomputer
+                   "4, " .                //minsensors
+                   "8, " .                //maxsensors
+                   "4, " .                //minbeams
+                   "8, " .                //maxbeams
+                   "0, " .                //mintorp_launchers
+                   "0, " .                //maxtorp_launchers
+                   "0, " .                //minshields
+                   "0, " .                //maxshields
+                   "0, " .                //minarmour
+                   "2, " .                //maxarmour
+                   "4, " .                //mincloak
+                   "4  " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+      echo "Inserting ship type: Marauder..."; //base trade ship
+      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+                   "3, " .                //type_id
+                   "'Marauder', " .       //name
+                   "'marauder.gif', " .   //image
+                   "'Y', " .              //buyable
+                   "120000, " .           //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "60, " .               //turnstobuild
+                   "5, " .                //minhull
+                   "10, " .               //maxhull
+                   "2, " .                //minengines
+                   "6, " .                //maxengines
+                   "1, " .                //minpower
+                   "4, " .                //maxpower (that's MISTER power for you) ;)
+                   "1, " .                //mincomputer
+                   "4, " .                //maxcomputer
+                   "2, " .                //minsensors
+                   "4, " .                //maxsensors
+                   "1, " .                //minbeams
+                   "4, " .                //maxbeams
+                   "1, " .                //mintorp_launchers
+                   "4, " .                //maxtorp_launchers
+                   "2, " .                //minshields
+                   "6, " .                //maxshields
+                   "2, " .                //minarmour
+                   "6, " .                //maxarmour
+                   "2, " .                //mincloak
+                   "4  " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+      echo "Inserting ship type: Katana..."; //base balanced
+      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+                   "4, " .                //type_id
+                   "'Katana', " .         //name
+                   "'katana.gif', " .     //image
+                   "'Y', " .              //buyable
+                   "100000, " .           //cost_credits
+                   "0, " .                //cost_ore
+                   "0, " .                //cost_goods
+                   "0, " .                //cost_energy
+                   "0, " .                //cost_organics
+                   "55, " .               //turnstobuild
+                   "3, " .                //minhull
+                   "8, " .               //maxhull
+                   "3, " .                //minengines
+                   "6, " .                //maxengines
+                   "2, " .                //minpower
+                   "5, " .                //maxpower (that's MISTER power for you) ;)
+                   "2, " .                //mincomputer
+                   "5, " .                //maxcomputer
+                   "1, " .                //minsensors
+                   "5, " .                //maxsensors
+                   "1, " .                //minbeams
+                   "6, " .                //maxbeams
+                   "1, " .                //mintorp_launchers
+                   "6, " .                //maxtorp_launchers
+                   "1, " .                //minshields
+                   "6, " .                //maxshields
+                   "3, " .                //minarmour
+                   "6, " .                //maxarmour
+                   "3, " .                //mincloak
+                   "5  " .                //maxcloak
+                   ")");
+      echo "done<br>";
+
+/************************************************************
+Ships from here will have to be built, and the stats above
+will probably all be changed when testing, so no use defining
+these right now.
+************************************************************/
+
+      echo "Inserting ship type: Wraith...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Raven...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Triton...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Phoenix...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Sequoia...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Valkyrie...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Nemesis...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Golem...";
+      echo "done<br>";
+
+      echo "Inserting ship type: Behemoth...";
+      echo "done<br>";
+
       $update = $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES (1,0,0)");
       $password = substr($admin_mail, 0, $maxlen_password);
       echo "<BR><BR><center><B>Your admin login is: <BR>";
       echo "<BR>Username: $admin_mail";
       echo "<BR>Password: $password<BR></B></center>";
       $stamp=date("Y-m-d H:i:s");
-      $db->Execute("INSERT INTO $dbtables[ships] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
+      $db->Execute("INSERT INTO $dbtables[players] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
       $db->Execute("INSERT INTO $dbtables[zones] VALUES('','WebMaster\'s Territory', 1, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
   
       PrintFlush("<BR><BR><center><BR><B>Congratulations! Universe created successfully.<BR>");

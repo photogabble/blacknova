@@ -13,10 +13,10 @@ if(checklogin())
 {
   die();
 }
-$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
-$result2 = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE ship_id='$ship_id'");
+$result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE ship_id='$ship_id'");
 $targetinfo=$result2->fields;
 
 $playerscore = gen_score($playerinfo[ship_id]);
@@ -309,7 +309,7 @@ else
       playerlog($targetinfo[ship_id], LOG_SHIP_SCAN, "$playerinfo[character_name]");
     }
 
-    $db->Execute("UPDATE $dbtables[ships] SET turns=turns-1,turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[players] SET turns=turns-1,turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
   }
 }
 

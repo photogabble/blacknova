@@ -14,7 +14,7 @@ if(checklogin())
 {
   die();
 }
-$res = $db->Execute("SELECT character_name, ship_id, dhtml FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT character_name, ship_id, dhtml FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if($swordfish == $adminpass) //check if called by admin script
@@ -25,7 +25,7 @@ if($swordfish == $adminpass) //check if called by admin script
     $playerinfo[character_name] = 'Administrator';
   else
   {
-    $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$player");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$player");
     $targetname = $res->fields;
     $playerinfo[character_name] = $targetname[character_name];
   }

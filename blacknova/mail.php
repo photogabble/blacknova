@@ -9,7 +9,7 @@
 
 	bigtitle();
 
-	$result = $db->Execute ("select email, password from $dbtables[ships] where email='$mail'");
+	$result = $db->Execute ("select email, password from $dbtables[players] where email='$mail'");
 
 	if(!$result->EOF) {
 	$playerinfo=$result->fields;

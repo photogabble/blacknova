@@ -20,7 +20,7 @@ srand((double)microtime() * 1000000);
 
 
 // get user info
-$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
 if($sector == "*")
@@ -43,7 +43,7 @@ if($sector == "*")
   echo "$l_lrs_used " . NUMBER($fullscan_cost) . " $l_lrs_turns. " . NUMBER($playerinfo[turns] - $fullscan_cost) . " $l_lrs_left.<BR><BR>";
 
   // deduct the appropriate number of turns
-  $db->Execute("UPDATE $dbtables[ships] SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost where ship_id='$playerinfo[ship_id]'");
+  $db->Execute("UPDATE $dbtables[players] SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost where ship_id='$playerinfo[ship_id]'");
 
   // user requested a full long range scan
   $l_lrs_reach=str_replace("[sector]",$playerinfo[sector],$l_lrs_reach);
@@ -68,7 +68,7 @@ if($sector == "*")
     $num_links = $row2[count];
 
     // get number of ships in scanned sector
-    $result2 = $db->Execute("SELECT COUNT(*) AS count FROM $dbtables[ships] WHERE sector='$row[link_dest]' AND on_planet='N' and ship_destroyed='N'");
+    $result2 = $db->Execute("SELECT COUNT(*) AS count FROM $dbtables[players] WHERE sector='$row[link_dest]' AND on_planet='N' and ship_destroyed='N'");
     $row2 = $result2->fields;
     $num_ships = $row2[count];
 
@@ -221,7 +221,7 @@ else
   if($sector != 0)
   {
     // get ships located in the scanned sector
-    $result4 = $db->Execute("SELECT ship_id,ship_name,character_name,cloak FROM $dbtables[ships] WHERE sector='$sector' AND on_planet='N'");
+    $result4 = $db->Execute("SELECT ship_id,ship_name,character_name,cloak FROM $dbtables[players] WHERE sector='$sector' AND on_planet='N'");
     if($result4->EOF)
     {
       echo "$l_none";
@@ -305,7 +305,7 @@ else
     }
     else
     {
-      $result5 = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$planet[owner]");
+      $result5 = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE ship_id=$planet[owner]");
       $planet_owner_name = $result5->fields;
       echo " ($planet_owner_name[character_name])";
     }

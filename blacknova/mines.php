@@ -17,7 +17,7 @@ if(checklogin())
 //-------------------------------------------------------------------------------------------------
 
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
 $res = $db->Execute("SELECT * from $dbtables[universe] WHERE sector_id=$playerinfo[sector]");
 $sectorinfo = $res->fields;
@@ -92,7 +92,7 @@ else
       if(!$owns_all)
       {
          $defence_owner = $defences[0]['ship_id'];
-         $result2 = $db->Execute("SELECT * from $dbtables[ships] where ship_id=$defence_owner");
+         $result2 = $db->Execute("SELECT * from $dbtables[players] where ship_id=$defence_owner");
          $fighters_owner = $result2->fields;
 
          if($fighters_owner[team] != $playerinfo[team] || $playerinfo['team'] == 0)
@@ -107,7 +107,7 @@ else
    if($zoneinfo[allow_defenses] == 'L')
    {
          $zone_owner = $zoneinfo['owner'];
-         $result2 = $db->Execute("SELECT * from $dbtables[ships] where ship_id=$zone_owner");
+         $result2 = $db->Execute("SELECT * from $dbtables[players] where ship_id=$zone_owner");
          $zoneowner_info = $result2->fields;
 
          if($zone_owner <> $playerinfo[ship_id])
@@ -200,7 +200,7 @@ else
         }
      }
 
-     $update = $db->Execute("UPDATE $dbtables[ships] SET last_login='$stamp',turns=turns-1,turns_used=turns_used+1,ship_fighters=ship_fighters-$numfighters,torps=torps-$nummines WHERE ship_id=$playerinfo[ship_id]");
+     $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1,turns_used=turns_used+1,ship_fighters=ship_fighters-$numfighters,torps=torps-$nummines WHERE ship_id=$playerinfo[ship_id]");
 
   }
 }

@@ -12,7 +12,7 @@ include("header.php");
 connectdb();
 if (checklogin()) {die();}
 
-$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
 $result = $db->Execute("SELECT * FROM $dbtables[ibank_accounts] WHERE ship_id=$playerinfo[ship_id]");
@@ -186,7 +186,7 @@ function IGB_transfer()
   global $l_igb_unnamed, $l_igb_in, $l_igb_none, $l_igb_planettransfer, $l_igb_back, $l_igb_logout, $l_igb_destination, $l_igb_conspl;
   global $db, $dbtables;
 
-  $res = $db->Execute("SELECT character_name, ship_id FROM $dbtables[ships] ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT character_name, ship_id FROM $dbtables[players] ORDER BY character_name ASC");
   while(!$res->EOF)
   {
     $ships[]=$res->fields;
@@ -310,7 +310,7 @@ function IGB_transfer2()
 
   if(isset($ship_id)) //ship transfer
   {
-    $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=$ship_id");
+    $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_id=$ship_id");
 
     if($playerinfo[ship_id] == $ship_id)
       IGB_error($l_igb_sendyourself, "IGB.php?command=transfer");
@@ -462,7 +462,7 @@ function IGB_transfer3()
   {
     //Need to check again to prevent cheating by manual posts
 
-    $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=$ship_id");
+    $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE ship_id=$ship_id");
 
     if($playerinfo[ship_id] == $ship_id)
       IGB_error($l_igb_errsendyourself, "IGB.php?command=transfer");
@@ -635,7 +635,7 @@ function IGB_deposit2()
        "</tr>";
 
   $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance+$amount WHERE ship_id=$playerinfo[ship_id]");
-  $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[players] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_withdraw2()
@@ -672,7 +672,7 @@ function IGB_withdraw2()
        "</tr>";
 
   $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance-$amount WHERE ship_id=$playerinfo[ship_id]");
-  $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[players] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_loans()
@@ -805,7 +805,7 @@ function IGB_borrow()
        "</tr>";
 
   $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=$amount3, loantime=NOW() WHERE ship_id=$playerinfo[ship_id]");
-  $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[players] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_repay()
@@ -852,7 +852,7 @@ function IGB_repay()
        "</tr>";
 
   $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=loan-$amount,loantime=$account[loantime] WHERE ship_id=$playerinfo[ship_id]");
-  $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[players] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_consolidate()
@@ -1033,7 +1033,7 @@ function IGB_consolidate3()
 
   $res = $db->Execute($query);
   $res = $db->Execute("UPDATE $dbtables[planets] SET credits=credits + $transfer WHERE planet_id=$dplanet_id");
-  $res = $db->Execute("UPDATE $dbtables[ships] SET turns=turns - $tcost WHERE ship_id = $playerinfo[ship_id]");
+  $res = $db->Execute("UPDATE $dbtables[players] SET turns=turns - $tcost WHERE ship_id = $playerinfo[ship_id]");
 }
 
 function IGB_error($errmsg, $backlink, $title="Error!")

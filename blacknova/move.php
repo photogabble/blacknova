@@ -18,7 +18,7 @@ if (checklogin())
 }
 
 //Retrieve the user and ship information
-$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
 //Put the player information into the array: "playerinfo"
 $playerinfo=$result->fields;
 
@@ -64,7 +64,7 @@ if ($flag==1)
     include("check_fighters.php");
     if($ok>0){
        $stamp = date("Y-m-d H-i-s");
-       $query="UPDATE $dbtables[ships] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$sector where ship_id=$playerinfo[ship_id]";
+       $query="UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1, turns_used=turns_used+1, sector=$sector where ship_id=$playerinfo[ship_id]";
        log_move($playerinfo[ship_id],$sector);
        $move_result = $db->Execute ("$query");
   	if (!$move_result)
@@ -84,7 +84,7 @@ if ($flag==1)
 else
 {
     echo "$l_move_failed<BR><BR>";
-    $db->Execute("UPDATE $dbtables[ships] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where ship_id=$playerinfo[ship_id]");
    
     TEXT_GOTOMAIN();
 }

@@ -17,7 +17,7 @@ if(checklogin())
 //-------------------------------------------------------------------------------------------------
 
 
-$result     = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$result     = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $result->fields;
 
 $result2    = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
@@ -39,7 +39,7 @@ elseif($zoneinfo[allow_trade] == 'L')
 {
   if($zoneinfo[corp_zone] == 'N')
   {
-    $res = $db->Execute("SELECT team FROM $dbtables[ships] WHERE ship_id=$zoneinfo[owner]");
+    $res = $db->Execute("SELECT team FROM $dbtables[players] WHERE ship_id=$zoneinfo[owner]");
     $ownerinfo = $res->fields;
 
     if($playerinfo[ship_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
@@ -288,7 +288,7 @@ else
          </TR>";
 
        //  Total cost is " . NUMBER(abs($total_cost)) . " credits.<BR><BR>";
-      $query = "UPDATE $dbtables[ships] SET credits=credits-$total_cost";
+      $query = "UPDATE $dbtables[players] SET credits=credits-$total_cost";
       if($hull_upgrade > $playerinfo[hull])
       {
         $tempvar = 0; $tempvar=phpTrueDelta($hull_upgrade, $playerinfo[hull]);
@@ -562,7 +562,7 @@ else
       ";
 
       /* Update ship cargo, credits and turns */
-      $trade_result     = $db->Execute("UPDATE $dbtables[ships] SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost, ship_ore=ship_ore+$trade_ore, ship_organics=ship_organics+$trade_organics, ship_goods=ship_goods+$trade_goods, ship_energy=ship_energy+$trade_energy where ship_id=$playerinfo[ship_id]");
+      $trade_result     = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost, ship_ore=ship_ore+$trade_ore, ship_organics=ship_organics+$trade_organics, ship_goods=ship_goods+$trade_goods, ship_energy=ship_energy+$trade_energy where ship_id=$playerinfo[ship_id]");
 
       /* Make all trades positive to change port values*/
       $trade_ore        = round(abs($trade_ore));

@@ -15,9 +15,9 @@ if(checklogin())
 }
 
 
-$res = $db->Execute("SELECT sector FROM $dbtables[ships] WHERE email='$username'");
+$res = $db->Execute("SELECT sector FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
-$res2 = $db->Execute("SELECT ship_name, character_name, sector FROM $dbtables[ships] WHERE ship_id=$ship_id");
+$res2 = $db->Execute("SELECT ship_name, character_name, sector FROM $dbtables[players] WHERE ship_id=$ship_id");
 $othership = $res2->fields;
 
 bigtitle();
