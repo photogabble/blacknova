@@ -189,7 +189,7 @@ $turns = 0;
 	$shields_upgrade_turns				= phpTrueDelta($shields_upgrade, $playerinfo[shields]);
 
 	$turns 		+= max($hull_upgrade_turns, $engine_upgrade_turns, $power_upgrade_turns,
-					$computer_upgrade_turns, $sensor_upgrade_turns, $beams_upgrade_turns, 
+					$computer_upgrade_turns, $sensors_upgrade_turns, $beams_upgrade_turns, 
 					$armour_upgrade_turns, $torp_launchers_upgrade_turns, $shields_upgrade_turns);
 
 /***** Fighter *****/
@@ -328,7 +328,7 @@ $turns = 0;
       }
       if($sensors_upgrade > $playerinfo[sensors])
       {
-        $query .= ", sensors=sensors+$sensor_upgrade_turns";
+        $query .= ", sensors=sensors+$sensors_upgrade_turns";
         BuildOneCol("$l_sensors $l_trade_upgraded $sensors_upgrade");
       }
       if($beams_upgrade > $playerinfo[beams])
