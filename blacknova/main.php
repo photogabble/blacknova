@@ -755,7 +755,10 @@ else
       $i++;
     }
   }
-
+  $previous_sector = $shipinfo[sector_id] - 1;
+  $next_sector = $shipinfo[sector_id] + 1;
+  if($previous_sector <0) $previous_sector = $sector_max;
+  if($next_sector > $sector_max) $next_sector = 0;
 ?>
 
 </div>
@@ -785,6 +788,7 @@ else
 <TABLE BORDER=1 CELLPADDING=1 CELLSPACING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <div class=mnu>
+&nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $previous_sector; ?>">&nbsp;<? echo "&lt&lt"; ?></a>&nbsp;&nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $next_sector; ?>">&nbsp;<? echo "&gt&gt"; ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $playerinfo[preset1]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset1]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
 &nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $playerinfo[preset2]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset2]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
 &nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $playerinfo[preset3]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset3]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
