@@ -1,3 +1,9 @@
+Nospoon (06 October 2002)
+--------------------------------
+Added always reincarnate option to allow players to always restart
+Added next and previous sector real space buttons
+Bumped version number
+
 Dominioon (04 October 2002)
 --------------------------------
 Fixed (?) retreat turns in check_fighters.php.

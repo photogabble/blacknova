@@ -69,6 +69,7 @@ $newbie_shields = "8";
 $newbie_beams = "8";
 $newbie_torp_launchers = "8";
 $newbie_cloak = "8";
+$always_reincarnate = true; // Will always let a player restart
 
 /* specify which special features are allowed */
 $allow_fullscan = true;                // full long range scan

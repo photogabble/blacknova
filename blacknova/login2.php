@@ -118,7 +118,7 @@ if($playerfound)
         $newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE player_id='$playerinfo[player_id]' AND ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
         $num_rows = $newbie_info->RecordCount();
 
-        if ($num_rows)
+        if ($num_rows || $always_reincarnate)
         {
           echo "<BR><BR>$l_login_newbie<BR><BR>";
           $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector_id=0,ore=0,organics=0,energy=1000,colonists=0,goods=0,fighters=100,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,destroyed='N',dev_lssd='N' where player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
