@@ -69,8 +69,8 @@ $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
              "traderoute_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "source_id bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "dest_id bigint(20) unsigned DEFAULT '0' NOT NULL," .
-             "source_type enum('P','L') DEFAULT 'P' NOT NULL," .
-             "dest_type enum('P','L') DEFAULT 'P' NOT NULL," .
+             "source_type enum('P','L','C') DEFAULT 'P' NOT NULL," .
+             "dest_type enum('P','L','C') DEFAULT 'P' NOT NULL," .
              "move_type enum('R','W') DEFAULT 'W' NOT NULL," .
              "owner bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "circuit enum('1','2') DEFAULT '2' NOT NULL," .
@@ -236,6 +236,7 @@ $db->Execute("CREATE TABLE $dbtables[messages] (" .
              "sender_id bigint(20) NOT NULL default '0'," .
              "recp_id bigint(20) NOT NULL default '0'," .
              "subject varchar(250) NOT NULL default ''," .
+             "subject varchar(19) NOT NULL defaul'0000-00-00 00:00:00'," .
              "message longtext NOT NULL," .
              "notified enum('Y','N') NOT NULL default 'N'," .
              "PRIMARY KEY  (ID) " .
