@@ -7,6 +7,32 @@ $online = $row[loggedin];
 ?>
 <BR><CENTER>
 <?
+// Update counter
+
+$res = $db->Execute("SELECT last_run FROM $dbtables[scheduler] LIMIT 1");
+$result = $res->fields;
+$mySEC = ($sched_ticks * 60) - (TIME()-$result[last_run]);
+
+?>
+<SCRIPT Language="JavaScript">
+var myi = <?=$mySEC?>;
+document.write('<B ID=myx><?=$mySEC?></B>&nbsp;<? echo $l_footer_until_update; ?><BR>');
+setTimeout("rmyx();",1000);
+
+function rmyx()
+{
+myi = myi - 1;
+if (myi <= 0)
+{
+myi = <? echo ($sched_ticks * 60); ?>
+}
+document.all.myx.innerHTML = myi;
+setTimeout("rmyx();",1000);
+}
+</SCRIPT>
+<?
+// End update counter
+
 if($online == 1)
 {
    echo $l_footer_one_player_on;

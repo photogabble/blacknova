@@ -1384,6 +1384,7 @@ $l_log_text[LOG_TOW] = "Your ship has been towed from sector [sector] to sector 
 $l_footer_one_player_on = "There is 1 player online.";
 $l_footer_players_on_1 = "There are";
 $l_footer_players_on_2 = "players online.";
+$l_footer_until_update = "seconds until next update.";
 
 //Ship officer insignia                
 $l_insignia[0] = "New Recruit";     
