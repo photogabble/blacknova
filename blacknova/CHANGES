@@ -1,6 +1,9 @@
-L. Patrick Smallwood (04 July 2002)
+L. Patrick Smallwood (04+07 July 2002)
 --------------------------------
-teamkick issue
+Added MightyDude's db status stuff for create and drop tables - which uncovered the old gen_id function and table 
+still being in global_funcs, unused. I commented it out, in case it really IS being used somewhere and I somehow missed it.
+Also updated the order of the tables dropped to match the order of the tables created. Looks nicer that way. :)
+Teamkick issue
 
 SharpBlue (29 June 2002)
 ---------------------------------

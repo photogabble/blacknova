@@ -11,13 +11,36 @@ global $maxlen_password;
 global $dbtables;
 global $db;
 
+function db_create_result()
+{
+global $db;
+
+ if ($db)
+ {
+  echo "<td><font color=\"lime\">- created successfully.</font></td></tr><br>\n";
+ }
+ else
+ {
+  echo "<td><font color=\"red\">- failed to create. error code: $db.</font></td></tr><br>\n";
+ }
+
+}
+
 // Delete all tables in the database
 echo "<b>Dropping all tables </b><BR>";
 foreach ($dbtables as $table => $tablename)
 {
   echo "Dropping $table ";
+//  $db->debug = true;
   $query = $db->Execute("DROP TABLE $tablename");
-  echo "- table dropped successfully.<br>";
+  if ($query)
+  {
+   echo "<td><font color=\"lime\">- dropped successfully.</font></td></tr><br>\n";
+  }
+  else
+  {
+   echo "<td><font color=\"red\">- failed to drop. error code: $query.</font></td></tr><br>\n";
+  }
 }
 echo "<b>All tables have been successfully dropped.</b><p>";
 
@@ -32,7 +55,7 @@ $db->Execute("CREATE TABLE $dbtables[links] (" .
              "KEY link_start (link_start)," .
              "KEY link_dest (link_dest)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: planets ";
 $db->Execute("CREATE TABLE $dbtables[planets](" .
@@ -61,8 +84,8 @@ $db->Execute("CREATE TABLE $dbtables[planets](" .
              "PRIMARY KEY (planet_id)," .
              "KEY owner (owner)," .
              "KEY corp (corp)" .
-             ")") or die ("blerg!"); // now that is one of the coolest error messages I have seen in a while....
-echo "- created successfully.<BR>";
+             ")");
+db_create_result();
 
 echo "Creating table: traderoutes ";
 $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
@@ -76,8 +99,8 @@ $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
              "circuit enum('1','2') DEFAULT '2' NOT NULL," .
              "PRIMARY KEY (traderoute_id)," .
              "KEY owner (owner)" .
-             ")") or die ("blerg!");
-echo "- created successfully.<BR>";
+             ")");
+db_create_result();
 
 echo "Creating table: players ";
 $db->Execute("CREATE TABLE $dbtables[players](" .
@@ -110,7 +133,7 @@ $db->Execute("CREATE TABLE $dbtables[players](" .
              "KEY team (team)," .
              "KEY player_id (player_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: universe ";
 $db->Execute("CREATE TABLE $dbtables[universe](" .
@@ -131,6 +154,7 @@ $db->Execute("CREATE TABLE $dbtables[universe](" .
              "fighters bigint(20) DEFAULT '0' NOT NULL," .
              "PRIMARY KEY (sector_id)" .
              ")");
+db_create_result();
 
 echo "Creating table: zones ";
 $db->execute("CREATE TABLE $dbtables[zones](" .
@@ -149,7 +173,7 @@ $db->execute("CREATE TABLE $dbtables[zones](" .
              "PRIMARY KEY(zone_id)," .
              "KEY zone_id(zone_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: ibank_accounts ";
 $db->Execute("CREATE TABLE $dbtables[ibank_accounts](" .
@@ -159,7 +183,7 @@ $db->Execute("CREATE TABLE $dbtables[ibank_accounts](" .
              "loantime TIMESTAMP(14)," .
 			 "PRIMARY KEY(player_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: IGB_transfers ";
 $db->Execute("CREATE TABLE $dbtables[IGB_transfers](" .
@@ -169,7 +193,7 @@ $db->Execute("CREATE TABLE $dbtables[IGB_transfers](" .
              "time TIMESTAMP(14)," .
              "PRIMARY KEY(transfer_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: teams ";
 $db->Execute("CREATE TABLE $dbtables[teams](" .
@@ -180,7 +204,7 @@ $db->Execute("CREATE TABLE $dbtables[teams](" .
              "number_of_members tinyint(3) DEFAULT '0' NOT NULL," .
              "PRIMARY KEY(id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: news ";
 $db->Execute("CREATE TABLE $dbtables[news] (" .
@@ -194,7 +218,7 @@ $db->Execute("CREATE TABLE $dbtables[news] (" .
              "KEY news_id (news_id)," .
              "UNIQUE news_id_2 (news_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: internal messaging ";
 $db->Execute("CREATE TABLE $dbtables[messages] (" .
@@ -207,7 +231,7 @@ $db->Execute("CREATE TABLE $dbtables[messages] (" .
              "notified enum('Y','N') NOT NULL default 'N'," .
              "PRIMARY KEY  (ID) " .
              ") TYPE=MyISAM");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: furangee ";
 $db->Execute("CREATE TABLE $dbtables[furangee](" .
@@ -218,7 +242,7 @@ $db->Execute("CREATE TABLE $dbtables[furangee](" .
              "PRIMARY KEY (furangee_id)," .
              "KEY furangee_id (furangee_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: sector_defence ";
 $db->Execute("CREATE TABLE $dbtables[sector_defence](" .
@@ -232,7 +256,7 @@ $db->Execute("CREATE TABLE $dbtables[sector_defence](" .
              "KEY sector_id (sector_id)," .
              "KEY player_id (player_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: scheduler ";
 $db->Execute("CREATE TABLE $dbtables[scheduler](" .
@@ -246,7 +270,7 @@ $db->Execute("CREATE TABLE $dbtables[scheduler](" .
              "last_run BIGINT(20)," .
              "PRIMARY KEY (sched_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: ip_bans ";
 $db->Execute("CREATE TABLE $dbtables[ip_bans](" .
@@ -254,7 +278,7 @@ $db->Execute("CREATE TABLE $dbtables[ip_bans](" .
              "ban_mask varchar(16) NOT NULL," .
              "PRIMARY KEY (ban_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: logs ";
 $db->Execute("CREATE TABLE $dbtables[logs](" .
@@ -266,7 +290,7 @@ $db->Execute("CREATE TABLE $dbtables[logs](" .
              "PRIMARY KEY (log_id)," .
              "KEY idate (player_id,time)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: bounty ";
 $db->Execute("CREATE TABLE $dbtables[bounty] (" .
@@ -278,7 +302,7 @@ $db->Execute("CREATE TABLE $dbtables[bounty] (" .
              "KEY bounty_on (bounty_on)," .
              "KEY placed_by (placed_by)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: movement_log ";
 $db->Execute("CREATE TABLE $dbtables[movement_log](" .
@@ -290,7 +314,7 @@ $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "KEY ship_id(ship_id)," .
              "KEY sector_id (sector_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: ship_types ";
 $db->Execute("CREATE TABLE $dbtables[ship_types] (" .
@@ -327,7 +351,7 @@ $db->Execute("CREATE TABLE $dbtables[ship_types] (" .
              "maxcloak tinyint(3) unsigned DEFAULT '0' NOT NULL," .
              "PRIMARY KEY (type_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 echo "Creating table: ships ";
 $db->Execute("CREATE TABLE $dbtables[ships](" .
@@ -369,7 +393,7 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              "PRIMARY KEY (ship_id)," .
              "KEY sector_id (sector_id)" .
              ")");
-echo "- created successfully.<BR>";
+db_create_result();
 
 //Finished
 echo "<b>Database schema creation completed successfully.</b><BR>";
