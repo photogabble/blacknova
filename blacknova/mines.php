@@ -141,7 +141,7 @@ else
      $l_mines_info2=str_replace("[fighters]",$availfighters, $l_mines_info2);
      echo "You have $availmines mines and $availfighters fighters available to deploy.<BR>";
      echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=nummines SIZE=10 MAXLENGTH=10 VALUE=$shipinfo[torps]> $l_mines.<BR>";
-     echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=numfighters SIZE=10 MAXLENGTH=10 VALUE=$shipinfo[ship_fighters]> $l_fighters.<BR>";
+     echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=numfighters SIZE=10 MAXLENGTH=10 VALUE=$shipinfo[fighters]> $l_fighters.<BR>";
      echo "Fighter mode <INPUT TYPE=RADIO NAME=mode $set_attack VALUE=attack>$l_mines_att</INPUT>";
      echo "<INPUT TYPE=RADIO NAME=mode $set_toll VALUE=toll>$l_mines_toll</INPUT><BR>";
      echo "<INPUT TYPE=SUBMIT VALUE=$l_submit><INPUT TYPE=RESET VALUE=$l_reset><BR><BR>";

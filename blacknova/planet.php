@@ -103,7 +103,7 @@ if(!empty($planetinfo))
 
              $update3=$db->Execute("UPDATE $dbtables[ships] SET on_planet='N' WHERE planet_id=$planet_id"); 
              
-             calc_ownership($playerinfo[sector]);
+             calc_ownership($shipinfo[sector_id]);
              echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=main.php\">"; 
           } 
           else 
@@ -333,7 +333,7 @@ if(!empty($planetinfo))
       // ** Notify User Of Base Results
         echo "$l_planet_bbuild<BR><BR>";
       // ** Calc Ownership and Notify User Of Results
-        $ownership = calc_ownership($playerinfo[sector]);
+        $ownership = calc_ownership($shipinfo[sector_id]);
         if(!empty($ownership))
         {
           echo "$ownership<p>";

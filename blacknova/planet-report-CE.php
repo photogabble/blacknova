@@ -48,13 +48,15 @@ function go_build_base($planet_id, $sector_id)
   $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
   $playerinfo=$result->fields;
 
-  $result2 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id=$playerinfo[sector]");
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+  $shipinfo = $res->fields;
+  
+  $result2 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id=$shipinfo[sector_id]");
   $sectorinfo=$result2->fields;
 
   $result3 = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
   if($result3)
     $planetinfo=$result3->fields;
-
 
   Real_Space_Move($sector_id);
 
@@ -252,6 +254,10 @@ function Take_Credits($sector_id, $planet_id)
   // Get basic Database information (ship and planet)
   $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
   $playerinfo = $res->fields;
+
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+  $shipinfo = $res->fields;
+
   $res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
   $planetinfo = $res->fields;
 
@@ -262,7 +268,7 @@ function Take_Credits($sector_id, $planet_id)
   }
 
   //verify player is still in same sector as the planet
-  if($playerinfo[sector] == $planetinfo[sector_id])
+  if($shipinfo[sector_id] == $planetinfo[sector_id])
   {
     if($playerinfo[turns] >= 1)
     {
@@ -278,13 +284,11 @@ function Take_Credits($sector_id, $planet_id)
         $res = $db->Execute("UPDATE $dbtables[planets] SET credits=0 WHERE planet_id=$planetinfo[planet_id]");
 
         // update the player record
-        // credits
-        $res = $db->Execute("UPDATE $dbtables[players] SET credits=$NewShipCredits WHERE email='$username'");
-        // turns
-        $res = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1 WHERE email='$username'");
+        // credits & turns
+        $res = $db->Execute("UPDATE $dbtables[players] SET credits=$NewShipCredits, turns=turns-1 WHERE email='$username'");
 
         echo "Took " . NUMBER($CreditsTaken) . " Credits from planet $planetinfo[name]. <BR>";
-        echo "Your ship - " . $playerinfo[ship_name] . " - now has " . NUMBER($NewShipCredits) . " onboard. <BR>";
+        echo "Your ship - " . $shipinfo[name] . " - now has " . NUMBER($NewShipCredits) . " onboard. <BR>";
 
         $retval = "GO";
       }
@@ -323,8 +327,12 @@ function Real_Space_Move($destination)
   $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
   $playerinfo = $res->fields;
 
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+  $shipinfo = $res->fields;
+
   $result2 = $db->Execute("SELECT angle1,angle2,distance FROM $dbtables[universe] WHERE sector_id=$playerinfo[sector]");
   $start = $result2->fields;
+  
   $result3 = $db->Execute("SELECT angle1,angle2,distance FROM $dbtables[universe] WHERE sector_id=$destination");
   $finish = $result3->fields;
   $sa1 = $start[angle1] * $deg;
@@ -335,16 +343,16 @@ function Real_Space_Move($destination)
   $y = ($start[distance] * sin($sa1) * sin($sa2)) - ($finish[distance] * sin($fa1) * sin($fa2));
   $z = ($start[distance] * cos($sa1)) - ($finish[distance] * cos($fa1));
   $distance = round(sqrt(mypw($x, 2) + mypw($y, 2) + mypw($z, 2)));
-  $shipspeed = mypw($level_factor, $playerinfo[engines]);
+  $shipspeed = mypw($level_factor, $shipinfo[engines]);
   $triptime = round($distance / $shipspeed);
 
-  if($triptime == 0 && $destination != $playerinfo[sector])
+  if($triptime == 0 && $destination != $shipinfo[sector_id])
   {
     $triptime = 1;
   }
 
 
-  if($playerinfo[dev_fuelscoop] == "Y")
+  if($shipinfo[dev_fuelscoop] == "Y")
   {
     $energyscooped = $distance * 100;
   }
@@ -354,11 +362,11 @@ function Real_Space_Move($destination)
   }
 
  
-  if($playerinfo[dev_fuelscoop] == "Y" && $energyscooped == 0 && $triptime == 1)
+  if($shipinfo[dev_fuelscoop] == "Y" && $energyscooped == 0 && $triptime == 1)
   {
     $energyscooped = 100;
   }
-  $free_power = NUM_ENERGY($playerinfo[power]) - $playerinfo[ship_energy];
+  $free_power = NUM_ENERGY($shipinfo[power]) - $shipinfo[energy];
 
   // amount of energy that can be stored is less than amount scooped amount scooped is set to what can be stored
   if($free_power < $energyscooped)
@@ -379,7 +387,7 @@ function Real_Space_Move($destination)
   }
 
   // check to see if already in that sector
-  if($destination == $playerinfo[sector])
+  if($destination == $shipinfo[sector_id])
   {
     $triptime = 0;
     $energyscooped = 0;
@@ -390,7 +398,7 @@ function Real_Space_Move($destination)
     $l_rs_movetime=str_replace("[triptime]",NUMBER($triptime),$l_rs_movetime);
     echo "$l_rs_movetime<BR><BR>";
     echo "$l_rs_noturns";
-    $db->Execute("UPDATE $dbtables[players] SET cleared_defences=' ' where player_id=$playerinfo[player_id]");
+    $db->Execute("UPDATE $dbtables[ships] SET cleared_defences=' ' WHERE ship_id=$shipinfo[ship_id]");
 
     $retval = "BREAK-TURNS";
   }
@@ -403,7 +411,8 @@ function Real_Space_Move($destination)
     if($ok>0)
     {
        $stamp = date("Y-m-d H-i-s");
-       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',sector=$destination,ship_energy=ship_energy+$energyscooped,turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
+       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
+       $update = $db->Execute("UPDATE $dbtables[ships] SET sector_id=$destination,energy=energy+$energyscooped WHERE ship_id=$shipinfo[ship_id]");
        $l_rs_ready=str_replace("[sector]",$destination,$l_rs_ready);
        $l_rs_ready=str_replace("[triptime]",NUMBER($triptime),$l_rs_ready);
        $l_rs_ready=str_replace("[energy]",NUMBER($energyscooped),$l_rs_ready);
