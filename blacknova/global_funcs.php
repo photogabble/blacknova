@@ -1284,4 +1284,31 @@ function calc_dist($src,$dst) {
 
   return $x;
 }
+
+function MakeBars($level, $max)
+{
+  global $l_n_a;
+  
+  $diff = $max - $level;
+  $img = "";
+
+  for ($i=0;$i<$level;$i++)
+  {
+    $bright = floor($i / 5) + 1;
+    if($bright > 5)
+      $bright = 5;
+    $img .= "<img src=images/dialon$bright.gif>&nbsp;";
+  }
+
+  for ($i=0;$i<$diff;$i++)
+  {
+    $img .= "<img src=images/dialoff.gif>&nbsp;";
+  }
+
+  if($img == "")
+    $img = "<font size=2><b>$l_n_a</b></font>";
+
+  return $img;
+}
+
 ?>

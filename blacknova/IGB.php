@@ -770,7 +770,7 @@ function IGB_borrow()
   if(($amount * 1) != $amount)
     IGB_error($l_igb_invalidamount, "IGB.php?command=loans");
 
-  if($amount == 0)
+  if($amount <= 0)
     IGB_error($l_igb_invalidamount, "IGB.php?command=loans");
 
   if($account[loan] != 0)
