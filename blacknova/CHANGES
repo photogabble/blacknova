@@ -1,3 +1,7 @@
+Patrick Smallwood (1 May 2002)
+---------------------------------
+Fixed "no more than 500 goods ports ever" bug, HUGE cleanup and redesign of create universe.
+
 Ron Harwood & David Rowlands (1 May 2002)
 -----------------------------------------
 Added known galaxy map

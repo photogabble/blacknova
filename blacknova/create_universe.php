@@ -89,7 +89,6 @@ $step="2";
 
 switch ($step) {
    case "1":
-      echo "Max sectors set to $sector_max in config.php<BR><BR>";
       echo "<form action=create_universe.php method=post>";
       echo "<table>";
       echo "<tr><td><b><u>Base/Planet Setup</u></b></td><td></td></tr>";
@@ -104,6 +103,7 @@ switch ($step) {
       echo "<tr><td><b><u>Sector/Link Setup</u></b></td><td></td></tr>";
       $fedsecs = intval($sector_max / 200);
       $loops = intval($sector_max / 500);
+      echo "<tr><td>Number of sectors total (<b>overrides config.php</b>)</td><td><input type=text name=sektors size=5 maxlength=5 value=$sector_max></td></tr>";
       echo "<TR><TD>Number of Federation sectors</TD><TD><INPUT TYPE=TEXT NAME=fedsecs SIZE=6 MAXLENGTH=6 VALUE=$fedsecs></TD></TR>";
       echo "<tr><td>Number of loops</td><td><input type=text name=loops size=6 maxlength=6 value=$loops></td></tr>";
       echo "<tr><td>Percent of sectors with unowned planets</td><td><input type=text name=planets size=5 maxlength=5 value=10></td></tr>";
@@ -112,6 +112,7 @@ switch ($step) {
       echo "</form>";
       break;
    case "2":
+      $sector_max = round($sektors);
       if($fedsecs > $sector_max) {
          echo "The number of Federation sectors must be smaller than the size of the universe!";
          break;
@@ -157,55 +158,6 @@ switch ($step) {
       break;
    case "3":
       create_schema();
-      PrintFlush("Creating sector 0 - Sol...<BR>");
-      $initsore = $ore_limit * $initscommod / 100.0;
-      $initsorganics = $organics_limit * $initscommod / 100.0;
-      $initsgoods = $goods_limit * $initscommod / 100.0;
-      $initsenergy = $energy_limit * $initscommod / 100.0;
-      $initbore = $ore_limit * $initbcommod / 100.0;
-      $initborganics = $organics_limit * $initbcommod / 100.0;
-      $initbgoods = $goods_limit * $initbcommod / 100.0;
-      $initbenergy = $energy_limit * $initbcommod / 100.0;
-      $insert = $db->Execute("INSERT INTO $dbtables[universe] (sector_id, sector_name, zone_id, port_type, port_organics, port_ore, port_goods, port_energy, beacon, angle1, angle2, distance) VALUES ('0', 'Sol', '1', 'special', '0', '0', '0', '0', 'Sol: Hub of the Universe', '0', '0', '0')");
-      $update = $db->Execute("UPDATE $dbtables[universe] SET sector_id=0 WHERE sector_id=1");
-      PrintFlush("Creating sector 1 - Alpha Centauri...<BR>");
-      $insert = $db->Execute("INSERT INTO $dbtables[universe] (sector_id, sector_name, zone_id, port_type, port_organics, port_ore, port_goods, port_energy, beacon, angle1, angle2, distance) VALUES ('1', 'Alpha Centauri', '1', 'energy',  '0', '0', '0', '0', 'Alpha Centauri: Gateway to the Galaxy', '0', '0', '1')");
-      PrintFlush($db->ErrorMsg());
-      $remaining = $sector_max-1;
-      PrintFlush("Creating remaining $remaining sectors...<BR>");
-      ### Cycle through remaining sectors
-      ### We are going to split the amount into groups of 500 and bulk pass all the info to mysql to
-      ### figure out.
-      $i=0;
-      while ($i < ($remaining-500)):
-         $insert="INSERT INTO $dbtables[universe] (sector_id,zone_id,angle1,angle2,distance) VALUES ";
-         for ($j=1; $j<=499; $j++) {
-            $distance=intval(rand(1,$universe_size));
-            $angle1=rand(0,180);
-            $angle2=rand(0,90);
-            $insert.="('','1',$angle1,$angle2,$distance),";
-         }
-         $insert.="('','1',$angle1,$angle2,$distance);";
-         $i=$i+500;
-         ### Now lets post the information to the mysql database.
-         $db->Execute("$insert");
-         PrintFlush($db->ErrorMsg());
-         PrintFlush(". ");
-      endwhile;
-      ### Now lets do the remaining sectors.
-      $insert="INSERT INTO $dbtables[universe] (sector_id,zone_id,angle1,angle2,distance) VALUES ";
-      for ($j=$i; $j<=$remaining-1; $j++) {
-         $distance=intval(rand(1,$universe_size));
-         $angle1=rand(0,180);
-         $angle2=rand(0,90);
-          $insert.="('','1',$angle1,$angle2,$distance),";
-      }
-      $insert.="('','1',$angle1,$angle2,$distance);";
-      $j=$j+1;
-      ### Now lets post the information to the mysql database.
-      $db->Execute("$insert");
-      $i=$j;
-      PrintFlush("Finished Creating $i sectors...<br>");
       echo "<form action=create_universe.php method=post>";
       echo "<input type=hidden name=step value=4>";
       echo "<input type=hidden name=spp value=$spp>";
@@ -224,15 +176,71 @@ switch ($step) {
       echo "</form>";
       break;
    case "4":
-      PrintFlush("Selecting $fedsecs Federation sectors...<BR>");
+      print("Creating sector 0 - Sol ");
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+      $insert = $db->Execute("INSERT INTO $dbtables[universe] (sector_id, sector_name, zone_id, port_type, port_organics, port_ore, port_goods, port_energy, beacon, angle1, angle2, distance) VALUES ('0', 'Sol', '1', 'special', '0', '0', '0', '0', 'Sol: Hub of the Universe', '0', '0', '0')");
+      PrintFlush($db->ErrorMsg());
+      $update = $db->Execute("UPDATE $dbtables[universe] SET sector_id=0 WHERE sector_id=1");
+      print("");
+      PrintFlush("- completed successfully.<BR>");
+      print("Creating sector 1 - Alpha Centauri ");
+      $insert = $db->Execute("INSERT INTO $dbtables[universe] (sector_id, sector_name, zone_id, port_type, port_organics, port_ore, port_goods, port_energy, beacon, angle1, angle2, distance) VALUES ('1', 'Alpha Centauri', '1', 'energy',  '0', '0', '0', '0', 'Alpha Centauri: Gateway to the Galaxy', '0', '0', '1')");
+      PrintFlush($db->ErrorMsg());
+      print("");
+      PrintFlush("- completed successfully.<BR>");
+      $remaining = $sector_max-1;
+      print("Creating remaining $remaining sectors ");
+      ### Cycle through remaining sectors
+      ### We are going to split the amount into groups of 500 and bulk pass all the info to mysql to
+      ### figure out.
+      $i=0;
+      while ($i < ($remaining-500)):
+         $insert="INSERT INTO $dbtables[universe] (sector_id,zone_id,angle1,angle2,distance) VALUES ";
+         for ($j=1; $j<=499; $j++) {
+            $distance=intval(rand(1,$universe_size));
+            $angle1=rand(0,180);
+            $angle2=rand(0,90);
+            $insert.="('','1',$angle1,$angle2,$distance),";
+         }
+         $insert.="('','1',$angle1,$angle2,$distance);";
+         $i=$i+500;
+         ### Now lets post the information to the mysql database.
+         $db->Execute("$insert");
+         PrintFlush($db->ErrorMsg());
+      endwhile;
+      ### Now lets do the remaining sectors.
+      $insert="INSERT INTO $dbtables[universe] (sector_id,zone_id,angle1,angle2,distance) VALUES ";
+      for ($j=$i; $j<=$remaining-1; $j++) {
+         $distance=intval(rand(1,$universe_size));
+         $angle1=rand(0,180);
+         $angle2=rand(0,90);
+          $insert.="('','1',$angle1,$angle2,$distance),";
+      }
+      $insert.="('','1',$angle1,$angle2,$distance);";
+      $j=$j+1;
+      ### Now lets post the information to the mysql database.
+      $db->Execute("$insert");
+      $i=$j;
+      print("");
+      PrintFlush("- completed successfully.<br>");
+      print("Selecting $fedsecs Federation sectors ");
       $replace = $db->Execute("REPLACE INTO $dbtables[zones] (zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('1', 'Unchartered space', 0, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '0' )");
       $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('2', 'Federation space', 0, 'N', 'N', 'N', 'N', 'N', 'N',  'Y', 'N', '$fed_max_hull')");
       $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('3', 'Free-Trade space', 0, 'N', 'N', 'Y', 'N', 'N', 'N','Y', 'N', '0')");
       $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('4', 'War Zone', 0, 'N', 'Y', 'Y', 'Y', 'Y', 'Y','N', 'Y', '0')");
       $update = $db->Execute("UPDATE $dbtables[universe] SET zone_id='2' WHERE sector_id<$fedsecs");
+      print("");
+      PrintFlush("- completed successfully.<BR>");
       ### Finding random sectors where port=none and getting their sector ids in one sql query
       ### For Special Ports
-      PrintFlush("Selecting $spp sectors for additional special ports...<BR>");
+      print("Selecting $spp sectors for additional special ports ");
       $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' order by rand(unix_timestamp()) desc limit $spp");
       $i=0;
       $j=0;
@@ -258,6 +266,156 @@ switch ($step) {
       }
       $update.="sector_id=9999999";
       $db->Execute("$update");
+      print("");
+      PrintFlush("- completed successfully.<BR>");  
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Ore Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+      print("Selecting $oep sectors for ore ports ");
+      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $oep");
+      $update="UPDATE $dbtables[universe] SET port_type='ore',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+      $i=0;
+      $j=0;
+      if($sql_query)
+      {
+         while (!$sql_query->EOF) {
+            $result = $sql_query->fields;
+            if ($i>499) {
+               $update.="sector_id=9999999;";
+               $db->Execute($update);
+               $update="UPDATE $dbtables[universe] SET port_type='ore',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+               $i=0;
+               $j++;
+            } else {
+               $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
+               $i++;
+              $j++;
+            }
+            $sql_query->Movenext();
+         }
+      }
+      print("");
+      PrintFlush("- completed successfully. <BR>");
+      $update.="sector_id=9999999";
+      $db->Execute($update);
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Organic Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+      print("Selecting $ogp sectors for organic ports ");
+      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $ogp");
+      $update="UPDATE $dbtables[universe] SET port_type='organics',port_ore=$initbore,port_organics=$initsorganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+      $i=0;
+      $j=0;
+      if($sql_query)
+      {
+         while (!$sql_query->EOF) {
+            $result = $sql_query->fields;
+            if ($i>499) {
+               $update.="sector_id=9999999;";
+               $db->Execute($update);
+               $update="UPDATE $dbtables[universe] SET port_type='organics',port_ore=$initbore,port_organics=$initsorganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+               $i=0;
+               $j++;
+            } else {
+               $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
+               $i++;
+               $j++;
+            }
+            $sql_query->Movenext();
+         }
+      }
+      print("");
+      PrintFlush("- completed successfully. <BR>");
+      $update.="sector_id=9999999";
+      $db->Execute($update);
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Goods Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+      print("Selecting $gop sectors for goods ports ");
+      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $gop");
+      $update="UPDATE $dbtables[universe] SET port_type='goods',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+      $i=0;
+      $j=0;
+      if($sql_query)
+      {
+         while (!$sql_query->EOF) {
+            $result = $sql_query->fields;
+            if ($i>499) {
+               $update.="sector_id=9999999;";
+               $db->Execute($update);
+               $update="UPDATE $dbtables[universe] SET port_type='goods',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+               $i=0;
+               $j++;
+            } else {
+               $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
+               $i++;
+               $j++;
+            }
+            $sql_query->Movenext();
+         }
+      }
+      print("");
+      PrintFlush("- completed successfully. <BR>");
+      $update.="sector_id=9999999";
+      $db->Execute($update);
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Energy Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+      print("Selecting $enp sectors for energy ports ");
+      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $enp");
+      $update="UPDATE $dbtables[universe] SET port_type='energy',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+      $i=0;
+      $j=0;
+      if($sql_query)
+      {
+         while (!$sql_query->EOF) {
+            $result = $sql_query->fields;
+            if ($i>499) {
+               $update.="sector_id=9999999;";
+               $db->Execute($update);
+               $update="UPDATE $dbtables[universe] SET port_type='energy',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+               $i=0;
+               $j++;
+            } else {
+	       $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
+               $i++;
+               $j++;
+            }
+            $sql_query->movenext();
+         }
+      }
+      print("");
+      PrintFlush("- completed successfully. <BR>");
+      $update.="sector_id=9999999";
+      $db->Execute($update);
       echo "<form action=create_universe.php method=post>";
       echo "<input type=hidden name=step value=5>";
       echo "<input type=hidden name=spp value=$spp>";
@@ -276,223 +434,7 @@ switch ($step) {
       echo "</form>";
       break;
    case "5":
-      ### Finding random sectors where port=none and getting their sector ids in one sql query
-      ### For Ore Ports
-      $initsore = $ore_limit * $initscommod / 100.0;
-      $initsorganics = $organics_limit * $initscommod / 100.0;
-      $initsgoods = $goods_limit * $initscommod / 100.0;
-      $initsenergy = $energy_limit * $initscommod / 100.0;
-      $initbore = $ore_limit * $initbcommod / 100.0;
-      $initborganics = $organics_limit * $initbcommod / 100.0;
-      $initbgoods = $goods_limit * $initbcommod / 100.0;
-      $initbenergy = $energy_limit * $initbcommod / 100.0;
-      PrintFlush("Selecting $oep sectors for ore ports...<BR>");
-      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $oep");
-      $update="UPDATE $dbtables[universe] SET port_type='ore',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
-      $i=0;
-      $j=0;
-      if($sql_query)
-      {
-         while (!$sql_query->EOF) {
-            $result = $sql_query->fields;
-            if ($i>499) {
-               $update.="sector_id=9999999;";
-               $db->Execute($update);
-               $update="UPDATE $dbtables[universe] SET port_type='ore',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
-               $i=0;
-               $j++;
-               PrintFlush(". ");
-            } else {
-               $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
-               $i++;
-              $j++;
-            }
-            $sql_query->Movenext();
-         }
-      }
-      $update.="sector_id=9999999";
-      $db->Execute($update);
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=6>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      break;
-   case "6":
-      ### Finding random sectors where port=none and getting their sector ids in one sql query
-      ### For Organic Ports
-      $initsore = $ore_limit * $initscommod / 100.0;
-      $initsorganics = $organics_limit * $initscommod / 100.0;
-      $initsgoods = $goods_limit * $initscommod / 100.0;
-      $initsenergy = $energy_limit * $initscommod / 100.0;
-      $initbore = $ore_limit * $initbcommod / 100.0;
-      $initborganics = $organics_limit * $initbcommod / 100.0;
-      $initbgoods = $goods_limit * $initbcommod / 100.0;
-      $initbenergy = $energy_limit * $initbcommod / 100.0;
-      PrintFlush("Selecting $ogp sectors for organic ports...<BR>");
-      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $ogp");
-      $update="UPDATE $dbtables[universe] SET port_type='organics',port_ore=$initbore,port_organics=$initsorganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
-      $i=0;
-      $j=0;
-      if($sql_query)
-      {
-         while (!$sql_query->EOF) {
-            $result = $sql_query->fields;
-            if ($i>499) {
-               $update.="sector_id=9999999;";
-               $db->Execute($update);
-               $update="UPDATE $dbtables[universe] SET port_type='organics',port_ore=$initbore,port_organics=$initsorganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
-               $i=0;
-               $j++;
-               PrintFlush(". ");
-            } else {
-               $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
-               $i++;
-               $j++;
-            }
-            $sql_query->Movenext();
-         }
-      }
-      $update.="sector_id=9999999";
-      $db->Execute($update);
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=7>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      break;
-   case "7":
-      ### Finding random sectors where port=none and getting their sector ids in one sql query
-      ### For Goods Ports
-      $initsore = $ore_limit * $initscommod / 100.0;
-      $initsorganics = $organics_limit * $initscommod / 100.0;
-      $initsgoods = $goods_limit * $initscommod / 100.0;
-      $initsenergy = $energy_limit * $initscommod / 100.0;
-      $initbore = $ore_limit * $initbcommod / 100.0;
-      $initborganics = $organics_limit * $initbcommod / 100.0;
-      $initbgoods = $goods_limit * $initbcommod / 100.0;
-      $initbenergy = $energy_limit * $initbcommod / 100.0;
-      PrintFlush("Selecting $gop sectors for goods ports...<BR>");
-      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $gop");
-      $update="UPDATE $dbtables[universe] SET port_type='goods',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
-      $i=0;
-      $j=0;
-      if($sql_query)
-      {
-         while (!$sql_query->EOF) {
-            $result = $sql_query->fields;
-            if ($i>499) {
-               $update.="sector_id=9999999;";
-               $db->Execute($update);
-               $update="UPDATE $dbtable[universe] SET port_type='goods',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
-               $i=0;
-               $j++;
-               PrintFlush(". ");
-            } else {
-               $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
-               $i++;
-               $j++;
-            }
-            $sql_query->Movenext();
-         }
-      }
-      $update.="sector_id=9999999";
-      $db->Execute($update);
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=8>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      break;
-   case "8":
-      ### Finding random sectors where port=none and getting their sector ids in one sql query
-      ### For Energy Ports
-      $initsore = $ore_limit * $initscommod / 100.0;
-      $initsorganics = $organics_limit * $initscommod / 100.0;
-      $initsgoods = $goods_limit * $initscommod / 100.0;
-      $initsenergy = $energy_limit * $initscommod / 100.0;
-      $initbore = $ore_limit * $initbcommod / 100.0;
-      $initborganics = $organics_limit * $initbcommod / 100.0;
-      $initbgoods = $goods_limit * $initbcommod / 100.0;
-      $initbenergy = $energy_limit * $initbcommod / 100.0;
-      PrintFlush("Selecting $enp sectors for energy ports...<BR>");
-      $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' and rand() order by rand() desc limit $enp");
-      $update="UPDATE $dbtables[universe] SET port_type='energy',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
-      $i=0;
-      $j=0;
-      if($sql_query)
-      {
-         while (!$sql_query->EOF) {
-            $result = $sql_query->fields;
-            if ($i>499) {
-               $update.="sector_id=9999999;";
-               $db->Execute($update);
-               $update="UPDATE $dbtables[universe] SET port_type='energy',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
-               $i=0;
-               $j++;
-               PrintFlush(". ");
-            } else {
-               $update.="sector_id=$result[sector_id] or ";
-               $i++;
-               $j++;
-            }
-            $sql_query->movenext();
-         }
-      }
-      $update.="sector_id=9999999";
-      $db->Execute($update);
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=9>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      break;
-   case "9":
-      Printflush("Selecting $nump sectors for unowned planets...<BR>");
+      PrintFlush("Selecting $nump sectors to place unowned planets in.<BR>");
       for($i=0; $i<=$sector_max; $i++)
       {
          $num = rand(0, $sector_max - 1);
@@ -504,55 +446,36 @@ switch ($step) {
          if($select->RecordCount() == 0)
          {
             $insert = $db->Execute("INSERT INTO $dbtables[planets] (colonists, owner, corp, prod_ore, prod_organics, prod_goods, prod_energy, prod_fighters, prod_torp, sector_id) VALUES (2,0,0,$default_prod_ore,$default_prod_organics,$default_prod_goods,$default_prod_energy, $default_prod_fighters, $default_prod_torp,$sectors[$i])");
-            echo "$sectors[$i] - ";
+            #echo "$sectors[$i] - ";
          }
          else
-            echo "<BR>Planet skipped in sector $sectors[$i]<BR>";
+            echo "The planet in sector $sectors[$i] was skipped<BR>";
       }
-      echo "done<BR>";
+      echo "Unowned planet placement completed successfully.<BR>";
       $loopsize = round($sector_max/$loops);
       $start = 0;
       $finish = $loopsize - 1;
       for($i=1; $i<=$loops; $i++)
       {
-         echo "Creating loop $i of $loopsize sectors - from sector $start to $finish...<BR>";
+         echo "<BR>Creating loop $i of $loopsize sectors (from sector $start to $finish) ";
          for($j=$start; $j<$finish; $j++)
          {
             $k = $j + 1;
             $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($j,$k)");
             $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($k,$j)");
-            echo "$j<=>$k - ";
+            #echo "$j<=>$k - ";
          }
          $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($start,$finish)");
          $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($finish,$start)");
-         echo "$finish<=>$start";
-         echo "done loop $i<BR>";
+         #echo "$finish<=>$start";
+         echo "- loop $i completed successfully.";
          $start=$finish+1;
          $finish=$finish+$loopsize;
          if ($finish>$sector_max) $finish=$sector_max;
 
       }
-      PrintFlush("Finished Creating $i sectors (out of $nump sectors)...<br>");
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=10>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      break;
-   
-   case "10":
-      PrintFlush("Randomly One-way Linking Sectors...<BR>");
+      PrintFlush("<BR>Creating $i sector warp-loops (out of $nump sectors) - completed successfully.<BR>");
+      PrintFlush("<BR>Randomly One-way Linking $i Sectors (out of $sector_max sectors) ");
       $i=0;
       while ($i < ($sector_max-500)):
          $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
@@ -569,7 +492,6 @@ switch ($step) {
          $db->Execute($insert);
          PrintFlush($db->ErrorMsg());
          # PrintFlush("Finished linking $i sectors ( out of $sector_max sectors)...<br>");
-         PrintFlush(". ");
       endwhile;
       ### Now lets do the remaining sectors.
       $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
@@ -585,26 +507,9 @@ switch ($step) {
       ### Now lets post the information to the mysql database.
       $db->Execute($insert);
       $i=$j;
-      PrintFlush("Finished linking $i sectors...<br>");
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=11>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      break;
-   case "11":
-      PrintFlush("Randomly Two-way Linking Sectors...<BR>");
+      print("");
+      PrintFlush("- completed successfully.");
+      PrintFlush("<BR>Randomly Two-way Linking Sectors ");
       $i=0;
       while ($i < ($sector_max-500)):
          $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
@@ -623,7 +528,6 @@ switch ($step) {
          $db->Execute($insert);
          PrintFlush($db->ErrorMsg());
          # PrintFlush("Finished linking $i sectors ( out of $sector_max sectors)...<br>");
-         PrintFlush(". ");
       endwhile;
       ### Now lets do the remaining sectors.
       $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
@@ -641,9 +545,10 @@ switch ($step) {
       ### Now lets post the information to the mysql database.
       $db->Execute($insert);
       $i=$j;
-      PrintFlush("Finished linking $i sectors...<br>");
+      print("");
+      PrintFlush("- completed successfully. <BR>");
       echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=12>";
+      echo "<input type=hidden name=step value=7>";
       echo "<input type=hidden name=spp value=$spp>";
       echo "<input type=hidden name=oep value=$oep>";
       echo "<input type=hidden name=ogp value=$ogp>";
@@ -659,18 +564,12 @@ switch ($step) {
       echo "<input type=submit value=Confirm>";
       echo "</form>";
       break;
-   case "12":
-      $update = $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES (1,0,0)");
-  
-      $password = substr($admin_mail, 0, $maxlen_password);
-      echo "Creating default $admin_mail login, password: $password<BR>";
-      $stamp=date("Y-m-d H:i:s");
-      $db->Execute("INSERT INTO $dbtables[ships] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
-      $db->Execute("INSERT INTO $dbtables[zones] VALUES('','WebMaster\'s Territory', 1, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
-  
-      echo "<p>Configuring game scheduler...<br>Ticks happen every $sched_ticks minutes<p>";
+   case "7":
+      echo "<B><BR>Configuring game scheduler<BR></B>";
+
+      echo "<BR>Update ticks will occur every $sched_ticks minutes<BR>";
  
-      echo "Turns will happen every $sched_turns minutes.<br>";
+      echo "Turns will occur every $sched_turns minutes.<br>";
       $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_turns, 0, 'sched_turns.php', '',unix_timestamp(now()))");
 
       echo "Defenses will be checked every $sched_turns minutes.<br>";
@@ -700,15 +599,24 @@ switch ($step) {
       echo "Sector Defences will degrade every $sched_degrade minutes.<br>";
       $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_degrade, 0, 'sched_degrade.php', '',unix_timestamp(now()))");
 
-      echo "The planetary apocalypse will occur ever $sched_apocalypse minutes.<br>";
+      echo "The planetary apocalypse will occur every $sched_apocalypse minutes.<br>";
       $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_apocalypse, 0, 'sched_apocalypse.php', '',unix_timestamp(now()))");
 
-      PrintFlush("done.<BR>");
-      PrintFlush("<BR><BR>Click <A HREF=login.php>here</A> to return to the login screen.");
+      $update = $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES (1,0,0)");
+      $password = substr($admin_mail, 0, $maxlen_password);
+      echo "<BR><BR><center><B>Your admin login is: <BR>";
+      echo "<BR>Username: $admin_mail";
+      echo "<BR>Password: $password<BR></B></center>";
+      $stamp=date("Y-m-d H:i:s");
+      $db->Execute("INSERT INTO $dbtables[ships] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
+      $db->Execute("INSERT INTO $dbtables[zones] VALUES('','WebMaster\'s Territory', 1, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
+  
+      PrintFlush("<BR><BR><center><BR><B>Congratulations! Universe created successfully.<BR>");
+      PrintFlush("Click <A HREF=login.php>here</A> to return to the login screen.</B></center>");
       break;
    default:
       echo "<form action=create_universe.php method=post>";
-      echo "Password: <input type=password name=swordfish size=20 maxlength=20><BR><BR>";
+      echo "Password: <input type=password name=swordfish size=20 maxlength=20>&nbsp;&nbsp;";
       echo "<input type=submit value=Submit><input type=hidden name=step value=1>";
       echo "<input type=reset value=Reset>";
       echo "</form>";
