@@ -19,7 +19,7 @@ if (preg_match("/emaillogger.php/i", $PHP_SELF)) { echo "You can not access this
 	if(!defined($ModuleTAG.'_Version')) define($ModuleTAG.'_Version', '0.3.03 ß', TRUE);
 	if(!defined($ModuleTAG.'_Author')) define($ModuleTAG.'_Author', 'TheMightyDude', TRUE);
 	if(!defined($ModuleTAG.'_Email')) define($ModuleTAG.'_Email', 'mailto:admin@initcorp.co.uk', TRUE);
-	if(!defined($ModuleTAG.'_Website')) define($ModuleTAG.'_Website', 'http://e-script.initcorp.co.uk', TRUE);
+	if(!defined($ModuleTAG.'_Website')) define($ModuleTAG.'_Website', 'http://e-script.initcorp.co.uk/Modular/EmailLogger/', TRUE);
 	if(!defined($ModuleTAG.'_Info')) define($ModuleTAG.'_Info','Mixed Module', TRUE);
 
 #############
