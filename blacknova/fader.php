@@ -17,23 +17,18 @@ $res = $db->Execute("SELECT * from $dbtables[news] where date = '$startdate' ord
 echo "arURL = new Array(";
 if($res->EOF)
 {
-echo "\"";
-echo $newspath;
-echo "\");";
+
+echo "\"$newspath\");";
 }
 else
 {
   while (!$res->EOF)
   {
   $row = $res->fields;
-  echo "\"";
-  echo $newspath;
-  echo "\");";
+  echo "\"$newspath\",";
   $res->MoveNext();
   }
-echo "\"";
-echo $newspath;
-echo "\");";
+echo "\"$newspath\");\n";
 }
 
 echo "arTXT = new Array(";
@@ -169,4 +164,5 @@ function FDRend(){
 window.onload = FDRcountLoads;
 //-->
 </SCRIPT>
+
 
