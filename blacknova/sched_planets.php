@@ -17,7 +17,7 @@
     "ore=ore + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $ore_prate * prod_ore / 100.0 * $expoprod," .
     "goods=goods + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $goods_prate * prod_goods / 100.0 * $expoprod," .
     "energy=energy + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $energy_prate * prod_energy / 100.0 * $expoprod," .
-    "colonists=colonists + (colonists - (colonists * $starvation_death_rate)) * $colonist_reproduction_rate * $expoprod," .
+    "colonists=LEAST(colonists + (colonists - (colonists * $starvation_death_rate)) * $colonist_reproduction_rate * $expoprod, $colonist_limit)," .
     "credits=credits * $expocreds + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $credits_prate * (100.0 - prod_organics - prod_ore - prod_goods - prod_energy - prod_fighters - prod_torp) / 100.0 * $expoprod";
 
   $db->Execute($planetupdate);
