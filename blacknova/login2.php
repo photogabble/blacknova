@@ -13,9 +13,9 @@ if(empty($screen_res))
 
 // check if password was sent as cleartext or MD5
 if ($passMD5 != "")
-	$pass = substr(md5($passMD5),0,$maxlen_password);
+     $pass = substr(md5($passMD5),0,$maxlen_password);
 else
-	$pass = substr($pass,0,$maxlen_password);
+     $pass = substr($pass,0,$maxlen_password);
 
 
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$email'");
@@ -42,7 +42,7 @@ else
   $mainfilename="maintext.php";
   $interface="maintext.php";
 }
--- End of old interface code */ 
+-- End of old interface code */
 
 setcookie("interface", $mainfilename);
 setcookie("screenres", $screen_res);
@@ -94,9 +94,9 @@ if($playerfound)
       playerlog($playerinfo[ship_id], LOG_LOGIN, $ip);
       $stamp = date("Y-m-d H-i-s");
       $update = $db->Execute("UPDATE $dbtables[ships] SET last_login='$stamp',ip_address='$ip' WHERE ship_id=$playerinfo[ship_id]");
-		if ($passMD5 != "") echo "(Server Side MD5)<BR>";
-		if ($passMD5 == "") echo "(Client Side MD5)<BR>";
-	  TEXT_GOTOMAIN();
+          if ($passMD5 != "") echo "(Server Side MD5)<BR>";
+          if ($passMD5 == "") echo "(Client Side MD5)<BR>";
+       TEXT_GOTOMAIN();
       echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=$interface?id=" . $playerinfo[ship_id] . "\">";
     }
     else
@@ -104,37 +104,37 @@ if($playerfound)
       // player's ship has been destroyed
       if($playerinfo[dev_escapepod] == "Y")
       {
-        $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_ore=0,ship_organics=0,ship_energy=1000,ship_colonists=0,ship_goods=0,ship_fighters=100,ship_damage='',on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,ship_destroyed='N',dev_lssd='N' where ship_id=$playerinfo[ship_id]");
+        $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_ore=0,ship_organics=0,ship_energy=1000,ship_colonists=0,ship_goods=0,ship_fighters=100,ship_damage='',on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='$boom_pod',dev_fuelscoop='$boom_scoop',dev_minedeflector=0,ship_destroyed='N',dev_lssd='N' where ship_id=$playerinfo[ship_id]");
         echo $l_login_died;
       }
-		else
-		{
-    	echo "You have died in a horrible incident, <a href=log.php>here</a> is the blackbox information that was retrieved from your ships wreckage.<BR><BR>";
+          else
+          {
+     echo "You have died in a horrible incident, <a href=log.php>here</a> is the blackbox information that was retrieved from your ships wreckage.<BR><BR>";
 
         // Check if $newbie_nice is set, if so, verify ship limits
-			if ($newbie_nice == "YES")
-			{
-				$newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE ship_id='$playerinfo[ship_id]' AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
-				$num_rows = $newbie_info->RecordCount();
+               if ($newbie_nice == "YES")
+               {
+                    $newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE ship_id='$playerinfo[ship_id]' AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
+                    $num_rows = $newbie_info->RecordCount();
 
-				if ($num_rows)
-				{
-					echo "<BR><BR>$l_login_newbie<BR><BR>";
-					$db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_ore=0,ship_organics=0,ship_energy=1000,ship_colonists=0,ship_goods=0,ship_fighters=100,credits=1000,ship_damage='',on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,ship_destroyed='N',dev_lssd='N' where ship_id=$playerinfo[ship_id]");
+                    if ($num_rows)
+                    {
+                         echo "<BR><BR>$l_login_newbie<BR><BR>";
+                         $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_ore=0,ship_organics=0,ship_energy=1000,ship_colonists=0,ship_goods=0,ship_fighters=100,credits=1000,ship_damage='',on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='$boom_pod',dev_fuelscoop='$boom_scoop',dev_minedeflector=0,ship_destroyed='N',dev_lssd='N' where ship_id=$playerinfo[ship_id]");
 
-					echo $l_login_newlife;
-				}
+                         echo $l_login_newlife;
+                    }
                 else
-				{
-				echo "<BR><BR>$l_login_looser";
-				}
+                    {
+                    echo "<BR><BR>$l_login_looser";
+                    }
 
-			} // End if $newbie_nice
-			else
-			{
-				echo "<BR><BR>$l_login_looser";
-			}
-		}
+               } // End if $newbie_nice
+               else
+               {
+                    echo "<BR><BR>$l_login_looser";
+               }
+          }
     }
   }
   else
