@@ -20,6 +20,8 @@ $shipname=htmlspecialchars($shipname);
 $character=ereg_replace("[^[:digit:][:space:][:alpha:][\']]"," ",$character);
 $shipname=ereg_replace("[^[:digit:][:space:][:alpha:][\']]"," ",$shipname);
 
+$username = $HTTP_POST_VARS['username']; //This needs to STAY before the db query
+
 if(!get_magic_quotes_gpc())
 {
   $username = addslashes($username);
@@ -31,7 +33,6 @@ $result = $db->Execute ("select email, character_name, ship_name from $dbtables[
 $flag=0;
 if ($username=='' || $character=='' || $shipname=='' ) { echo "$l_new_blank<BR>"; $flag=1;}
 
-$username = $HTTP_POST_VARS['username'];
 if ($result>0)
 {
   while (!$result->EOF)
