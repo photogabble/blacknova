@@ -10,9 +10,12 @@ $no_body=1;
 include("header.php");
 
 connectdb();
-if(checklogin())
+if($adminpass <> $swordfish)
 {
-  die();
+   if(checklogin())
+   {
+     die();
+   }   
 }
 $res = $db->Execute("SELECT character_name, player_id, dhtml FROM $dbtables[players] WHERE email='$username'");
 $playerinfo = $res->fields;
@@ -49,7 +52,7 @@ else
     $mode = 'moz';
 }
 
-if($playerinfo[dhtml] == 'N') //If player doesn't want dhtml, let's do the same as if Nestcape 4
+if($playerinfo[dhtml] == 'N' OR $swordfish == $adminpass) //If player doesn't want dhtml, let's do the same as if Nestcape 4
   $mode = 'compat';
 
 if($mode != 'compat')
@@ -556,6 +559,7 @@ function log_parse($entry)
   global $l_log_text;
   global $l_log_pod;
   global $l_log_nopod;
+  global $space_plague_kills;
 
   switch($entry[type])
   {
@@ -783,7 +787,7 @@ case LOG_BOUNTY_FEDBOUNTY:
     $retvalue[text] = str_replace("[name]", "<font color=white><b>$name</b></font>", $l_log_text[$entry[type]]);
     $retvalue[text] = str_replace("[sector]", "<font color=white><b>$sector</b></font>", $retvalue[text]);
     $percentage = $space_plague_kills * 100;
-    $retvalue[text] = str_replace("[percentage]", "$space_plague_kills", $retvalue[text]);
+    $retvalue[text] = str_replace("[percentage]", "$percentage", $retvalue[text]);
     $retvalue[title] = $l_log_title[$entry[type]];
     break;
  case LOG_PLASMA_STORM:
