@@ -329,6 +329,7 @@ echo "- created successfully.<BR>";
 
 //Finished
 echo "<b>Database schema creation completed successfully.</b><BR>";
+
 }
 
 ?>

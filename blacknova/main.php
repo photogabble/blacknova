@@ -132,7 +132,6 @@ if($res > 0)
 }
 $num_defences = $i;
 
-
 $res = $db->Execute("SELECT zone_id,zone_name FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
 $zoneinfo = $res->fields;
 

@@ -14,6 +14,7 @@ if(checklogin())
   die();
 }
 
+
 $res = $db->Execute("SELECT sector FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 $res2 = $db->Execute("SELECT ship_name, character_name, sector FROM $dbtables[ships] WHERE ship_id=$ship_id");

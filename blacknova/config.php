@@ -197,7 +197,6 @@ $avail_lang[3][name] = 'Romanian';
 $avail_lang[4][file] = 'czech';
 $avail_lang[4][name] = 'Cesky';
 
-
 // Anti-cheat settings
 $IGB_min_turns = $start_turns; //Turns a player has to play before ship transfers are allowed 0=disable
 $IGB_svalue = 0.15; //Max amount of sender's value allowed for ship transfers 0=disable
@@ -216,7 +215,6 @@ $sched_type = 0; // 0 = Cron based, 1 = player triggered.
 $max_credits_without_base = $base_credits; // Max amount of credits allowed on a planet without a base
 $sofa_on = false;
 $ksm_allowed = true;
-
 
 include("global_funcs.php");
 ?>
