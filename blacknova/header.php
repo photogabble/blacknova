@@ -32,7 +32,7 @@ if($interface == "main.php")
         .faderlines {background-color:#400040;}
 	";
 }
-echo "body {font-family: Arial, Tahoma, Helvetica, sans-serif; font-size: x-small}";
+echo "body {font-family: Arial, Helvetica, sans-serif; font-size: x-small}";
 ?>
 
 -->
