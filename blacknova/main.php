@@ -645,9 +645,11 @@ else
 
 <?
 
-  $query = $db->Execute("SELECT * FROM $dbtables[traderoutes] WHERE source_type='P' AND source_id=$playerinfo[sector] AND owner=$playerinfo[ship_id] ORDER BY dest_id ASC");
   $i=0;
   $num_traderoutes = 0;
+
+/********* Port querry ************************************ begin *********/
+  $query = $db->Execute("SELECT * FROM $dbtables[traderoutes] WHERE source_type='P' AND source_id=$playerinfo[sector] AND owner=$playerinfo[ship_id] ORDER BY dest_id ASC");
   while(!$query->EOF)
   {
     $traderoutes[$i]=$query->fields;
@@ -655,6 +657,20 @@ else
     $num_traderoutes++;
     $query->MoveNext();
   }
+/********* Port querry ************************************ end **********/
+
+/********* Sector Defense Trade route query *************** begin ********/
+/********* this is still under developement ***/
+  $query = $db->Execute("SELECT * FROM $dbtables[traderoutes] WHERE source_type='D' AND source_id=$playerinfo[sector] AND owner=$playerinfo[ship_id] ORDER BY dest_id ASC");
+  while(!$query->EOF)
+  {
+    $traderoutes[$i]=$query->fields;
+    $i++;
+    $num_traderoutes++;
+    $query->MoveNext();
+  }
+/********* Defense querry ********************************* end **********/
+/********* Personal planet traderoute type query ********** begin ********/
   $query = $db->Execute("SELECT * FROM $dbtables[planets], $dbtables[traderoutes] WHERE source_type='L' AND source_id=$dbtables[planets].planet_id AND $dbtables[planets].sector_id=$playerinfo[sector] AND $dbtables[traderoutes].owner=$playerinfo[ship_id]");
   while(!$query->EOF)
   {
@@ -663,6 +679,8 @@ else
     $num_traderoutes++;
     $query->MoveNext();
   }
+/********* Personal planet traderoute type query ********* end **********/
+/********* Corperate planet traderoute type query ******** begin ********/
   $query = $db->Execute("SELECT * FROM $dbtables[planets], $dbtables[traderoutes] WHERE source_type='C' AND source_id=$dbtables[planets].planet_id AND $dbtables[planets].sector_id=$playerinfo[sector] AND $dbtables[traderoutes].owner=$playerinfo[ship_id]");
   while(!$query->EOF)
   {
@@ -671,6 +689,7 @@ else
     $num_traderoutes++;
     $query->MoveNext();
   }
+/********* Corperate planet traderoute type query ******** end **********/
 
   if($num_traderoutes == 0)
     echo "<center><a class=dis>&nbsp;$l_none &nbsp;</a></center>";
@@ -682,11 +701,21 @@ else
       echo "&nbsp;<a class=mnu href=traderoute.php?engage=" . $traderoutes[$i][traderoute_id] . ">";
       if($traderoutes[$i][source_type] == 'P')
         echo "$l_port&nbsp;";
+      elseif($traderoutes[$i][source_type] == 'D')
+        echo "Def's ";
       else
       {
-        if($traderoutes[$i][name] == "")
-          $traderoutes[$i][name] == "Unnamed";
-        echo $traderoutes[$i][name] . "&nbsp;";
+        $query = $db->Execute("SELECT name FROM $dbtables[planets] WHERE planet_id=" . $traderoutes[$i][source_id]);
+        if(!$query || $query->RecordCount() == 0)
+          echo $l_unknown;
+        else
+        {
+          $planet = $query->fields;
+          if($planet[name] == "")
+            echo "$l_unnamed ";
+          else
+            echo "$planet[name] ";
+        }
       }
 
       if($traderoutes[$i][circuit] == '1')
@@ -696,6 +725,8 @@ else
 
       if($traderoutes[$i][dest_type] == 'P')
         echo $traderoutes[$i][dest_id];
+      elseif($traderoutes[$i][dest_type] == 'D')
+        echo "Def's in " .  $traderoutes[$i][dest_id] . "";
       else
       {
         $query = $db->Execute("SELECT name FROM $dbtables[planets] WHERE planet_id=" . $traderoutes[$i][dest_id]);
