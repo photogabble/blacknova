@@ -44,6 +44,7 @@ $l_links		 = "Links";
 $l_main_title 		 = "Main Menu";
 $l_main_warpto = "Warp to";
 $l_main_other = "Other";
+$l_main_shipyard = "Access the <a href=shipyard.php>Shipyard</a>";
 
 $l_traderoutes		 = "Trade Routes";
 $l_trade_control	 = "Trade Control";
@@ -1425,5 +1426,7 @@ $l_insignia[17] = "Rear Admiral";
 $l_insignia[18] = "Vice Admiral";
 $l_insignia[19] = "Admiral";           
 
+// shipyard.php
 
+$l_shipyard_title = "Shipyard";
 ?>

@@ -636,16 +636,17 @@ switch ($step) {
                    "0, " .                //maxshields
                    "0, " .                //minarmour
                    "2, " .                //maxarmour
-                   "4, " .                //mincloak
+                   "0, " .                //mincloak
                    "4  " .                //maxcloak
                    ")");
       echo "done<br>";
 
       echo "Inserting ship type: Stinger..."; //base attack ship
-      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
                    "2, " .                //type_id
                    "'Stinger', " .        //name
                    "'stinger.gif', " .    //image
+                   "'This small attack ship is a favorite among space pirates. Its small, lightweigth hull allows for tight turning and a good cruise speed. Since most of the ship\'s limited interior space is used by the weapons system and engines, this ship can carry minimal cargo. Ideal for small slave raids.'," .
                    "'Y', " .              //buyable
                    "80000, " .            //cost_credits
                    "0, " .                //cost_ore
@@ -655,10 +656,10 @@ switch ($step) {
                    "50, " .               //turnstobuild
                    "3, " .                //minhull
                    "4, " .                //maxhull
-                   "4, " .                //minengines
+                   "5, " .                //minengines
                    "8, " .                //maxengines
                    "4, " .                //minpower
-                   "8, " .                //maxpower (that's MISTER power for you) ;)
+                   "8, " .                //maxpower 
                    "4, " .                //mincomputer
                    "8, " .                //maxcomputer
                    "4, " .                //minsensors
@@ -666,9 +667,9 @@ switch ($step) {
                    "4, " .                //minbeams
                    "8, " .                //maxbeams
                    "0, " .                //mintorp_launchers
-                   "0, " .                //maxtorp_launchers
+                   "1, " .                //maxtorp_launchers
                    "0, " .                //minshields
-                   "0, " .                //maxshields
+                   "2, " .                //maxshields
                    "0, " .                //minarmour
                    "2, " .                //maxarmour
                    "4, " .                //mincloak
@@ -677,10 +678,11 @@ switch ($step) {
       echo "done<br>";
 
       echo "Inserting ship type: Marauder..."; //base trade ship
-      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
                    "3, " .                //type_id
                    "'Marauder', " .       //name
                    "'marauder.gif', " .   //image
+                   "'The marauder is the standard Feredation supply ship. It offers reasonable cargo space and can be decently outfitted with enough armour to resist attacks from pirates. It is well-liked by Federation officials, who turn its spacious cargo bay into luxuriant living quarters.'," .
                    "'Y', " .              //buyable
                    "120000, " .           //cost_credits
                    "0, " .                //cost_ore
@@ -689,11 +691,11 @@ switch ($step) {
                    "0, " .                //cost_organics
                    "60, " .               //turnstobuild
                    "5, " .                //minhull
-                   "10, " .               //maxhull
+                   "12, " .               //maxhull
                    "2, " .                //minengines
                    "6, " .                //maxengines
                    "1, " .                //minpower
-                   "4, " .                //maxpower (that's MISTER power for you) ;)
+                   "4, " .                //maxpower 
                    "1, " .                //mincomputer
                    "4, " .                //maxcomputer
                    "2, " .                //minsensors
@@ -712,27 +714,28 @@ switch ($step) {
       echo "done<br>";
 
       echo "Inserting ship type: Katana..."; //base balanced
-      $db->Execute("INSERT INTO $dbtables[ship_types] (type_id, name, image, buyable, cost_credits, cost_ore, cost_goods, cost_energy, cost_organics, turnstobuild, minhull, maxhull, minengines, maxengines, minpower, maxpower, mincomputer, maxcomputer, minsensors, maxsensors, minbeams, maxbeams, mintorp_launchers, maxtorp_launchers, minshields, maxshields, minarmour, maxarmour, mincloak, maxcloak) VALUES (" .
+      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
                    "4, " .                //type_id
                    "'Katana', " .         //name
                    "'katana.gif', " .     //image
+                   "'The Katana is the latest technological wonder of the Federation. This ship combines most of the advantages of the Stinger class with those of the Marauder. Nice all-rounder, this ship is perfect for the successful space adventurer. It is also the strongest ship made available to the general population by the Federation.'," .
                    "'Y', " .              //buyable
-                   "100000, " .           //cost_credits
+                   "180000, " .           //cost_credits
                    "0, " .                //cost_ore
                    "0, " .                //cost_goods
                    "0, " .                //cost_energy
                    "0, " .                //cost_organics
                    "55, " .               //turnstobuild
                    "3, " .                //minhull
-                   "8, " .               //maxhull
+                   "8, " .                //maxhull
                    "3, " .                //minengines
                    "6, " .                //maxengines
                    "2, " .                //minpower
-                   "5, " .                //maxpower (that's MISTER power for you) ;)
+                   "6, " .                //maxpower 
                    "2, " .                //mincomputer
-                   "5, " .                //maxcomputer
+                   "6, " .                //maxcomputer
                    "1, " .                //minsensors
-                   "5, " .                //maxsensors
+                   "6, " .                //maxsensors
                    "1, " .                //minbeams
                    "6, " .                //maxbeams
                    "1, " .                //mintorp_launchers

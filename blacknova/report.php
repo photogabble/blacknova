@@ -438,6 +438,8 @@ function MakeBars($level, $max)
   for ($i=0;$i<$level;$i++)
   {
     $bright = floor($i / 5) + 1;
+    if($bright > 5)
+      $bright = 5;
     $img .= "<img src=/images/dialon$bright.gif>&nbsp;";
   }
 
