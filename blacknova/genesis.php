@@ -32,7 +32,7 @@ elseif($playerinfo[on_planet]=='Y')
 {
   echo $l_gns_onplanet;
 }
-elseif($num_planets == $max_planets_sector)
+elseif($num_planets >= $max_planets_sector)
 {
   echo $l_gns_full;
 }
