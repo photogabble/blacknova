@@ -1,3 +1,9 @@
+Torr (8 JUNE 2002)
+---------------------------------
+Added corp setting to planetary report system
+Added corp setting to planetary production report
+Added code to remove cheatting by setting more than 100% to planet production using the planetary production report
+
 Patrick Smallwood (8 June 2002)
 ---------------------------------
 Sourceforge bug #566411: Simple fix to main.php
@@ -13,6 +19,15 @@ Put game version on settings.php, as it was a FAQ. (http://forums.blacknova.net/
 Patrick Smallwood (7 June 2002)
 ---------------------------------
 Sourceforge bug #552750 - Combat Stats, show accurate energy used.
+
+Torr (7 June 2002)
+---------------------------------
+Added simple fix to allow corp traderoutes
+Added more extensive planetary report system
+Added time stamping to messages
+Added change to database to allow for corp traderoutes (enum dest/source type)
+Added field to messages table to allow for timestamping of messages
+Added support for time stamping to mailto2.php and readmial.php
 
 Patrick Smallwood (7 June 2002)
 ---------------------------------
