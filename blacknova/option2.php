@@ -33,7 +33,7 @@ if (($newpass1MD5 != "") AND ($newpass1 == ""))
 if (($newpass1MD5 == "") AND ($newpass1 != ""))
      {
      $newpass1 = preg_replace("%[^0-9a-zA-Z]%","",$newpass1);
-     $newpass2 = preg_replace("%[^0-9a-zA-Z]%","",$newpass12);
+     $newpass2 = preg_replace("%[^0-9a-zA-Z]%","",$newpass2);
 
      $newpass1 = substr($newpass1,0,$maxlen_password);
      $newpass2 = substr($newpass2,0,$maxlen_password);
