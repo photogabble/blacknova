@@ -51,7 +51,7 @@ $BenchmarkTimer->start();
 
 ### Set timelimit and randomize timer.
 
-set_time_limit(0);
+// set_time_limit(0); - This causes an error when running in safe_mode, and its a bad thing. 
 srand((double)microtime()*1000000);
 
 ### Include config files and db scheme.
