@@ -54,8 +54,8 @@ if ($whichteam)
 
 function LINK_BACK()
 {
-   global $PHP_SELF, $l_clickme, $l_team_menu;
-   echo "<BR><BR><a href=\"$PHP_SELF\">$l_clickme</a> $l_team_menu.<BR><BR>";
+   global $l_clickme, $l_team_menu;
+   echo "<BR><BR><a href=\"$_SERVER[PHP_SELF]\">$l_clickme</a> $l_team_menu.<BR><BR>";
 }
 
 /*
@@ -63,7 +63,7 @@ function LINK_BACK()
 */
 function DISPLAY_ALL_ALLIANCES()
 {
-   global $color, $color_header, $order, $type, $PHP_SELF, $l_team_galax, $l_team_member, $l_team_coord, $l_score, $l_name;
+   global $color, $color_header, $order, $type, $l_team_galax, $l_team_member, $l_team_coord, $l_score, $l_name;
    global $db, $dbtables;
 
    echo "<br><br>$l_team_galax<BR>";
@@ -77,10 +77,10 @@ function DISPLAY_ALL_ALLIANCES()
       $type = "d";
       $by = "DESC";
    }
-   echo "<TD><B><A HREF=$PHP_SELF?order=team_name&type=$type>$l_name</A></B></TD>";
-   echo "<TD><B><A HREF=$PHP_SELF?order=number_of_members&type=$type>$l_team_members</A></B></TD>";
-   echo "<TD><B><A HREF=$PHP_SELF?order=character_name&type=$type>$l_team_coord</A></B></TD>";
-   echo "<TD><B><A HREF=$PHP_SELF?order=total_score&type=$type>$l_score</A></B></TD>";
+   echo "<TD><B><A HREF=$_SERVER[PHP_SELF]?order=team_name&type=$type>$l_name</A></B></TD>";
+   echo "<TD><B><A HREF=$_SERVER[PHP_SELF]?order=number_of_members&type=$type>$l_team_members</A></B></TD>";
+   echo "<TD><B><A HREF=$_SERVER[PHP_SELF]?order=character_name&type=$type>$l_team_coord</A></B></TD>";
+   echo "<TD><B><A HREF=$_SERVER[PHP_SELF]?order=total_score&type=$type>$l_score</A></B></TD>";
    echo "</TR>";
    $sql_query = "SELECT $dbtables[ships].character_name,
                      COUNT(*) as number_of_members,
@@ -104,7 +104,7 @@ function DISPLAY_ALL_ALLIANCES()
    while(!$res->EOF) {
     $row = $res->fields;
    	echo "<TR BGCOLOR=\"$color\">";
-   	echo "<TD><a href=$PHP_SELF?teamwhat=1&whichteam=".$row[id].">".$row[team_name]."</A></TD>";
+   	echo "<TD><a href=$_SERVER[PHP_SELF]?teamwhat=1&whichteam=".$row[id].">".$row[team_name]."</A></TD>";
    	echo "<TD>".$row[number_of_members]."</TD>";
 // This fixes it so that it actually displays the coordinator, and not the first member of the team.
 
@@ -128,15 +128,15 @@ function DISPLAY_ALL_ALLIANCES()
 
 function DISPLAY_INVITE_INFO()
 {
-   global $playerinfo, $invite_info, $PHP_SELF, $l_team_noinvite, $l_team_ifyouwant, $l_team_tocreate, $l_clickme, $l_team_injoin, $l_team_tojoin, $l_team_reject, $l_team_or;
+   global $playerinfo, $invite_info, $l_team_noinvite, $l_team_ifyouwant, $l_team_tocreate, $l_clickme, $l_team_injoin, $l_team_tojoin, $l_team_reject, $l_team_or;
    if (!$playerinfo[team_invite]) {
       echo "<br><br><font color=blue size=2><b>$l_team_noinvite</b></font><BR>";
       echo "$l_team_ifyouwant<BR>";
-      echo "<a href=\"$PHP_SELF?teamwhat=6\">$l_clickme</a> $l_team_tocreate<BR><BR>";
+      echo "<a href=\"$_SERVER[PHP_SELF]?teamwhat=6\">$l_clickme</a> $l_team_tocreate<BR><BR>";
    } else {
 	   echo "<br><br><font color=blue size=2><b>$l_team_injoin ";
-	   echo "<a href=$PHP_SELF?teamwhat=1&whichteam=$playerinfo[team_invite]>$invite_info[team_name]</A>.</b></font><BR>";
-	   echo "<A HREF=$PHP_SELF?teamwhat=3&whichteam=$playerinfo[team_invite]>$l_clickme</A> $l_team_tojoin <B>$invite_info[team_name]</B> $l_team_or <A HREF=$PHP_SELF?teamwhat=8&whichteam=$playerinfo[team_invite]>$l_clickme</A> $l_team_reject<BR><BR>";
+	   echo "<a href=$_SERVER[PHP_SELF]?teamwhat=1&whichteam=$playerinfo[team_invite]>$invite_info[team_name]</A>.</b></font><BR>";
+	   echo "<A HREF=$_SERVER[PHP_SELF]?teamwhat=3&whichteam=$playerinfo[team_invite]>$l_clickme</A> $l_team_tojoin <B>$invite_info[team_name]</B> $l_team_or <A HREF=$_SERVER[PHP_SELF]?teamwhat=8&whichteam=$playerinfo[team_invite]>$l_clickme</A> $l_team_reject<BR><BR>";
    }
 }
 
@@ -163,18 +163,18 @@ function showinfo($whichteam,$isowner)
    	echo "$l_options<br>Maximum allowed team members: <B>$max_team_members</B><BR><font size=2>";
    	if ($playerinfo[ship_id] == $team[creator])
    	{
-   	   echo "[<a href=$PHP_SELF?teamwhat=9&whichteam=$playerinfo[team]>$l_team_ed</a>] - ";
+   	   echo "[<a href=$_SERVER[PHP_SELF]?teamwhat=9&whichteam=$playerinfo[team]>$l_team_ed</a>] - ";
    	}
    	// RPP v0.1d - New Max Alli Member Check
    	$result  = $db->Execute("SELECT count(*) as team_members FROM $dbtables[ships] WHERE team=$whichteam OR team_invite=$whichteam");
    	$row = $result->fields;
    	if ($row[team_members] < $max_team_members)
    	{
-   		echo "[<a href=$PHP_SELF?teamwhat=7&whichteam=$playerinfo[team]>$l_team_inv</a>] - ";
+   		echo "[<a href=$_SERVER[PHP_SELF]?teamwhat=7&whichteam=$playerinfo[team]>$l_team_inv</a>] - ";
    	} else {
    		echo "[$l_team_inv] - ";
    	}
-   	echo "[<a href=$PHP_SELF?teamwhat=2&whichteam=$playerinfo[team]>$l_team_leave</a>]</font></font>";
+   	echo "[<a href=$_SERVER[PHP_SELF]?teamwhat=2&whichteam=$playerinfo[team]>$l_team_leave</a>]</font></font>";
    }
    DISPLAY_INVITE_INFO();
    echo "</div>";
@@ -190,7 +190,7 @@ function showinfo($whichteam,$isowner)
 		echo "<td> - $member[character_name] ($l_score $member[score])";
 		if ($isowner && ($member[ship_id] != $playerinfo[ship_id])) {
 			// RPP v0.1d - New Max Alli Member Check
-			echo " - <font size=2>[<a href=\"$PHP_SELF?teamwhat=5&who=$member[ship_id]\">$l_team_eject</A>]</font></td>"; 
+			echo " - <font size=2>[<a href=\"$_SERVER[PHP_SELF]?teamwhat=5&who=$member[ship_id]\">$l_team_eject</A>]</font></td>"; 
 		} else {
 			if ($member[ship_id] == $team[creator])
 			{
@@ -210,7 +210,7 @@ function showinfo($whichteam,$isowner)
       $who = $res->fields;
 			echo "<td> - $who[character_name]";
 				if ($isowner) {
-					echo " - <font size=2>[<a href=\"$PHP_SELF?teamwhat=5&who=$who[ship_id]&invitation=1\">$l_team_eject</A>]</font>";
+					echo " - <font size=2>[<a href=\"$_SERVER[PHP_SELF]?teamwhat=5&who=$who[ship_id]&invitation=1\">$l_team_eject</A>]</font>";
 					}
 		   echo "</td></tr><tr bgcolor=$color_line2>";
 		  $res->MoveNext();
@@ -229,7 +229,7 @@ switch ($teamwhat) {
 		break;
 	case 2:	// LEAVE
 		if (!$confirmleave) {
-			echo "$l_team_confirmleave <B>$team[team_name]</B> ? <a href=\"$PHP_SELF?teamwhat=$teamwhat&confirmleave=1&whichteam=$whichteam\">$l_yes</a> - <A HREF=\"$PHP_SELF\">$l_no</A><BR><BR>";
+			echo "$l_team_confirmleave <B>$team[team_name]</B> ? <a href=\"$_SERVER[PHP_SELF]?teamwhat=$teamwhat&confirmleave=1&whichteam=$whichteam\">$l_yes</a> - <A HREF=\"$_SERVER[PHP_SELF]\">$l_no</A><BR><BR>";
 		} elseif ($confirmleave == 1) {
 			if ($team[number_of_members] == 1) {
 				$db->Execute("DELETE FROM $dbtables[teams] WHERE id=$whichteam");
@@ -263,7 +263,7 @@ switch ($teamwhat) {
 			} else {
 				if ($team[creator] == $playerinfo[ship_id]) {
 					echo "$l_team_youarecoord <B>$team[team_name]</B>. $l_team_relinq<BR><BR>";
-					echo "<FORM ACTION='$PHP_SELF' METHOD=POST>";
+					echo "<FORM ACTION='$_SERVER[PHP_SELF]' METHOD=POST>";
 					echo "<TABLE><INPUT TYPE=hidden name=teamwhat value=$teamwhat><INPUT TYPE=hidden name=confirmleave value=2><INPUT TYPE=hidden name=whichteam value=$whichteam>";
 					echo "<TR><TD>$l_team_newc</TD><TD><SELECT NAME=newcreator>";
 					$res = $db->Execute("SELECT character_name,ship_id FROM $dbtables[ships] WHERE team=$whichteam ORDER BY character_name ASC");
@@ -380,7 +380,7 @@ switch ($teamwhat) {
   		$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=$who");
   		$whotoexpel = $result->fields;
   		if (!$confirmed) {
-	  		echo "$l_team_ejectsure $whotoexpel[character_name]? <A HREF=\"$PHP_SELF?teamwhat=$teamwhat&confirmed=1&who=$who&invitation=$invitation\">$l_yes</A> - <a href=\"$PHP_SELF\">$l_no</a><BR>";
+	  		echo "$l_team_ejectsure $whotoexpel[character_name]? <A HREF=\"$_SERVER[PHP_SELF]?teamwhat=$teamwhat&confirmed=1&who=$who&invitation=$invitation\">$l_yes</A> - <a href=\"$_SERVER[PHP_SELF]\">$l_no</a><BR>";
   		} else {  
   			/*
 	  		   check whether the player we are ejecting might have already left in the meantime
@@ -408,7 +408,7 @@ switch ($teamwhat) {
 	case 6: // Create Team
 		if ($testing)
 			if($swordfish != $adminpass) {
-				echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>";
+				echo "<FORM ACTION=\"$_SERVER[PHP_SELF]\" METHOD=POST>";
 				echo "$l_team_testing<BR><BR>";
 				echo "$l_team_pw: <INPUT TYPE=PASSWORD NAME=swordfish SIZE=20 MAXLENGTH=20><BR><BR>";
 				echo "<INPUT TYPE=hidden name=teamwhat value=$teamwhat>";
@@ -420,7 +420,7 @@ switch ($teamwhat) {
 				die();
 			}
 		if (!$teamname) {
-			echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>";
+			echo "<FORM ACTION=\"$_SERVER[PHP_SELF]\" METHOD=POST>";
 			echo "$l_team_entername: ";
 			if ($testing)
 				echo "<INPUT TYPE=hidden NAME=swordfish value='$swordfish'>";
@@ -452,7 +452,7 @@ switch ($teamwhat) {
 
 
 		if (!$invited) {
-			echo "<FORM ACTION='$PHP_SELF' METHOD=POST>";
+			echo "<FORM ACTION='$_SERVER[PHP_SELF]' METHOD=POST>";
 			echo "<TABLE><INPUT TYPE=hidden name=teamwhat value=$teamwhat><INPUT TYPE=hidden name=invited value=1><INPUT TYPE=hidden name=whichteam value=$whichteam>";
 			echo "<TR><TD>$l_team_selectp:</TD><TD><SELECT NAME=who>";
       $res = $db->Execute("SELECT character_name,ship_id FROM $dbtables[ships] WHERE team<>$whichteam ORDER BY character_name ASC");
@@ -489,7 +489,7 @@ switch ($teamwhat) {
                            echo "$l_team_notyours<BR>";
                         }
 		}
-		echo "<BR><BR><a href=\"$PHP_SELF\">$l_clickme</a> $l_team_menu<BR><BR>";
+		echo "<BR><BR><a href=\"$_SERVER[PHP_SELF]\">$l_clickme</a> $l_team_menu<BR><BR>";
 		
 	} // RPP v0.1d - New Max Alli Member Check
 		
@@ -503,7 +503,7 @@ switch ($teamwhat) {
 	case 9: // Edit Team
 		if ($testing){
 			if($swordfish != $adminpass) {
-				echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>";
+				echo "<FORM ACTION=\"$_SERVER[PHP_SELF]\" METHOD=POST>";
 				echo "$l_team_testing<BR><BR>";
 				echo "$l_team_pw: <INPUT TYPE=PASSWORD NAME=swordfish SIZE=20 MAXLENGTH=20><BR><BR>";
 				echo "<INPUT TYPE=hidden name=teamwhat value=$teamwhat>";
@@ -517,7 +517,7 @@ switch ($teamwhat) {
 	   }
 	   if ($playerinfo[team] == $whichteam) {
    		if (!$update) {
-   			echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>";
+   			echo "<FORM ACTION=\"$_SERVER[PHP_SELF]\" METHOD=POST>";
    			echo "$l_team_edname: <BR>";
    			echo "<INPUT TYPE=hidden NAME=swordfish value='$swordfish'>";
    			echo "<INPUT TYPE=hidden name=teamwhat value=$teamwhat>";
