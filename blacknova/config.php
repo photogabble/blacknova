@@ -58,6 +58,9 @@ $rating_combat_factor=.8;    //ammount of rating gained from combat
 $server_closed=false;        //true = block logins but not new account creation
 $account_creation_closed=false;    //true = block new account creation
 
+/* anitcheating tools */
+$requiregraphicalcreate	= true;
+
 
 /* newbie niceness variables */
 $newbie_nice = "YES";
