@@ -37,7 +37,7 @@ function MM_swapImage() { //v3.0
 //-->
 </script>
 
-<BODY bgcolor="#666666" text="#c0c0c0" link="#000000" vlink="#990033" alink="#FF3333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('images/login_.gif','images/mail_.gif')">
+<BODY bgcolor="#666666" text="#c0c0c0" link="#000000" vlink="#990033" alink="#FF3333" onLoad="MM_preloadImages('images/login_.gif','images/mail_.gif')">
 <center>
 <img src="images/BNT-header.jpg" width="517" height="189" border="0" alt="BlackNova Traders">
 
