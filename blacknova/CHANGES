@@ -1,3 +1,8 @@
+TheMightyDude (26 March 2003)
+--------------------------------
+Fixed error done by i_m_sane last commit.
+Cause was due to having html code in a php section :P
+
 TheMightyDude (23 March 2003)
 --------------------------------
 Fixed [691894] Error in special port.

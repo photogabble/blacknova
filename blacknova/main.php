@@ -368,10 +368,8 @@ else
 }
 
 echo "<center><b><font size=$fontsize face=\"arial\" color=white>$l_ships_in_sec $sectorinfo[sector_id]:</font></b></center><br>\n";
-<table border=0 width="100%">
-<tr>
-
-<?
+echo "<table border=0 width=\"100%\">";
+echo "<tr>";
 
 if($playerinfo[sector] != 0)
 {
