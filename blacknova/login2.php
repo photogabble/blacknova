@@ -11,18 +11,19 @@ $screen_res = $HTTP_POST_VARS[res];
 if(empty($screen_res))
   $screen_res = 800;
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$email'");
+// check if password was sent as cleartext or MD5
+if ($passMD5 != "")
+	$pass = substr(md5($passMD5),0,$maxlen_password);
+else
+	$pass = substr($pass,0,$maxlen_password);
+
+
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$email'");
 if($res)
 {
   $playerfound = $res->RecordCount();
 }
 $playerinfo = $res->fields;
-
-if($playerfound)
-{
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-  $shipinfo = $res->fields;
-}
 
 $lang=$playerinfo[lang];
 if(empty($lang))
@@ -41,15 +42,14 @@ else
   $mainfilename="maintext.php";
   $interface="maintext.php";
 }
-SetCookie("interface", $mainfilename);
-
 -- End of old interface code */ 
-SetCookie("screenres", $screen_res);
+
+setcookie("interface", $mainfilename);
+setcookie("screenres", $screen_res);
 
 /* first placement of cookie - don't use updatecookie. */
 $userpass = $email."+".$pass;
-//SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
-SetCookie("userpass",$userpass,time()+(3600*2),$gamepath,$gamedomain);
+SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
 
 $banned = 0;
 $res = $db->Execute("SELECT * FROM $dbtables[ip_bans] WHERE '$ip' LIKE ban_mask OR '$playerinfo[ip_address]' LIKE ban_mask");
@@ -88,22 +88,23 @@ if($playerfound)
   if($playerinfo[password] == $pass)
   {
     // password is correct
-    if($shipinfo[destroyed] == "N")
+    if($playerinfo[ship_destroyed] == "N")
     {
       // player's ship has not been destroyed
-      playerlog($playerinfo[player_id], LOG_LOGIN, $ip);
-      ip_log($playerinfo[player_id],$ip);
+      playerlog($playerinfo[ship_id], LOG_LOGIN, $ip);
       $stamp = date("Y-m-d H-i-s");
-      $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',ip_address='$ip' WHERE player_id=$playerinfo[player_id]");
+      $update = $db->Execute("UPDATE $dbtables[ships] SET last_login='$stamp',ip_address='$ip' WHERE ship_id=$playerinfo[ship_id]");
+		if ($passMD5 != "") echo "(Server Side MD5)<BR>";
+		if ($passMD5 == "") echo "(Client Side MD5)<BR>";
 	  TEXT_GOTOMAIN();
-      echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=$interface?id=" . $playerinfo[player_id] . "\">";
+      echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=$interface?id=" . $playerinfo[ship_id] . "\">";
     }
     else
     {
       // player's ship has been destroyed
-      if($shipinfo[dev_escapepod] == "Y")
+      if($playerinfo[dev_escapepod] == "Y")
       {
-        $db->Execute("UPDATE $dbtables[ships] SET class=1, hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector_id=0,ore=0,organics=0,energy=1000,colonists=0,goods=0,fighters=100,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,destroyed='N',dev_lssd='N' where player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+        $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_ore=0,ship_organics=0,ship_energy=1000,ship_colonists=0,ship_goods=0,ship_fighters=100,ship_damage='',on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,ship_destroyed='N',dev_lssd='N' where ship_id=$playerinfo[ship_id]");
         echo $l_login_died;
       }
 		else
@@ -113,14 +114,13 @@ if($playerfound)
         // Check if $newbie_nice is set, if so, verify ship limits
 			if ($newbie_nice == "YES")
 			{
-				$newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE player_id='$playerinfo[player_id]' AND $ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
+				$newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE ship_id='$playerinfo[ship_id]' AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
 				$num_rows = $newbie_info->RecordCount();
 
 				if ($num_rows)
 				{
 					echo "<BR><BR>$l_login_newbie<BR><BR>";
-					$db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector_id=0,ore=0,organics=0,energy=1000,colonists=0,goods=0,fighters=100,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,destroyed='N',dev_lssd='N' where player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-          $db->Execute("UPDATE $dbtables[players] SET credits=credits+1000 WHERE player_id=$playerinfo[player_id]");
+					$db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_ore=0,ship_organics=0,ship_energy=1000,ship_colonists=0,ship_goods=0,ship_fighters=100,credits=1000,ship_damage='',on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,ship_destroyed='N',dev_lssd='N' where ship_id=$playerinfo[ship_id]");
 
 					echo $l_login_newlife;
 				}
@@ -141,7 +141,7 @@ if($playerfound)
   {
     // password is incorrect
     echo "$l_login_4gotpw1 <A HREF=mail.php?mail=$email>$l_clickme</A> $l_login_4gotpw2 <a href=login.php>$l_clickme</a> $l_login_4gotpw3 $ip...";
-    playerlog($playerinfo[player_id], LOG_BADLOGIN, $ip);
+    playerlog($playerinfo[ship_id], LOG_BADLOGIN, $ip);
   }
 }
 else

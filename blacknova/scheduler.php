@@ -47,7 +47,7 @@
 ******************************************************************/
 
 require_once("config.php");
-if ($sched_type == 1) ob_start();
+if (($sched_type == 1)||($sched_type == 2)) ob_start();
 $title="System Update";
 
 include("header.php");
@@ -110,8 +110,8 @@ else
   echo "<p>The scheduler took $runtime seconds to execute.<p>";
 
   include("footer.php");
-  if($sched_type == 1) ob_end_clean();
-  if($sched_type != 1)
+  if(($sched_type == 1)||($sched_type == 2)) ob_end_clean();
+  if($sched_type == 0)
   {
     $db->Execute("UPDATE $dbtables[scheduler] SET last_run=". TIME());
   }

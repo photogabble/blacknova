@@ -38,13 +38,15 @@ include("header.php");
 
 ?>
 
+<SCRIPT language="JavaScript" SRC="md5.js"></SCRIPT>
+
 <CENTER>
 
 <?php
 bigtitle();
 ?>
 
-<form action="login2.php" method="post">
+<form action="login2.php" method="post" onSubmit="md5onsubmit()">
 <BR><BR>
 
 <TABLE CELLPADDING="4">
@@ -54,11 +56,22 @@ bigtitle();
 </TR>
 <TR>
 	<TD align="right"><? echo $l_login_pw;?></TD>
-	<TD align="left"><INPUT TYPE="PASSWORD" NAME="pass" SIZE="20" MAXLENGTH="20" VALUE="<?php echo "$password" ?>"></TD>
+	<TD align="left"><INPUT TYPE="PASSWORD" NAME="passMD5" SIZE="20" MAXLENGTH=<? echo $maxlen_password; ?> VALUE="<?php // echo "$password" ?>">
+	<INPUT TYPE="HIDDEN" NAME="pass"></TD>
 </TR>
 <TR><TD colspan=2><center>Forgot your password?  Enter it blank and press login.</center></TD></TR></TABLE>
+
 <SCRIPT LANGUAGE="JavaScript" type="text/javascript">
 // <!--
+
+function md5onsubmit()
+{
+	document.forms(0).pass.value = calcMD5(document.forms(0).passMD5.value);
+	document.forms(0).passMD5.value = "";
+	return true;
+}
+
+
 var swidth = 0;
 if(self.screen)
 {

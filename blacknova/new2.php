@@ -15,8 +15,8 @@ if($account_creation_closed)
 {
   die($l_new_closed_message);
 }
-$character=htmlspecialchars($character,ENT_QUOTES);
-$shipname=htmlspecialchars($shipname,ENT_QUOTES);
+$character=htmlspecialchars($character);
+$shipname=htmlspecialchars($shipname);
 $character=ereg_replace("[^[:digit:][:space:][:alpha:][\']]"," ",$character);
 $shipname=ereg_replace("[^[:digit:][:space:][:alpha:][\']]"," ",$shipname);
 
@@ -29,10 +29,9 @@ if(!get_magic_quotes_gpc())
   $shipname = addslashes($shipname);
 }
 
+$result = $db->Execute ("select email, character_name, ship_name from $dbtables[ships] where email='$username' OR character_name='$character' OR ship_name='$shipname'");
 $flag=0;
 if ($username=='' || $character=='' || $shipname=='' ) { echo "$l_new_blank<BR>"; $flag=1;}
-
-$result = $db->Execute ("SELECT email, character_name FROM $dbtables[players] where email='$username' OR character_name='$character'");
 
 if ($result>0)
 {
@@ -41,18 +40,7 @@ if ($result>0)
     $row = $result->fields;
     if (strtolower($row[email])==strtolower($username)) { echo "$l_new_inuse  $l_new_4gotpw1 <a href=mail.php?mail=$username>$l_clickme</a> $l_new_4gotpw2<BR>"; $flag=1;}
     if (strtolower($row[character_name])==strtolower($character)) { echo "$l_new_inusechar<BR>"; $flag=1;}
-    $result->MoveNext();
-  }
-}
-
-$result = $db->Execute ("SELECT name FROM $dbtables[ships] where name='$shipname'");
-
-if ($result>0)
-{
-  while (!$result->EOF)
-  {
-    $row = $result->fields;
-    if (strtolower($row[name])==strtolower($shipname)) { echo "$l_new_inuseship $l_new_4gotpw1 <a href=mail.php?mail=$username>$l_clickme</a> $l_new_4gotpw2<BR>"; $flag=1;}
+    if (strtolower($row[ship_name])==strtolower($shipname)) { echo "$l_new_inuseship<BR>"; $flag=1;}
     $result->MoveNext();
   }
 }
@@ -72,40 +60,46 @@ if ($flag==0)
       $makepass .= sprintf("%s",$syllable_array[rand()%62]);
     }
   }
+  $stamp=date("Y-m-d H:i:s");
+  $query = $db->Execute("SELECT MAX(turns_used + turns) AS mturns FROM $dbtables[ships]");
+  $res = $query->fields;
 
-  $shipid = newplayer($username, $character, $makepass, $shipname);
+  $mturns = $res[mturns];
 
-  $l_new_message = str_replace("[pass]", $makepass, $l_new_message);
+  if($mturns > $max_turns)
+    $mturns = $max_turns;
 
-  $msg = "$l_new_message\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
-  $hdrs .= "From: BlackNova Mailer <$admin_mail>\r\n";
 
-  $e_response=mail($username,$l_new_topic, $msg,$hdrs);
-  
-  if($display_password)
-  {
-    echo $l_new_pwis . " " . $makepass . "<BR><BR>";
-  }
-  if ($Enable_EmailLoggerModule AND $modules['ELM'])
-  {
-    if ($e_response===TRUE)
+  $query = $db->Execute("SELECT count(*) AS vv FROM $dbtables[ships] WHERE vote >= 0");
+  $res = $query->fields;
+  if ($res[vv] > 0) $vote_stat = -2;
+  else $vote_stat = -1;
+
+  $query = $db->Execute("SELECT count(*) AS vv FROM $dbtables[ships] WHERE vote < -2");
+  $res = $query->fields;
+  if ($res[vv] > 0) $vote_stat = -3;
+
+
+  $result2 = $db->Execute("INSERT INTO $dbtables[ships] VALUES('','$shipname','N','$character','" . substr(md5($makepass),0,$maxlen_password) . "','$username',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$mturns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','$ip',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N',$vote_stat,'Y')");
+  if(!$result2) {
+    echo $db->ErrorMsg() . "<br>";
+  } else {
+    $result2 = $db->Execute("SELECT ship_id FROM $dbtables[ships] WHERE email='$username'");
+    $shipid = $result2->fields;
+
+ $l_new_message = str_replace("[pass]", $makepass, $l_new_message);
+    mail("$username", "$l_new_topic", "$l_new_message\r\n\r\nhttp://$gamedomain","From: $admin_mail\r\nReply-To: $admin_mail\r\nX-Mailer: PHP/" . phpversion());
+
+    $db->Execute("INSERT INTO $dbtables[zones] VALUES('','$character\'s Territory', $shipid[ship_id], 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
+    $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES($shipid[ship_id],0,0)");
+    if($display_password)
     {
-      echo "<font color=\"lime\">Email sent to $username</font> - \n";
-      AddELog($username,Registering,'Y',$l_new_topic,$e_response);
+       echo $l_new_pwis . " " . $makepass . "<BR><BR>";
     }
-    else
-    {
-      echo "<font color=\"Red\">Email failed to send to $username</font> - \n";
-      AddELog($username,Registering,'N',$l_new_topic,$e_response);
-    }
-  }
-  else
-  {
-    echo "<font color=\"lime\">Email sent to $username</font><br>";
-  }
-  echo "<BR>";
-  echo "<A HREF=login.php class=nav>$l_clickme</A> $l_new_login";
+    echo "$l_new_pwsent<BR><BR>";
+    echo "<A HREF=login.php>$l_clickme</A> $l_new_login";
 
+  }
 } else {
 
   echo $l_new_err;

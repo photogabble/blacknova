@@ -29,12 +29,15 @@ $doomsday_value = 90000000; // number of colonists a planet needs before being a
 
 /* Scheduler config end */
 
+$maxlen_password = 32;
+
 /* GUI colors (temporary until we have something nicer) */
 $color_header = "#500050";
 $color_line1 = "#300030";
 $color_line2 = "#400040";
 
 /* Localization (regional) settings */
+$gamename = "Blacknova Traders"; // Change this to make it unique to you game of Blacknova eg Freds Blacknova
 $local_number_dec_point = ".";
 $local_number_thousands_sep = ",";
 $language = "english";
@@ -212,7 +215,7 @@ $bounty_ratio = 0.75; // ratio of players networth before attacking results in a
 $bounty_minturns = 500; // Minimum number of turns a target must have had before attacking them may not get you a bounty. 0=disable
 $display_password = false; // If true, will display password on signup screen.
 $space_plague_kills = 0.20; // Percentage of colonists killed by space plague
-$sched_type = 0; // 0 = Cron based, 1 = player triggered.
+$sched_type = 0; // (0 = real cronjob, 1 = player triggerd and JS-Cronjob, 2 = JS-Cronjob only)
 $max_credits_without_base = $base_credits; // Max amount of credits allowed on a planet without a base
 $sofa_on = false;
 $ksm_allowed = true;
