@@ -344,7 +344,7 @@ function gen_score($sid)
   $res = $db->Execute("SELECT $calc_levels+$calc_equip+$calc_dev+$dbtables[ships].credits+$calc_planet_goods+$calc_planet_colonists+$calc_planet_defence+$calc_planet_credits AS score FROM $dbtables[ships] LEFT JOIN $dbtables[planets] ON $dbtables[planets].owner=ship_id WHERE ship_id=$sid AND ship_destroyed='N'");
   $row = $res->fields;
   $score = $row[score];
-  $res = $db->Execute("SELECT balance from $dbtables[ibank_accounts] where ship_id = $sid");
+  $res = $db->Execute("SELECT balance, loan FROM $dbtables[ibank_accounts] where ship_id = $sid");
   if($res)
   {
      $row = $res->fields;
@@ -875,8 +875,8 @@ function player_insignia_name($a_username) {
 // Extremely inefficient, but I didnt see a better way to do this.
 
 global $db, $dbtables, $username, $player_insignia;
-global $l_insignia_01, $l_insignia_02, $l_insignia_03, $l_insignia_04, $l_insignia_05, $l_insignia_06, $l_insignia_07               
-global $l_insignia_08, $l_insignia_09, $l_insignia_10, $l_insignia_11, $l_insignia_12, $l_insignia_13, $l_insignia_14               
+global $l_insignia_01, $l_insignia_02, $l_insignia_03, $l_insignia_04, $l_insignia_05, $l_insignia_06, $l_insignia_07;
+global $l_insignia_08, $l_insignia_09, $l_insignia_10, $l_insignia_11, $l_insignia_12, $l_insignia_13, $l_insignia_14;
 global $l_insignia_15, $l_insignia_16, $l_insignia_17, $l_insignia_18, $l_insignia_19, $l_insignia_20;
 
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$a_username'");
