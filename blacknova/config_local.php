@@ -2,13 +2,13 @@
 
 // Path on the filesystem where the blacknova files
 // will reside:
-$gameroot = "/home/bnt1/www";
+$gameroot = "/usr/local/www/blacknova";
 
 // The ADOdb db module is now required to run BNT. You
 // can find it at http://php.weblogs.com/ADODB. Enter the
 // path where it is installed here. I suggest simply putting
 // every ADOdb file in a subdir of BNT.
-$ADOdbpath = "/mysqldata/adodb";
+$ADOdbpath = "ADOdb";
 
 // Domain & path of the game on your webserver (used to validate login cookie)
 // This is the domain name part of the URL people enter to access your game.
@@ -17,13 +17,13 @@ $ADOdbpath = "/mysqldata/adodb";
 // Do not enter slashes for $gamedomain or anything that would come after a slash
 // if you get weird errors with cookies then make sure the game domain has TWO dots
 // i.e. if you reside your game on http://www.blacknova.net put .blacknova.net as $gamedomain. If your game is on http://www.some.site.net put .some.site.net as your game domain. Do not put port numbers in $gamedomain.
-$gamedomain = "khaoskamp.ucs.umbc.edu";
+$gamedomain = ".blacknova.net";
 
 // This is the trailing part of the URL, that is not part of the domain.
 // If you enter www.blah.com/blacknova to access the game, you would leave the line as it is.
 // If you do not need to specify blacknova, just enter a single slash eg:
 // $gamepath = "/";
-$gamepath = "/~bnt2/";
+$gamepath = "/blacknova/";
 
 // Hostname and port of the database server:
 // These are defaults, you normally won't have to change them
@@ -33,11 +33,11 @@ $dbhost = "localhost";
 $dbport = "";
 
 // Username and password to connect to the database:
-$dbuname = "bnt_user";
-$dbpass = "bnt_pass";
+$dbuname = "blacknova_user";
+$dbpass = "blacknova_pass";
 
 // Name of the SQL database:
-$dbname = "bnt_db";
+$dbname = "blacknova_db";
 
 // Type of the SQL database. This can be anything supported by ADOdb. Here are a few:
 // "access" for MS Access databases. You need to create an ODBC DSN.
@@ -63,17 +63,4 @@ names conflict with tables you already have in your db, you will
 need to change this */
 $db_prefix = "bnt_";
 
-// Administrator's name, password and email:
-// Be sure to change these. Don't leave them as is.
-$adminpass = "pika";
-$adminname = "Adam";
-$admin_mail = "i_m_sane@despammed.com";
-
-// Address the forum link, link's to:
-$link_forums = "http://forums.blacknova.net";
-$bnt_ls = true;
-$bnt_ls_key = "myKey"; // enter an authentification key here (always use the sam e key for the same server/game)
-$bnt_ls_url = "http://www.rednova.de/";
-$max_team_members = 6; // Max Members per Team (if limit reached, the INVITE Lin k is disabled.
-$servertimezone = "CET [GMT+1]";
 ?>
