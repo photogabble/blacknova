@@ -1357,4 +1357,6 @@ $l_strafesuccess = "It looks like some of your fighters made it through, althoug
 $l_log_text[LOG_PLANET_BOMBED] = "Your planet [planet_name] in sector [sector] was bombed by [name]. You used [beams] energy and [torps] torpedoes in your defense.  You lost [figs] fighters.";
 $l_log_title[LOG_PLANET_BOMBED] = "<font color=red>Planet bombed!</font>";
 $l_lssd = "Last Seen Device";
+$l_map = "Map";
+$l_lss = "Last ship seen in this sector";
 ?>

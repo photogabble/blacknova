@@ -1344,6 +1344,7 @@ $l_log_text[LOG_PLANET_BOMBED] = "Your planet [planet_name] in sector [sector] w
 $l_log_title[LOG_PLANET_BOMBED] = "<font color=red>Planet bombed!</font>";
 $l_lssd = "Last ship seen device";
 $l_lss = "Last ship seen in this sector";
+$l_map = "Map";
 
 
 //Changed messages

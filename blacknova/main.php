@@ -229,6 +229,7 @@ if($zoneinfo[zone_id] < 5)
 &nbsp;<a class=mnu href="self-destruct.php"><? echo $l_ohno ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="options.php"><? echo $l_options ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="navcomp.php"><? echo $l_navcomp ?></a>&nbsp;<br>
+&nbsp;<a class=mnu href="galaxy2.php"><? echo $l_map ?></a>&nbsp;<br>
 </div>
 </td></tr>
 <tr><td nowrap>
