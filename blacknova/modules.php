@@ -28,6 +28,8 @@ if (preg_match("/modules.php/i", $PHP_SELF)) { echo "You can not access this fil
 ## $ModuleTAG.'_Info' = (14 char MAX)                                         ##
 ################################################################################
 
+if(!defined(ModularVersion)) define(ModularVersion, '0.01 ß', TRUE);
+
 #Modules variables
 #Example#
 #Always seperate fields with /t

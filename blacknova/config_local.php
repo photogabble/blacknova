@@ -63,9 +63,10 @@ names conflict with tables you already have in your db, you will
 need to change this */
 $db_prefix = "bnt_";
 
-// Administrator's password and email:
+// Administrator's name, password and email:
 // Be sure to change these. Don't leave them as is.
 $adminpass = "secret";
+$adminname = "Admin Name";
 $admin_mail = "billg@microsoft.com";
 
 // Address the forum link, link's to:
