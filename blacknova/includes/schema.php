@@ -1,4 +1,8 @@
 <?
+  if (preg_match("/schema.php/i", $_SERVER["PHP_SELF"])) {
+      echo "You can not access this file directly!";
+      die();
+  }
 
 function create_schema()
 {

@@ -1,12 +1,9 @@
 <?
 
-if (preg_match("/bnt_ls_client.php/i", $PHP_SELF))
-
-     {
-
-          die();
-
-     } else {
+if (preg_match("/bnt_ls_client.php/i", $_SERVER["PHP_SELF"])) {
+      echo "You can not access this file directly!";
+      die();
+  } else {
 
 if ($bnt_ls===true) {
 

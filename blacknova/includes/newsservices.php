@@ -1,4 +1,9 @@
 <?
+  if (preg_match("/newssservices.php/i", $_SERVER["PHP_SELF"])) {
+      echo "You can not access this file directly!";
+      die();
+  }
+
 /*
 Assumes $day is a valid formatted time
 */

@@ -1,6 +1,6 @@
 <?
 
-  if (preg_match("/sched_degrade.php/i", $PHP_SELF)) {
+  if (preg_match("/sched_degrade.php/i", $_SERVER["PHP_SELF"])) {
       echo "You can not access this file directly!";
       die();
   }

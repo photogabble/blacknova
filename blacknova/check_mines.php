@@ -1,7 +1,8 @@
 <?
-if (preg_match("/check_mines.php/i", $PHP_SELF)) {
-   die("You can not access this file directly!");
-}
+if (preg_match("/check_mines.php/i", $_SERVER["PHP_SELF"])) {
+      echo "You can not access this file directly!";
+      die();
+  }
 
 include("languages/$lang");
 

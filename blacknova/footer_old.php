@@ -1,5 +1,10 @@
 <BR><BR><CENTER>
 <?
+if (preg_match("/footer_old.php/i", $_SERVER["PHP_SELF"])) {
+    echo "You can not access this file directly!";
+    die();
+}
+
 global $db,$dbtables;
 connectdb();
 

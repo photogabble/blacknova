@@ -1,14 +1,14 @@
 <?
 
-// ****************************************************************
-// *** This script is ©2002 2003 Paul Kirby AKA TheMightyDude   ***
-// *** And is free to use under condition the copyright notice  ***
-// *** remains untouched.                                       ***
-// *** Email: admin@initcorp.co.uk                              ***
-// *** WebSite: http://E-Script.initcorp.co.uk                  ***
-// ****************************************************************
-// *** Setup Info Script                                        ***
-// ****************************************************************
+// **************************************************************
+// ** This script is ©2002 2003 Paul Kirby AKA TheMightyDude   **
+// ** And is free to use under condition the copyright notice  **
+// ** remains untouched.                                       **
+// ** Email: admin@initcorp.co.uk                              **
+// ** WebSite: http://E-Script.initcorp.co.uk                  **
+// **************************************************************
+// ** Setup Info Script                                        **
+// **************************************************************
 
 	error_reporting(0);
 
@@ -22,7 +22,7 @@
 			SetCookie ("TestCookie", "",0);
 			SetCookie ("TestCookie", "Shuzbutt",time()+300,$gamepath, $gamedomain);
 			$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-			header($header_location . append_sid($HTTP_SERVER_VARS["PHP_SELF"], false));exit;
+			header($header_location . append_sid($_SERVER["PHP_SELF"], false));exit;
 		} else {
 			$_SESSION['count']=NULL;
 			unset($_SESSION["count"]); }
@@ -30,26 +30,25 @@
 	testcookies();
 
 	include("header.php");
-	global $HTTP_SERVER_VARS;
 	$createdate = date("l, F d, Y",strtotime ("Oct 01, 2003"));
-	$updatedate = date("l, F d, Y",filemtime (basename ($HTTP_SERVER_VARS["PHP_SELF"])));
+	$updatedate = date("l, F d, Y",filemtime (basename ($_SERVER["PHP_SELF"])));
 	$release_type = "OEM";
 	$version = "0.6.4c (<font color=\"white\">$release_type</font>)";
 	$author = "TheMightyDude";
 	$email = "admin@initcorp.co.uk";
 	$desc = "Written for Blacknova Traders V0.4x";
 
-	if (function_exists('md5_file')) $hash = strtoupper(md5_file(basename ($HTTP_SERVER_VARS['PHP_SELF'])));
+	if (function_exists('md5_file')) $hash = strtoupper(md5_file(basename ($_SERVER['PHP_SELF'])));
 
 	$title="Setup Information Script";
 
-	####################################
-	# Switch for Environment Variables #
-	####################################
+	######################################
+	## Switch for Environment Variables ##
+	######################################
 
 	$show_Env_Var = False;
 
-	####################################
+	######################################
 
 	testdb();
 
@@ -78,11 +77,11 @@
 		} return($url);
 	}
 
-	################################
-	#       Test the Cookies       #
-	################################
-	#       Enabled For Now.       #
-	################################
+	#################################
+	##      Test the Cookies       ##
+	#################################
+	##       Enabled For Now.      ##
+	#################################
 
 	function testcookies()
 	{
@@ -92,11 +91,11 @@
 		else $COOKIE_Result = "<B><font color=\"red\">Failed testing Cookies!</font><br>\nPlease check your $"."gamepath and $"."gamedomain settings in config_local.php</B>";
 	}
 
-	################################
-	# Test the Database Connection #
-	################################
-	#       Enabled For Now.       #
-	################################
+	##################################
+	## Test the Database Connection ##
+	##################################
+	##       Enabled For Now.       ##
+	##################################
 
 	function MySQL_Status()
 	{
@@ -110,10 +109,10 @@
 	function testdb()
 	{
 
-	################################
-	# This is where we test the    #
-	# connection to the database.  #
-	################################
+	#################################
+	## This is where we test the   ##
+	## connection to the database. ##
+	#################################
 
 		global $connectedtodb;
 		global $dbhost, $dbport, $dbuname, $dbpass, $dbname, $default_lang;
@@ -159,7 +158,7 @@
 	DisplayFlush("</div><br>\n");
 
 	##############################
-	#      Table Functions.      #
+	##     Table Functions.     ##
 	##############################
 
 	Function do_Table_Title($title="Title",$Cols=2)
@@ -238,47 +237,29 @@
 		print "$Text"; flush();
 	}
 
-	###############################
-	# This gets the connection IP #
-	###############################
+	#################################
+	## This gets the connection IP ##
+	#################################
 
 	function getConIP() {
 
-		global $HTTP_SERVER_VARS;
-
-		if (isset($HTTP_SERVER_VARS["HTTP_X_FORWARDED_FOR"]))
-		{ 
-			return $HTTP_SERVER_VARS["HTTP_X_FORWARDED_FOR"];
-		}
+		if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+			return $_SERVER["HTTP_X_FORWARDED_FOR"];
 		else
-		{
-			return $HTTP_SERVER_VARS["REMOTE_ADDR"];
-		}
-
-#		if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
-#			$ip = getenv("HTTP_CLIENT_IP");
-#		else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
-#			$ip = getenv("HTTP_X_FORWARDED_FOR");
-#		else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
-#			$ip = getenv("REMOTE_ADDR");
-#		else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
-#			$ip = $_SERVER['REMOTE_ADDR'];
-#		else
-#			$ip = "unknown";
-#		return($ip);
+			return $_SERVER["REMOTE_ADDR"];
 	}
 
 	##############################
-	#  This gets the Game Path.  #
+	## This gets the Game Path. ##
 	##############################
 
 	function get_gamepath($display=True)
 	{
-	    global $HTTP_SERVER_VARS,$PHP_SELF;
+	    global $_SERVER,$PHP_SELF;
 		global $gamepath, $status_gamepath;$status_gamepath="<font color=\"red\">Incorrect</font>";
 
 		$status = "<font color=\"Red\">The settings you have set for $"."gamepath in config_local.php are different.  Please set these to what I said above.</font>";
-		$result=dirname($HTTP_SERVER_VARS["PHP_SELF"]);
+		$result=dirname($_SERVER["PHP_SELF"]);
 
 		if ($result ==="\\")$result="/";
 		if ($result[0] !="."){
@@ -306,18 +287,17 @@
 		return $result;
 	}
 
-	##############################
-	# This gets the Game Domain. #
-	##############################
+	################################
+	## This gets the Game Domain. ##
+	################################
 
 	function get_gamedomain($display=False)
 	{
-		global $HTTP_SERVER_VARS;
 		global $gamedomain, $status_gamedomain;$status_gamedomain="<font color=\"red\">Incorrect</font>";
 
 		$status = "<font color=\"Red\">The settings you have set for $"."gamedomain in config_local.php are different. Please set these to what I said above.</font>";
 		$RemovePORT = True;
-		$result = $HTTP_SERVER_VARS["HTTP_HOST"];
+		$result = $_SERVER["HTTP_HOST"];
 		$pos = strpos($result,"http://");if (is_integer($pos)) $result = substr($result,$pos+7);
 		$pos = strpos($result,"www."); if (is_integer($pos)) $result = substr($result,$pos+4);
 
@@ -348,18 +328,17 @@
 	}
 
 	##############################
-	#  This gets the Game Root.  #
+	## This gets the Game Root. ##
 	##############################
 
 	function get_gameroot($display=False)
 	{
-		global $HTTP_SERVER_VARS;
 		global $gameroot, $status_gameroot;$status_gameroot="<font color=\"red\">Incorrect</font>";
 
 		$status = "<font color=\"Red\">The settings you have set for $"."gameroot in config_local.php are different. Please set these to what I said above.</font>";
-		$result = $HTTP_SERVER_VARS["PATH_TRANSLATED"];
+		$result = $_SERVER["PATH_TRANSLATED"];
 		if(!isset($result))
-			$result = $HTTP_SERVER_VARS["SCRIPT_FILENAME"];
+			$result = $_SERVER["SCRIPT_FILENAME"];
 
 		$result =str_replace("\\", "/", stripcslashes(dirname($result)));
 
@@ -377,13 +356,12 @@
 		return $result;
 	}
 
-	##############################
-	#  This gets the ADOdb Path  #
-	##############################
+	###############################
+	## This gets the ADOdb Path. ##
+	###############################
 
 	function get_ADOdb_path()
 	{
-		global $HTTP_SERVER_VARS;
 		global $ADOdbpath, $status_ADOdb;$status_ADOdb="<font color=\"red\">Incorrect</font>";
 
 		if(is_dir($ADOdbpath)) $status_ADOdb = "<font color=\"Blue\">Correct</font>";
@@ -396,7 +374,7 @@
 
 		global $SERVER_SOFTWARE,$REMOTE_ADDR,$REMOTE_HOST,$REMOTE_PORT, $TERM,$HOSTTYPE,$LOCAL_ADDR;
 		global $ADODB_vers, $PHP_VERSION, $gd_array, $PHP_Interface, $Wrap,$Cols;
-		global $db,$HTTP_SERVER_VARS;
+		global $db;
 		global $COOKIE_Result;
 		global $SERVER_PROTOCOL, $OS_TYPE, $PlatOS;
 		global $DB_Connect,$MYSQL_C_VERSION,$MYSQL_S_VERSION,$MYSQL_PROTO_INFO;
@@ -451,6 +429,9 @@
 		do_Table_Single_Row("* = Module (if any installed).");
 		do_Table_Footer("");
 
+	##############################
+	## Get GD Library Versions. ##
+	##############################
 
 		DisplayFlush("<p>// This GD Library section is just displayed for future use, and may not even be used within Blacknova Traders.</p>\n");
 
@@ -475,8 +456,8 @@
 	$SERVER_SOFTWARE = ''; $REMOTE_ADDR = ''; $REMOTE_HOST = ''; $HOSTTYPE = '';
 	$PHP_VERSION = ''; $OS_TYPE ='';
 
-	if(isset($HTTP_SERVER_VARS["SERVER_SOFTWARE"])) $SERVER_SOFTWARE = $HTTP_SERVER_VARS["SERVER_SOFTWARE"];
-	if(isset($HTTP_SERVER_VARS["REMOTE_ADDR"])) $GATEWAY_ADDR = $HTTP_SERVER_VARS["REMOTE_ADDR"];
+	if(isset($_SERVER["SERVER_SOFTWARE"])) $SERVER_SOFTWARE = $_SERVER["SERVER_SOFTWARE"];
+	if(isset($_SERVER["REMOTE_ADDR"])) $GATEWAY_ADDR = $_SERVER["REMOTE_ADDR"];
 	if(empty($LOCAL_ADDR)) $LOCAL_ADDR = getConIP();
 
 	$pos=strpos(getConIP(),",");$REMOTE_ADDR=$LOCAL_ADDR;
@@ -484,9 +465,9 @@
 
 	$Zend_Version = zend_version();
 
-	if(isset($HTTP_SERVER_VARS["SERVER_ADDR"])) $SERVER_ADDR = $HTTP_SERVER_VARS["SERVER_ADDR"];
-	if(isset($HTTP_SERVER_VARS["SERVER_PORT"])) $SERVER_PORT = $HTTP_SERVER_VARS["SERVER_PORT"];
-	if(isset($HTTP_SERVER_VARS["REMOTE_PORT"])) $REMOTE_PORT = $HTTP_SERVER_VARS["REMOTE_PORT"];
+	if(isset($_SERVER["SERVER_ADDR"])) $SERVER_ADDR = $_SERVER["SERVER_ADDR"];
+	if(isset($_SERVER["SERVER_PORT"])) $SERVER_PORT = $_SERVER["SERVER_PORT"];
+	if(isset($_SERVER["REMOTE_PORT"])) $REMOTE_PORT = $_SERVER["REMOTE_PORT"];
 
 // *** PHP Interface *** //
 	$sapi_type = php_sapi_name();
@@ -500,11 +481,11 @@
 	if(isset($PHP_VERSION)) $PHP_VERSION = PHP_VERSION;
 	if (is_integer(strpos($SERVER_SOFTWARE, "Apache"))) $PlatOS = "Apache"; else $PlatOS = "IIS";
 
-	##############################
-	# Get Apache Version + Mods. #
-	##############################
+	################################
+	## Get Apache Version + Mods. ##
+	################################
  
-	$ar = split("[/ ]",$HTTP_SERVER_VARS['SERVER_SOFTWARE']);
+	$ar = split("[/ ]",$_SERVER['SERVER_SOFTWARE']);
 	for ($i=0;$i<(count($ar));$i++){
 		switch(strtoupper($ar[$i])){
 			case 'APACHE': $i++;if(empty($APACHE_VERSION)) $APACHE_VERSION = $ar[$i];break;
@@ -529,7 +510,6 @@
 		Else If($Platform=="Gentoo/Linux")
 			$OS_TYPE = "Gentoo Linux";
 		Else 
-#			$OS_TYPE = $Platform;
 			$OS_TYPE = "Unknown OS [<B>Tell Author to add Platform = $Platform</B>]"; 
 	}
 
@@ -542,9 +522,9 @@
 	get_server_software();
 	get_ADOdb_path();
 
-	#########################################
-	#         Config_Local Settings.        #
-	#########################################
+	##################################
+	##    Config_Local Settings.    ##
+	##################################
 
 	DisplayFlush("<p>// This is what you need to put in your config_local.php file.<br>\n");
 	DisplayFlush("// If you are having problems using this script then email me <a class=\"email\" href=\"mailto:$email\">$author</a>.<br>\n");
@@ -565,21 +545,21 @@
 	do_Table_Footer();
 
 	#########################################
-	#  This gets the Environment Variables  #
+	## This gets the Environment Variables ##
 	#########################################
 
 	if($show_Env_Var) {
 		DisplayFlush("<p>// This is used to help the admin of the server set up BNT, Or its used by me if you are having problems setting up BNT.</p>\n");
 		$Cols = 2;$Wrap = True;
 		do_Table_Title("Environment Variables",$Cols);
-		ksort($HTTP_SERVER_VARS); reset($HTTP_SERVER_VARS);
-		foreach($HTTP_SERVER_VARS as $k => $v) 
+		ksort($_SERVER); reset($_SERVER);
+		foreach($_SERVER as $k => $v) 
 		{$v =implode("; ",explode(";", $v)); do_Table_Row("$k","$v");}
 		do_Table_Footer();
 	}
 
 	#########################################
-	#   Current Config_Local Information.   #
+	##  Current Config_Local Information.  ##
 	#########################################
 
 	DisplayFlush("<p>// This is what you already have set in config_local.php.<br>\n");
@@ -606,9 +586,9 @@
 	do_Table_Row("$"."ADOdbpath","$ADOdbpath",$status_ADOdb);
 	do_Table_Footer("<br>");
 
-	#########################################
-	#      Current PHP.INI Information.     #
-	#########################################
+	########################################
+	##    Current PHP.INI Information.    ##
+	########################################
 
 	DisplayFlush("<p>// This is the information thats in PHP.INI that may needed to get BNT set-up.</p>\n");
 	$Cols = 3;
@@ -689,9 +669,9 @@
 	do_Table_Single_Row("* = Important variable.");
 	do_Table_Footer("<br>");
 
-	#########################################
-	#         My Script Information.        #
-	#########################################
+	########################################
+	##       My Script Information.       ##
+	########################################
 
 	DisplayFlush("<hr size=\"1\">\n");
 	DisplayFlush("<div align=\"center\">\n");

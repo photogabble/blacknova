@@ -1,6 +1,6 @@
 <?
 // Separate userpass into username & password to support the legacy of multiple cookies for login.
-if (preg_match("/global_funcs.php/i", $PHP_SELF)) {
+if (preg_match("/global_funcs.php/i", $_SERVER["PHP_SELF"])) {
       echo "You can not access this file directly!";
       die();
 }
@@ -9,20 +9,32 @@ if (preg_match("/global_funcs.php/i", $PHP_SELF)) {
 // seemed like a good enough place to put this in
 // Tested and everything seemed to run with register_globals=Off
 if(!defined('reg_global_fix'))define('reg_global_fix', True, TRUE);
+
 foreach ($_POST as $postkey => $postvar) 
 { 
-  $$postkey = $postvar; 
+	$$postkey = $postvar; 
 } 
 
 foreach ($_GET as $getkey => $getvar) 
 { 
-  $$getkey = $getvar; 
+	$$getkey = $getvar; 
 } 
 
 foreach ($_COOKIE as $cookiekey => $cookievar) 
 { 
-  $$cookiekey = $cookievar; 
+	$$cookiekey = $cookievar; 
 } 
+
+foreach ($_ENV as $envkey => $envvar) 
+{ 
+	$$envkey = $envvar; 
+}
+
+foreach ($_SERVER as $servkey => $servvar) 
+{ 
+	$$servkey = $servvar; 
+}
+
 //------ End register_globals fix 
 
 

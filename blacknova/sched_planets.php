@@ -1,6 +1,6 @@
 <?
 
-  if (preg_match("/sched_planets.php/i", $PHP_SELF)) {
+  if (preg_match("/sched_planets.php/i", $_SERVER["PHP_SELF"])) {
       echo "You can not access this file directly!";
       die();
   }

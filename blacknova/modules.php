@@ -1,5 +1,8 @@
 <?
-if (preg_match("/modules.php/i", $PHP_SELF)) { echo "You can not access this file directly!";die();}
+if (preg_match("/modules.php/i", $_SERVER["PHP_SELF"])) {
+    echo "You can not access this file directly!";
+    die();
+}
 
 ################################################################################
 ## This script is ©1996 2002 Paul Kirby AKA TheMightyDude                     ##

@@ -1,5 +1,5 @@
 <?
-  if (preg_match("/sched_defenses.php/i", $PHP_SELF)) {
+  if (preg_match("/sched_defenses.php/i", $_SERVER["PHP_SELF"])) {
       echo "You can not access this file directly!";
       die();
   }

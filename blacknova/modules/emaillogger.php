@@ -1,5 +1,5 @@
 <?
-if (preg_match("/emaillogger.php/i", $PHP_SELF)) { echo "You can not access this module directly!";die();}
+if (preg_match("/emaillogger.php/i", $_SERVER["PHP_SELF"])) { echo "You can not access this module directly!";die();}
 
 ##############################################################################
 # This script is ©1996 2002 Paul Kirby AKA TheMightyDude                     #

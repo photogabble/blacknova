@@ -1,4 +1,9 @@
 <?
+  if (preg_match("/topbar.php/i", $_SERVER["PHP_SELF"])) {
+      echo "You can not access this file directly!";
+      die();
+  }
+
   connectdb();
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
   $playerinfo = $res->fields;
