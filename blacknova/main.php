@@ -153,7 +153,7 @@ $planettypes[4]= "hugeplanet.gif";
 <table border=1 cellspacing=0 cellpadding=0 bgcolor="#400040" width="75%" align=center>
  <tr>
   <td align="center" colspan=3>
-   <font color=silver size=<? echo $basefontsize + 2; ?> face="arial"><? echo $l_player;?> 
+   <font color=silver size=<? echo $basefontsize + 2; ?> face="arial"><? echo player_insignia_name($username);?> 
     <b>
      <font color=white><? echo $playerinfo[character_name];?>
      </font>

@@ -870,6 +870,85 @@ function calc_ownership($sector)
   }
 }
 
+function player_insignia_name($a_username) {
+
+// Extremely inefficient, but I didnt see a better way to do this.
+
+global $db, $dbtables, $username, $player_insignia;
+global $l_insignia_01, $l_insignia_02, $l_insignia_03, $l_insignia_04, $l_insignia_05, $l_insignia_06, $l_insignia_07               
+global $l_insignia_08, $l_insignia_09, $l_insignia_10, $l_insignia_11, $l_insignia_12, $l_insignia_13, $l_insignia_14               
+global $l_insignia_15, $l_insignia_16, $l_insignia_17, $l_insignia_18, $l_insignia_19, $l_insignia_20;
+
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$a_username'");
+$playerinfo = $res->fields;
+
+switch (true){
+  case ($playerinfo[score] >= 500000):
+    $player_insignia = $l_insignia_20;
+    break;              
+  case ($playerinfo[score] >= 450000):
+    $player_insignia = $l_insignia_19;
+    break;
+  case ($playerinfo[score] >= 400000):
+    $player_insignia = $l_insignia_18;
+    break;
+  case ($playerinfo[score] >= 350000):
+    $player_insignia = $l_insignia_17;
+    break;
+  case ($playerinfo[score] >= 300000):
+    $player_insignia = $l_insignia_16;
+    break;
+  case ($playerinfo[score] >= 250000):
+    $player_insignia = $l_insignia_15;
+    break;
+  case ($playerinfo[score] >= 200000):
+    $player_insignia = $l_insignia_14;
+    break;
+  case ($playerinfo[score] >= 160000):
+    $player_insignia = $l_insignia_13;
+    break;
+  case ($playerinfo[score] >= 120000):
+    $player_insignia = $l_insignia_12;
+    break;
+  case ($playerinfo[score] >= 100000):
+    $player_insignia = $l_insignia_11;
+    break;
+  case ($playerinfo[score] >= 80000):
+    $player_insignia = $l_insignia_10;
+    break;
+  case ($playerinfo[score] >= 60000):
+    $player_insignia = $l_insignia_09;
+    break;
+  case ($playerinfo[score] >= 40000):
+    $player_insignia = $l_insignia_08;
+    break;
+  case ($playerinfo[score] >= 20000):
+    $player_insignia = $l_insignia_07;
+    break;
+  case ($playerinfo[score] >= 15000):
+    $player_insignia = $l_insignia_06;
+    break;
+  case ($playerinfo[score] >= 9000):
+    $player_insignia = $l_insignia_05;
+    break;
+  case ($playerinfo[score] >= 6000):
+    $player_insignia = $l_insignia_04;
+    break;
+  case ($playerinfo[score] >= 3000):
+    $player_insignia = $l_insignia_03;
+    break;
+  case ($playerinfo[score] >= 1000):
+    $player_insignia = $l_insignia_02;
+    break;
+  case ($playerinfo[score] >= 0):
+    $player_insignia = $l_insignia_01;
+    break;
+
+}
+return $player_insignia;
+
+}
+
 
 function t_port($ptype) {
 
