@@ -119,6 +119,10 @@ $dbtables['vote'] = "${db_prefix}vote";
 $dbtables['shoutbox'] = "${db_prefix}shoutbox";
 $dbtables['adminnews'] = "${db_prefix}adminnews";
 
+function TRUEFALSE($truefalse,$Stat,$True,$False)
+{
+  return(($truefalse == $Stat) ? $True : $False);
+}
 
 function mypw($one,$two)
 {
