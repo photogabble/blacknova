@@ -213,7 +213,7 @@ tableentry("galaxy2.php", $l_map, $ksm_allowed);
 tableentry("help.php", $l_help, false);
 tableentry("faq.php", $l_faq);
 tableentry("feedback.php", $l_feedback);
-tableentry("link_forums.php", $l_forums, !empty($link_forums));
+tableentry("$link_forums", $l_forums, !empty($link_forums));
 ?>
 </div>
    </td>
