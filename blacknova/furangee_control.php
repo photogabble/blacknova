@@ -132,15 +132,15 @@ else
       if(empty($user))
       {
         echo "<SELECT SIZE=20 NAME=user>";
-        $res = $db->Execute("SELECT email,character_name,ship_destroyed,active,sector FROM $dbtables[players] JOIN $dbtables[furangee] WHERE email=furangee_id ORDER BY sector");
+        $res = $db->Execute("SELECT email,character_name,destroyed,active,sector_id FROM $dbtables[players] JOIN $dbtables[furangee] LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id = $dbtables[ships].player_id WHERE email=furangee_id ORDER BY sector_id");
         while(!$res->EOF)
         {
           $row=$res->fields;
           $charnamelist = sprintf("%-20s", $row[character_name]);
           $charnamelist = str_replace("  ", "&nbsp;&nbsp;",$charnamelist);
-          $sectorlist = sprintf("Sector %'04d&nbsp;&nbsp;", $row[sector]);
+          $sectorlist = sprintf("Sector %'04d&nbsp;&nbsp;", $row[sector_id]);
           if ($row[active] == "Y") { $activelist = "Active &Oslash;&nbsp;&nbsp;"; } else { $activelist = "Active O&nbsp;&nbsp;"; }
-          if ($row[ship_destroyed] == "Y") { $destroylist = "Destroyed &Oslash;&nbsp;&nbsp;"; } else { $destroylist = "Destroyed O&nbsp;&nbsp;"; }
+          if ($row[destroyed] == "Y") { $destroylist = "Destroyed &Oslash;&nbsp;&nbsp;"; } else { $destroylist = "Destroyed O&nbsp;&nbsp;"; }
           printf ("<OPTION VALUE=%s>%s %s %s %s</OPTION>", $row[email], $activelist, $destroylist, $sectorlist, $charnamelist);
           $res->MoveNext();
         }
@@ -151,15 +151,15 @@ else
       {
         if(empty($operation))
         {
-          $res = $db->Execute("SELECT * FROM $dbtables[players] JOIN $dbtables[furangee] WHERE email=furangee_id AND email='$user'");
+          $res = $db->Execute("SELECT * FROM $dbtables[players] JOIN $dbtables[furangee] LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id = $dbtables[ships].player_id WHERE email=furangee_id AND email='$user'");
           $row = $res->fields;
           echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
           echo "<TR><TD>Furangee name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
           echo "<TR><TD>Active?</TD><TD><INPUT TYPE=CHECKBOX NAME=active VALUE=ON " . CHECKED($row[active]) . "></TD></TR>";
           echo "<TR><TD>E-mail</TD><TD>$row[email]</TD></TR>";
           echo "<TR><TD>ID</TD><TD>$row[player_id]</TD></TR>";
-          echo "<TR><TD>Ship</TD><TD><INPUT TYPE=TEXT NAME=ship_name VALUE=\"$row[ship_name]\"></TD></TR>";
-          echo "<TR><TD>Destroyed?</TD><TD><INPUT TYPE=CHECKBOX NAME=ship_destroyed VALUE=ON " . CHECKED($row[ship_destroyed]) . "></TD></TR>";
+          echo "<TR><TD>Ship</TD><TD><INPUT TYPE=TEXT NAME=ship_name VALUE=\"$row[name]\"></TD></TR>";
+          echo "<TR><TD>Destroyed?</TD><TD><INPUT TYPE=CHECKBOX NAME=ship_destroyed VALUE=ON " . CHECKED($row[destroyed]) . "></TD></TR>";
           echo "<TR><TD>Orders</TD><TD>";
             echo "<SELECT SIZE=1 NAME=orders>";
             $oorder0 = $oorder1 = $oorder2 = $oorder3 = "VALUE";
@@ -197,15 +197,15 @@ else
           echo "</TABLE></TD></TR>";
           echo "<TR><TD>Holds</TD>";
           echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Ore</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_ore VALUE=\"$row[ship_ore]\"></TD>";
-          echo "<TD>Organics</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_organics VALUE=\"$row[ship_organics]\"></TD>";
-          echo "<TD>Goods</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_goods VALUE=\"$row[ship_goods]\"></TD></TR>";
-          echo "<TR><TD>Energy</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_energy VALUE=\"$row[ship_energy]\"></TD>";
-          echo "<TD>Colonists</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_colonists VALUE=\"$row[ship_colonists]\"></TD></TR>";
+          echo "<TR><TD>Ore</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_ore VALUE=\"$row[ore]\"></TD>";
+          echo "<TD>Organics</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_organics VALUE=\"$row[organics]\"></TD>";
+          echo "<TD>Goods</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_goods VALUE=\"$row[goods]\"></TD></TR>";
+          echo "<TR><TD>Energy</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_energy VALUE=\"$row[energy]\"></TD>";
+          echo "<TD>Colonists</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_colonists VALUE=\"$row[colonists]\"></TD></TR>";
           echo "</TABLE></TD></TR>";
           echo "<TR><TD>Combat</TD>";
           echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
-          echo "<TR><TD>Fighters</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_fighters VALUE=\"$row[ship_fighters]\"></TD>";
+          echo "<TR><TD>Fighters</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=ship_fighters VALUE=\"$row[fighters]\"></TD>";
           echo "<TD>Torpedoes</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=torps VALUE=\"$row[torps]\"></TD></TR>";
           echo "<TR><TD>Armour Pts</TD><TD><INPUT TYPE=TEXT SIZE=8 NAME=armour_pts VALUE=\"$row[armour_pts]\"></TD></TR>";
           echo "</TABLE></TD></TR>";
@@ -221,7 +221,7 @@ else
           echo "</TABLE></TD></TR>";
           echo "<TR><TD>Credits</TD><TD><INPUT TYPE=TEXT NAME=credits VALUE=\"$row[credits]\"></TD></TR>";
           echo "<TR><TD>Turns</TD><TD><INPUT TYPE=TEXT NAME=turns VALUE=\"$row[turns]\"></TD></TR>";
-          echo "<TR><TD>Current sector</TD><TD><INPUT TYPE=TEXT NAME=sector VALUE=\"$row[sector]\"></TD></TR>";
+          echo "<TR><TD>Current sector</TD><TD><INPUT TYPE=TEXT NAME=sector VALUE=\"$row[sector_id]\"></TD></TR>";
           echo "</TABLE>";
           echo "<BR>";
           echo "<INPUT TYPE=HIDDEN NAME=user VALUE=$user>";
@@ -262,7 +262,11 @@ else
           $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
           $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
           $_active = empty($active) ? "N" : "Y";
-          $result = $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',ship_name='$ship_name',ship_destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',credits='$credits',turns='$turns',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector='$sector',ship_ore='$ship_ore',ship_organics='$ship_organics',ship_goods='$ship_goods',ship_energy='$ship_energy',ship_colonists='$ship_colonists',ship_fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE email='$user'");
+          $res = $db->Execute("SELECT ship_id FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE email='$user'");
+          $ship_id = $res->fields[ship_id];
+
+          $result = $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',credits='$credits',turns='$turns' WHERE email='$user'");
+          $result = $db->Execute("UPDATE $dbtables[ships] SET name='$ship_name',destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector_id='$sector',ore='$ship_ore',organics='$ship_organics',goods='$ship_goods',energy='$ship_energy',colonists='$ship_colonists',fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE ship_id=$ship_id");
           if(!$result) {
             echo "Changes to Furangee ship record have FAILED Due to the following Error:<BR><BR>";
             echo $db->ErrorMsg() . "<br>";
@@ -307,6 +311,14 @@ else
       {
         // Delete all furangee in the ships table
         echo "Deleting furangee records in the ships table...<BR>";
+        $res = $db->Execute("SELECT ship_id FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE email LIKE '%@furangee'");
+        while(!$res->EOF)
+        {
+          $ship_id = $res->fields[ship_id];
+          $db->Execute("DELETE FROM $dbtables[ships] WHERE ship_id=$ship_id");
+          $res->MoveNext();
+        }
+
         $db->Execute("DELETE FROM $dbtables[players] WHERE email LIKE '%@furangee'");
         echo "deleted.<BR>";
         // Drop furangee table
@@ -442,7 +454,7 @@ else
         // Create emailname from character
         $emailname = str_replace(" ","_",$character) . "@furangee";
         $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-        $result = $db->Execute ("select email, character_name, ship_name from $dbtables[players] where email='$emailname' OR character_name='$character' OR ship_name='$shipname'");
+        $result = $db->Execute ("select email, character_name from $dbtables[players] where email='$emailname' OR character_name='$character'");
         if ($result>0)
         {
           while (!$result->EOF)
@@ -450,7 +462,6 @@ else
             $row= $result->fields;
             if ($row[0]==$emailname) { echo "ERROR: E-mail address $emailname, is already in use.  "; $errflag=1;}
             if ($row[1]==$character) { echo "ERROR: Character name $character, is already in use.<BR>"; $errflag=1;}
-            if ($row[2]==$shipname) { echo "ERROR: Ship name $shipname, is already in use.<BR>"; $errflag=1;}
             $result->MoveNext();
           }
         }
@@ -477,7 +488,11 @@ else
 // *****************************************************************************
 // *** ADD FURANGEE RECORD TO ships TABLE ... MODIFY IF ships SCHEMA CHANGES ***
 // *****************************************************************************
-          $result2 = $db->Execute("INSERT INTO $dbtables[players] VALUES('','$shipname','N','$character','$makepass','$emailname',$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$furlevel,$maxtorps,$furlevel,$furlevel,$maxarmour,$furlevel,$start_credits,$sector,0,0,0,$maxenergy,0,$maxfighters,$start_turns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','127.0.0.1',0,0,0,0,'Y','N','N','Y','','$default_lang','Y')");
+          $player_id = newplayer($emailname, $character, $makepass, $shipname);
+          $res = $db->Execute("SELECT ship_id FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE $dbtables[players].player_id=$player_id");
+          $ship_id = $res->fields[ship_id];
+
+          $result2 = $db->Execute("UPDATE $dbtables[ships] SET hull=$furlevel, engines=$furlevel, power=$furlevel, computer=$furlevel, sensors=$furlevel, beams=$furlevel, torp_launchers=$furlevel, shields=$furlevel, armour=$furlevel, cloak=$furlevel, torps=$maxtorps, armour_pts=$maxarmour, sector_id=$sector, energy=$maxenergy, fighters=$maxfighters WHERE ship_id=$ship_id");
           if(!$result2) {
             echo $db->ErrorMsg() . "<br>";
           } else {

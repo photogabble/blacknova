@@ -1,3 +1,8 @@
+SharpBlue (22 June 2002)
+---------------------------------
+Fixed a bug in the furangee funds when returning without UNLOCK
+Mostly completed furangee new schema compliance. (still few bugs)
+
 SharpBlue (21 June 2002)
 ---------------------------------
 Fixed divison by zero error in attack when score was null
