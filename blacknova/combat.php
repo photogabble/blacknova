@@ -134,7 +134,6 @@ function planetbombing()
         die();
     }
 
-
     $res = $db->Execute("LOCK TABLES $dbtables[ships] WRITE, $dbtables[planets] WRITE");
 
     echo "$l_bombsaway<br><br>\n";
@@ -708,7 +707,7 @@ function planetcombat()
             $l_cmb_youmaycapture2 = str_replace("[cmb_planetinfo_planet_id]", $planetinfo[planet_id], $l_cmb_youmaycapture2);
             echo "<CENTER>$l_cmb_youmaycapture2</CENTER><BR><BR>";
             playerlog($ownerinfo[ship_id], LOG_PLANET_DEFEATED, "$planetinfo[name]|$playerinfo[sector]|$playerinfo[character_name]");
-            playerlog($playerinfo[ship_id], LOG_PLANET_CAPTURED, "$planetinfo[name]|$playerinfo[sector]|$ownerinfo[character_name]");
+            playerlog($playerinfo[ship_id], LOG_PLANET_CAPTURED, "$planetinfo[colonists]|$planetinfo[credits]|$ownerinfo[character_name]");
             gen_score($ownerinfo[ship_id]);
             $update7a = $db->Execute("UPDATE $dbtables[planets] SET owner=0,fighters=0, torps=torps-$planettorps, base='N', defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
         }

@@ -679,6 +679,7 @@ if(!empty($planetinfo))
       else
         $planetowner="$l_planet_noone";
 
+    if($planetinfo[defeated] == 'N')
       playerlog($playerinfo[player_id], LOG_PLANET_CAPTURED, "$planetinfo[colonists]|$planetinfo[credits]|$planetowner");
       
     }
