@@ -125,7 +125,7 @@ function planetbombing()
         die();
     }
 
-    $res = $db->Execute("LOCK TABLES $dbtables[players] WRITE, $dbtables[ships] WRITE, $dbtables[planets] WRITE");
+    $res = $db->Execute("LOCK TABLES $dbtables[players] WRITE, $dbtables[ships] WRITE, $dbtables[planets] WRITE, $dbtables[logs] WRITE");
 
     echo "$l_bombsaway<br><br>\n";
 
