@@ -76,15 +76,18 @@ else
     $tpfighters = 1;
   }
 
-  // now multiply all the transfer amounts by 1 to eliminate any trailing spaces
-  $transfer_ore = $transfer_ore * 1;
-  $transfer_organics = $transfer_organics * 1;
-  $transfer_goods = $transfer_goods * 1;
-  $transfer_energy = $transfer_energy * 1;
-  $transfer_colonists = $transfer_colonists * 1;
-  $transfer_credits = $transfer_credits * 1;
-  $transfer_torps = $transfer_torps * 1;
-  $transfer_fighters = $transfer_fighters * 1;
+  // Moonwolf 1/11/2003
+  // Trim out all non numeric characters from each text entry area, so
+  // we avoid the comma issue, as well as bad form entries
+
+  $transfer_ore = preg_replace("([^0-9])","",$transfer_ore);
+  $transfer_organics = preg_replace("([^0-9])","",$transfer_organics);
+  $transfer_goods = preg_replace("([^0-9])","",$transfer_goods);
+  $transfer_energy = preg_replace("([^0-9])","",$transfer_energy);
+  $transfer_colonists = preg_replace("([^0-9])","",$transfer_colonists);
+  $transfer_credits = preg_replace("([^0-9])","",$transfer_credits);
+  $transfer_torps = preg_replace("([^0-9])","",$transfer_torps);
+  $transfer_fighters = preg_replace("([^0-9])","",$transfer_fighters);
 
 
 
