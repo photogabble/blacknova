@@ -1,9 +1,13 @@
-Version 0.36 Released 29 April 2002
+Patrick Smallwood (29 April 2002)
+---------------------------------
+Added device "Last ship seen in sector" device. Purchase at special port. Accessible in device menu.
+Automatically adds functionality to both scan types. Automatically ignores your presence in sectors
+when reporting. Beginning cost: 1 mil. Future functionality: add timestamp/aging so it is only visible
+for three days.
 
-David Rowlands (29 April 2002)
-------------------------------
-Documentation updates.
-Traderoutes now dispay planets in sector order.
+Patrick Smallwood (29 April 2002)
+---------------------------------
+Minor fixes for HTML glitches in main.php to correct the results of "Fighters in sector".
 
 
 David Rowlands (26 April 2002)

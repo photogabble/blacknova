@@ -220,6 +220,7 @@ else
 
     $dev_escapepod_cost = 0;
     $dev_fuelscoop_cost = 0;
+    $dev_lssd_cost = 0;
     if($escapepod_purchase)
     {
       $dev_escapepod_cost = $dev_escapepod_price;
@@ -228,11 +229,15 @@ else
     {
       $dev_fuelscoop_cost = $dev_fuelscoop_price;
     }
+    if($lssd_purchase)
+    {
+      $dev_lssd_cost = $dev_lssd_price;
+    }
     $total_cost = $hull_upgrade_cost + $engine_upgrade_cost + $power_upgrade_cost + $computer_upgrade_cost +
       $sensors_upgrade_cost + $beams_upgrade_cost + $armour_upgrade_cost + $cloak_upgrade_cost +
       $torp_launchers_upgrade_cost + $fighter_cost + $torpedo_cost + $armour_cost + $colonist_cost +
       $dev_genesis_cost + $dev_beacon_cost + $dev_emerwarp_cost + $dev_warpedit_cost + $dev_minedeflector_cost +
-      $dev_escapepod_cost + $dev_fuelscoop_cost + $shields_upgrade_cost;
+      $dev_escapepod_cost + $dev_fuelscoop_cost + $dev_lssd_cost + $shields_upgrade_cost;
     if($total_cost > $playerinfo[credits])
     {
       echo "You do not have enough credits for this transaction.  The total cost is " . NUMBER($total_cost) . " credits and you only have " . NUMBER($playerinfo[credits]) . " credits.<BR><BR>Click <A HREF=port.php>here</A> to return to the supply depot.<BR><BR>";
@@ -356,6 +361,11 @@ else
       {
         $query = $query . ", dev_fuelscoop='Y'";
         BuildOneCol("$l_fuel_scoop $l_trade_installed");
+      }
+      if($lssd_purchase)
+      {
+        $query = $query . ", dev_lssd='Y'";
+        BuildOneCol("$l_lssd $l_trade_installed");
       }
       $query = $query . ", turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]";
       $purchase = $db->Execute("$query");

@@ -52,7 +52,12 @@ if($sector == "*")
   // get sectors which can be reached from the player's current sector
   $result = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='$playerinfo[sector]' ORDER BY link_dest");
   echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=\"100%\">";
-  echo "<TR BGCOLOR=\"$color_header\"><TD><B>$l_sector</B><TD></TD></TD><TD><B>$l_lrs_links</B></TD><TD><B>$l_lrs_ships</B></TD><TD colspan=2><B>$l_port</B></TD><TD><B>$l_planets</B></TD><TD><B>$l_mines</B></TD><TD><B>$l_fighters</B></TD></TR>";
+  echo "<TR BGCOLOR=\"$color_header\"><TD><B>$l_sector</B><TD></TD></TD><TD><B>$l_lrs_links</B></TD><TD><B>$l_lrs_ships</B></TD><TD colspan=2><B>$l_port</B></TD><TD><B>$l_planets</B></TD><TD><B>$l_mines</B></TD><TD><B>$l_fighters</B></TD>";
+  if($playerinfo['dev_lssd'] == 'Y')
+  {
+  echo "<TD><B>$l_lss</B></TD>";
+  }
+  echo "</TR>";
   $color = $color_line1;
   while(!$result->EOF)
   {
@@ -68,7 +73,7 @@ if($sector == "*")
     $num_ships = $row2[count];
 
    // get port type and discover the presence of a planet in scanned sector
-    $result2 = $db->Execute("SELECT port_type FROM $dbtables[universe] WHERE sector_id='$row[link_dest]'");
+    $result2 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$row[link_dest]'");
     $result3 = $db->Execute("SELECT planet_id FROM $dbtables[planets] WHERE sector_id='$row[link_dest]'");
     $resultSDa = $db->Execute("SELECT SUM(quantity) as mines from $dbtables[sector_defence] WHERE sector_id='$row[link_dest]' and defence_type='M'");
     $resultSDb = $db->Execute("SELECT SUM(quantity) as fighters from $dbtables[sector_defence] WHERE sector_id='$row[link_dest]' and defence_type='F'");
@@ -81,7 +86,6 @@ if($sector == "*")
     $has_mines = NUMBER($defM[mines]);
     $has_fighters = NUMBER($defF[fighters]);
 
-
     if ($port_type != "none") {
       $icon_alt_text = ucfirst(t_port($port_type));
       $icon_port_type_name = $port_type . ".gif";
@@ -91,7 +95,20 @@ if($sector == "*")
     }
 
 
-    echo "<TR BGCOLOR=\"$color\"><TD><A HREF=move.php?sector=$row[link_dest]>$row[link_dest]</A></TD><TD><A HREF=lrscan.php?sector=$row[link_dest]>Scan</A></TD><TD>$num_links</TD><TD>$num_ships</TD><TD WIDTH=12>$image_string</TD><TD>" . t_port($port_type) . "</TD><TD>$has_planet</TD><TD>$has_mines</TD><TD>$has_fighters</TD></TR>";
+    echo "<TR BGCOLOR=\"$color\"><TD><A HREF=move.php?sector=$row[link_dest]>$row[link_dest]</A></TD><TD><A HREF=lrscan.php?sector=$row[link_dest]>Scan</A></TD><TD>$num_links</TD><TD>$num_ships</TD><TD WIDTH=12>$image_string</TD><TD>" . t_port($port_type) . "</TD><TD>$has_planet</TD><TD>$has_mines</TD><TD>$has_fighters</TD>";
+    if($playerinfo['dev_lssd'] == 'Y')
+    {
+      if($playerinfo['ship_name'] != $sectorinfo['last_ship_seen'])
+      {
+      echo "<TD>$sectorinfo[last_ship_seen]</TD>";
+      }
+      else
+      {
+      echo "<TD>$sectorinfo[last_ship_seen_2]</TD>";
+      echo "</TR>";
+      }
+    }
+    echo "</TR>";
     if($color == $color_line1)
     {
       $color = $color_line2;
@@ -305,6 +322,24 @@ else
   echo "<TR BGCOLOR=\"$color_line2\"><TD><B>$l_fighters</B></TD></TR>";
   $has_fighters =  NUMBER($defF[fighters] ) ;
   echo "<TR><TD>" . $has_fighters;
+  echo "</TD></TR>";
+  if($playerinfo['dev_lssd'] == 'Y')
+  {
+   echo "<TR BGCOLOR=\"$color_line2\"><TD><B>$l_lss</B></TD></TR>";
+   echo "<TR><TD>";
+   if($playerinfo['ship_name'] != $sectorinfo['last_ship_seen'])
+   {  
+   echo $sectorinfo[last_ship_seen];
+   }
+   else
+   {
+   echo $sectorinfo[last_ship_seen_2];
+   }
+  }
+  else
+  {
+  echo "<TR><TD>";
+  }
   echo "</TD></TR>";
   echo "</TABLE><BR>";
 

@@ -46,7 +46,7 @@ $ewd_maxhullsize = 15; //Max hull size before EWD degrades
 $sector_max = 3000;
 $link_max=10;
 $universe_size = 200;
-$game_name = "BlackNova Traders v0.36";
+$game_name = "BlackNova Traders v0.2";
 $fed_max_hull = 8;
 $maxlen_password = 16;
 $max_rank=100;
@@ -138,6 +138,7 @@ $dev_warpedit_price = 100000;
 $dev_minedeflector_price = 10;
 $dev_escapepod_price = 100000;
 $dev_fuelscoop_price = 100000;
+$dev_lssd_price = 1000000;
 
 $fighter_price = 50;
 $fighter_prate = .01;

@@ -48,6 +48,9 @@ echo "</TR>";
 echo "<TR BGCOLOR=\"$color_line1\">";
 echo "<TD>$l_fuel_scoop</TD><TD>" . (($playerinfo[dev_fuelscoop] == 'Y') ? $l_yes : $l_no) . "</TD><TD>$l_automatic</TD>";
 echo "</TR>";
+echo "<TR BGCOLOR=\"$color_line2\">";
+echo "<TD>$l_lssd</TD><TD>" . (($playerinfo[dev_lssd] == 'Y') ? $l_yes : $l_no) . "</TD><TD>$l_automatic</TD>";
+echo "</TR>";
 echo "</TABLE>";
 echo "<BR>";
 

@@ -337,6 +337,10 @@ elseif($sectorinfo[port_type] == "special")
   {
     echo " + (form.fuelscoop_purchase.checked ?  $dev_fuelscoop_price : 0)";
   }
+  if($playerinfo[dev_lssd] == 'N')
+  {
+    echo " + (form.lssd_purchase.checked ?  $dev_lssd_price : 0)";
+  }
   echo " + (form.hull_upgrade.checked ? $hull_upgrade_cost : 0)";
   echo " + (form.engine_upgrade.checked ? $engine_upgrade_cost : 0)";
   echo " + (form.power_upgrade.checked ? $power_upgrade_cost : 0)";
@@ -452,7 +456,16 @@ elseif($sectorinfo[port_type] == "special")
   echo "<TD>$l_cloak</TD><TD>" . NUMBER($cloak_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[cloak]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=cloak_upgrade VALUE=1 $onchange $onclick></TD>";
   echo "</TR>";
   echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>$l_torp_launch</TD><TD>" . NUMBER($torp_launchers_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[torp_launchers]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=torp_launchers_upgrade VALUE=1 $onchange $onclick></TD>";
+  echo "<TD>$l_lssd</TD><TD>" . NUMBER($dev_lssd_price) . "</TD>";
+  if($playerinfo[dev_lssd] == "N")
+  {
+    echo "<TD>$l_none</TD><TD></TD><TD><INPUT TYPE=CHECKBOX NAME=lssd_purchase VALUE=1 $onchange $onclick></TD>";
+  }
+  else
+  {
+    echo "<TD>$l_equipped</TD><TD></TD><TD>$l_n_a</TD>";
+  }
+  echo "<TD>$l_torp_launch</TD><TD>" . NUMBER($torp_launchers_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[torp_launchers]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=torp_launchers_upgrade VALUE=1 $onchange $onclick></TD>";
   echo "</TR>";
   echo "<TR BGCOLOR=\"$color_line2\">";
   echo "<TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>$l_shields</TD><TD>".NUMBER($shields_upgrade_cost)."</TD><TD>" . NUMBER($playerinfo[shields]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=shields_upgrade VALUE=1 $onchange $onclick></TD>";
