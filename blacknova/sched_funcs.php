@@ -21,7 +21,7 @@ function get_player_name($userid)
 {
   global $db, $dbtables;
 
-  $query = $db->Execute("select character_name from $dbtables[players] where player_id='$userid'");
+  $query = $db->Execute("select character_name from $dbtables[ships] where ship_id='$userid'");
   $name = $query->fields;
 
   return $name[character_name];

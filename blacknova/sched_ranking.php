@@ -6,10 +6,10 @@
   }
 
   echo "<B>RANKING</B><BR><BR>";
-  $res = $db->Execute("SELECT $dbtables[players].player_id FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE destroyed='N'");
+  $res = $db->Execute("SELECT ship_id FROM $dbtables[ships] WHERE ship_destroyed='N'");
   while(!$res->EOF)
   {
-    gen_score($res->fields[player_id]);
+    gen_score($res->fields[ship_id]);
     $res->MoveNext();
   }
   echo "<BR>";

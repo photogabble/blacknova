@@ -15,8 +15,9 @@ if(checklogin())
 }
 
 // Get data about planets
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
+
 
 // determine what type of report is displayed and display it's title
 if($PRepType==1 || !isset($PRepType)) // display the commodities on the planets
@@ -67,6 +68,7 @@ function planet_report_menu()
   }
 }
 
+
 function standard_report()
 {
   global $db;
@@ -92,7 +94,7 @@ function standard_report()
   }
 
 
-  $query = "SELECT * FROM $dbtables[planets] WHERE owner=$playerinfo[player_id]";
+  $query = "SELECT * FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id]";
 
   if(!empty($sort))
   {
@@ -275,7 +277,7 @@ function planet_production_change()
   global $l_sector, $l_name, $l_unnamed, $l_ore, $l_organics, $l_goods, $l_energy, $l_colonists, $l_credits, $l_fighters, $l_torps, $l_base, $l_selling, $l_pr_totals, $l_yes, $l_no;
 
 
-  $query = "SELECT * FROM $dbtables[planets] WHERE owner=$playerinfo[player_id] AND base='Y'";
+  $query = "SELECT * FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND base='Y'";
 
   echo "Planetary report <B><A HREF=planet-report.php?PRepType=0>menu</A></B><BR>" .
        "<BR>" .
@@ -418,7 +420,7 @@ function planet_production_change()
     echo "</TABLE>";
 
     echo "<BR>";
-    echo "<INPUT TYPE=HIDDEN NAME=player_id VALUE=$playerinfo[player_id]>";
+    echo "<INPUT TYPE=HIDDEN NAME=ship_id VALUE=$playerinfo[ship_id]>";
     echo "<INPUT TYPE=HIDDEN NAME=team_id   VALUE=$playerinfo[team]>";
     echo "<INPUT TYPE=SUBMIT VALUE=SUBMIT>  <INPUT TYPE=RESET VALUE=RESET>";
     echo "</FORM>";

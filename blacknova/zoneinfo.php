@@ -15,7 +15,7 @@ if(checklogin())
 
 bigtitle();
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 $res = $db->Execute("SELECT * FROM $dbtables[zones] WHERE zone_id='$zone'");
@@ -46,7 +46,7 @@ else
   {
     if($row[corp_zone] == 'N')
     {
-      $result = $db->Execute("SELECT player_id, character_name FROM $dbtables[players] WHERE player_id=$row[owner]");
+      $result = $db->Execute("SELECT ship_id, character_name FROM $dbtables[ships] WHERE ship_id=$row[owner]");
       $ownerinfo = $result->fields;
       $ownername = $ownerinfo[character_name];
     }
@@ -103,7 +103,7 @@ else
   else
     $hull=$row[max_hull];
 
-  if(($row[corp_zone] == 'N' && $row[owner] == $playerinfo[player_id]) || ($row[corp_zone] == 'Y' && $row[owner] == $playerinfo[team] && $playerinfo[player_id] == $ownerinfo[creator]))
+  if(($row[corp_zone] == 'N' && $row[owner] == $playerinfo[ship_id]) || ($row[corp_zone] == 'Y' && $row[owner] == $playerinfo[team] && $playerinfo[ship_id] == $ownerinfo[creator]))
     echo "<center>$l_zi_control. <a href=zoneedit.php?zone=$zone>$l_clickme</a> $l_zi_tochange</center><p>";
 
   echo "<table border=1 cellspacing=1 cellpadding=0 width=\"65%\" align=center>" .

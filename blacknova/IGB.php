@@ -12,11 +12,10 @@ include("header.php");
 connectdb();
 if (checklogin()) {die();}
 
-$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $result->fields;
 
-
-$result = $db->Execute("SELECT * FROM $dbtables[ibank_accounts] WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM $dbtables[ibank_accounts] WHERE ship_id=$playerinfo[ship_id]");
 $account = $result->fields;
 
 echo "<BODY bgcolor=#666666 text=\"#F0F0F0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
@@ -187,14 +186,14 @@ function IGB_transfer()
   global $l_igb_unnamed, $l_igb_in, $l_igb_none, $l_igb_planettransfer, $l_igb_back, $l_igb_logout, $l_igb_destination, $l_igb_conspl;
   global $db, $dbtables;
 
-  $res = $db->Execute("SELECT character_name, player_id FROM $dbtables[players] ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT character_name, ship_id FROM $dbtables[ships] ORDER BY character_name ASC");
   while(!$res->EOF)
   {
     $ships[]=$res->fields;
     $res->MoveNext();
   }
 
-  $res = $db->Execute("SELECT name, planet_id, sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[player_id] ORDER BY sector_id ASC");
+  $res = $db->Execute("SELECT name, planet_id, sector_id FROM $dbtables[planets] WHERE owner=$playerinfo[ship_id] ORDER BY sector_id ASC");
   while(!$res->EOF)
   {
     $planets[]=$res->fields;
@@ -206,11 +205,11 @@ function IGB_transfer()
        "<tr valign=top>" .
        "<form action=IGB.php?command=transfer2 method=POST>" .
        "<td><font size=2 face=\"courier new\" color=#00FF00>$l_igb_toanothership :<br><br>" .
-       "<select class=term name=player_id>";
+       "<select class=term name=ship_id>";
 
   foreach($ships as $ship)
   {
-    echo "<option value=$ship[player_id]>$ship[character_name]</option>";
+    echo "<option value=$ship[ship_id]>$ship[character_name]</option>";
   }
 
   echo "</select></td><td valign=center align=right>" .
@@ -293,7 +292,7 @@ function IGB_transfer2()
 {
   global $playerinfo;
   global $account;
-  global $player_id;
+  global $ship_id;
   global $splanet_id;
   global $dplanet_id;
   global $IGB_min_turns;
@@ -306,14 +305,14 @@ function IGB_transfer2()
   global $l_igb_seltransferamount, $l_igb_transfer, $l_igb_back, $l_igb_logout, $l_igb_in;
   global $l_igb_errplanetsrcanddest, $l_igb_errunknownplanet, $l_igb_unnamed;
   global $l_igb_errnotyourplanet, $l_igb_planettransfer, $l_igb_srcplanet, $l_igb_destplanet;
-  global $l_igb_transferrate2, $l_igb_seltransferamount, $l_igb_errnobase;
+  global $l_igb_transferrate2, $l_igb_seltransferamount;
   global $db, $dbtables;
 
-  if(isset($player_id)) //ship transfer
+  if(isset($ship_id)) //ship transfer
   {
-    $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=$player_id");
+    $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=$ship_id");
 
-    if($playerinfo[player_id] == $player_id)
+    if($playerinfo[ship_id] == $ship_id)
       IGB_error($l_igb_sendyourself, "IGB.php?command=transfer");
 
     if(!$res || $res->EOF)
@@ -338,7 +337,7 @@ function IGB_transfer2()
     {
       $curtime = time();
       $curtime -= $IGB_trate * 60;
-      $res = $db->Execute("SELECT UNIX_TIMESTAMP(time) as time FROM $dbtables[IGB_transfers] WHERE UNIX_TIMESTAMP(time) > $curtime AND source_id=$playerinfo[player_id] AND dest_id=$target[player_id]");
+      $res = $db->Execute("SELECT UNIX_TIMESTAMP(time) as time FROM $dbtables[IGB_transfers] WHERE UNIX_TIMESTAMP(time) > $curtime AND source_id=$playerinfo[ship_id] AND dest_id=$target[ship_id]");
       if(!$res->EOF)
       {
         $time = $res->fields;
@@ -358,7 +357,7 @@ function IGB_transfer2()
     else
     {
       $percent = $IGB_svalue * 100;
-      $score = gen_score($playerinfo[player_id]);
+      $score = gen_score($playerinfo[ship_id]);
       $maxtrans = $score * $score * $IGB_svalue;
 
       $l_igb_maxtransferpercent = str_replace("[igb_percent]", $percent, $l_igb_maxtransferpercent);
@@ -374,7 +373,7 @@ function IGB_transfer2()
          "<td><br><font size=2 face=\"courier new\" color=#00FF00>$l_igb_seltransferamount :</td>" .
          "<td align=right><br><input class=term type=text size=15 maxlength=20 name=amount value=0><br>" .
          "<br><input class=term type=submit value=$l_igb_transfer></td>" .
-         "<input type=hidden name=player_id value=$player_id>" .
+         "<input type=hidden name=ship_id value=$ship_id>" .
          "</form>" .
          "<tr><td colspan=2 align=center><font size=2 face=\"courier new\" color=#00FF00>" .
          "$l_igb_transferrate" .
@@ -391,6 +390,7 @@ function IGB_transfer2()
     if(!$res || $res->EOF)
       IGB_error($l_igb_errunknownplanet, "IGB.php?command=transfer");
     $source = $res->fields;
+    
 
     if(empty($source[name]))
       $source[name]=$l_igb_unnamed;
@@ -405,7 +405,9 @@ function IGB_transfer2()
     if($dest[base] == 'N')
       IGB_error($l_igb_errnobase, "IGB.php?command=transfer");
 
-    if($source[owner] != $playerinfo[player_id] || $dest[owner] != $playerinfo[player_id])
+    
+
+    if($source[owner] != $playerinfo[ship_id] || $dest[owner] != $playerinfo[ship_id])
       IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
 
     $percent = $ibank_paymentfee * 100;
@@ -439,7 +441,7 @@ function IGB_transfer3()
 {
   global $playerinfo;
   global $account;
-  global $player_id;
+  global $ship_id;
   global $splanet_id;
   global $dplanet_id;
   global $IGB_min_turns;
@@ -457,15 +459,16 @@ function IGB_transfer3()
   $amount = StripNonNum($amount);
 
   if ($amount < 0)
-    $amount = 0; 
+    $amount = 0;
 
-  if(isset($player_id)) //ship transfer
+
+  if(isset($ship_id)) //ship transfer
   {
     //Need to check again to prevent cheating by manual posts
 
-    $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=$player_id");
+    $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=$ship_id");
 
-    if($playerinfo[player_id] == $player_id)
+    if($playerinfo[ship_id] == $ship_id)
       IGB_error($l_igb_errsendyourself, "IGB.php?command=transfer");
 
     if(!$res || $res->EOF)
@@ -490,7 +493,7 @@ function IGB_transfer3()
     {
       $curtime = time();
       $curtime -= $IGB_trate * 60;
-      $res = $db->Execute("SELECT UNIX_TIMESTAMP(time) as time FROM $dbtables[IGB_transfers] WHERE UNIX_TIMESTAMP(time) > $curtime AND source_id=$playerinfo[player_id] AND dest_id=$target[player_id]");
+      $res = $db->Execute("SELECT UNIX_TIMESTAMP(time) as time FROM $dbtables[IGB_transfers] WHERE UNIX_TIMESTAMP(time) > $curtime AND source_id=$playerinfo[ship_id] AND dest_id=$target[ship_id]");
       if(!$res->EOF)
       {
         $time = $res->fields;
@@ -514,7 +517,7 @@ function IGB_transfer3()
     if($IGB_svalue != 0)
     {
       $percent = $IGB_svalue * 100;
-      $score = gen_score($playerinfo[player_id]);
+      $score = gen_score($playerinfo[ship_id]);
       $maxtrans = $score * $score * $IGB_svalue;
 
       if($amount > $maxtrans)
@@ -539,10 +542,10 @@ function IGB_transfer3()
          "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
          "</tr>";
 
-    $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance-$amount WHERE player_id=$playerinfo[player_id]");
-    $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance+$transfer WHERE player_id=$target[player_id]");
+    $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance-$amount WHERE ship_id=$playerinfo[ship_id]");
+    $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance+$transfer WHERE ship_id=$target[ship_id]");
 
-    $db->Execute("INSERT INTO $dbtables[IGB_transfers] VALUES('', $playerinfo[player_id], $target[player_id], NOW())");
+    $db->Execute("INSERT INTO $dbtables[IGB_transfers] VALUES('', $playerinfo[ship_id], $target[ship_id], NOW())");
     echo $db->ErrorMsg();
   }
   else
@@ -566,7 +569,7 @@ function IGB_transfer3()
     if(empty($dest[name]))
       $dest[name]=$l_igb_unnamed;
 
-    if($source[owner] != $playerinfo[player_id] || $dest[owner] != $playerinfo[player_id])
+    if($source[owner] != $playerinfo[ship_id] || $dest[owner] != $playerinfo[ship_id])
       IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
 
     if($amount > $source[credits])
@@ -633,8 +636,8 @@ function IGB_deposit2()
        "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
        "</tr>";
 
-  $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance+$amount WHERE player_id=$playerinfo[player_id]");
-  $db->Execute("UPDATE $dbtables[players] SET credits=credits-$amount WHERE player_id=$playerinfo[player_id]");
+  $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance+$amount WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_withdraw2()
@@ -670,8 +673,8 @@ function IGB_withdraw2()
        "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
        "</tr>";
 
-  $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance-$amount WHERE player_id=$playerinfo[player_id]");
-  $db->Execute("UPDATE $dbtables[players] SET credits=credits+$amount WHERE player_id=$playerinfo[player_id]");
+  $db->Execute("UPDATE $dbtables[ibank_accounts] SET balance=balance-$amount WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_loans()
@@ -690,7 +693,7 @@ function IGB_loans()
   if($account[loan] != 0)
   {
     $curtime = time();
-    $res = $db->Execute("SELECT UNIX_TIMESTAMP(loantime) as time FROM $dbtables[ibank_accounts] WHERE player_id=$playerinfo[player_id]");
+    $res = $db->Execute("SELECT UNIX_TIMESTAMP(loantime) as time FROM $dbtables[ibank_accounts] WHERE ship_id=$playerinfo[ship_id]");
     if(!$res->EOF)
     {
       $time = $res->fields;
@@ -729,7 +732,7 @@ function IGB_loans()
   else
   {
     $percent = $ibank_loanlimit * 100;
-    $score = gen_score($playerinfo[player_id]);
+    $score = gen_score($playerinfo[ship_id]);
     $maxloan = $score * $score * $ibank_loanlimit;
 
     $l_igb_maxloanpercent = str_replace("[igb_percent]", $percent, $l_igb_maxloanpercent);
@@ -774,7 +777,7 @@ function IGB_borrow()
   if($account[loan] != 0)
     IGB_error($l_igb_notwoloans, "IGB.php?command=loans");
 
-  $score = gen_score($playerinfo[player_id]);
+  $score = gen_score($playerinfo[ship_id]);
   $maxtrans = $score * $score * $ibank_loanlimit;
 
   if($amount > $maxtrans)
@@ -803,8 +806,8 @@ function IGB_borrow()
        "<td nowrap><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<a href=\"main.php\">$l_igb_logout</a></td>" .
        "</tr>";
 
-  $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=$amount3, loantime=NOW() WHERE player_id=$playerinfo[player_id]");
-  $db->Execute("UPDATE $dbtables[players] SET credits=credits+$amount WHERE player_id=$playerinfo[player_id]");
+  $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=$amount3, loantime=NOW() WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[ships] SET credits=credits+$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_repay()
@@ -850,8 +853,8 @@ function IGB_repay()
        "<td nowrap><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td nowrap align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<a href=\"main.php\">$l_igb_logout</a></td>" .
        "</tr>";
 
-  $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=loan-$amount,loantime=$account[loantime] WHERE player_id=$playerinfo[player_id]");
-  $db->Execute("UPDATE $dbtables[players] SET credits=credits-$amount WHERE player_id=$playerinfo[player_id]");
+  $db->Execute("UPDATE $dbtables[ibank_accounts] SET loan=loan-$amount,loantime=$account[loantime] WHERE ship_id=$playerinfo[ship_id]");
+  $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$amount WHERE ship_id=$playerinfo[ship_id]");
 }
 
 function IGB_consolidate()
@@ -910,13 +913,13 @@ function IGB_consolidate2()
   if(empty($dest[name]))
     $dest[name]=$l_igb_unnamed;
 
-  if($dest[owner] != $playerinfo[player_id])
+  if($dest[owner] != $playerinfo[ship_id])
     IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
 
   $minimum = StripNonNum($minimum);
   $maximum = StripNonNum($maximum);
 
-  $query = "SELECT SUM(credits) as total, COUNT(*) as count from $dbtables[planets] WHERE owner=$playerinfo[player_id] AND credits != 0";
+  $query = "SELECT SUM(credits) as total, COUNT(*) as count from $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND credits != 0";
 
   if($minimum != 0)
     $query .= " AND credits >= $minimum";
@@ -981,13 +984,13 @@ function IGB_consolidate3()
   if(empty($dest[name]))
     $dest[name]=$l_igb_unnamed;
 
-  if($dest[owner] != $playerinfo[player_id])
+  if($dest[owner] != $playerinfo[ship_id])
     IGB_error($l_igb_errnotyourplanet, "IGB.php?command=transfer");
 
   $minimum = StripNonNum($minimum);
   $maximum = StripNonNum($maximum);
 
-  $query = "SELECT SUM(credits) as total, COUNT(*) as count from $dbtables[planets] WHERE owner=$playerinfo[player_id] AND credits != 0";
+  $query = "SELECT SUM(credits) as total, COUNT(*) as count from $dbtables[planets] WHERE owner=$playerinfo[ship_id] AND credits != 0";
 
   if($minimum != 0)
     $query .= " AND credits >= $minimum";
@@ -1020,7 +1023,7 @@ function IGB_consolidate3()
        "<td><font size=2 face=\"courier new\" color=#00FF00><a href=IGB.php?command=login>$l_igb_back</a></td><td align=right><font size=2 face=\"courier new\" color=#00FF00>&nbsp;<br><a href=\"main.php\">$l_igb_logout</a></td>" .
        "</tr>";
 
-  $query = "UPDATE $dbtables[planets] SET credits=0 WHERE owner=$playerinfo[player_id] AND credits != 0";
+  $query = "UPDATE $dbtables[planets] SET credits=0 WHERE owner=$playerinfo[ship_id] AND credits != 0";
 
   if($minimum != 0)
     $query .= " AND credits >= $minimum";
@@ -1032,7 +1035,7 @@ function IGB_consolidate3()
 
   $res = $db->Execute($query);
   $res = $db->Execute("UPDATE $dbtables[planets] SET credits=credits + $transfer WHERE planet_id=$dplanet_id");
-  $res = $db->Execute("UPDATE $dbtables[players] SET turns=turns - $tcost WHERE player_id = $playerinfo[player_id]");
+  $res = $db->Execute("UPDATE $dbtables[ships] SET turns=turns - $tcost WHERE ship_id = $playerinfo[ship_id]");
 }
 
 function IGB_error($errmsg, $backlink, $title="Error!")

@@ -9,11 +9,8 @@
 	if (checklogin()) {die();}
 
 
-	$result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
+	$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 	$playerinfo=$result->fields;
-
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-  $shipinfo = $res->fields;
 
 	$result2 = $db->Execute ("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
 	if($result2)
@@ -30,20 +27,25 @@
 		die();
 	}
 
-if($planetinfo[sector_id] <> $shipinfo[sector_id])
+if($planetinfo[sector_id] <> $playerinfo[sector])
 {
    echo "$l_planet2_sector<BR><BR>";
    TEXT_GOTOMAIN();
    include("footer.php");
    die();
 }
-
   if (empty($planetinfo))
+
   {
+
     echo "$l_planet_none<br>";
+
     TEXT_GOTOMAIN();
+
 		include("footer.php");
+
 		die();
+
   }
 
 
@@ -60,8 +62,8 @@ if($planetinfo[sector_id] <> $shipinfo[sector_id])
 	{
 		$cargo_exchanged= $trade_ore + $trade_organics + $trade_goods;
 
-		$free_holds=NUM_HOLDS($shipinfo[hull]) - $shipinfo[ore] - $shipinfo[organics] - $shipinfo[goods] - $shipinfo[colonists];
-		$free_power=NUM_ENERGY($shipinfo[power]) - $shipinfo[energy];
+		$free_holds=NUM_HOLDS($playerinfo[hull]) - $playerinfo[ship_ore] - $playerinfo[ship_organics] - $playerinfo[ship_goods] - $playerinfo[ship_colonists];
+		$free_power=NUM_ENERGY($playerinfo[power]) - $playerinfo[ship_energy];
 		$total_cost=($trade_ore*$ore_price) + ($trade_organics*$organics_price) + ($trade_goods*$goods_price) + ($trade_energy*$energy_price);
 
 		if ($free_holds < $cargo_exchanged)
@@ -84,8 +86,7 @@ if($planetinfo[sector_id] <> $shipinfo[sector_id])
 		} else {
 			echo "$l_totalcost: $total_cost<BR>$l_traded_ore: $trade_ore<BR>$l_traded_organics: $trade_organics<BR>$l_traded_goods: $trade_goods<BR>$l_traded_energy: $trade_energy<BR><BR>";
 			/* Update ship cargo, credits and turns */
-			$trade_result = $db->Execute ("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, credits=credits-$total_cost WHERE player_id=$playerinfo[player_id]");
-      $trade_result = $db->Execute ("UPDATE $dbtables[ships] SET ore=ore+$trade_ore, organics=organics+$trade_organics, goods=goods+$trade_goods, energy=energy+$trade_energy WHERE ship_id=$shipinfo[ship_id]");
+			$trade_result = $db->Execute ("UPDATE $dbtables[ships] SET turns=turns-1, turns_used=turns_used+1, credits=credits-$total_cost, ship_ore=ship_ore+$trade_ore, ship_organics=ship_organics+$trade_organics, ship_goods=ship_goods+$trade_goods, ship_energy=ship_energy+$trade_energy where ship_id=$playerinfo[ship_id]");
 
 			$trade_result2 = $db->Execute ("UPDATE $dbtables[planets] SET ore=ore-$trade_ore, organics=organics-$trade_organics, goods=goods-$trade_goods, energy=energy-$trade_energy, credits=credits+$total_cost WHERE planet_id=$planet_id");
 			echo "$l_trade_complete<BR><BR>";

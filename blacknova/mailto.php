@@ -15,21 +15,21 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 bigtitle();
 
 if(empty($content))
 {
-  $res = $db->Execute("SELECT * FROM $dbtables[players] LEFT JOIN $dbtables[ships] ON $dbtables[ships].ship_id=$dbtables[players].currentship WHERE destroyed = 'N' ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_destroyed = 'N' ORDER BY character_name ASC");
   echo "<FORM ACTION=mailto2.php METHOD=POST>";
   echo "<TABLE>";
   echo "<TR><TD>To:</TD><TD><SELECT NAME=to>";
   while(!$res->EOF)
   {
     $row=$res->fields;
-    if($row[player_id] == $to)
+    if($row[ship_id] == $to)
     {
        echo "\n<OPTION SELECTED>$row[character_name]</OPTION>";
     }   
@@ -53,10 +53,10 @@ else
   $content = htmlspecialchars($content);
   $subject = htmlspecialchars($subject);
 
-  $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE character_name='$to'");
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE character_name='$to'");
   $target_info = $res->fields;
-  $db->Execute("INSERT INTO messages (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[player_id]."', '".$target_info[player_id]."', '".$subject."', '".$content."')");
-  #using this three lines to get recipients player_id and sending the message -- blindcoder
+  $db->Execute("INSERT INTO messages (sender_id, recp_id, subject, message) VALUES ('".$playerinfo[ship_id]."', '".$target_info[ship_id]."', '".$subject."', '".$content."')");
+  #using this three lines to get recipients ship_id and sending the message -- blindcoder
 
 }
 

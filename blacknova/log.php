@@ -10,25 +10,22 @@ $no_body=1;
 include("header.php");
 
 connectdb();
-if($adminpass <> $swordfish)
+if(checklogin())
 {
-   if(checklogin())
-   {
-     die();
-   }   
+  die();
 }
-$res = $db->Execute("SELECT character_name, player_id, dhtml FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT character_name, ship_id, dhtml FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if($swordfish == $adminpass) //check if called by admin script
 {
-  $playerinfo[player_id] = $player;
+  $playerinfo[ship_id] = $player;
   
   if($player == 0)
     $playerinfo[character_name] = 'Administrator';
   else
   {
-    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$player");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$player");
     $targetname = $res->fields;
     $playerinfo[character_name] = $targetname[character_name];
   }
@@ -52,7 +49,7 @@ else
     $mode = 'moz';
 }
 
-if($playerinfo[dhtml] == 'N' OR $swordfish == $adminpass) //If player doesn't want dhtml, let's do the same as if Nestcape 4
+if($playerinfo[dhtml] == 'N') //If player doesn't want dhtml, let's do the same as if Nestcape 4
   $mode = 'compat';
 
 if($mode != 'compat')
@@ -319,7 +316,7 @@ else
 if(empty($startdate))
   $startdate = date("Ymd");
 
-$res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$playerinfo[player_id] AND time LIKE '$startdate%' ORDER BY time DESC, type DESC");
+$res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$playerinfo[ship_id] AND time LIKE '$startdate%' ORDER BY time DESC, type DESC");
 while(!$res->EOF)
 {
   $logs[] = $res->fields;
@@ -384,7 +381,7 @@ if($mode != 'compat')
   $entry = $l_log_months[substr($yesterday, 4, 2) - 1] . " " . substr($yesterday, 6, 2) . " " . substr($yesterday, 0, 4);
 
   unset($logs);
-  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$playerinfo[player_id] AND time LIKE '$yesterday%' ORDER BY time DESC, type DESC");
+  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$playerinfo[ship_id] AND time LIKE '$yesterday%' ORDER BY time DESC, type DESC");
   while(!$res->EOF)
   {
     $logs[] = $res->fields;
@@ -429,7 +426,7 @@ if($mode != 'compat')
   $entry = $l_log_months[substr($yesterday2, 4, 2) - 1] . " " . substr($yesterday2, 6, 2) . " " . substr($yesterday2, 0, 4);
 
   unset($logs);
-  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE player_id=$playerinfo[player_id] AND time LIKE '$yesterday2%' ORDER BY time DESC, type DESC");
+  $res = $db->Execute("SELECT * FROM $dbtables[logs] WHERE ship_id=$playerinfo[ship_id] AND time LIKE '$yesterday2%' ORDER BY time DESC, type DESC");
   while(!$res->EOF)
   {
     $logs[] = $res->fields;
@@ -559,7 +556,6 @@ function log_parse($entry)
   global $l_log_text;
   global $l_log_pod;
   global $l_log_nopod;
-  global $space_plague_kills;
 
   switch($entry[type])
   {
@@ -632,7 +628,6 @@ function log_parse($entry)
     case LOG_PLANET_DEFEATED:
     case LOG_PLANET_SCAN:
     case LOG_PLANET_SCAN_FAIL:
-    case LOG_PLANET_YOUR_CAPTURED:
     list($planet_name, $sector, $name)= split ("\|", $entry[data]);
     $retvalue[text] = str_replace("[planet_name]", "<font color=white><b>$planet_name</b></font>", $l_log_text[$entry[type]]);
     $retvalue[text] = str_replace("[sector]", "<font color=white><b>$sector</b></font>", $retvalue[text]);
@@ -788,7 +783,7 @@ case LOG_BOUNTY_FEDBOUNTY:
     $retvalue[text] = str_replace("[name]", "<font color=white><b>$name</b></font>", $l_log_text[$entry[type]]);
     $retvalue[text] = str_replace("[sector]", "<font color=white><b>$sector</b></font>", $retvalue[text]);
     $percentage = $space_plague_kills * 100;
-    $retvalue[text] = str_replace("[percentage]", "$percentage", $retvalue[text]);
+    $retvalue[text] = str_replace("[percentage]", "$space_plague_kills", $retvalue[text]);
     $retvalue[title] = $l_log_title[$entry[type]];
     break;
  case LOG_PLASMA_STORM:
@@ -806,12 +801,6 @@ case LOG_BOUNTY_FEDBOUNTY:
     $retvalue[text] = str_replace("[beams]", "<font color=white><b>$beams</b></font>", $retvalue[text]);
     $retvalue[text] = str_replace("[torps]", "<font color=white><b>$torps</b></font>", $retvalue[text]);
     $retvalue[text] = str_replace("[figs]", "<font color=white><b>$figs</b></font>", $retvalue[text]);
-    $retvalue[title] = $l_log_title[$entry[type]];
-    break;
- case LOG_CHEAT_TEAM: //data args are : [player] [ip]
-    list($name, $ip)= split ("\|", $entry[data]);
-    $retvalue[text] = str_replace("[player]", "<font color=white><b>$name</b></font>", $l_log_text[$entry[type]]);
-    $retvalue[text] = str_replace("[ip]", "<font color=white><b>$ip</b></font>", $retvalue[text]);                  
     $retvalue[title] = $l_log_title[$entry[type]];
     break;
 

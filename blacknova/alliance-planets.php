@@ -3,7 +3,10 @@ include("config.php");
 updatecookie();
 include("languages/$lang");
 
+
 connectdb();
+
+
 
 $title=$l_teamplanet_title;
 include("header.php");
@@ -13,7 +16,8 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if ($playerinfo[team]==0)
@@ -26,6 +30,7 @@ if ($playerinfo[team]==0)
 
  return;
 }
+
 
 $query = "SELECT * FROM $dbtables[planets] WHERE corp=$playerinfo[team]";
 if(!empty($sort))
@@ -130,7 +135,7 @@ else
       $planet[$i][name] = "$l_unnamed";
     }
     $owner = $planet[$i][owner];
-    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$owner");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$owner");
     $player = $res->fields[character_name];
 
     echo "<TR BGCOLOR=\"$color\">";

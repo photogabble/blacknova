@@ -1437,5 +1437,5 @@ $l_cmb_needfighters = "You need at least 1 fighter.";
 // planet.php
 $l_log_text[LOG_PLANET_YOUR_CAPTURED] = "Your planet [planet_name] in sector [sector] was defeated in captured by the wretched [name].";
 $l_log_title[LOG_PLANET_YOUR_CAPTURED] = "<font color=red>Planet captured!</font>";
-
+$l_planet_basenoturn	 = "You need at least 1 turn to build a base";
 ?>

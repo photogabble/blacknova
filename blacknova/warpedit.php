@@ -18,13 +18,10 @@ if(checklogin())
   die();
 }
 
-$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo=$result->fields;
 
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-$shipinfo = $res->fields;
-
-$result4 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$shipinfo[sector_id]'");
+$result4 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
 $sectorinfo=$result4->fields;
 
 bigtitle();
@@ -37,7 +34,7 @@ if($playerinfo[turns] < 1)
   die();
 }
 
-if($shipinfo[dev_warpedit] < 1)
+if($playerinfo[dev_warpedit] < 1)
 {
   echo "$l_warp_none<BR><BR>";
   TEXT_GOTOMAIN();
@@ -60,10 +57,10 @@ if($zoneinfo[allow_warpedit] == 'L')
   $result3 = $db->Execute("SELECT * FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
   $zoneowner_info = $result3->fields;
 
-  $result5 = $db->Execute("SELECT team FROM $dbtables[players] WHERE player_id='$zoneowner_info[owner]'");
+  $result5 = $db->Execute("SELECT team FROM $dbtables[ships] WHERE ship_id='$zoneowner_info[owner]'");
   $zoneteam = $result5->fields;
 
-  if($zoneowner_info[owner] != $playerinfo[player_id])
+  if($zoneowner_info[owner] != $playerinfo[ship_id])
   {
     if(($zoneteam[team] != $playerinfo[team]) || ($playerinfo[team] == 0))
     {
@@ -75,7 +72,7 @@ if($zoneinfo[allow_warpedit] == 'L')
   }
 }
 
-$result2 = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start=$shipinfo[sector_id] ORDER BY link_dest ASC");
+$result2 = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start=$playerinfo[sector] ORDER BY link_dest ASC");
 if($result2 < 1)
 {
   echo "$l_warp_nolink<BR><BR>";

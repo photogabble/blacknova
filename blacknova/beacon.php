@@ -14,20 +14,17 @@ if (checklogin())
   die();
 }
 
-$result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo=$result->fields;
 
-$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-$shipinfo = $result->fields;
-
-$result2 = $db->Execute ("SELECT * FROM $dbtables[universe] WHERE sector_id='$shipinfo[sector_id]'");
+$result2 = $db->Execute ("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
 $sectorinfo=$result2->fields;
 
 $allowed_rsw = "N";
 
 bigtitle();
 
-if($shipinfo[dev_beacon] > 0)
+if($playerinfo[dev_beacon] > 0)
 {
   $res = $db->Execute("SELECT allow_beacon FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
   $zoneinfo = $res->fields;
@@ -40,11 +37,11 @@ if($shipinfo[dev_beacon] > 0)
     $result3 = $db->Execute("SELECT * FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
     $zoneowner_info = $result3->fields;
 
-    $result5 = $db->Execute("SELECT team FROM $dbtables[players] WHERE player_id='$zoneowner_info[owner]'");
+    $result5 = $db->Execute("SELECT team FROM $dbtables[ships] WHERE ship_id='$zoneowner_info[owner]'");
     $zoneteam = $result5->fields;
 
      
-    if($zoneowner_info[owner] != $playerinfo[player_id])
+    if($zoneowner_info[owner] != $playerinfo[ship_id])
     {
       if(($zoneteam[team] != $playerinfo[team]) || ($playerinfo[team] == 0))
       {
@@ -89,7 +86,7 @@ if($shipinfo[dev_beacon] > 0)
       $beacon_text = trim(strip_tags($beacon_text));
       echo "$l_beacon_nowreads: \"$beacon_text\".<BR><BR>";
       $update = $db->Execute("UPDATE $dbtables[universe] SET beacon='$beacon_text' WHERE sector_id=$sectorinfo[sector_id]");
-      $update = $db->Execute("UPDATE $dbtables[ships] SET dev_beacon=dev_beacon-1 WHERE ship_id=$shipinfo[ship_id]");
+      $update = $db->Execute("UPDATE $dbtables[ships] SET dev_beacon=dev_beacon-1 WHERE ship_id=$playerinfo[ship_id]");
     }
 
   }

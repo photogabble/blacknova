@@ -17,15 +17,10 @@ if(checklogin())
 //-------------------------------------------------------------------------------------------------
 
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
-
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-$shipinfo = $res->fields;
-
 $res = $db->Execute("SELECT * from $dbtables[universe] WHERE sector_id=$playerinfo[sector]");
 $sectorinfo = $res->fields;
-
 $result3 = $db->Execute ("SELECT * FROM $dbtables[sector_defence] WHERE sector_id=$playerinfo[sector] ");
 //Put the defence information into the array "defenceinfo"
 $i = 0;
@@ -46,7 +41,7 @@ if($result3 > 0)
       else
          $total_sector_mines += $defences[$i]['quantity'];
 
-      if($defences[$i][player_id] != $playerinfo[player_id])
+      if($defences[$i][ship_id] != $playerinfo[ship_id])
       {
          $owns_all = false;
       }
@@ -96,8 +91,8 @@ else
    {
       if(!$owns_all)
       {
-         $defence_owner = $defences[0]['player_id'];
-         $result2 = $db->Execute("SELECT * from $dbtables[players] where player_id=$defence_owner");
+         $defence_owner = $defences[0]['ship_id'];
+         $result2 = $db->Execute("SELECT * from $dbtables[ships] where ship_id=$defence_owner");
          $fighters_owner = $result2->fields;
 
          if($fighters_owner[team] != $playerinfo[team] || $playerinfo['team'] == 0)
@@ -112,10 +107,10 @@ else
    if($zoneinfo[allow_defenses] == 'L')
    {
          $zone_owner = $zoneinfo['owner'];
-         $result2 = $db->Execute("SELECT * from $dbtables[players] where player_id=$zone_owner");
+         $result2 = $db->Execute("SELECT * from $dbtables[ships] where ship_id=$zone_owner");
          $zoneowner_info = $result2->fields;
 
-         if($zone_owner <> $playerinfo[player_id])
+         if($zone_owner <> $playerinfo[ship_id])
          {
             if($zoneowner_info['team'] != $playerinfo['team'] || $playerinfo['team'] == 0)
             {
@@ -130,18 +125,18 @@ else
 
    if(!isset($nummines) or !isset($numfighters) or !isset($mode))
    {
-     $availmines = NUMBER($shipinfo[torps]);
-     $availfighters = NUMBER($shipinfo[fighters]);
+     $availmines = NUMBER($playerinfo[torps]);
+     $availfighters = NUMBER($playerinfo[ship_fighters]);
      echo "<FORM ACTION=mines.php METHOD=POST>";
-     $l_mines_info1=str_replace("[sector]",$shipinfo[sector_id], $l_mines_info1);
+     $l_mines_info1=str_replace("[sector]",$playerinfo[sector], $l_mines_info1);
      $l_mines_info1=str_replace("[mines]",NUMBER($sectorinfo[mines]), $l_mines_info1);
      $l_mines_info1=str_replace("[fighters]",NUMBER($sectorinfo[fighters]), $l_mines_info1);
      echo "$l_mines_info1<BR><BR>";
      $l_mines_info2=str_replace("[mines]",$availmines, $l_mines_info2);
      $l_mines_info2=str_replace("[fighters]",$availfighters, $l_mines_info2);
      echo "You have $availmines mines and $availfighters fighters available to deploy.<BR>";
-     echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=nummines SIZE=10 MAXLENGTH=10 VALUE=$shipinfo[torps]> $l_mines.<BR>";
-     echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=numfighters SIZE=10 MAXLENGTH=10 VALUE=$shipinfo[fighters]> $l_fighters.<BR>";
+     echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=nummines SIZE=10 MAXLENGTH=10 VALUE=$playerinfo[torps]> $l_mines.<BR>";
+     echo "$l_mines_deploy <INPUT TYPE=TEXT NAME=numfighters SIZE=10 MAXLENGTH=10 VALUE=$playerinfo[ship_fighters]> $l_fighters.<BR>";
      echo "Fighter mode <INPUT TYPE=RADIO NAME=mode $set_attack VALUE=attack>$l_mines_att</INPUT>";
      echo "<INPUT TYPE=RADIO NAME=mode $set_toll VALUE=toll>$l_mines_toll</INPUT><BR>";
      echo "<INPUT TYPE=SUBMIT VALUE=$l_submit><INPUT TYPE=RESET VALUE=$l_reset><BR><BR>";
@@ -156,7 +151,7 @@ else
      if (empty($numfighters)) $numfighters = 0;
      if ($nummines < 0) $nummines = 0;
      if ($numfighters < 0) $numfighters =0;
-     if ($nummines > $shipinfo[torps])
+     if ($nummines > $playerinfo[torps])
      {
         echo "$l_mines_notorps<BR>";
         $nummines = 0;
@@ -166,7 +161,7 @@ else
       $l_mines_dmines=str_replace("[mines]",$nummines, $l_mines_dmines);
         echo "$l_mines_dmines<BR>";
      }
-     if ($numfighters > $shipinfo[fighters])
+     if ($numfighters > $playerinfo[ship_fighters])
      {
         echo "$l_mines_nofighters.<BR>";
         $numfighters = 0;
@@ -188,7 +183,7 @@ else
         else
         {
 
-           $update = $db->Execute("INSERT INTO $dbtables[sector_defence] (player_id,sector_id,defence_type,quantity,fm_setting) values ($playerinfo[player_id],$shipinfo[sector_id],'F',$numfighters,'$mode')");
+           $update = $db->Execute("INSERT INTO $dbtables[sector_defence] (ship_id,sector_id,defence_type,quantity,fm_setting) values ($playerinfo[ship_id],$playerinfo[sector],'F',$numfighters,'$mode')");
            echo $db->ErrorMsg();
         }
      }
@@ -200,13 +195,12 @@ else
         }
         else
         {
-           $update = $db->Execute("INSERT INTO $dbtables[sector_defence] (player_id,sector_id,defence_type,quantity,fm_setting) values ($playerinfo[player_id],$shipinfo[sector_id],'M',$nummines,'$mode')");
+           $update = $db->Execute("INSERT INTO $dbtables[sector_defence] (ship_id,sector_id,defence_type,quantity,fm_setting) values ($playerinfo[ship_id],$playerinfo[sector],'M',$nummines,'$mode')");
 
         }
      }
 
-     $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-1,turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
-     $update = $db->Execute("UPDATE $dbtables[ships] SET fighters=fighters-$numfighters,torps=torps-$nummines WHERE ship_id=$shipinfo[ship_id]");
+     $update = $db->Execute("UPDATE $dbtables[ships] SET last_login='$stamp',turns=turns-1,turns_used=turns_used+1,ship_fighters=ship_fighters-$numfighters,torps=torps-$nummines WHERE ship_id=$playerinfo[ship_id]");
 
   }
 }

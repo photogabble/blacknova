@@ -15,11 +15,8 @@ if(checklogin())
 
 //-------------------------------------------------------------------------------------------------
 
-$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $result->fields;
-
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-$shipinfo = $res->fields;
 
 $result2 = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
 if($result2)
@@ -27,7 +24,7 @@ if($result2)
 
 bigtitle();
 
-if($planetinfo[sector_id] <> $shipinfo[sector_id])
+if($planetinfo[sector_id] <> $playerinfo[sector])
 {
    echo "$l_planet2_sector<BR><BR>";
    TEXT_GOTOMAIN();
@@ -40,10 +37,10 @@ if($playerinfo[turns] < 1)
 }
 else
 {
-  $free_holds = NUM_HOLDS($shipinfo[hull]) - $shipinfo[ore] - $shipinfo[organics] - $shipinfo[goods] - $shipinfo[colonists];
-  $free_power = NUM_ENERGY($shipinfo[power]) - $shipinfo[energy];
-  $fighter_max = NUM_FIGHTERS($shipinfo[computer]) - $shipinfo[fighters];
-  $torpedo_max = NUM_TORPEDOES($shipinfo[torp_launchers]) - $shipinfo[torps];
+  $free_holds = NUM_HOLDS($playerinfo[hull]) - $playerinfo[ship_ore] - $playerinfo[ship_organics] - $playerinfo[ship_goods] - $playerinfo[ship_colonists];
+  $free_power = NUM_ENERGY($playerinfo[power]) - $playerinfo[ship_energy];
+  $fighter_max = NUM_FIGHTERS($playerinfo[computer]) - $playerinfo[ship_fighters];
+  $torpedo_max = NUM_TORPEDOES($playerinfo[torp_launchers]) - $playerinfo[torps];
 
   // first setup the tp flags
   if($tpore != -1)
@@ -90,12 +87,13 @@ else
   $transfer_fighters = $transfer_fighters * 1;
 
 
+
   if($allore==-1)
   {
 
      if ($tpore == -1)
      {
-        $transfer_ore = $shipinfo[ore];
+        $transfer_ore = $playerinfo['ship_ore'];
      }
      else
      {
@@ -106,7 +104,7 @@ else
   {
      if ($tporganics==-1)
      {
-        $transfer_organics = $shipinfo[organics];
+        $transfer_organics = $playerinfo['ship_organics'];
      }
      else
      {
@@ -119,7 +117,7 @@ else
   {
      if ($tpgoods==-1)
      {
-        $transfer_goods = $shipinfo[goods];
+        $transfer_goods = $playerinfo['ship_goods'];
      }
      else
      {
@@ -132,7 +130,7 @@ else
   {
      if ($tpenergy==-1)
      {
-        $transfer_energy = $shipinfo[energy];
+        $transfer_energy = $playerinfo['ship_energy'];
      }
      else
      {
@@ -144,7 +142,7 @@ else
   {
      if ($tpcolonists==-1)
      {
-        $transfer_colonists = $shipinfo['colonists'];
+        $transfer_colonists = $playerinfo['ship_colonists'];
      }
      else
      {
@@ -168,7 +166,7 @@ else
   {
      if ($tptorps==-1)
      {
-        $transfer_torps = $shipinfo['torps'];
+        $transfer_torps = $playerinfo['torps'];
      }
      else
      {
@@ -179,7 +177,7 @@ else
   {
      if ($tpfighters==-1)
      {
-        $transfer_fighters = $shipinfo['fighters'];
+        $transfer_fighters = $playerinfo['ship_fighters'];
      }
      else
      {
@@ -239,9 +237,9 @@ else
   }
 
   // now make sure that the source for each commodity transfer has sufficient numbers to fill the transfer
-  if(($tpore == -1) && ($transfer_ore > $shipinfo['ore']))
+  if(($tpore == -1) && ($transfer_ore > $playerinfo['ship_ore']))
   {
-    $transfer_ore = $shipinfo[ore];
+    $transfer_ore = $playerinfo['ship_ore'];
     echo "$l_planet2_noten $l_ore. $l_planet2_settr $transfer_ore $l_units $l_ore.<BR>\n";
   }
   elseif(($tpore == 1) && ($transfer_ore > $planetinfo['ore']))
@@ -250,9 +248,9 @@ else
     echo "$l_planet2_losup $transfer_ore $l_units $l_ore.<BR>\n";
   }
 
-  if(($tporganics == -1) && ($transfer_organics > $shipinfo['organics']))
+  if(($tporganics == -1) && ($transfer_organics > $playerinfo['ship_organics']))
   {
-    $transfer_organics = $shipinfo['organics'];
+    $transfer_organics = $playerinfo['ship_organics'];
     echo "$l_planet2_noten $l_organics. $l_planet2_settr $transfer_organics $l_units.<BR>\n";
   }
   elseif(($tporganics == 1) && ($transfer_organics > $planetinfo['organics']))
@@ -261,9 +259,9 @@ else
     echo "$l_planet2_losup $transfer_organics $l_units $l_organics.<BR>\n";
   }
 
-  if(($tpgoods == -1) && ($transfer_goods > $shipinfo['goods']))
+  if(($tpgoods == -1) && ($transfer_goods > $playerinfo['ship_goods']))
   {
-    $transfer_goods = $shipinfo['goods'];
+    $transfer_goods = $playerinfo['ship_goods'];
     echo "$l_planet2_noten $l_goods. $l_planet2_settr $transfer_goods $l_units.<BR>\n";
   }
   elseif(($tpgoods == 1) && ($transfer_goods > $planetinfo['goods']))
@@ -272,9 +270,9 @@ else
     echo "$l_planet2_losup $transfer_goods $l_units $l_goods.<BR>\n";
   }
 
-  if(($tpenergy == -1) && ($transfer_energy > $shipinfo['energy']))
+  if(($tpenergy == -1) && ($transfer_energy > $playerinfo['ship_energy']))
   {
-    $transfer_energy = $shipinfo['energy'];
+    $transfer_energy = $playerinfo['ship_energy'];
     echo "$l_planet2_noten $l_energy. $l_planet2_settr $transfer_energy $l_units.<BR>\n";
   }
   elseif(($tpenergy == 1) && ($transfer_energy > $planetinfo['energy']))
@@ -283,9 +281,9 @@ else
     echo "$l_planet2_losup $transfer_energy $l_units $l_energy.<BR>\n";
   }
 
-  if(($tpcolonists == -1) && ($transfer_colonists > $shipinfo['colonists']))
+  if(($tpcolonists == -1) && ($transfer_colonists > $playerinfo['ship_colonists']))
   {
-    $transfer_colonists = $shipinfo['colonists'];
+    $transfer_colonists = $playerinfo['ship_colonists'];
     echo "$l_planet2_noten $l_colonists. $l_planet2_settr $transfer_colonists $l_colonists.<BR>\n";
   }
   elseif(($tpcolonists == 1) && ($transfer_colonists > $planetinfo['colonists']))
@@ -311,9 +309,9 @@ else
      echo "$l_planet2_baseexceeded $l_planet2_settr $transfer_credits $l_credits.<BR>\n";
   }
 
-  if(($tptorps == -1) && ($transfer_torps > $shipinfo['torps']))
+  if(($tptorps == -1) && ($transfer_torps > $playerinfo['torps']))
   {
-    $transfer_torps = $shipinfo['torps'];
+    $transfer_torps = $playerinfo['torps'];
     echo "$l_planet2_noten $l_torps. $l_planet2_settr $transfer_torps $l_torps.<BR>\n";
   }
   elseif(($tptorps == 1) && ($transfer_torps > $planetinfo['torps']))
@@ -322,9 +320,9 @@ else
     echo "$l_planet2_losup $transfer_torps $l_torps.<BR>\n";
   }
 
-  if(($tpfighters == -1) && ($transfer_fighters > $shipinfo['fighters']))
+  if(($tpfighters == -1) && ($transfer_fighters > $playerinfo['ship_fighters']))
   {
-    $transfer_fighters = $shipinfo['fighters'];
+    $transfer_fighters = $playerinfo['ship_fighters'];
     echo "$l_planet2_noten $l_fighters. $l_planet2_settr $transfer_fighters $l_fighters.<BR>\n";
   }
   elseif(($tpfighters == 1) && ($transfer_fighters > $planetinfo['fighters']))
@@ -345,7 +343,7 @@ else
 
   $total_holds_needed = $transfer_ore + $transfer_organics + $transfer_goods + $transfer_colonists;
 
-  if($playerinfo[player_id] != $planetinfo[owner] && $transfer_credits != 0 && $corp_planet_transfers != 1)
+  if($playerinfo[ship_id] != $planetinfo[owner] && $transfer_credits != 0 && $corp_planet_transfers != 1)
   {
     echo "$l_planet2_nocorptransfer<p>";
     echo "<A HREF=planet.php?planet_id=$planet_id>$l_clickme</A> $l_toplanetmenu<BR><BR>";
@@ -359,9 +357,9 @@ else
   {
     if(!empty($planetinfo))
     {
-      if($planetinfo[owner] == $playerinfo[player_id] || ($planetinfo[corp] == $playerinfo[team] && $playerinfo[team] <> 0))
+      if($planetinfo[owner] == $playerinfo[ship_id] || ($planetinfo[corp] == $playerinfo[team] && $playerinfo[team] <> 0))
       {
-        if($transfer_ore < 0 && $shipinfo[ore] < abs($transfer_ore))
+        if($transfer_ore < 0 && $playerinfo[ship_ore] < abs($transfer_ore))
         {
           echo "$l_planet2_noten $l_ore $l_planet2_fortr<BR>";
           $transfer_ore = 0;
@@ -371,8 +369,7 @@ else
           echo "$l_planet2_noten $l_ore $l_planet2_fortr<BR>";
           $transfer_ore = 0;
         }
-        
-        if($transfer_organics < 0 && $shipinfo[organics] < abs($transfer_organics))
+        if($transfer_organics < 0 && $playerinfo[ship_organics] < abs($transfer_organics))
         {
           echo "$l_planet2_noten $l_organics $l_planet2_fortr<BR>";
           $transfer_organics = 0;
@@ -382,8 +379,7 @@ else
           echo "$l_planet2_noten $l_organics $l_planet2_fortr<BR>";
           $transfer_organics = 0;
         }
-        
-        if($transfer_goods < 0 && $shipinfo[goods] < abs($transfer_goods))
+        if($transfer_goods < 0 && $playerinfo[ship_goods] < abs($transfer_goods))
         {
           echo "$l_planet2_noten $l_goods $l_planet2_fortr<BR>";
           $transfer_goods = 0;
@@ -393,8 +389,7 @@ else
           echo "$l_planet2_noten $l_goods $l_planet2_fortr<BR>";
           $transfer_goods = 0;
         }
-        
-        if($transfer_energy < 0 && $shipinfo[energy] < abs($transfer_energy))
+        if($transfer_energy < 0 && $playerinfo[ship_energy] < abs($transfer_energy))
         {
           echo "$l_planet2_noten $l_energy $l_planet2_fortr<BR>";
           $transfer_energy = 0;
@@ -409,8 +404,7 @@ else
           echo "$l_planet2_noten $l_planet2_power $l_planet2_fortr<BR>";
           $transfer_energy = 0;
         }
-        
-        if($transfer_colonists < 0 && $shipinfo[colonists] < abs($transfer_colonists))
+        if($transfer_colonists < 0 && $playerinfo[ship_colonists] < abs($transfer_colonists))
         {
           echo "$l_planet2_noten $l_colonists $l_planet2_fortr<BR>";
           $transfer_colonists = 0;
@@ -420,8 +414,7 @@ else
           echo "$l_planet2_noten $l_colonists $l_planet2_fortr<BR>";
           $transfer_colonists = 0;
         }
-        
-        if($transfer_fighters < 0 && $shipinfo[fighters] < abs($transfer_fighters))
+        if($transfer_fighters < 0 && $playerinfo[ship_fighters] < abs($transfer_fighters))
         {
           echo "$l_planet2_noten $l_fighters $l_planet2_fortr<BR>";
           $transfer_fighters = 0;
@@ -436,8 +429,7 @@ else
           echo "$l_planet2_noten $l_planet2_comp $l_planet2_fortr<BR>";
           $transfer_fighters = 0;
         }
-        
-        if($transfer_torps < 0 && $shipinfo[torps] < abs($transfer_torps))
+        if($transfer_torps < 0 && $playerinfo[torps] < abs($transfer_torps))
         {
           echo "$l_planet2_noten $l_torpedoes $l_planet2_fortr<BR>";
           $transfer_torps = 0;
@@ -452,7 +444,6 @@ else
           echo "$l_planet2_noten $l_planet2_laun $l_planet2_fortr<BR>";
           $transfer_torps = 0;
         }
-        
         if($transfer_credits < 0 && $playerinfo[credits] < abs($transfer_credits))
         {
           echo "$l_planet2_noten $l_credits $l_planet2_fortr<BR>";
@@ -463,10 +454,7 @@ else
           echo "$l_planet2_noten $l_credits $l_planet2_fortr<BR>";
           $transfer_credits = 0;
         }
-        
-        $update1 = $db->Execute("UPDATE $dbtables[ships] SET ore=ore+$transfer_ore, organics=organics+$transfer_organics, goods=goods+$transfer_goods, energy=energy+$transfer_energy, colonists=colonists+$transfer_colonists, torps=torps+$transfer_torps, fighters=fighters+$transfer_fighters WHERE ship_id=$shipinfo[ship_id]");
-        $update1 = $db->Execute("UPDATE $dbtables[players] SET credits=credits+$transfer_credits, turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
-
+        $update1 = $db->Execute("UPDATE $dbtables[ships] SET ship_ore=ship_ore+$transfer_ore, ship_organics=ship_organics+$transfer_organics, ship_goods=ship_goods+$transfer_goods, ship_energy=ship_energy+$transfer_energy, ship_colonists=ship_colonists+$transfer_colonists, torps=torps+$transfer_torps, ship_fighters=ship_fighters+$transfer_fighters, credits=credits+$transfer_credits, turns=turns-1, turns_used=turns_used+1 WHERE ship_id=$playerinfo[ship_id]");
         $update2 = $db->Execute("UPDATE $dbtables[planets] SET ore=ore-$transfer_ore, organics=organics-$transfer_organics, goods=goods-$transfer_goods, energy=energy-$transfer_energy, colonists=colonists-$transfer_colonists, torps=torps-$transfer_torps, fighters=fighters-$transfer_fighters, credits=credits-$transfer_credits WHERE planet_id=$planet_id");
         echo "$l_planet2_compl<BR><a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu<BR><BR>";
       }

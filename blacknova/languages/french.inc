@@ -1395,4 +1395,5 @@ $l_insignia[19] = "Admiral";
 $l_shipyard_title = "Shipyard";
 $l_planet = "Planet";
 $l_cmb_needfighters = "You need at least 1 fighter.";
+$l_planet_basenoturn	 = "You need at least 1 turn to build a base";
 ?>

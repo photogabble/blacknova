@@ -119,8 +119,8 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              "dev_minedeflector bigint(20) DEFAULT '0' NOT NULL," .
              "turns_used int unsigned DEFAULT '0' NOT NULL," .
              "last_login datetime," .
-             "rating bigint(20) DEFAULT '0' NOT NULL," .
-             "score bigint(20) DEFAULT '0' NOT NULL," .
+             "rating int DEFAULT '0' NOT NULL," .
+             "score int DEFAULT '0' NOT NULL," .
              "team int DEFAULT '0' NOT NULL," .
              "team_invite int DEFAULT '0' NOT NULL," .
              "interface enum('N','O') DEFAULT 'N' NOT NULL," .
@@ -137,8 +137,6 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              "lang varchar(30) DEFAULT 'english.inc' NOT NULL," .
              "dhtml enum('Y', 'N') DEFAULT 'Y' NOT NULL," .
              "dev_lssd enum('Y','N') DEFAULT 'Y' NOT NULL," .
-             "vote tinyint(4) default '-1'," .
-             "shoutbox enum('Y','N') DEFAULT 'Y' NOT NULL," .
              "PRIMARY KEY (email)," .
              "KEY email (email)," .
              "KEY sector (sector)," .
@@ -327,32 +325,6 @@ $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "KEY ship_id(ship_id)," .
              "KEY sector_id (sector_id)" .
              ")");
-echo "- created successfully.<BR>";
-
-echo "Creating table: vote ";
-$db->Execute("CREATE TABLE $dbtables[vote](" .
-             "vote_id bigint(5) NOT NULL auto_increment," .
-             "vote_text longtext NOT NULL," . 
-             "PRIMARY KEY (vote_id)" .
-             ")");
-echo "- created successfully.<BR>";
-
-echo "Creating table: shoutbox ";
-$db->Execute("CREATE TABLE $dbtables[shoutbox](" .
-			"sb_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " .
-			"player_id BIGINT NOT NULL, " .
-			"player_name MEDIUMTEXT NOT NULL, " .
-			"sb_date BIGINT NOT NULL, " .
-			"sb_text LONGTEXT NOT NULL, " .
-			"sb_alli BIGINT NOT NULL " .
-			")");
-echo "- created successfully.<BR>";
-
-echo "Creating table: Admin News ";
-$db->Execute("CREATE TABLE $dbtables[adminnews](" .
-			"an_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY , " .
-			"an_text LONGTEXT NOT NULL " .
-			")");
 echo "- created successfully.<BR>";
 
 //Finished
