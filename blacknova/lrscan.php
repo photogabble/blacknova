@@ -97,16 +97,18 @@ if($sector == "*")
 
     echo "<TR BGCOLOR=\"$color\"><TD><A HREF=move.php?sector=$row[link_dest]>$row[link_dest]</A></TD><TD><A HREF=lrscan.php?sector=$row[link_dest]>Scan</A></TD><TD>$num_links</TD><TD>$num_ships</TD><TD WIDTH=12>$image_string</TD><TD>" . t_port($port_type) . "</TD><TD>$has_planet</TD><TD>$has_mines</TD><TD>$has_fighters</TD>";
     if($playerinfo['dev_lssd'] == 'Y')
-    {
-      if($playerinfo['ship_name'] != $sectorinfo['last_ship_seen'])
-      {
-      echo "<TD>$sectorinfo[last_ship_seen]</TD>";
-      }
-      else
-      {
-      echo "<TD>$sectorinfo[last_ship_seen_2]</TD>";
-      echo "</TR>";
-      }
+     {
+       
+        $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $playerinfo[ship_id] AND sector_id = $row[link_dest] ORDER BY time DESC LIMIT 1");
+        if(!$resx)
+        {
+           echo "<TD>None</TD>";
+        }
+        else
+        {
+           $myrow = $resx->fields;
+           echo "<TD>" . get_player($myrow[ship_id]) . "</TD>";
+        }
     }
     echo "</TR>";
     if($color == $color_line1)
