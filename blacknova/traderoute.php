@@ -489,6 +489,16 @@ function traderoute_new($traderoute_id)
     $result->MoveNext();
   }
 
+  $result = $db->Execute("SELECT * FROM $dbtables[planets] WHERE corp=$playerinfo[team] ORDER BY sector_id");
+  while (!$result->EOF)
+  {
+    $planets[$i] = $result->fields;
+    if($planets[$i][name] == "")
+      $planets[$i][name] = $l_tdr_unnamed;
+    $i++;
+    $result->MoveNext();
+  }
+
   echo "$l_tdr_cursector $playerinfo[sector]<br>";
 
   echo "
