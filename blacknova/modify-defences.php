@@ -129,8 +129,8 @@ switch($response) {
          include("footer.php");
          die();
       }
-      $quantity = stripnum($quantity);
-      if($quantity < 0) $quantity = 0;
+      $quantity = preg_replace("([^0-9])","",$quantity);
+      if (empty($quantity) || $quantity < 0) $quantity = 0;
       if($quantity > $defenceinfo['quantity'])
       {
          $quantity = $defenceinfo['quantity'];
