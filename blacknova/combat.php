@@ -1,5 +1,8 @@
 <?
-
+if (preg_match("/combat.php/i", $PHP_SELF)) {
+      echo "You can not access this file directly!";
+      die();
+}
 function calcplanetbeams()
 {
     global $ownershipinfo;
