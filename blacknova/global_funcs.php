@@ -943,6 +943,7 @@ function collect_bounty($attacker,$bounty_on)
          $res->MoveNext();
       }
    }
+   $db->Execute("DELETE FROM $dbtables[bounty] WHERE bounty_on = $bounty_on");
 }
 
 function cancel_bounty($bounty_on)
