@@ -261,6 +261,7 @@ function planetcombat()
     global $l_cmb_citizenswanttodie, $l_cmb_youmaycapture, $l_cmb_youmaycapture2, $l_cmb_planetnotdefeated, $l_cmb_planetstatistics;
     global $l_cmb_fighterloststat, $l_cmb_energyleft;
     global $db, $dbtables;
+    global $upgrade_cost, $upgrade_factor;
     //$debug = true;
     
     if($playerinfo[turns] < 1)
@@ -717,7 +718,7 @@ function planetcombat()
     }
     else
     {
-        echo "<BR><BR><CENTER><FONT COLOR='#6098F8'><B>$l_cmb_planetnotdefeated</B></FONT></CENTER>BR><BR>";
+        echo "<BR><BR><CENTER><FONT COLOR='#6098F8'><B>$l_cmb_planetnotdefeated</B></FONT></CENTER><BR><BR>";
         if ($debug)
             echo "<BR><BR>$l_cmb_planetstatistics<BR><BR>";
         $fighters_lost = $planetinfo[fighters] - $planetfighters;
