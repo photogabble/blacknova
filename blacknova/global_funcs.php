@@ -179,7 +179,7 @@ function checklogin()
   global $password, $l_login_died, $l_die_please;
   global $db, $dbtables;
 
-  $result1 = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+  $result1 = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username' LIMIT 1");
   $playerinfo = $result1->fields;
 
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");

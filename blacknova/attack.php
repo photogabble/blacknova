@@ -17,6 +17,8 @@ if(checklogin())
  $db->Execute("LOCK TABLES $dbtables[players] WRITE, $dbtables[universe] WRITE, $dbtables[bounty] WRITE $dbtables[zones] READ, $dbtables[planets] WRITE, $dbtables[news] WRITE, $dbtables[logs] WRITE");
 $result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
+$ship_id = stripnum($ship_id);
+$player_id = stripnum($player_id);
 
 $result2 = $db->Execute ("SELECT * FROM $dbtables[players] WHERE player_id='$player_id'");
 $targetinfo=$result2->fields;
