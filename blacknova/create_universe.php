@@ -623,8 +623,8 @@ switch ($step) {
       break;
 }
 
-include("footer.php");
 $StopTime=$BenchmarkTimer->stop();
 $Elapsed=$BenchmarkTimer->elapsed();
 PrintFlush("<br>Elapsed Time - $Elapsed");
+include("footer.php");
 </script>

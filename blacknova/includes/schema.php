@@ -12,17 +12,18 @@ global $dbtables;
 global $db;
 
 // Delete all tables in the database
-echo "Dropping all tables...<br>";
+echo "<b>Dropping all tables </b><BR>";
 foreach ($dbtables as $table => $tablename)
 {
-  echo "Dropping $table<br>";
+  echo "Dropping $table ";
   $query = $db->Execute("DROP TABLE $tablename");
+  echo "- table dropped successfully.<br>";
 }
-echo "All tables have been dropped...<p>";
+echo "<b>All tables have been successfully dropped.</b><p>";
 
 // Create database schema
-echo "Creating tables...<BR>";
-echo "Creating table: links...";
+echo "<b>Creating tables </b><BR>";
+echo "Creating table: links ";
 $db->Execute("CREATE TABLE $dbtables[links] (" .
              "link_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "link_start bigint(20) unsigned DEFAULT '0' NOT NULL," .
@@ -31,9 +32,9 @@ $db->Execute("CREATE TABLE $dbtables[links] (" .
              "KEY link_start (link_start)," .
              "KEY link_dest (link_dest)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: planets...";
+echo "Creating table: planets ";
 $db->Execute("CREATE TABLE $dbtables[planets](" .
              "planet_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "sector_id bigint(20) unsigned DEFAULT '0' NOT NULL," .
@@ -61,9 +62,9 @@ $db->Execute("CREATE TABLE $dbtables[planets](" .
              "KEY owner (owner)," .
              "KEY corp (corp)" .
              ")") or die ("blerg!"); // now that is one of the coolest error messages I have seen in a while....
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: traderoutes...";
+echo "Creating table: traderoutes ";
 $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
              "traderoute_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "source_id bigint(20) unsigned DEFAULT '0' NOT NULL," .
@@ -76,9 +77,9 @@ $db->Execute("CREATE TABLE $dbtables[traderoutes](" .
              "PRIMARY KEY (traderoute_id)," .
              "KEY owner (owner)" .
              ")") or die ("blerg!");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: ships...";
+echo "Creating table: ships ";
 $db->Execute("CREATE TABLE $dbtables[ships](" .
              "ship_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "ship_name char(20)," .
@@ -144,9 +145,9 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              "KEY team (team)," .
              "KEY ship_id (ship_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: universe...";
+echo "Creating table: universe ";
 $db->Execute("CREATE TABLE $dbtables[universe](" .
              "sector_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "sector_name tinytext," .
@@ -165,9 +166,8 @@ $db->Execute("CREATE TABLE $dbtables[universe](" .
              "fighters bigint(20) DEFAULT '0' NOT NULL," .
              "PRIMARY KEY (sector_id)" .
              ")");
-echo "created.<BR>";
 
-echo "Creating table: zones...";
+echo "Creating table: zones ";
 $db->execute("CREATE TABLE $dbtables[zones](" .
              "zone_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "zone_name tinytext," .
@@ -184,18 +184,18 @@ $db->execute("CREATE TABLE $dbtables[zones](" .
              "PRIMARY KEY(zone_id)," .
              "KEY zone_id(zone_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: ibank_accounts...";
+echo "Creating table: ibank_accounts ";
 $db->Execute("CREATE TABLE $dbtables[ibank_accounts](" .
              "ship_id bigint(20) DEFAULT '0' NOT NULL," .
              "balance bigint(20) DEFAULT '0'," .
              "loan bigint(20)  DEFAULT '0'," .
              "PRIMARY KEY(ship_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: IGB_transfers...";
+echo "Creating table: IGB_transfers ";
 $db->Execute("CREATE TABLE $dbtables[IGB_transfers](" .
              "transfer_id bigint(20) DEFAULT '0' NOT NULL auto_increment," .
              "source_id bigint(20) DEFAULT '0' NOT NULL," .
@@ -203,9 +203,9 @@ $db->Execute("CREATE TABLE $dbtables[IGB_transfers](" .
              "time TIMESTAMP(14)," .
              "PRIMARY KEY(transfer_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: teams...";
+echo "Creating table: teams ";
 $db->Execute("CREATE TABLE $dbtables[teams](" .
              "id bigint(20) DEFAULT '0' NOT NULL," .
              "creator bigint(20) DEFAULT '0'," .
@@ -214,9 +214,9 @@ $db->Execute("CREATE TABLE $dbtables[teams](" .
              "number_of_members tinyint(3) DEFAULT '0' NOT NULL," .
              "PRIMARY KEY(id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: news...";
+echo "Creating table: news ";
 $db->Execute("CREATE TABLE $dbtables[news] (" .
              "news_id int(11) DEFAULT '0' NOT NULL auto_increment," .
              "headline varchar(100) NOT NULL," .
@@ -228,9 +228,9 @@ $db->Execute("CREATE TABLE $dbtables[news] (" .
              "KEY news_id (news_id)," .
              "UNIQUE news_id_2 (news_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating internal messaging tables...";
+echo "Creating table: internal messaging ";
 $db->Execute("CREATE TABLE $dbtables[messages] (" .
              "ID bigint(20) NOT NULL auto_increment," .
              "sender_id bigint(20) NOT NULL default '0'," .
@@ -240,9 +240,9 @@ $db->Execute("CREATE TABLE $dbtables[messages] (" .
              "notified enum('Y','N') NOT NULL default 'N'," .
              "PRIMARY KEY  (ID) " .
              ") TYPE=MyISAM");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: furangee...";
+echo "Creating table: furangee ";
 $db->Execute("CREATE TABLE $dbtables[furangee](" .
              "furangee_id char(40) NOT NULL," .
              "active enum('Y','N') DEFAULT 'Y' NOT NULL," .
@@ -251,9 +251,9 @@ $db->Execute("CREATE TABLE $dbtables[furangee](" .
              "PRIMARY KEY (furangee_id)," .
              "KEY furangee_id (furangee_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: sector_defence...";
+echo "Creating table: sector_defence ";
 $db->Execute("CREATE TABLE $dbtables[sector_defence](" .
              "defence_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "ship_id bigint(20) DEFAULT '0' NOT NULL," .
@@ -265,9 +265,9 @@ $db->Execute("CREATE TABLE $dbtables[sector_defence](" .
              "KEY sector_id (sector_id)," .
              "KEY ship_id (ship_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: scheduler...";
+echo "Creating table: scheduler ";
 $db->Execute("CREATE TABLE $dbtables[scheduler](" .
              "sched_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "loop enum('Y','N') DEFAULT 'N' NOT NULL," .
@@ -279,17 +279,17 @@ $db->Execute("CREATE TABLE $dbtables[scheduler](" .
              "last_run BIGINT(20)," .
              "PRIMARY KEY (sched_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: ip_bans...";
+echo "Creating table: ip_bans ";
 $db->Execute("CREATE TABLE $dbtables[ip_bans](" .
              "ban_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "ban_mask varchar(16) NOT NULL," .
              "PRIMARY KEY (ban_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: logs...";
+echo "Creating table: logs ";
 $db->Execute("CREATE TABLE $dbtables[logs](" .
              "log_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "ship_id bigint(20) DEFAULT '0' NOT NULL," .
@@ -299,9 +299,9 @@ $db->Execute("CREATE TABLE $dbtables[logs](" .
              "PRIMARY KEY (log_id)," .
              "KEY idate (ship_id,time)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: bounty...";
+echo "Creating table: bounty ";
 $db->Execute("CREATE TABLE $dbtables[bounty] (" .
              "bounty_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "amount bigint(20) unsigned DEFAULT '0' NOT NULL," . 
@@ -311,9 +311,9 @@ $db->Execute("CREATE TABLE $dbtables[bounty] (" .
              "KEY bounty_on (bounty_on)," .
              "KEY placed_by (placed_by)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
-echo "Creating table: movement_log...";
+echo "Creating table: movement_log ";
 $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "event_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
              "ship_id bigint(20) DEFAULT '0' NOT NULL," .
@@ -323,10 +323,10 @@ $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              "KEY ship_id(ship_id)," .
              "KEY sector_id (sector_id)" .
              ")");
-echo "created.<BR>";
+echo "- created successfully.<BR>";
 
 //Finished
-echo "Database schema creation complete.<BR>";
+echo "<b>Database schema creation completed successfully.</b><BR>";
 }
 
 ?>

@@ -1,6 +1,15 @@
 Patrick Smallwood (1 May 2002)
 ---------------------------------
-Fixed "no more than 500 goods ports ever" bug, HUGE cleanup and redesign of create universe.
+Really fixed the create universe script, and also made it html compliant in all output, along with schema, header, and
+footer.
+
+Patrick Smallwood (1 May 2002)
+---------------------------------
+HUGE cleanup and redesign of create universe.
+
+Patrick Smallwood (1 May 2002)
+---------------------------------
+Fixed "no more than 500 goods ports ever" bug, thanks to heath@foomafia.com.
 
 Ron Harwood & David Rowlands (1 May 2002)
 -----------------------------------------
