@@ -568,11 +568,11 @@ return $dropdownvar;
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line1\">\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
   echo "    <TD>$l_sensors</TD>\n";
   echo "    <TD><input type=text readonly class='portcosts1' name=sensors_costper VALUE='0' tabindex='-1' $onblur></td>\n";
   echo "    <TD>" . NUMBER($playerinfo[sensors]) . "</TD>\n";
@@ -599,7 +599,7 @@ return $dropdownvar;
   if($playerinfo[dev_escapepod] == "N")
   {
     echo "    <TD>$l_none</TD>\n";
-    echo "    <TD></TD>\n";
+    echo "    <TD>&nbsp;</TD>\n";
     echo "    <TD><INPUT TYPE=CHECKBOX NAME=escapepod_purchase VALUE=1 $onclick></TD>\n";
   }
   else
@@ -621,7 +621,7 @@ return $dropdownvar;
   if($playerinfo[dev_fuelscoop] == "N")
   {
     echo "    <TD>$l_none</TD>\n";
-    echo "    <TD></TD>\n";
+    echo "    <TD>&nbsp;</TD>\n";
     echo "    <TD><INPUT TYPE=CHECKBOX NAME=fuelscoop_purchase VALUE=1 $onclick></TD>\n";
   }
   else
@@ -643,7 +643,7 @@ return $dropdownvar;
   if($playerinfo[dev_lssd] == "N")
   {
     echo "    <TD>$l_none</TD>\n";
-    echo "    <TD></TD>\n";
+    echo "    <TD>&nbsp;</TD>\n";
     echo "    <TD><INPUT TYPE=CHECKBOX NAME=lssd_purchase VALUE=1 $onclick></TD>\n";
   }
   else
@@ -660,11 +660,11 @@ return $dropdownvar;
   echo "    </TD>\n";
   echo "  </TR>\n";
   echo "  <TR BGCOLOR=\"$color_line2\">\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
-  echo "    <TD></TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
+  echo "    <TD>&nbsp;</TD>\n";
   echo "    <TD>$l_shields</TD>\n";
   echo "    <TD><input type=text readonly class='portcosts2' name=shields_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
   echo "    <TD>" . NUMBER($playerinfo[shields]) . "</TD>\n";
