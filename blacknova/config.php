@@ -39,9 +39,9 @@ $game_name		= "BlackNova Traders v0.42";
 
 // Administrator's password and email:
 // Be sure to change these. Don't leave them as is.
-$adminpass		= "bntlinux";
-$adminname		= "Adam";
-$admin_mail		= "afort1";
+$adminpass		= "changemefirst";
+$adminname		= "Administrator";
+$admin_mail		= "admin@your.mail.server";
 // If you want to hide your admin character from the rankings system,
 // set this to 1, else set it to 0.  That way, you can edit your admin
 // character to play with stuff and not skew your player's rankings.
