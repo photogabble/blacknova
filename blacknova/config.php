@@ -9,7 +9,7 @@ include("$ADOdbpath" . "/adodb.inc.php");
   Set this to how often (in minutes) you are running
   the scheduler script.
 */
-$sched_ticks = 100;
+$sched_ticks = 6;
 
 /* All following vars are in minutes.
    These are TRUE minutes, no matter to what interval
