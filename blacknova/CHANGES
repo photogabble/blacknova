@@ -1,3 +1,8 @@
+TheMightyDude (11 March 2003)
+--------------------------------
+Fixed [696317] IGB Scheduler Bug Affecting Loan Payback.
+Fixed [699553] Typo bug in sector defense attack.
+
 TheMightyDude (11-12 January 2003)
 ----------------------------------
 Added "New look for settings.php"
