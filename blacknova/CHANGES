@@ -1,6 +1,7 @@
 TheMightyDude (18 May 2003)
 --------------------------------
 Fixed [725554] deploy Mines (and fighters) for free (no turns or credits).
+Fixed same sort of error in modify-defences.php
 Changed the Modules Website Address Link to point to the correct page :)
 
 TheMightyDude (22 March 2003)
