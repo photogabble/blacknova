@@ -22,13 +22,21 @@ bigtitle();
 
 if(empty($content))
 {
-  $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_destroyed = 'N' ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_destroyed = 'N' ORDER BY character_name ASC");
   echo "<FORM ACTION=mailto2.php METHOD=POST>";
   echo "<TABLE>";
   echo "<TR><TD>To:</TD><TD><SELECT NAME=to>";
   while(!$res->EOF)
   {
-    echo "<OPTION>"; echo $res->fields[character_name];
+    $row=$res->fields;
+    if($row[ship_id] == $to)
+    {
+       echo "\n<OPTION SELECTED>$row[character_name]</OPTION>";
+    }   
+    else 
+    {
+       echo "\n<OPTION>$row[character_name]</OPTION>";
+    }   
     $res->MoveNext();
   }
   echo "</SELECT></TD></TR>";
