@@ -612,17 +612,17 @@ else
 <table BORDER=1 CELLPADDING=0 CELLSPACING=0 BGCOLOR="#500050" align="center"> 
 <tr><td>
 <table BORDER=0 CELLPADDING=1 CELLSPACING=0 BGCOLOR="#500050" align="center" class=dis> 
-<tr><td nowrap align='left'><img height=12 width=12 alt="<? echo $l_ore ?>" src="images/ore.gif">&nbsp;<? echo $l_ore ?>&nbsp;</td></tr> 
+<tr><td nowrap align='left'>&nbsp;<img height=12 width=12 alt="<? echo $l_ore ?>" src="images/ore.gif">&nbsp;<? echo $l_ore ?>&nbsp;</td></tr> 
  <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_ore]); ?>&nbsp;</span></td></tr>
-<tr><td nowrap align='left'><img height=12 width=12 alt="<? echo $l_organics ?>" src="images/organics.gif">&nbsp;<? echo $l_organics ?>&nbsp;</td></tr> 
+<tr><td nowrap align='left'>&nbsp;<img height=12 width=12 alt="<? echo $l_organics ?>" src="images/organics.gif">&nbsp;<? echo $l_organics ?>&nbsp;</td></tr> 
  <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_organics]); ?>&nbsp;</span></td></tr>
-<tr><td nowrap align='left'><img height=12 width=12 alt="<? echo $l_goods ?>" src="images/goods.gif">&nbsp;<? echo $l_goods ?>&nbsp;</td></tr> 
+<tr><td nowrap align='left'>&nbsp;<img height=12 width=12 alt="<? echo $l_goods ?>" src="images/goods.gif">&nbsp;<? echo $l_goods ?>&nbsp;</td></tr> 
  <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_goods]); ?>&nbsp;</span></td></tr>
-<tr><td nowrap align='left'><img height=12 width=12 alt="<? echo $l_energy ?>" src="images/energy.gif">&nbsp;<? echo $l_energy ?>&nbsp;</td></tr> 
+<tr><td nowrap align='left'>&nbsp;<img height=12 width=12 alt="<? echo $l_energy ?>" src="images/energy.gif">&nbsp;<? echo $l_energy ?>&nbsp;</td></tr> 
  <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_energy]); ?>&nbsp;</span></td></tr>
-<tr><td nowrap align='left'><img height=12 width=12 alt="<? echo $l_colonists ?>" src="images/colonists.gif">&nbsp;<? echo $l_colonists ?>&nbsp;</td></tr> 
+<tr><td nowrap align='left'>&nbsp;<img height=12 width=12 alt="<? echo $l_colonists ?>" src="images/colonists.gif">&nbsp;<? echo $l_colonists ?>&nbsp;</td></tr> 
  <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_colonists]); ?>&nbsp;</span></td></tr>
-<tr><td nowrap align='left'><img height=12 width=12 alt="<? echo $l_credits ?>" src="images/credits.gif">&nbsp;<? echo $l_credits ?>&nbsp;</td></tr> 
+<tr><td nowrap align='left'>&nbsp;<img height=12 width=12 alt="<? echo $l_credits ?>" src="images/credits.gif">&nbsp;<? echo $l_credits ?>&nbsp;</td></tr> 
  <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[credits]); ?>&nbsp;</span></td></tr>
 </table>
 </td></tr>
