@@ -632,6 +632,7 @@ function log_parse($entry)
     case LOG_PLANET_DEFEATED:
     case LOG_PLANET_SCAN:
     case LOG_PLANET_SCAN_FAIL:
+    case LOG_PLANET_YOUR_CAPTURED:
     list($planet_name, $sector, $name)= split ("\|", $entry[data]);
     $retvalue[text] = str_replace("[planet_name]", "<font color=white><b>$planet_name</b></font>", $l_log_text[$entry[type]]);
     $retvalue[text] = str_replace("[sector]", "<font color=white><b>$sector</b></font>", $retvalue[text]);

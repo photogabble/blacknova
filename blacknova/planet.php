@@ -456,7 +456,7 @@ if(!empty($planetinfo))
         include("footer.php");
         die();
       }
-      
+      planet_log($planetinfo[planet_id],$planetinfo[owner],$playerinfo[player_id],PLOG_SCANNED);
       /* determine per cent chance of success in scanning target ship - based on player's sensors and opponent's cloak */
       $success = (10 - $ownershipinfo[cloak] / 2 + $shipinfo[sensors]) * 5;
       if($success < 5)
@@ -681,10 +681,12 @@ if(!empty($planetinfo))
         $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$planetinfo[owner]");
         $query = $res->fields;
         $planetowner=$query[character_name];
+        playerlog($planetinfo[owner],LOG_PLANET_YOUR_CAPTURED,"$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
       }
       else
         $planetowner="$l_planet_noone";
 
+      planet_log($planetinfo[planet_id],$planetinfo[owner],$playerinfo[player_id],PLOG_CAPTURED);
       playerlog($playerinfo[player_id], LOG_PLANET_CAPTURED, "$planetinfo[colonists]|$planetinfo[credits]|$planetowner");
       
     }

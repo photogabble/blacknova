@@ -473,10 +473,10 @@ $l_log_text[LOG_HIT_MINES] = "You hit [mines] mines when travelling in sector [s
 $l_log_title[LOG_HIT_MINES] = "<font color=yellow>Mines alert!</font>";
 $l_log_text[LOG_SHIP_DESTROYED_MINES] = "Your ship was destroyed by a minefield in sector [sector]. ";
 $l_log_title[LOG_SHIP_DESTROYED_MINES] = "<font color=red>Mines alert!</font>";
-$l_log_text[LOG_PLANET_DEFEATED_D] = "Your planet [planet_name] in sector [sector] was captured in battle by [name]. Fortunately, the strong loyalty of your citizens played in your favor. They have bravely chosen to destroy the planet rather than have it fall into enemy hands. You organize superb funerals in the memory of your faithful people.";
+$l_log_text[LOG_PLANET_DEFEATED_D] = "Your planet [planet_name] in sector [sector] was defeated in battle by [name]. Fortunately, the strong loyalty of your citizens played in your favor. They have bravely chosen to destroy the planet rather than have it fall into enemy hands. You organize superb funerals in the memory of your faithful people.";
 $l_log_title[LOG_PLANET_DEFEATED_D] = "<font color=yellow>Planet destroyed</font>";
-$l_log_text[LOG_PLANET_DEFEATED] = "Your planet [planet_name] in sector [sector] was captured in battle by the wretched [name]. The people of the planet welcome their new ruler. You hear a testimony on BNN : \"We're glad to be rid of that old fart! We don't want no stinking loser who can't protect us!\". You swear to make them pay for their arrogance.";
-$l_log_title[LOG_PLANET_DEFEATED] = "<font color=red>Planet captured!</font>";
+$l_log_text[LOG_PLANET_DEFEATED] = "Your planet [planet_name] in sector [sector] was defeated in battle by the wretched [name]. The people of the planet welcome their new ruler. You hear a testimony on BNN : \"We're glad to be rid of that old fart! We don't want no stinking loser who can't protect us!\". You swear to make them pay for their arrogance.";
+$l_log_title[LOG_PLANET_DEFEATED] = "<font color=red>Planet defeated!</font>";
 $l_log_text[LOG_PLANET_NOT_DEFEATED] = "Your planet [planet_name] in sector [sector] was attacked by [name]. The citizens organized a valliant defense however, and managed to destroy the opponent. They salvage some resources from the space debris : [goods] goods, [ore] ore, [organics] organics and [salvage]% of the ship's worth of [credits] credits.";
 $l_log_title[LOG_PLANET_NOT_DEFEATED] = "Victory!";
 $l_log_title[LOG_RAW] = "Notice";
@@ -1433,4 +1433,9 @@ $l_shipyard_title = "Shipyard";
 $l_planet = "Planet";
 
 $l_cmb_needfighters = "You need at least 1 fighter.";
+
+// planet.php
+$l_log_text[LOG_PLANET_YOUR_CAPTURED] = "Your planet [planet_name] in sector [sector] was defeated in captured by the wretched [name].";
+$l_log_title[LOG_PLANET_YOUR_CAPTURED] = "<font color=red>Planet captured!</font>";
+
 ?>

@@ -135,6 +135,7 @@ function planetbombing()
         die();
     }
 
+    planet_log($planetinfo[planet_id],$planetinfo[owner],$playerinfo[player_id],PLOG_SOFA);
     $res = $db->Execute("LOCK TABLES $dbtables[players] WRITE, $dbtables[ships] WRITE, $dbtables[planets] WRITE, $dbtables[logs] WRITE");
 
     echo "$l_bombsaway<br><br>\n";
@@ -261,7 +262,7 @@ function planetcombat()
     global $l_cmb_fighterloststat, $l_cmb_energyleft;
     global $db, $dbtables;
     //$debug = true;
-
+    
     if($playerinfo[turns] < 1)
     {
         echo "$l_cmb_atleastoneturn<BR><BR>";
@@ -269,7 +270,7 @@ function planetcombat()
         include("footer.php");
         die();
     }
-
+    planet_log($planetinfo[planet_id],$planetinfo[owner],$playerinfo[player_id],PLOG_ATTACKED);
     // Planetary defense system calculation
 
     $planetbeams 		= calcplanetbeams();
@@ -676,7 +677,7 @@ function planetcombat()
     if($planetshields < 1 && $planetfighters < 1 && $attackerarmor > 0 && $shipsonplanet == 0)
     {
         echo "<BR><BR><CENTER><FONT COLOR='GREEN'><B>$l_cmb_planetdefeated</b></FONT></CENTER><BR><BR>";
-
+        planet_log($planetinfo[planet_id],$planetinfo[owner],$playerinfo[player_id],PLOG_DEFEATED);
         if($min_value_capture != 0)
         {
             $playerscore = gen_score($playerinfo[player_id]);
@@ -688,6 +689,7 @@ function planetcombat()
             //            echo "playerscore $playerscore, planetscore $planetscore";
             if($playerscore < $planetscore)
             {
+                planet_log($planetinfo[planet_id],$planetinfo[owner],$playerinfo[player_id],PLOG_PLANET_DESTRUCT);
                 echo "<CENTER>$l_cmb_citizenswanttodie</CENTER><BR><BR>";
                 $db->Execute("DELETE FROM $dbtables[planets] WHERE planet_id=$planetinfo[planet_id]");
                 playerlog($ownerinfo[player_id], LOG_PLANET_DEFEATED_D, "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");

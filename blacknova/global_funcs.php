@@ -46,6 +46,8 @@ define(PLOG_ATTACKED,4);
 define(PLOG_SCANNED,5);
 define(PLOG_OWNER_DEAD,6);
 define(PLOG_DEFEATED,7);
+define(PLOG_SOFA,8);
+define(PLOG_PLANET_DESTRUCT,9);
 
 //Log constants
 
@@ -104,6 +106,7 @@ define(LOG_BOUNTY_FEDBOUNTY,52);       // Sent when the federation places a boun
 define(LOG_PLANET_BOMBED,53);     //Sent after bombing a planet
 define(LOG_ADMIN_ILLEGVALUE, 54);        //sent to admin on planet destruction instead of capture
 define(LOG_CHEAT_TEAM,55);            // Sent when someone attempts the kick any team member cheat
+define(LOG_PLANET_YOUR_CAPTURED,56);  // Sent when your planet is captured
 
 
 // Database tables variables
