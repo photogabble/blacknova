@@ -611,7 +611,7 @@ return $dropdownvar;
   {
     echo "    <TD>$l_none</TD>\n";
     echo "    <TD></TD>\n";
-    echo "    <TD><INPUT TYPE=CHECKBOX NAME=escapepod_purchase VALUE=1 $onblur></TD>\n";
+    echo "    <TD><INPUT TYPE=CHECKBOX NAME=escapepod_purchase VALUE=1 $onclick></TD>\n";
   }
   else
   {
@@ -633,7 +633,7 @@ return $dropdownvar;
   {
     echo "    <TD>$l_none</TD>\n";
     echo "    <TD></TD>\n";
-    echo "    <TD><INPUT TYPE=CHECKBOX NAME=fuelscoop_purchase VALUE=1 $onblur></TD>\n";
+    echo "    <TD><INPUT TYPE=CHECKBOX NAME=fuelscoop_purchase VALUE=1 $onclick></TD>\n";
   }
   else
   {
@@ -655,7 +655,7 @@ return $dropdownvar;
   {
     echo "    <TD>$l_none</TD>\n";
     echo "    <TD></TD>\n";
-    echo "    <TD><INPUT TYPE=CHECKBOX NAME=lssd_purchase VALUE=1 $onblur></TD>\n";
+    echo "    <TD><INPUT TYPE=CHECKBOX NAME=lssd_purchase VALUE=1 $onclick></TD>\n";
   }
   else
   {
