@@ -209,7 +209,7 @@ switch ($step) {
       $initbgoods = $goods_limit * $initbcommod / 100.0;
       $initbenergy = $energy_limit * $initbcommod / 100.0;
 
-// Build Sector 1, Alpha Centauri
+// Build Sector 0, Sol
       print("Constructing sector 0 - Sol ");
       $sector = array();
       $sector[0] = array('sector_id' => '0',
