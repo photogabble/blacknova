@@ -124,6 +124,13 @@ function planetbombing()
         include("footer.php");
         die();
     }
+    if($shipinfo[fighters] <1)
+    {
+        echo "$l_cmb_needfighters<BR><BR>";
+        TEXT_GOTOMAIN();
+        include("footer.php");
+        die();
+    }
 
     $res = $db->Execute("LOCK TABLES $dbtables[players] WRITE, $dbtables[ships] WRITE, $dbtables[planets] WRITE, $dbtables[logs] WRITE");
 
