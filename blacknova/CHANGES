@@ -1,3 +1,7 @@
+Patrick Smallwood (9 May 2002)
+---------------------------------
+Huge cleanup, touching lots of files, be careful of breakage: Removes *all* windows newlines from code.
+
 Patrick Smallwood (1 May 2002)
 ---------------------------------
 Really fixed the create universe script, and also made it html compliant in all output, along with schema, header, and
