@@ -5,54 +5,32 @@
       die();
   }
 
-  echo "<B>PLANETS</B><BR><BR>";
-  $res = $db->Execute("SELECT * FROM $dbtables[planets]");
-  while(!$res->EOF)
-  {
-    $row = $res->fields;
-    $production = min($row[colonists], $colonist_limit) * $colonist_production_rate;
+  $expoprod = pow($colonist_reproduction_rate + 1, $multiplier);
+  $expoprod *=$multiplier;
 
-    $organics_production = ($production * $organics_prate * $row[prod_organics] / 100.0) - $production * $organics_consumption;
-    if($row[organics] + $organics_production < 0)
-    {
-      $organics_production = -$row[organics];
-      $starvation = $row[colonists] * $starvation_death_rate;
-      if($row[owner] && $starvation >= 1)
-      {
-        playerlog($row[owner], LOG_STARVATION, "$row[sector_id]|$starvation");
-      }
-    }
-    else
-    {
-      $starvation = 0;
-    }
-    $ore_production = $production * $ore_prate * $row[prod_ore] / 100.0;
+  $expocreds = pow($interest_rate, $multiplier);
 
-    $goods_production = $production * $goods_prate * $row[prod_goods] / 100.0;
+  echo "<B>PLANETS</B><p>";
 
-    $energy_production = $production * $energy_prate * $row[prod_energy] / 100.0;
+  $planetupdate = "UPDATE $dbtables[planets] SET " .
+    "organics=organics + ((LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $organics_prate * prod_organics / 100.0 * $expoprod) - LEAST(colonists, $colonist_limit) * $colonist_production_rate * $organics_consumption * $expoprod," .
+    "ore=ore + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $ore_prate * prod_ore / 100.0 * $expoprod," .
+    "goods=goods + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $goods_prate * prod_goods / 100.0 * $expoprod," .
+    "energy=energy + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $energy_prate * prod_energy / 100.0 * $expoprod," .
+    "colonists=colonists + (colonists - (colonists * $starvation_death_rate)) * $colonist_reproduction_rate * $expoprod," .
+    "credits=credits * $expocreds + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $credits_prate * (100.0 - prod_organics - prod_ore - prod_goods - prod_energy - prod_fighters - prod_torp) / 100.0 * $expoprod";
 
-    $reproduction = round(($row[colonists] - $starvation) * $colonist_reproduction_rate);
-    if(($row[colonists] + $reproduction - $starvation) > $colonist_limit)
-    {
-      $reproduction = $colonist_limit - $row[colonists] ;
-    }
-    $total_percent = $row[prod_organics] + $row[prod_ore] + $row[prod_goods] + $row[prod_energy];
-    if($row[owner])
-    {
-      $fighter_production = $production * $fighter_prate * $row[prod_fighters] / 100.0;
-      $torp_production = $production * $torpedo_prate * $row[prod_torp] / 100.0;
-      $total_percent += $row[prod_fighters] + $row[prod_torp];
-    }
-    else
-    {
-      $fighter_production = 0;
-      $torp_production = 0;
-    }
-    $credits_production = $production * $credits_prate * (100.0 - $total_percent) / 100.0;
-    $db->Execute("UPDATE $dbtables[planets] SET organics=organics+$organics_production, ore=ore+$ore_production, goods=goods+$goods_production, energy=energy+$energy_production, colonists=colonists+$reproduction-$starvation, torps=torps+$torp_production, fighters=fighters+$fighter_production, credits=credits*$interest_rate+$credits_production WHERE planet_id=$row[planet_id]");
-    $res->MoveNext();
-  }
+  $db->Execute($planetupdate);
+
+  $planetupdate = "UPDATE $dbtables[planets] SET " .
+    "fighters=fighters + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $fighter_prate * prod_fighters / 100.0 * $expoprod," .
+    "torps=torps + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * $torpedo_prate * prod_torp / 100.0 * $expoprod " .
+    "WHERE owner!=0";
+
+  $db->Execute($planetupdate);
+ 
+  $multiplier = 0;
+
   echo "Planets updated.<BR><BR>";
   echo "<BR>";
 

@@ -1,6 +1,13 @@
-L. Patrick Smallwood (10 June 2002)
+SharpBlue (15 June 2002)
 ---------------------------------
-mypw wrap-around - thanks dave! *please check extensively - especially the IGB*
+Optimized the planets scheduler module.
+Added time to run to the scheduler
+
+SharpBlue (14 June 2002)
+---------------------------------
+Implemented loans in the IGB.
+Cleaned up CSS for IGB.
+Optimized the IGB scheduler module.
 
 Torr (13 June 2002)
 ---------------------------------
@@ -9,6 +16,10 @@ Added some foundation work for Sector defense traderoutes in main.php.
 Added enum type 'D' to the traderoutes table, more foundation work.
 Added enum trade_defs ('A','T') to the ships tabls, more foundation works.
 Removed new enum from ships table due to it breaking creating players.  Will have to modify new2.php in order to get that enum type added.
+
+L. Patrick Smallwood (10 June 2002)
+---------------------------------
+mypw wrap-around - thanks dave! *please check extensively - especially the IGB*
 
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------

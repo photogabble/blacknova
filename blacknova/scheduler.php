@@ -68,7 +68,8 @@ if($swordfish != $adminpass)
 }
 else
 {
- 
+  $starttime=time();
+  
   $sched_res = $db->Execute("SELECT * FROM $dbtables[scheduler]");
   if($sched_res)
   {
@@ -105,6 +106,9 @@ else
      }
    }
   
+  $runtime= time() - $starttime;
+  echo "<p>The scheduler took $runtime seconds to execute.<p>";
+
   include("footer.php");
   if($sched_type == 1) ob_end_clean();
 }
