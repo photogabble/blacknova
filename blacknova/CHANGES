@@ -1,5 +1,10 @@
 Patrick Smallwood (29 April 2002)
 ---------------------------------
+Added schema file with details on changes required to add lssd. 
+These changes may not be correct, and should be examined closely. I beleive them to be functional however.
+
+Patrick Smallwood (29 April 2002)
+---------------------------------
 Added device "Last ship seen in sector" device. Purchase at special port. Accessible in device menu.
 Automatically adds functionality to both scan types. Automatically ignores your presence in sectors
 when reporting. Beginning cost: 1 mil. Future functionality: add timestamp/aging so it is only visible
