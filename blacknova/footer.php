@@ -50,11 +50,11 @@ echo $l_footer_players_on_2;
 </center><br>
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
    <tr>
-    <td><font color=silver size=-4><a href="http://www.sourceforge.net/projects/blacknova">BlackNova Traders</a></font></td>
-    <td align=right><font color=silver size=-4>© 2000-2002 <a href="mailto:webmaster@blacknova.net">Ron Harwood</a></font></td>
+    <td><font color=silver size=-4><a href="http://www.sourceforge.net/projects/blacknova" class="nav">BlackNova Traders</a></font></td>
+    <td align=right><font color=silver size=-4>© 2000-2002 <a href="mailto:webmaster@blacknova.net" class="nav">Ron Harwood</a></font></td>
    </tr>
    <tr>
-    <td><font color=silver size=-4><a href="news.php">Local BlackNova News</a></font></td>
+    <td><font color=silver size=-4><a href="news.php" class="nav">Local BlackNova News</a></font></td>
    </tr>
   </table>
 </body>
