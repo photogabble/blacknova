@@ -961,4 +961,20 @@ function cancel_bounty($bounty_on)
       }
    }
 }
+
+function get_player($ship_id)
+{
+   global $db,$dbtables;
+   $res = $db->Execute("SELECT character_name from $dbtables[ships] where ship_id = $ship_id");
+   if($res)
+   {
+      $row = $res->fields;
+      $character_name = $row[character_name];
+      return $character_name;
+   }
+   else
+   {
+      return "Unknown";
+   }
+}
 ?>
