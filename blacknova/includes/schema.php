@@ -118,7 +118,7 @@ $db->Execute("CREATE TABLE $dbtables[players](" .
              "team int DEFAULT '0' NOT NULL," .
              "team_invite int DEFAULT '0' NOT NULL," .
              "interface enum('N','O') DEFAULT 'N' NOT NULL," .
-	 	         "ip_address tinytext NOT NULL," .
+             "ip_address tinytext NOT NULL," .
              "preset1 int DEFAULT '0' NOT NULL," .
              "preset2 int DEFAULT '0' NOT NULL," .
              "preset3 int DEFAULT '0' NOT NULL," .
@@ -424,9 +424,25 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              ")");
 db_create_result();
 
+echo "Creating table: E-Script Log...";
+$db->Execute("CREATE TABLE $dbtables[email_log](" .
+             "log_id bigint(20) unsigned DEFAULT '0' NOT NULL auto_increment," .
+             "sp_name varchar(50) NOT NULL," .
+             "sp_IP tinytext NOT NULL," .
+             "dp_name varchar(50) NOT NULL," .
+             "e_subject varchar(250)," .
+             "e_status enum('Y','N') DEFAULT 'N' NOT NULL," .
+             "e_type tinyint(3) unsigned DEFAULT '0' NOT NULL," .
+             "e_stamp char(20)," .
+             "e_response varchar(250)," .
+             "PRIMARY KEY (log_id)" .
+             ")");
+db_create_result();
+
 //Finished
 echo "<b>Database schema creation completed successfully.</b><BR>";
 
 }
 
 ?>
+  
