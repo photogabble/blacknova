@@ -478,7 +478,7 @@ else
         $armour_lost=$playerinfo[armour_pts]-$playerarmour;
         $fighters_lost=$playerinfo[ship_fighters]-$playerfighters;
         $energy=$playerinfo[ship_energy];
-        $update4b = $db->Execute ("UPDATE $dbtables[ships] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum, turns=turns-1, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
+        $update4b = $db->Execute ("UPDATE $dbtables[ships] SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armour_pts=armour_pts-$armour_lost, torps=torps-$playertorpnum, turns=turns-1, turns_used=turns_used+1, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
         echo "$l_att_ylost $armour_lost $l_armourpts, $fighters_lost $l_fighters, $l_att_andused $playertorpnum $l_torps.<BR><BR>";
       }
       if($playerarmour < 1)

@@ -303,7 +303,7 @@ if(!empty($planetinfo))
       // ** Create The Base
         $update1 = $db->Execute("UPDATE $dbtables[planets] SET base='Y', ore=$planetinfo[ore]-$base_ore, organics=$planetinfo[organics]-$base_organics, goods=$planetinfo[goods]-$base_goods, credits=$planetinfo[credits]-$base_credits WHERE planet_id=$planet_id");
       // ** Update User Turns
-        $update1b = $db->Execute("UPDATE $dbtables[ships] SET turns=turns-1, turns_used=turns_used-1 where ship_ip=$playerinfo[ship_id]");
+        $update1b = $db->Execute("UPDATE $dbtables[ships] SET turns=turns-1, turns_used=turns_used+1 where ship_id=$playerinfo[ship_id]");
       // ** Refresh Plant Info
         $result3 = $db->Execute("SELECT * FROM $dbtables[planets] WHERE planet_id=$planet_id");
         $planetinfo=$result3->fields;
