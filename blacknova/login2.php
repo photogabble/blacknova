@@ -43,8 +43,10 @@ else
 }
 SetCookie("interface", $mainfilename);
 
--- End of old interface code */ 
-SetCookie("screenres", $screen_res);
+-- End of old interface code */
+
+// need the time, path, and domain arguments otherwise the HTTP header gets screwed up
+SetCookie("screenres", $screen_res,time()+(3600*24)*365,$gamepath,$gamedomain);
 
 /* first placement of cookie - don't use updatecookie. */
 $userpass = $email."+".$pass;
@@ -95,7 +97,7 @@ if($playerfound)
       ip_log($playerinfo[player_id],$ip);
       $stamp = date("Y-m-d H-i-s");
       $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',ip_address='$ip' WHERE player_id=$playerinfo[player_id]");
-	  TEXT_GOTOMAIN();
+    TEXT_GOTOMAIN();
       echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=$interface?id=" . $playerinfo[player_id] . "\">";
     }
     else
@@ -106,35 +108,35 @@ if($playerfound)
         $db->Execute("UPDATE $dbtables[ships] SET class=1, hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector_id=0,ore=0,organics=0,energy=1000,colonists=0,goods=0,fighters=100,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,destroyed='N',dev_lssd='N' where player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
         echo $l_login_died;
       }
-		else
-		{
-    	echo "You have died in a horrible incident, <a href=log.php>here</a> is the blackbox information that was retrieved from your ships wreckage.<BR><BR>";
+    else
+    {
+      echo "You have died in a horrible incident, <a href=log.php>here</a> is the blackbox information that was retrieved from your ships wreckage.<BR><BR>";
 
         // Check if $newbie_nice is set, if so, verify ship limits
-			if ($newbie_nice == "YES")
-			{
-				$newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE player_id='$playerinfo[player_id]' AND $ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
-				$num_rows = $newbie_info->RecordCount();
+      if ($newbie_nice == "YES")
+      {
+        $newbie_info = $db->Execute("SELECT hull,engines,power,computer,sensors,armour,shields,beams,torp_launchers,cloak FROM $dbtables[ships] WHERE player_id='$playerinfo[player_id]' AND $ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND engines<='$newbie_engines' AND power<='$newbie_power' AND computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND armour<='$newbie_armour' AND shields<='$newbie_shields' AND beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND cloak<='$newbie_cloak'");
+        $num_rows = $newbie_info->RecordCount();
 
-				if ($num_rows)
-				{
-					echo "<BR><BR>$l_login_newbie<BR><BR>";
-					$db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector_id=0,ore=0,organics=0,energy=1000,colonists=0,goods=0,fighters=100,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,destroyed='N',dev_lssd='N' where player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+        if ($num_rows)
+        {
+          echo "<BR><BR>$l_login_newbie<BR><BR>";
+          $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector_id=0,ore=0,organics=0,energy=1000,colonists=0,goods=0,fighters=100,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,destroyed='N',dev_lssd='N' where player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
           $db->Execute("UPDATE $dbtables[players] SET credits=credits+1000 WHERE player_id=$playerinfo[player_id]");
 
-					echo $l_login_newlife;
-				}
+          echo $l_login_newlife;
+        }
                 else
-				{
-				echo "<BR><BR>$l_login_looser";
-				}
+        {
+        echo "<BR><BR>$l_login_looser";
+        }
 
-			} // End if $newbie_nice
-			else
-			{
-				echo "<BR><BR>$l_login_looser";
-			}
-		}
+      } // End if $newbie_nice
+      else
+      {
+        echo "<BR><BR>$l_login_looser";
+      }
+    }
     }
   }
   else
