@@ -425,8 +425,8 @@ switch ($teamwhat) {
 			echo "</FORM>";
 			echo "<BR><BR>";
 		} else {
-	                $teamname = htmlspecialchars($teamname);
-                        $teamdesc = htmlspecialchars($teamdesc);		
+	                $teamname = htmlspecialchars($teamname,ENT_QUOTES);
+                        $teamdesc = htmlspecialchars($teamdesc,ENT_QUOTES);		
                         $res = $db->Execute("INSERT INTO $dbtables[teams] (id,creator,team_name,number_of_members,description) VALUES ('$playerinfo[player_id]','$playerinfo[player_id]','$teamname','1','$teamdesc')");
                         $db->Execute("INSERT INTO $dbtables[zones] VALUES('','$teamname\'s Empire', $playerinfo[player_id], 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
                         $db->Execute("UPDATE $dbtables[players] SET team='$playerinfo[player_id]' WHERE player_id='$playerinfo[player_id]'");

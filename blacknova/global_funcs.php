@@ -25,7 +25,7 @@ if(!empty($lang))
   {
     if($lang == $value[file])
     {
-      SetCookie("lang",$lang,time()+(3600*24)*365,$gamepath,$gamedomain);
+      SetCookie("lang",$lang,time()+(3600*2),$gamepath,$gamedomain);
       $found = 1;
       break;
     }
@@ -45,6 +45,7 @@ define(PLOG_CAPTURE,3);
 define(PLOG_ATTACKED,4);
 define(PLOG_SCANNED,5);
 define(PLOG_OWNER_DEAD,6);
+define(PLOG_DEFEATED,7);
 
 //Log constants
 
@@ -1215,7 +1216,7 @@ function ip_log($player_id,$ip_address)
    global $db, $dbtables,$enhanced_logging;
    if($enhanced_logging)
    {
-      $res = $db->Execute("INSERT INTO $dbtables[ip_log] (player_id,ip_address,time) VALUES ($player_id,'$ip_address'),NOW()");
+      $res = $db->Execute("INSERT INTO $dbtables[ip_log] (player_id,ip_address,time) VALUES ($player_id,'$ip_address',NOW())");
    }
 }
 ?>
