@@ -45,7 +45,7 @@ $language = "english";
 /* game variables */
 $ip = getenv("REMOTE_ADDR");
 //echo "IP ADDY IS $ip<br>";
-$mine_hullsize = 8; //Minimum size hull has to be to hit mines 
+$mine_hullsize = 8; //Minimum size hull has to be to hit mines
 $ewd_maxhullsize = 15; //Max hull size before EWD degrades
 $sector_max = 2000;
 $link_max=10;
@@ -83,11 +83,11 @@ $allow_genesis_destroy = true;         // Genesis torps can destroy planets
 // Trying to keep ibank constants unique by prefixing with $ibank_
 // Please EDIT the following variables to your liking.
 
-$ibank_interest = 0.0003;			// Interest rate for account funds NOTE: this is calculated every system update!
-$ibank_paymentfee = 0.05; 		// Paymentfee
-$ibank_loaninterest = 0.0010;		// Loan interest (good idea to put double what you get on a planet)
-$ibank_loanfactor = 0.10;			// One-time loan fee
-$ibank_loanlimit = 0.25;		// Maximum loan allowed, percent of net worth
+$ibank_interest = 0.0003;               // Interest rate for account funds NOTE: this is calculated every system update!
+$ibank_paymentfee = 0.05;          // Paymentfee
+$ibank_loaninterest = 0.0010;      // Loan interest (good idea to put double what you get on a planet)
+$ibank_loanfactor = 0.10;               // One-time loan fee
+$ibank_loanlimit = 0.25;      // Maximum loan allowed, percent of net worth
 
 // Information displayed on the 'Manage Own Account' section
 $ibank_ownaccount_info = "Interest rate is " . $ibank_interest * 100 . "%<BR>Loan rate is " .
@@ -221,6 +221,12 @@ $sofa_on = false;
 $ksm_allowed = true;
 $enhanced_logging = true; // Set enhanced logging (ip and planet activity) on or off
 
+// If you want to hide your admin character from the rankings system,
+// set this to 1, else set it to 0.  That way, you can edit your admin
+// character to play with stuff and not skew your player's rankings.
+$hide_admin_rank = 1;
+
+
 /*
 You add all your module switches here
 
@@ -240,6 +246,6 @@ And this include must stay at the end.
 Well after global_funcs.php include anyway :)
 */
 
-include("modules.php");         
-                                
+include("modules.php");
+
 ?>
