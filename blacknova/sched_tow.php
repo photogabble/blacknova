@@ -10,7 +10,8 @@
   $num_to_tow = 0;
   do
   {
-    $res = $db->Execute("SELECT player_id,character_name,hull,sector,$dbtables[universe].zone_id,max_hull FROM $dbtables[players],$dbtables[universe],$dbtables[zones] WHERE sector=sector_id AND $dbtables[universe].zone_id=$dbtables[zones].zone_id AND max_hull<>0 AND (($dbtables[players].hull + $dbtables[players].engines + $dbtables[players].computer + $dbtables[players].beams + $dbtables[players].torp_launchers + $dbtables[players].shields + $dbtables[players].armour)/7) >max_hull AND ship_destroyed='N'");
+    $res = $db->Execute("SELECT ship_id, $dbtables[players].player_id,character_name,hull,$dbtables[ships].sector_id,$dbtables[universe].zone_id,max_hull FROM $dbtables[ships], $dbtables[universe],$dbtables[zones] LEFT JOIN $dbtables[players] ON $dbtables[ships].player_id=$dbtables[players].player_id WHERE $dbtables[ships].sector_id=$dbtables[universe].sector_id AND $dbtables[universe].zone_id=$dbtables[zones].zone_id AND max_hull<>0 AND (($dbtables[ships].hull + $dbtables[ships].engines + $dbtables[ships].computer + $dbtables[ships].beams + $dbtables[ships].torp_launchers + $dbtables[ships].shields + $dbtables[ships].armour)/7) >max_hull AND destroyed='N'");
+    echo $db->ErrorMsg() . "<br>";
     if($res)
     {
       $num_to_tow = $res->RecordCount();
@@ -18,13 +19,12 @@
       while(!$res->EOF)
       {
         $row = $res->fields;
-        echo "...towing $row[character_name] out of $row[sector] ...";
+        echo "...towing $row[character_name] out of $row[sector_id] ...";
         $newsector = rand(0, $sector_max);
         echo " to sector $newsector.<BR>";
-        $query = $db->Execute("UPDATE $dbtables[players] SET sector=$newsector,cleared_defences=' ' where player_id=$row[player_id]");
-        playerlog($row[player_id], LOG_TOW, "$row[sector]|$newsector|$row[max_hull]");
-        log_move($row[player_id],$newsector);
-//      REMEMBER TO MODIFY LOG_MOVE
+        $query = $db->Execute("UPDATE $dbtables[ships] SET sector_id=$newsector,cleared_defences=' ' where ship_id=$row[ship_id]");
+        playerlog($row[player_id], LOG_TOW, "$row[sector_id]|$newsector|$row[max_hull]");
+        log_move($row[ship_id],$newsector);
         $res->MoveNext();
       }
     }

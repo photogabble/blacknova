@@ -29,7 +29,7 @@ if ($action=="delete")
 $res = $db->Execute("SELECT * FROM $dbtables[messages] WHERE recp_id='".$playerinfo[player_id]."' ORDER BY sent DESC");
  if ($res->EOF)
  {
-  echo "$l_readm_nomessage";
+  echo "$l_readm_nomessage<p>";
  }
  else
  {
@@ -55,7 +55,8 @@ $cur_T = date("H:i:s");
   while(!$res->EOF)
   {
    $msg = $res->fields;
-   $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id='".$msg[sender_id]."'");
+   $result = $db->Execute("SELECT $dbtables[players].*, $dbtables[ships].name FROM $dbtables[players] LEFT JOIN $dbtables[ships] ON $dbtables[players].currentship = $dbtables[ships].ship_id WHERE $dbtables[players].player_id='".$msg[sender_id]."'");
+   echo $db->ErrorMsg();
    $sender = $result->fields;
 ?>
 <TR BGCOLOR="<?
@@ -71,7 +72,7 @@ else
 }
 ?>">
 <TD VALIGN=TOP width=150>
-<? echo $sender[character_name]; ?><HR><? echo $l_readm_captn ?><BR><? echo $sender[ship_name] ?><BR><BR><? echo "<font size=-1>$msg[sent]</font>" ?>
+<? echo $sender[character_name]; ?><HR><? echo $l_readm_captn ?><BR><? echo $sender[name] ?><BR><BR><? echo "<font size=-1>$msg[sent]</font>" ?>
 </TD>
 <TD VALIGN=TOP>
 <B><? echo $msg[subject]; ?></B><HR><? echo nl2br($msg[message]); ?>

@@ -10,8 +10,7 @@ connectdb();
 bigtitle();
 
 //-------------------------------------------------------------------------------------------------
-
-$res = $db->Execute("SELECT COUNT(*) AS num_players FROM $dbtables[players] WHERE ship_destroyed='N' and email NOT LIKE '%@furangee'");
+$res = $db->Execute("SELECT COUNT(*) AS num_players FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE destroyed='N' and email NOT LIKE '%@furangee'");
 $row = $res->fields;
 $num_players = $row['num_players'];
 
@@ -44,7 +43,7 @@ else
   $by="score DESC,character_name ASC";
 }
 
-$res = $db->Execute("SELECT $dbtables[players].email,$dbtables[players].score,$dbtables[players].character_name,$dbtables[players].turns_used,$dbtables[players].last_login,UNIX_TIMESTAMP($dbtables[players].last_login) as online,$dbtables[players].rating, $dbtables[teams].team_name, IF($dbtables[players].turns_used<150,0,ROUND($dbtables[players].score/$dbtables[players].turns_used)) AS efficiency FROM $dbtables[players] LEFT JOIN $dbtables[teams] ON $dbtables[players].team = $dbtables[teams].id  WHERE ship_destroyed='N' and email NOT LIKE '%@furangee' ORDER BY $by LIMIT $max_rank");
+$res = $db->Execute("SELECT $dbtables[players].email,$dbtables[players].score,$dbtables[players].character_name,$dbtables[players].turns_used,$dbtables[players].last_login,UNIX_TIMESTAMP($dbtables[players].last_login) as online,$dbtables[players].rating, $dbtables[teams].team_name, IF($dbtables[players].turns_used<150,0,ROUND($dbtables[players].score/$dbtables[players].turns_used)) AS efficiency FROM $dbtables[players] LEFT JOIN $dbtables[teams] ON $dbtables[players].team = $dbtables[teams].id LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id=$dbtables[ships].player_id WHERE destroyed='N' and email NOT LIKE '%@furangee' ORDER BY $by LIMIT $max_rank");
 
 //-------------------------------------------------------------------------------------------------
 

@@ -20,7 +20,7 @@ bigtitle();
 
 if(empty($content))
 {
-  $res = $db->Execute("SELECT character_name FROM $dbtables[players] ORDER BY character_name ASC");
+  $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id <> $playerinfo[player_id] ORDER BY character_name ASC");
   $res2 = $db->Execute("SELECT team_name FROM $dbtables[teams] ORDER BY team_name ASC");
   echo "<FORM ACTION=mailto2.php METHOD=POST>";
   echo "<TABLE>";
