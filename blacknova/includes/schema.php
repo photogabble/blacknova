@@ -233,6 +233,9 @@ $db->Execute("CREATE TABLE $dbtables[news] (" .
              ")");
 echo "- created successfully.<BR>";
 
+echo "inserting blank data into news table ...<br>";
+$db->Execute("INSERT INTO $dbtables[news] (headline, newstext, date, news_type) VALUES ('Big Bang!','Scientists have just discovered the Universe exists!',NOW(), 'col25')");
+
 echo "Creating table: internal messaging ";
 $db->Execute("CREATE TABLE $dbtables[messages] (" .
              "ID int NOT NULL auto_increment," .
