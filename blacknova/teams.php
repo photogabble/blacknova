@@ -42,6 +42,7 @@ if ($playerinfo[team_invite] != "") {
 /*
    Get Team Info
 */
+$whichteam = stripnum($whichteam);
 if ($whichteam)
 {
    $result_team   = $db->Execute("SELECT * FROM $dbtables[teams] WHERE id=$whichteam") or die($db->ErrorMsg());
@@ -364,6 +365,7 @@ switch ($teamwhat) {
 	case 5: // Eject member
              if ($playerinfo[team] == $team[id])
              {
+                $who = stripnum($who);
 		$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=$who");
 		$whotoexpel = $result->fields;
 		if (!$confirmed) {
