@@ -1,3 +1,8 @@
+TheMightyDude (29 August 2003)
+--------------------------------
+Put back the calc_ownership() function back in rsmove.php
+This should keep the Sector Ownership upto date :)
+
 TheMightyDude (28 August 2003)
 --------------------------------
 Fixed Border Patrol check in traderoute.php
