@@ -429,15 +429,12 @@ switch ($step) {
           // Stick it in the database all by itself
           $insert = substr_replace($insert, ";", -2);
           $results = $db->Execute($insert);
-          $insert=str_replace("\n","<br>",$insert);
-//          print "<br>".$insert."<br>";
           PrintFlush($db->ErrorMsg());
 
           // Darn it, MySQL insists on reindexing record zero to record one
           // so we change it back.
           $update = "UPDATE $dbtables[universe] SET sector_id=0 WHERE sector_id=1;";
           $results = $db->Execute($update);
-//          print "<br>"; print_r($update); print "<br>";
           PrintFlush($db->ErrorMsg());
 
           // Set things up for the next batch
@@ -449,8 +446,6 @@ switch ($step) {
       // taken care of here.
       $insert = substr_replace($insert, ";", -2);
       $results = $db->Execute($insert);
-      $insert=str_replace("\n","<br>",$insert);
-//      print "<br>".$insert."<br>";
       PrintFlush($db->ErrorMsg());
       print("");
       PrintFlush("- completed successfully.<br>");
@@ -480,119 +475,162 @@ switch ($step) {
    case "5":
       $sector_max = round($sektors);
 
-      PrintFlush("Selecting $nump sectors to place unowned planets in.<BR>");
-      for($i=0; $i<=$sector_max; $i++)
-      {
-         $num = rand(0, $sector_max - 1);
-         $sectors[$i] = $num;
-      }
-      for($i=0; $i<$nump; $i++)
-      {
-         $select = $db->Execute("SELECT $dbtables[universe].sector_id FROM $dbtables[universe], $dbtables[zones] WHERE $dbtables[universe].sector_id=$sectors[$i] AND $dbtables[zones].zone_id=$dbtables[universe].zone_id AND $dbtables[zones].allow_planet='N'") or die("DB error");
-         if($select->RecordCount() == 0)
-         {
-            $insert = $db->Execute("INSERT INTO $dbtables[planets] (colonists, owner, corp, prod_ore, prod_organics, prod_goods, prod_energy, prod_fighters, prod_torp, sector_id) VALUES (2,0,0,$default_prod_ore,$default_prod_organics,$default_prod_goods,$default_prod_energy, $default_prod_fighters, $default_prod_torp,$sectors[$i])");
-            #echo "$sectors[$i] - ";
-         }
-         else
-            echo "The planet in sector $sectors[$i] was skipped<BR>";
-      }
-      echo "Unowned planet placement completed successfully.<BR>";
-      $loopsize = round($sector_max/$loops);
-      $start = 0;
-      $finish = $loopsize - 1;
-      for($i=1; $i<=$loops; $i++)
-      {
-         echo "<BR>Creating loop $i of $loopsize sectors (from sector $start to $finish) ";
-         for($j=$start; $j<$finish; $j++)
-         {
-            $k = $j + 1;
-            $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($j,$k)");
-            $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($k,$j)");
-            #echo "$j<=>$k - ";
-         }
-         $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($start,$finish)");
-         $update = $db->Execute("INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ($finish,$start)");
-         #echo "$finish<=>$start";
-         echo "- loop $i completed successfully.";
-         $start=$finish+1;
-         $finish=$finish+$loopsize;
-         if ($finish>$sector_max) $finish=$sector_max;
+      PrintFlush("Creating $nump planets ");
 
+      $results = $db->Execute("SELECT $dbtables[universe].sector_id ".
+                              "FROM $dbtables[universe], $dbtables[zones] ".
+                              "WHERE $dbtables[zones].zone_id=$dbtables[universe].zone_id ".
+                                "AND $dbtables[zones].allow_planet='N'");
+      if(!$results) die("DB error while gathering 'No planet' zones");
+
+      $blocked = array();
+
+      while (!$results->EOF) {
+        $blocked[$results->fields['sector_id']] = 1;
+        $results->MoveNext();
       }
-      PrintFlush("<BR>Creating $i sector warp-loops (out of $nump sectors) - completed successfully.<BR>");
-      PrintFlush("<BR>Randomly One-way Linking $i Sectors (out of $sector_max sectors) ");
-      $i=0;
-      while ($i < ($sector_max-500)):
-         $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
-         for ($j=1; $j<=499; $j++) {
-            $link1=intval(rand(1,$sector_max));
-            $link2=intval(rand(1,$sector_max));
-            $insert.="($link1,$link2),";
-         }
-         $link1=intval(rand(1,$sector_max));
-         $link2=intval(rand(1,$sector_max));
-         $insert.="($link1,$link2);";
-         $i=$i+500;
-         ### Now lets post the information to the mysql database.
-         $db->Execute($insert);
+
+      for($i=0; $i<$nump; $i++) {
+        $n = rand(0,$sector_max-1);
+        if($blocked[$n]) {
+          $i--;
+          continue;
+        }
+        if(!$i%500) {
+          if($i) {
+            $insert = substr_replace($insert, ";", -2);
+            $BenchmarkTimer->pause();
+            $results = $db->Execute($insert);
+            $BenchmarkTimer->resume();
+            if(!$results) {
          PrintFlush($db->ErrorMsg());
-         # PrintFlush("Finished linking $i sectors ( out of $sector_max sectors)...<br>");
-      endwhile;
-      ### Now lets do the remaining sectors.
-      $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
-      for ($j=$i; $j<=$sector_max-1; $j++) {
-            $link1=intval(rand(1,$sector_max));
-            $link2=intval(rand(1,$sector_max));
-            $insert.="($link1,$link2),";
+              print "<pre>";
+              print_r($insert);
+              PrintFlush("</pre>");
+              die("DB error while placing planets");
+            }
+          }
+          $insert = "INSERT INTO $dbtables[planets] (colonists,owner,corp,prod_ore,prod_organics,prod_goods,".
+                    "prod_energy,prod_fighters,prod_torp,sector_id) VALUES\n";
+        }
+        $insert .= "(2,0,0,$default_prod_ore,$default_prod_organics,$default_prod_goods,".
+                   "$default_prod_energy,$default_prod_fighters,$default_prod_torp,$n),\n";
       }
-      $link1=intval(rand(1,$sector_max));
-      $link2=intval(rand(1,$sector_max));
-      $insert.="($link1,$link2);";
-      $j=$j+1;
-      ### Now lets post the information to the mysql database.
-      $db->Execute($insert);
-      $i=$j;
-      print("");
-      PrintFlush("- completed successfully.");
-      PrintFlush("<BR>Randomly Two-way Linking Sectors ");
-      $i=0;
-      while ($i < ($sector_max-500)):
-         $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
-         for ($j=1; $j<=499; $j++) {
-            $link1=intval(rand(1,$sector_max));
-            $link2=intval(rand(1,$sector_max));
-            $insert.="($link1,$link2),";
-            $insert.="($link2,$link1),";
-         }
-         $link1=intval(rand(1,$sector_max));
-         $link2=intval(rand(1,$sector_max));
-         $insert.="($link1,$link2),";
-         $insert.="($link2,$link1);";
-         $i=$i+500;
-         ### Now lets post the information to the mysql database.
-         $db->Execute($insert);
+      $insert = substr_replace($insert, ";", -2);
+      $results = $db->Execute($insert);
+      print "";
+      if(!$results) {
          PrintFlush($db->ErrorMsg());
-         # PrintFlush("Finished linking $i sectors ( out of $sector_max sectors)...<br>");
-      endwhile;
-      ### Now lets do the remaining sectors.
-      $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
-      for ($j=$i; $j<=$sector_max-1; $j++) {
-         $link1=intval(rand(1,$sector_max));
-         $link2=intval(rand(1,$sector_max));
-         $insert.="($link1,$link2),";
-         $insert.="($link2,$link1),";
+        print "<pre>";
+        print_r($insert);
+        PrintFlush("</pre>");
+        die("DB error while placing planets");
       }
-      $link1=intval(rand(1,$sector_max));
-      $link2=intval(rand(1,$sector_max));
-      $insert.="($link1,$link2),";
-      $insert.="($link2,$link1);";
-      $j=$j+1;
-      ### Now lets post the information to the mysql database.
-      $db->Execute($insert);
-      $i=$j;
-      print("");
-      PrintFlush("- completed successfully. <BR>");
+      PrintFlush("- completed.<br>");
+
+      $links=array();
+      $hi=-1;
+      for($l = 0; $l<$loops; $l++) {
+        $lo=$hi+1;
+        $hi = round(($sector_max)*($l+1)/$loops)-1;
+        echo"Creating warp loop ".($l+1)." of $loops (from sector $lo to $hi)\n";
+        for($i=$lo; $i<$hi; $i++) {
+          $links[$i][] = $i+1;
+          $links[$i+1][] = $i;
+        }
+        $links[$lo][]=$hi;
+        $links[$hi][]=$lo;
+        echo "- completed.<br>";
+      }
+
+
+      PrintFlush("Randomly generating $sector_max two-way warps ");
+      $dups = 0;
+      for($i=0; $i<$sector_max; $i++) {
+        do {
+          do {
+            $x = rand(1,$sector_max-1);
+            $y = rand(1,$sector_max-1);
+          } while ($x==$y);
+
+          // Only need to check in one direction because only
+          // two-way links exist so far.
+          $duplicate=FALSE;
+          if(isset($links[$x])) {
+            foreach($links[$x] as $v) {
+              if($y == $v) {
+                $duplicate=TRUE;
+                $dups++;
+                break;
+              }
+            }
+          }
+        } while ($duplicate);
+        $links[$x][]=$y;
+        $links[$y][]=$x;
+      }
+      PrintFlush("- $dups duplicates prevented - completed.<br>");
+
+
+      PrintFlush("Randomly generating $sector_max one-way warps ");
+      $dups = 0;
+      for($i=0; $i<$sector_max; $i++) {
+        do {
+          do {
+            $x = rand(1,$sector_max-1);
+            $y = rand(1,$sector_max-1);
+          } while ($x==$y);
+
+          $duplicate=FALSE;
+          if(isset($links[$x])) {
+            foreach($links[$x] as $v) {
+              if($y == $v) {
+                $duplicate=TRUE;
+                $dups++;
+                break;
+              }
+            }
+          }
+        } while ($duplicate);
+        $links[$x][]=$y;
+      }
+      PrintFlush("- $dups duplicates prevented - completed.<br>");
+
+
+      PrintFlush("Dumping warps to database ");
+      $i = 0;
+      foreach($links as $k1 => $v1) {
+        foreach($links[$k1] as $k2 => $v2) {
+          if(!($i%5000)) {
+            if($i) {
+              $insert = substr_replace($insert, ";", -2);
+              $results = $db->Execute($insert);
+              if(!$results) {
+                PrintFlush($db->ErrorMsg());
+                print "<pre>\n";
+                print_r($insert);
+                PrintFlush("</pre>");
+                die("DB error while placing one-way warps");
+              }
+            }
+            $insert = "INSERT INTO $dbtables[links] (link_start,link_dest) VALUES\n";
+          }
+          $insert .= "($k1,$v2),\n";
+        }
+      }
+      $insert = substr_replace($insert, ";", -2);
+      $results = $db->Execute($insert);
+      print "";
+      if(!$results) {
+        PrintFlush($db->ErrorMsg());
+        print "<pre>\n";
+        print_r($insert);
+        PrintFlush("</pre>");
+        die("DB error while inserting links");
+      }
+      PrintFlush("- completed.<br>");
+
+
       echo "<form action=create_universe.php method=post>";
       echo "<input type=hidden name=step value=7>";
       echo "<input type=hidden name=spp value=$spp>";
