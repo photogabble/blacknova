@@ -1,5 +1,9 @@
 Patrick Smallwood (9 May 2002)
 ---------------------------------
+Huge revamp of port.php and port2.php, adding dropdowns, multiple-level upgrades, click-to-max, and onchange additions.
+
+Patrick Smallwood (9 May 2002)
+---------------------------------
 License change to GPL
 
 Patrick Smallwood (9 May 2002)

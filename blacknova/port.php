@@ -298,250 +298,485 @@ elseif($sectorinfo[port_type] == "special")
         }
      }
   }
-
-  $hull_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[hull]));
-  $engine_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[engines]));
-  $power_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[power]));
-  $computer_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[computer]));
-  $sensors_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[sensors]));
-  $beams_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[beams]));
-  $armour_upgrade_cost = $upgrade_cost * round(pow($upgrade_factor, $playerinfo[armour]));
-  $cloak_upgrade_cost=$upgrade_cost*round(pow($upgrade_factor, $playerinfo[cloak]));
-  $torp_launchers_upgrade_cost=$upgrade_cost*round(pow($upgrade_factor, $playerinfo[torp_launchers]));
-  $shields_upgrade_cost=$upgrade_cost*round(pow($upgrade_factor, $playerinfo[shields]));
+  $emerwarp_free = $max_emerwarp - $playerinfo[dev_emerwarp];
   $fighter_max = NUM_FIGHTERS($playerinfo[computer]);
   $fighter_free = $fighter_max - $playerinfo[ship_fighters];
   $torpedo_max = NUM_TORPEDOES($playerinfo[torp_launchers]);
   $torpedo_free = $torpedo_max - $playerinfo[torps];
   $armour_max = NUM_ARMOUR($playerinfo[armour]);
   $armour_free = $armour_max - $playerinfo[armour_pts];
-  $colonist_max = NUM_HOLDS($playerinfo[hull]) - $playerinfo[ship_ore] - $playerinfo[ship_organics] -
-    $playerinfo[ship_goods] - $playerinfo[ship_colonists];
+  $colonist_max = NUM_HOLDS($playerinfo[hull]) - $playerinfo[ship_ore] - $playerinfo[ship_organics] - $playerinfo[ship_goods] - $playerinfo[ship_colonists];
+  $colonist_free = $colonist_max - $playerinfo[ship_colonists];
 
   TEXT_JAVASCRIPT_BEGIN();
-  echo "function countTotal(form)\n";
-  echo "{\n";
-  echo "  form.total_cost.value = form.dev_genesis_number.value * $dev_genesis_price";
-  echo " + form.dev_beacon_number.value * $dev_beacon_price";
-  if($max_emerwarp - $playerinfo[dev_emerwarp] > 0)
-  {
-    echo " + form.dev_emerwarp_number.value * $dev_emerwarp_price";
-  }
-  echo " + form.dev_warpedit_number.value * $dev_warpedit_price";
-  echo " + form.dev_minedeflector_number.value * $dev_minedeflector_price";
-  if($playerinfo[dev_escapepod] == 'N')
-  {
-    echo " + (form.escapepod_purchase.checked ?  $dev_escapepod_price : 0)";
-  }
-  if($playerinfo[dev_fuelscoop] == 'N')
-  {
-    echo " + (form.fuelscoop_purchase.checked ?  $dev_fuelscoop_price : 0)";
-  }
-  if($playerinfo[dev_lssd] == 'N')
-  {
-    echo " + (form.lssd_purchase.checked ?  $dev_lssd_price : 0)";
-  }
-  echo " + (form.hull_upgrade.checked ? $hull_upgrade_cost : 0)";
-  echo " + (form.engine_upgrade.checked ? $engine_upgrade_cost : 0)";
-  echo " + (form.power_upgrade.checked ? $power_upgrade_cost : 0)";
-  echo " + (form.computer_upgrade.checked ? $computer_upgrade_cost : 0)";
-  echo " + (form.sensors_upgrade.checked ? $sensors_upgrade_cost : 0)";
-  echo " + (form.beams_upgrade.checked ? $beams_upgrade_cost : 0)";
-  echo " + (form.armour_upgrade.checked ? $armour_upgrade_cost : 0)";
-  echo " + (form.cloak_upgrade.checked ? $cloak_upgrade_cost : 0)";
-  echo " + (form.torp_launchers_upgrade.checked ? $torp_launchers_upgrade_cost : 0)";
-  echo " + (form.shields_upgrade.checked ? $shields_upgrade_cost : 0)";
+// MakeMax function //
+echo "function MakeMax(name, val)\n";
+echo "{\n";
+echo " if (document.forms[0].elements[name].value != val)\n";
+echo " {\n";
+echo "  if (val != 0)\n";
+echo "  {\n";
+echo "  document.forms[0].elements[name].value = val;\n";
+echo "  }\n";
+echo " }\n";
+echo "}\n";
+
+// changeDelta function //
+echo "function changeDelta(desiredvalue,currentvalue)\n";
+echo "{\n";
+echo "  Delta=0; DeltaCost=0;\n";
+echo "  Delta = desiredvalue - currentvalue;\n";
+echo "\n";    
+echo "    while(Delta>0) \n";
+echo "    {\n";
+echo "     DeltaCost=DeltaCost + Math.pow(2,desiredvalue-Delta); \n";
+echo "     Delta=Delta-1;\n";
+echo "    }\n";
+echo "\n";    
+echo "  DeltaCost=DeltaCost * 1000\n";
+echo "  return DeltaCost;\n";
+echo "}\n";
+
+echo "function countTotal()\n";
+echo "{\n";
+echo "// Here we set all 'Max' items to 0 if they are negative, NaN, or over max - player amt.\n";
+echo "if (($emerwarp_free < document.forms[0].elements['dev_emerwarp_number'].value) || (document.forms[0].elements['dev_emerwarp_number'].value < 0) || (isNaN(document.forms[0].elements['dev_emerwarp_number'].value)))\n";
+echo "  {\n";
+echo "  if (document.forms[0].elements['dev_emerwarp_number'].value != 'Full')\n";
+echo "   {\n";
+echo "  document.forms[0].elements['dev_emerwarp_number'].value=0\n";
+echo "   }\n";
+echo "  }\n";
+echo "if (($fighter_free < document.forms[0].elements['fighter_number'].value) || (document.forms[0].elements['fighter_number'].value < 0) || (isNaN(document.forms[0].elements['fighter_number'].value)))\n";
+echo "  {\n";
+echo "  if (document.forms[0].elements['fighter_number'].value != 'Full')\n";
+echo "   {\n";
+echo "   document.forms[0].elements['fighter_number'].value=0\n";
+echo "   }\n";
+echo "  }\n";
+echo "if (($torpedo_free < document.forms[0].elements['torpedo_number'].value) || (document.forms[0].elements['torpedo_number'].value < 0) || (isNaN(document.forms[0].elements['torpedo_number'].value)))\n";
+echo "  {\n";
+echo "  if (document.forms[0].elements['torpedo_number'].value != 'Full')\n";
+echo "   {\n";
+echo "   document.forms[0].elements['torpedo_number'].value=0\n";
+echo "   }\n";
+echo "  }\n";
+echo "if (($armour_free < document.forms[0].elements['armour_number'].value) || (document.forms[0].elements['armour_number'].value < 0 ) || (isNaN(document.forms[0].elements['armour_number'].value)))\n";
+echo "  {\n";
+echo "  if (document.forms[0].elements['armour_number'].value != 'Full')\n";
+echo "   {\n";
+echo "   document.forms[0].elements['armour_number'].value=0\n";
+echo "   }\n";
+echo "  }\n";
+echo "if (($colonist_free < document.forms[0].elements['colonist_number'].value) || (document.forms[0].elements['colonist_number'].value < 0 ) || (isNaN(document.forms[0].elements['colonist_number'].value)))\n";
+echo "  {\n";
+echo "  if (document.forms[0].elements['colonist_number'].value != 'Full')\n";
+echo "   {\n";
+echo "   document.forms[0].elements['colonist_number'].value=0\n";
+echo "   }\n";
+echo "  }\n";
+echo "// Ditto for all the 'unlimited' items\n";
+echo "if ((document.forms[0].elements['dev_genesis_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_genesis_number'].value)))\n";
+echo "  {\n";
+echo "  document.forms[0].elements['dev_genesis_number'].value=0\n";
+echo "  }\n";
+echo "if ((document.forms[0].elements['dev_beacon_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_beacon_number'].value)))\n";
+echo "  {\n";
+echo "  document.forms[0].elements['dev_beacon_number'].value=0\n";
+echo "  }\n";
+echo "if ((document.forms[0].elements['dev_warpedit_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_warpedit_number'].value)))\n";
+echo "  {\n";
+echo "  document.forms[0].elements['dev_warpedit_number'].value=0\n";
+echo "  }\n";
+echo "if ((document.forms[0].elements['dev_minedeflector_number'].value < 0 ) || (isNaN(document.forms[0].elements['dev_minedeflector_number'].value)))\n";
+echo "  {\n";
+echo "  document.forms[0].elements['dev_minedeflector_number'].value=0\n";
+echo "  }\n";
+echo "// Done with the silly bounds checking\n";
+echo "document.forms[0].elements['total_cost'].value = document.forms[0].elements['dev_genesis_number'].value * $dev_genesis_price + \n";
+echo "document.forms[0].elements['dev_beacon_number'].value * $dev_beacon_price + \n";
+if($emerwarp_free > 0)
+{
+  echo "document.forms[0].elements['dev_emerwarp_number'].value * $dev_emerwarp_price + \n";
+}
+echo "document.forms[0].elements['dev_warpedit_number'].value * $dev_warpedit_price + \n";
+echo "document.forms[0].elements['dev_minedeflector_number'].value * $dev_minedeflector_price + \n";
+if($playerinfo[dev_escapepod] == 'N')
+{
+  echo "(document.forms[0].elements['escapepod_purchase'].checked ?  $dev_escapepod_price : 0) + \n";
+}
+if($playerinfo[dev_fuelscoop] == 'N')
+{
+  echo "(document.forms[0].elements['fuelscoop_purchase'].checked ?  $dev_fuelscoop_price : 0) + \n";
+}
+if($playerinfo[dev_lssd] == 'N')
+{
+  echo "(document.forms[0].elements['lssd_purchase'].checked ?  $dev_lssd_price : 0) + \n";
+}
+
+echo "changeDelta(document.forms[0].elements['hull_upgrade'].value,$playerinfo[hull]) + \n";
+echo "changeDelta(document.forms[0].elements['engine_upgrade'].value,$playerinfo[engines]) + \n";
+echo "changeDelta(document.forms[0].elements['power_upgrade'].value,$playerinfo[power]) + \n";
+echo "changeDelta(document.forms[0].elements['computer_upgrade'].value,$playerinfo[computer]) + \n";
+echo "changeDelta(document.forms[0].elements['sensors_upgrade'].value,$playerinfo[sensors]) + \n";
+echo "changeDelta(document.forms[0].elements['beams_upgrade'].value,$playerinfo[beams]) + \n";
+echo "changeDelta(document.forms[0].elements['armour_upgrade'].value,$playerinfo[armour]) + \n";
+echo "changeDelta(document.forms[0].elements['cloak_upgrade'].value,$playerinfo[cloak]) + \n";
+echo "changeDelta(document.forms[0].elements['torp_launchers_upgrade'].value,$playerinfo[torp_launchers]) + \n";
+echo "changeDelta(document.forms[0].elements['shields_upgrade'].value,$playerinfo[shields]) + \n";
+
   if($playerinfo[ship_fighters] != $fighter_max)
   {
-    echo " + form.fighter_number.value * $fighter_price";
+    echo "document.forms[0].elements['fighter_number'].value * $fighter_price + \n";
   }
   if($playerinfo[torps] != $torpedo_max)
   {
-    echo " + form.torpedo_number.value * $torpedo_price";
+    echo "document.forms[0].elements['torpedo_number'].value * $torpedo_price + \n";
   }
   if($playerinfo[armour_pts] != $armour_max)
   {
-    echo " + form.armour_number.value * $armour_price";
+    echo "document.forms[0].elements['armour_number'].value * $armour_price + \n";
   }
-  if($colonist_max)
+  if($playerinfo[ship_colonists] != $colonist_max)
   {
-    echo " + form.colonist_number.value * $colonist_price";
+    echo "document.forms[0].elements['colonist_number'].value * $colonist_price;\n";
   }
-  echo ";\n";
-  echo "  if(form.total_cost.value > $playerinfo[credits])\n";
+  echo "\n";
+  echo "  if(document.forms[0].elements['total_cost'].value > $playerinfo[credits])\n";
   echo "  {\n";
-  echo "    form.total_cost.value = '$l_no_credits';\n";
+  echo "    document.forms[0].elements['total_cost'].value = '$l_no_credits';\n";
+//  echo "    document.forms[0].elements['total_cost'].value = 'You are short '+(document.forms[0].elements['total_cost'].value - $playerinfo[credits]) +' credits';\n";
   echo "  }\n";
-  echo "  form.total_cost.size = form.total_cost.value.length;\n";
+  echo "  document.forms[0].elements['total_cost'].length = document.forms[0].elements['total_cost'].value.length;\n";
+  echo "\n";
+  echo "document.forms[0].elements['engine_costper'].value=changeDelta(document.forms[0].elements['engine_upgrade'].value,$playerinfo[engines]);\n";
+  echo "document.forms[0].elements['power_costper'].value=changeDelta(document.forms[0].elements['power_upgrade'].value,$playerinfo[power]);\n";
+  echo "document.forms[0].elements['computer_costper'].value=changeDelta(document.forms[0].elements['computer_upgrade'].value,$playerinfo[computer]);\n";
+  echo "document.forms[0].elements['sensors_costper'].value=changeDelta(document.forms[0].elements['sensors_upgrade'].value,$playerinfo[sensors]);\n";
+  echo "document.forms[0].elements['beams_costper'].value=changeDelta(document.forms[0].elements['beams_upgrade'].value,$playerinfo[beams]);\n";
+  echo "document.forms[0].elements['armour_costper'].value=changeDelta(document.forms[0].elements['armour_upgrade'].value,$playerinfo[armour]);\n";
+  echo "document.forms[0].elements['cloak_costper'].value=changeDelta(document.forms[0].elements['cloak_upgrade'].value,$playerinfo[cloak]);\n";
+  echo "document.forms[0].elements['torp_launchers_costper'].value=changeDelta(document.forms[0].elements['torp_launchers_upgrade'].value,$playerinfo[torp_launchers]);\n";
+  echo "document.forms[0].elements['hull_costper'].value=changeDelta(document.forms[0].elements['hull_upgrade'].value,$playerinfo[hull]);\n";
+  echo "document.forms[0].elements['shields_costper'].value=changeDelta(document.forms[0].elements['shields_upgrade'].value,$playerinfo[shields]);\n";
   echo "}";
   TEXT_JAVASCRIPT_END();
 
-  $onchange = "ONCHANGE=\"countTotal(this.form)\"";
-  $onclick =  "ONCLICK=\"countTotal(this.form)\"";
+  $onblur = "ONBLUR=\"countTotal()\"";
+  $onfocus =  "ONFOCUS=\"countTotal()\"";
+  $onchange =  "ONCHANGE=\"countTotal()\"";
+  $onclick =  "ONCLICK=\"countTotal()\"";
 
-   $l_creds_to_spend=str_replace("[credits]",NUMBER($playerinfo[credits]),$l_creds_to_spend);
-  echo "$l_creds_to_spend<BR>";
+// Create dropdowns when called
+function dropdown($element_name,$current_value)
+{
+global $onchange;
+$i = $current_value;
+$dropdownvar = "<select size='1' name='$element_name'";
+$dropdownvar = "$dropdownvar $onchange>\n";
+while ($i < 60)
+ {
+ if ($current_value == $i)
+  {
+  $dropdownvar = "$dropdownvar        <option value='$i' selected>$i</option>\n";
+  }
+ else
+  {
+  $dropdownvar = "$dropdownvar        <option value='$i'>$i</option>\n";
+  }
+ $i++;
+ }
+$dropdownvar = "$dropdownvar       </select>\n";
+return $dropdownvar;
+}
+
+
+  echo "<P>\n";
+  $l_creds_to_spend=str_replace("[credits]",NUMBER($playerinfo[credits]),$l_creds_to_spend);
+  echo "$l_creds_to_spend<BR>\n";
   if($allow_ibank)
   {
-    $igblink = "<A HREF=IGB.php>$l_igb_term</a>";
+    $igblink = "\n<A HREF=IGB.php>$l_igb_term</a>";
     $l_ifyouneedmore=str_replace("[igb]",$igblink,$l_ifyouneedmore);
 
     echo "$l_ifyouneedmore<BR>";
   }
-  echo "<A HREF=\"bounty.php\">$l_by_placebounty</A><BR>";
-  echo "<A HREF =\"credittrans.php\">Do a bulk credit transfer from planets.</A><BR><BR>";
-  echo "<BR>";
-  echo "<FORM ACTION=port2.php METHOD=POST>";
-  echo "<TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=0>";
-  echo "<TR BGCOLOR=\"$color_header\">";
-  echo "<TD><B>$l_device</B></TD><TD><B>$l_cost</B></TD><TD><B>$l_current</B></TD><TD><B>$l_max</B></TD><TD><B>$l_qty</B></TD>";
-  echo "<TD><B>$l_ship_levels</B></TD><TD><B>$l_cost</B></TD><TD><B>$l_current</B></TD><TD><B>$l_Upgrade</B></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD>$l_genesis</TD><TD>" . NUMBER($dev_genesis_price) . "</TD><TD>" . NUMBER($playerinfo[dev_genesis]) . "</TD><TD>$l_unlimited</TD><TD><INPUT TYPE=TEXT NAME=dev_genesis_number SIZE=4 MAXLENGTH=4 VALUE=0 $onchange></TD>";
-  echo "<TD>$l_hull</TD><TD>" . NUMBER($hull_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[hull]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=hull_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line2\">";
-  echo "<TD>$l_beacons</TD><TD>" . NUMBER($dev_beacon_price) . "</TD><TD>" . NUMBER($playerinfo[dev_beacon]) . "</TD><TD>$l_unlimited</TD><TD><INPUT TYPE=TEXT NAME=dev_beacon_number SIZE=4 MAXLENGTH=4 VALUE=0 $onchange></TD>";
-  echo "<TD>$l_engines</TD><TD>" . NUMBER($engine_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[engines]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=engine_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD>$l_ewd</TD><TD>" . NUMBER($dev_emerwarp_price) . "</TD><TD>" . NUMBER($playerinfo[dev_emerwarp]) . "</TD><TD>";
-  $avail_emerwarp = $max_emerwarp - $playerinfo[dev_emerwarp];
-  if($avail_emerwarp > 0)
+  echo "\n";
+  echo "<A HREF=\"bounty.php\">$l_by_placebounty</A><BR>\n";
+  echo "<A HREF =\"credittrans.php\">Do a bulk credit transfer from planets.</A><BR><BR>\n";
+  echo " <FORM ACTION=port2.php METHOD=POST>\n";
+  echo "  <TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=0>\n";
+  echo "   <TR BGCOLOR=\"$color_header\">\n";
+  echo "    <TD><B>$l_device</B></TD>\n";
+  echo "    <TD><B>$l_cost</B></TD>\n";
+  echo "    <TD><B>$l_current</B></TD>\n";
+  echo "    <TD><B>$l_max</B></TD>\n";
+  echo "    <TD><B>$l_qty</B></TD>\n";
+  echo "    <TD><B>$l_ship_levels</B></TD>\n";
+  echo "    <TD><B>$l_cost</B></TD>\n";
+  echo "    <TD><B>$l_current</B></TD>\n";
+  echo "    <TD><B>$l_upgrade</B></TD>\n";
+  echo "   </TR>\n";
+  echo "   <TR BGCOLOR=\"$color_line1\">\n";
+  echo "    <TD>$l_genesis</TD>\n";
+  echo "    <TD>" . NUMBER($dev_genesis_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[dev_genesis]) . "</TD>\n";
+  echo "    <TD>$l_unlimited</TD>\n";
+  echo "    <TD><INPUT TYPE=TEXT NAME=dev_genesis_number SIZE=4 MAXLENGTH=4 VALUE=0 $onblur></TD>\n";
+  echo "    <TD>$l_hull</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts1' name=hull_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[hull]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("hull_upgrade",$playerinfo[hull]);
+  echo "    </TD>\n";
+  echo "   </TR>\n";
+  echo "   <TR BGCOLOR=\"$color_line2\">\n";
+  echo "    <TD>$l_beacons</TD>\n";
+  echo "    <TD>" . NUMBER($dev_beacon_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[dev_beacon]) . "</TD>\n";
+  echo "    <TD>$l_unlimited</TD>\n";
+  echo "    <TD><INPUT TYPE=TEXT NAME=dev_beacon_number SIZE=4 MAXLENGTH=4 VALUE=0 $onblur></TD>\n";
+  echo "    <TD>$l_engines</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts2' size=10 name=engine_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[engines]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("engine_upgrade",$playerinfo[engines]);
+  echo "    </TD>\n";
+  echo "   </TR>\n";
+  echo "   <TR BGCOLOR=\"$color_line1\">\n";
+  echo "    <TD>$l_ewd</TD>\n";
+  echo "    <TD>" . NUMBER($dev_emerwarp_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[dev_emerwarp]) . "</TD>\n";
+  echo "    <TD>";
+  if($playerinfo[dev_emerwarp] != $max_emerwarp)
   {
-    echo NUMBER($avail_emerwarp) . "</TD><TD><INPUT TYPE=TEXT NAME=dev_emerwarp_number SIZE=4 MAXLENGTH=4 VALUE=0 $onchange>";
+    echo"<a href='#' onClick=\"MakeMax('dev_emerwarp_number', $emerwarp_free);countTotal();return false;\">";
+    echo NUMBER($emerwarp_free) . "</a></TD>\n";
+    echo"    <TD><INPUT TYPE=TEXT NAME=dev_emerwarp_number SIZE=4 MAXLENGTH=4 VALUE=0 $onblur>";
   }
   else
   {
-    echo "0</TD><TD>$l_full</TD>";
+    echo "0</TD>\n";
+    echo "    <TD><input type=text readonly class='portcosts1' NAME=dev_emerwarp_number MAXLENGTH=10 VALUE=$l_full $onblur tabindex='-1'>";
   }
-  echo "</TD>";
-  echo "<TD>$l_power</TD><TD>" . NUMBER($power_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[power]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=power_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line2\">";
-  echo "<TD>$l_warpedit</TD><TD>" . NUMBER($dev_warpedit_price) . "</TD><TD>" . NUMBER($playerinfo[dev_warpedit]) . "</TD><TD>$l_unlimited</TD><TD><INPUT TYPE=TEXT NAME=dev_warpedit_number SIZE=4 MAXLENGTH=4 VALUE=0 $onchange></TD>";
-  echo "<TD>$l_computer</TD><TD>" . NUMBER($computer_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[computer]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=computer_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD></TD><TD></TD><TD></TD><TD></TD><TD></TD>";
-  echo "<TD>$l_sensors</TD><TD>" . NUMBER($sensors_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[sensors]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=sensors_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line2\">";
-  echo "<TD>$l_deflect</TD><TD>" . NUMBER($dev_minedeflector_price) . "</TD><TD>" . NUMBER($playerinfo[dev_minedeflector]) . "</TD><TD>$l_unlimited</TD><TD><INPUT TYPE=TEXT NAME=dev_minedeflector_number SIZE=4 MAXLENGTH=10 VALUE=0 $onchange></TD>";
-  echo "<TD>$l_beams</TD><TD>" . NUMBER($beams_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[beams]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=beams_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD>$l_escape_pod</TD><TD>" . NUMBER($dev_escapepod_price) . "</TD>";
+  echo "</TD>\n";
+  echo "    <TD>$l_power</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts1' name=power_costper VALUE='0' tabindex='-1' $onblur></td>\n";
+  echo "    <TD>" . NUMBER($playerinfo[power]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("power_upgrade",$playerinfo[power]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line2\">\n";
+  echo "    <TD>$l_warpedit</TD>\n";
+  echo "    <TD>" . NUMBER($dev_warpedit_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[dev_warpedit]) . "</TD><TD>$l_unlimited</TD><TD><INPUT TYPE=TEXT NAME=dev_warpedit_number SIZE=4 MAXLENGTH=4 VALUE=0 $onblur></TD>";
+  echo "    <TD>$l_computer</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts2' name=computer_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[computer]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("computer_upgrade",$playerinfo[computer]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line1\">\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD>$l_sensors</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts1' name=sensors_costper VALUE='0' tabindex='-1' $onblur></td>\n";
+  echo "    <TD>" . NUMBER($playerinfo[sensors]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("sensors_upgrade",$playerinfo[sensors]);
+  echo "    </TD>\n";
+  echo "  </TR>";
+  echo "  <TR BGCOLOR=\"$color_line2\">\n";
+  echo "    <TD>$l_deflect</TD>\n";
+  echo "    <TD>" . NUMBER($dev_minedeflector_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[dev_minedeflector]) . "</TD>\n";
+  echo "    <TD>$l_unlimited</TD>\n";
+  echo "    <TD><INPUT TYPE=TEXT NAME=dev_minedeflector_number SIZE=4 MAXLENGTH=10 VALUE=0 $onblur></TD>\n";
+  echo "    <TD>$l_beams</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts2' name=beams_costper VALUE='0' tabindex='-1' $onblur></td>";
+  echo "    <TD>" . NUMBER($playerinfo[beams]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("beams_upgrade",$playerinfo[beams]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line1\">\n";
+  echo "    <TD>$l_escape_pod</TD>\n";
+  echo "    <TD>" . NUMBER($dev_escapepod_price) . "</TD>\n";
   if($playerinfo[dev_escapepod] == "N")
   {
-    echo "<TD>$l_none</TD><TD></TD><TD><INPUT TYPE=CHECKBOX NAME=escapepod_purchase VALUE=1 $onchange $onclick></TD>";
+    echo "    <TD>$l_none</TD>\n";
+    echo "    <TD></TD>\n";
+    echo "    <TD><INPUT TYPE=CHECKBOX NAME=escapepod_purchase VALUE=1 $onblur></TD>\n";
   }
   else
   {
-    echo "<TD>$l_equipped</TD><TD></TD><TD>$l_n_a</TD>";
+    echo "    <TD>$l_equipped</TD>\n";
+    echo "    <TD></TD>\n";
+    echo "    <TD>$l_n_a</TD>\n";
   }
-  echo "<TD>$l_armour</TD><TD>" . NUMBER($armour_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[armour]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=armour_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line2\">";
-  echo "<TD>$l_fuel_scoop</TD><TD>" . NUMBER($dev_fuelscoop_price) . "</TD>";
+  echo "    <TD>$l_armour</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts1' name=armour_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[armour]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("armour_upgrade",$playerinfo[armour]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line2\">\n";
+  echo "    <TD>$l_fuel_scoop</TD>\n";
+  echo "    <TD>" . NUMBER($dev_fuelscoop_price) . "</TD>\n";
   if($playerinfo[dev_fuelscoop] == "N")
   {
-    echo "<TD>$l_none</TD><TD></TD><TD><INPUT TYPE=CHECKBOX NAME=fuelscoop_purchase VALUE=1 $onchange $onclick></TD>";
+    echo "    <TD>$l_none</TD>\n";
+    echo "    <TD></TD>\n";
+    echo "    <TD><INPUT TYPE=CHECKBOX NAME=fuelscoop_purchase VALUE=1 $onblur></TD>\n";
   }
   else
   {
-    echo "<TD>$l_equipped</TD><TD></TD><TD>$l_n_a</TD>";
+    echo "    <TD>$l_equipped</TD>\n";
+    echo "    <TD></TD>\n";
+    echo "    <TD>$l_n_a</TD>\n";
   }
-  echo "<TD>$l_cloak</TD><TD>" . NUMBER($cloak_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[cloak]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=cloak_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD>$l_lssd</TD><TD>" . NUMBER($dev_lssd_price) . "</TD>";
+  echo "    <TD>$l_cloak</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts2' name=cloak_costper VALUE='0' tabindex='-1' $onblur $onfocus></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[cloak]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("cloak_upgrade",$playerinfo[cloak]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line1\">\n";
+  echo "    <TD>$l_lssd</TD>\n";
+  echo "    <TD>" . NUMBER($dev_lssd_price) . "</TD>\n";
   if($playerinfo[dev_lssd] == "N")
   {
-    echo "<TD>$l_none</TD><TD></TD><TD><INPUT TYPE=CHECKBOX NAME=lssd_purchase VALUE=1 $onchange $onclick></TD>";
+    echo "    <TD>$l_none</TD>\n";
+    echo "    <TD></TD>\n";
+    echo "    <TD><INPUT TYPE=CHECKBOX NAME=lssd_purchase VALUE=1 $onblur></TD>\n";
   }
   else
   {
-    echo "<TD>$l_equipped</TD><TD></TD><TD>$l_n_a</TD>";
+    echo "    <TD>$l_equipped</TD>\n";
+    echo "    <TD></TD>\n";
+    echo "    <TD>$l_n_a</TD>\n";
   }
-  echo "<TD>$l_torp_launch</TD><TD>" . NUMBER($torp_launchers_upgrade_cost) . "</TD><TD>" . NUMBER($playerinfo[torp_launchers]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=torp_launchers_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line2\">";
-  echo "<TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>$l_shields</TD><TD>".NUMBER($shields_upgrade_cost)."</TD><TD>" . NUMBER($playerinfo[shields]) . "</TD><TD><INPUT TYPE=CHECKBOX NAME=shields_upgrade VALUE=1 $onchange $onclick></TD>";
-  echo "</TR>";
-  echo "</TABLE>";
-  echo "<BR>";
-  echo "<TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=0>";
-  echo "<TR BGCOLOR=\"$color_header\"><TD><B>$l_item</B></TD><TD><B>$l_cost</B></TD><TD><B>$l_current</B></TD><TD><B>$l_max</B></TD><TD><B>$l_qty</B></TD><TD><B>$l_item</B></TD><TD><B>$l_cost</B></TD><TD><B>$l_current</B></TD><TD><B>$l_max</B></TD><TD><B>$l_qty</B></TD></TR>";
-  echo "<TR BGCOLOR=\"$color_line1\">";
-  echo "<TD>$l_fighters</TD><TD>" . NUMBER($fighter_price) . "</TD><TD>" . NUMBER($playerinfo[ship_fighters]) . " / " . NUMBER($fighter_max) . "</TD><TD>" . NUMBER($fighter_free) . "</TD>";
-  echo "<TD>";
+  echo "    <TD>$l_torp_launch</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts1' name=torp_launchers_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[torp_launchers]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("torp_launchers_upgrade",$playerinfo[torp_launchers]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line2\">\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD></TD>\n";
+  echo "    <TD>$l_shields</TD>\n";
+  echo "    <TD><input type=text readonly class='portcosts2' name=shields_costper VALUE='0' tabindex='-1' $onblur></TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[shields]) . "</TD>\n";
+  echo "    <TD>\n       ";
+  echo dropdown("shields_upgrade",$playerinfo[shields]);
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo " </TABLE>\n";
+  echo " <BR>\n";
+  echo " <TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=0>\n";
+  echo "  <TR BGCOLOR=\"$color_header\">\n";
+  echo "    <TD><B>$l_item</B></TD>\n";
+  echo "    <TD><B>$l_cost</B></TD>\n";
+  echo "    <TD><B>$l_current</B></TD>\n";
+  echo "    <TD><B>$l_max</B></TD>\n";
+  echo "    <TD><B>$l_qty</B></TD>\n";
+  echo "    <TD><B>$l_item</B></TD>\n";
+  echo "    <TD><B>$l_cost</B></TD>\n";
+  echo "    <TD><B>$l_current</B></TD>\n";
+  echo "    <TD><B>$l_max</B></TD>\n";
+  echo "    <TD><B>$l_qty</B></TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line1\">\n";
+  echo "    <TD>$l_fighters</TD>\n";
+  echo "    <TD>" . NUMBER($fighter_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[ship_fighters]) . " / " . NUMBER($fighter_max) . "</TD>\n";
+  echo "    <TD>";
   if($playerinfo[ship_fighters] != $fighter_max)
   {
-    echo "<INPUT TYPE=TEXT NAME=fighter_number SIZE=6 MAXLENGTH=10 VALUE=0 $onchange>";
+    echo "<a href='#' onClick=\"MakeMax('fighter_number', $fighter_free);countTotal();return false;\"; $onblur;>" . NUMBER($fighter_free) . "</a></TD>\n";
+    echo "    <TD><INPUT TYPE=TEXT NAME=fighter_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
   {
-    echo "$l_full";
+    echo "0<TD><input type=text readonly class='portcosts1' NAME=fighter_number MAXLENGTH=10 VALUE=$l_full $onblur tabindex='-1'>";
   }
-  echo "</TD>";
-  echo "<TD>$l_torps</TD><TD>" . NUMBER($torpedo_price) . "</TD><TD>" . NUMBER($playerinfo[torps]) . " / " . NUMBER($torpedo_max) . "</TD><TD>" . NUMBER($torpedo_free) . "</TD>";
-  echo "<TD>";
+  echo "    </TD>\n";
+  echo "    <TD>$l_torps</TD>\n";
+  echo "    <TD>" . NUMBER($torpedo_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[torps]) . " / " . NUMBER($torpedo_max) . "</TD>\n";
+  echo "    <TD>";
   if($playerinfo[torps] != $torpedo_max)
   {
-    echo "<INPUT TYPE=TEXT NAME=torpedo_number SIZE=6 MAXLENGTH=10 VALUE=0 $onchange>";
+    echo "<a href='#' onClick=\"MakeMax('torpedo_number', $torpedo_free);countTotal();return false;\"; $onblur;>" . NUMBER($torpedo_free) . "</a></TD>\n";
+    echo "    <TD><INPUT TYPE=TEXT NAME=torpedo_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
   {
-    echo "$l_full";
+    echo "0<TD><input type=text readonly class='portcosts1' NAME=torpedo_number MAXLENGTH=10 VALUE=$l_full $onblur tabindex='-1'>";
   }
-  echo "</TD>";
-  echo "</TR>";
-  echo "<TR BGCOLOR=\"$color_line2\">";
-  echo "<TD>$l_armourpts</TD><TD>" . NUMBER($armour_price) . "</TD><TD>" . NUMBER($playerinfo[armour_pts]) . " / " . NUMBER($armour_max) . "</TD><TD>" . NUMBER($armour_free) . "</TD>";
-  echo "<TD>";
+  echo "</TD>\n";
+  echo "  </TR>\n";
+  echo "  <TR BGCOLOR=\"$color_line2\">\n";
+  echo "    <TD>$l_armourpts</TD>\n";
+  echo "    <TD>" . NUMBER($armour_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[armour_pts]) . " / " . NUMBER($armour_max) . "</TD>\n";
+  echo "    <TD>";
   if($playerinfo[armour_pts] != $armour_max)
   {
-    echo "<INPUT TYPE=TEXT NAME=armour_number SIZE=6 MAXLENGTH=10 VALUE=0 $onchange>";
+    echo "<a href='#' onClick=\"MakeMax('armour_number', $armour_free);countTotal();return false;\"; $onblur;>" . NUMBER($armour_free) . "</a></TD>\n";
+    echo "    <TD><INPUT TYPE=TEXT NAME=armour_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
   {
-    echo "$l_full";
+    echo "0<TD><input type=text readonly class='portcosts2' NAME=armour_number MAXLENGTH=10 VALUE=$l_full tabindex='-1' $onblur>";
   }
-  echo "</TD>";
-  echo "<TD>$l_colonists</TD><TD>" . NUMBER($colonist_price) . "</TD><TD>" . NUMBER($playerinfo[ship_colonists]) . "</TD><TD>" . NUMBER($colonist_max) . "</TD>";
-  echo "<TD>";
-  if($colonist_max)
+  echo "</TD>\n";
+  echo "    <TD>$l_colonists</TD>\n";
+  echo "    <TD>" . NUMBER($colonist_price) . "</TD>\n";
+  echo "    <TD>" . NUMBER($playerinfo[ship_colonists]) . " / ". NUMBER($colonist_max). "</TD>\n";
+  echo "    <TD>";
+  if($playerinfo[ship_colonists] != $colonist_max)
   {
-    echo "<INPUT TYPE=TEXT NAME=colonist_number SIZE=6 MAXLENGTH=10 VALUE=0 $onchange>";
+    echo "<a href='#' onClick=\"MakeMax('colonist_number', $colonist_free);countTotal();return false;\"; $onblur;>" . NUMBER($colonist_free) . "</a></TD>\n";
+    echo "    <TD><INPUT TYPE=TEXT NAME=colonist_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
   {
-    echo "$l_full";
+    echo "0<TD><input type=text readonly class='portcosts2' NAME=colonist_number MAXLENGTH=10 VALUE=$l_full tabindex='-1' $onblur>";
   }
-  echo "</TD>";
-  echo "</TR>";
-  echo "</TABLE><BR>";
-  echo "<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>";
-  echo "<TR><TD><INPUT TYPE=SUBMIT VALUE=$l_buy></TD>";
-  echo "<TD ALIGN=RIGHT>";
-  TEXT_JAVASCRIPT_BEGIN();
-  echo "document.write('$l_totalcost: <INPUT TYPE=TEXT NAME=total_cost SIZE=10 VALUE=0>');";
-  TEXT_JAVASCRIPT_END();
-  echo "</TD></TR>";
-  echo "</TABLE>";
-  echo "</FORM>";
-  echo "$l_would_dump <A HREF=dump.php>$l_here</A>.";
+  echo "    </TD>\n";
+  echo "  </TR>\n";
+  echo " </TABLE><BR>\n";
+  echo " <TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=0>\n";
+  echo "  <TR>\n";
+  echo "    <TD><INPUT TYPE=SUBMIT VALUE=$l_buy $onclick></TD>\n";
+  echo "    <TD ALIGN=RIGHT>$l_totalcost: <INPUT TYPE=TEXT style=\"text-align:right\" NAME=total_cost SIZE=22 VALUE=0 $onfocus $onblur $onchange $onclick></td>\n";
+  echo "  </TR>\n";
+  echo " </TABLE>\n";
+  echo "</FORM>\n";
+  echo "$l_would_dump <A HREF=dump.php>$l_here</A>.\n";
 }
 else
 {
-  echo "$l_noport!";
+  echo "$l_noport!\n";
 }
 
-echo "<BR><BR>";
-
+echo "\n";
+echo "<BR><BR>\n";
 TEXT_GOTOMAIN();
+echo "\n";
 
 include("footer.php");
 
