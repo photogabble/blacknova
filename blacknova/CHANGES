@@ -1,3 +1,10 @@
+Ouroborus (14 July 2002)
+--------------------------------
+Converted Distance calcs to Cartesian - no more float! (angle_a, angle_b, and distance are x,y,z - all ints now).
+Added calc_dist() to global_funcs.php
+Bunch of tiny changes to the old stuff to use calc_dist(). 
+Section 4 of create-universe needed variable propogation for iamsure's override code.
+
 TheMightyDude (14 July 2002)
 --------------------------------
 Added the following which was descused and requested in irc.

@@ -236,7 +236,7 @@ else
       else
         $dst = $planet2[sector_id];
 
-      $dist = traderoute_distance($traderoutes[$i][source_type], $traderoutes[$i][dest_type], $src, $dst, $traderoutes[$i][circuit]);
+      $dist = traderoute_distance($traderoutes[$i][source_type], $traderoutes[$i][dest_type], $src['sector_id'], $dst['sector_id'], $traderoutes[$i][circuit]);
 
       $l_tdr_escooped2 = $l_tdr_escooped;
       $l_tdr_escooped2 = str_replace("[tdr_dist_triptime]", $dist[triptime], $l_tdr_escooped2);
@@ -354,13 +354,13 @@ function traderoute_distance($type1, $type2, $start, $dest, $circuit, $sells = '
 {
   global $playerinfo, $shipinfo;
   global $level_factor;
-  global $db, $dbtables;
+//  global $db, $dbtables;
 
   $retvalue[triptime] = 0;
   $retvalue[scooped1] = 0;
   $retvalue[scooped2] = 0;
   $retvalue[scooped] = 0;
-
+/*
   if($type1 == 'L')
   {
     $query = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id=$start");
@@ -372,8 +372,8 @@ function traderoute_distance($type1, $type2, $start, $dest, $circuit, $sells = '
     $query = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id=$dest");
     $dest = $query->fields;
   }
-
-  if($start[sector_id] == $dest[sector_id])
+*/
+  if($start == $dest)
   {
     if($circuit == '1')
       $retvalue[triptime] = '1';
@@ -382,6 +382,7 @@ function traderoute_distance($type1, $type2, $start, $dest, $circuit, $sells = '
     return $retvalue;
   }
 
+/*  Throw this old stuff away, the new distance calcs use cartesian coordinates
   $deg = pi() / 180;
 
   $sa1 = $start[angle1] * $deg;
@@ -392,6 +393,13 @@ function traderoute_distance($type1, $type2, $start, $dest, $circuit, $sells = '
   $y = $start[distance] * sin($sa1) * sin($sa2) - $dest[distance] * sin($fa1) * sin($fa2);
   $z = $start[distance] * cos($sa1) - $dest[distance] * cos($fa1);
   $distance = round(sqrt(mypw($x, 2) + mypw($y, 2) + mypw($z, 2)));
+*/
+  $distance=calc_dist($start,$dest);
+  if($distance<1) {
+    // TODO: The query failed. What now?
+  }
+
+
   $shipspeed = mypw($level_factor, $shipinfo[engines]);
   $triptime = round($distance / $shipspeed);
 
@@ -1195,7 +1203,7 @@ function traderoute_engage($j)
     $dist[scooped] = 0;
   }
   else
-    $dist = traderoute_distance('P', 'P', $sourceport, $destport, $traderoute[circuit]);
+    $dist = traderoute_distance('P', 'P', $sourceport['sector_id'], $destport['sector_id'], $traderoute[circuit]);
 
 
 // ********************************************

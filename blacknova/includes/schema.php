@@ -148,9 +148,14 @@ $db->Execute("CREATE TABLE $dbtables[universe](" .
              "KEY zone_id (zone_id)," .
              "KEY port_type (port_type)," .
              "beacon tinytext," .
-             "angle1 float(10,2) DEFAULT '0.00' NOT NULL," .
-             "angle2 float(10,2) DEFAULT '0.00' NOT NULL," .
-             "distance bigint(20) unsigned DEFAULT '0' NOT NULL," .
+
+#             "angle1 float(10,2) DEFAULT '0.00' NOT NULL," .
+#             "angle2 float(10,2) DEFAULT '0.00' NOT NULL," .
+#             "distance bigint(20) unsigned DEFAULT '0' NOT NULL," .
+             "x bigint(20) DEFAULT '0' NOT NULL," .
+             "y bigint(20) DEFAULT '0' NOT NULL," .
+             "z bigint(20) DEFAULT '0' NOT NULL," .
+
              "fighters bigint(20) DEFAULT '0' NOT NULL," .
              "PRIMARY KEY (sector_id)" .
              ")");

@@ -1221,4 +1221,35 @@ function ip_log($player_id,$ip_address)
       $res = $db->Execute("INSERT INTO $dbtables[ip_log] (player_id,ip_address,time) VALUES ($player_id,'$ip_address',NOW())");
    }
 }
+
+// calculate the distance between two sectors.
+// We even run the queries ourselves.
+function calc_dist($src,$dst) {
+  global $db;
+  global $dbtables;
+
+  $results = $db->Execute("SELECT x,y,z FROM ".$dbtables['universe'].
+                          " WHERE sector_id=$src OR sector_id=$dst");
+
+// Make sure you check for this when calling this function.
+  if(!$results) return 0;
+
+
+  $x = $results->fields['x'];
+  $y = $results->fields['y'];
+  $z = $results->fields['z'];
+
+  $results->MoveNext();
+
+  $x -= $results->fields['x'];
+  $y -= $results->fields['y'];
+  $z -= $results->fields['z'];
+
+  $x = sqrt($x*$x + $y*$y + $z*$z);
+
+// Make sure it's never less than 1.
+//  if($x > 1) return 1;
+
+  return $x;
+}
 ?>

@@ -332,7 +332,7 @@ function Real_Space_Move($destination)
 
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
   $shipinfo = $res->fields;
-
+/* Throw this old stuff away, the new distance calcs use cartesian coordinates
   $result2 = $db->Execute("SELECT angle1,angle2,distance FROM $dbtables[universe] WHERE sector_id=$playerinfo[sector]");
   $start = $result2->fields;
   
@@ -346,6 +346,13 @@ function Real_Space_Move($destination)
   $y = ($start[distance] * sin($sa1) * sin($sa2)) - ($finish[distance] * sin($fa1) * sin($fa2));
   $z = ($start[distance] * cos($sa1)) - ($finish[distance] * cos($fa1));
   $distance = round(sqrt(mypw($x, 2) + mypw($y, 2) + mypw($z, 2)));
+*/
+  $distance=calc_dist($playerinfo['sector'],$destination);
+  if($distance<1) {
+    // TODO: The query failed. What now?
+  }
+
+
   $shipspeed = mypw($level_factor, $shipinfo[engines]);
   $triptime = round($distance / $shipspeed);
 

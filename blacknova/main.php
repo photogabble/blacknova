@@ -811,7 +811,7 @@ else
 
 
 $player_bnthelper_string="<!--player info:" . $shipinfo[hull] . ":" .  $shipinfo[engines] . ":"  .  $shipinfo[power] . ":" .  $shipinfo[computer] . ":" . $shipinfo[sensors] . ":" .  $shipinfo[beams] . ":" . $shipinfo[torp_launchers] . ":" .  $shipinfo[torps] . ":" . $shipinfo[shields] . ":" .  $shipinfo[armour] . ":" . $shipinfo[armour_pts] . ":" .  $shipinfo[cloak] . ":" . $playerinfo[credits] . ":" .  $shipinfo[sector_id] . ":" . $shipinfo[ore] . ":" .  $shipinfo[organics] . ":" . $shipinfo[goods] . ":" .  $shipinfo[energy] . ":" . $shipinfo[colonists] . ":" .  $shipinfo[fighters] . ":" . $playerinfo[turns] . ":" .  $shipinfo[on_planet] . ":" . $shipinfo[dev_warpedit] . ":" .  $shipinfo[dev_genesis] . ":" . $shipinfo[dev_beacon] . ":" .  $shipinfo[dev_emerwarp] . ":" . $shipinfo[dev_escapepod] . ":" .  $shipinfo[dev_fuelscoop] . ":" . $shipinfo[dev_minedeflector] . ":-->";
-$rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
+$rspace_bnthelper_string="<!--rspace:" . $sectorinfo['x'] . ":" . $sectorinfo['y'] . ":" . $sectorinfo['z'] . ":-->";
 echo $player_bnthelper_string;
 echo $link_bnthelper_string;
 echo $port_bnthelper_string;

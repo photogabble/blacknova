@@ -355,7 +355,7 @@ else
 
 
 //-------------------------------------------------------------------------------------------------
-$rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
+$rspace_bnthelper_string="<!--rspace:" . $sectorinfo['x'] . ":" . $sectorinfo['y'] . ":" . $sectorinfo['z'] . ":-->";
 echo $link_bnthelper_string;
 echo $port_bnthelper_string;
 echo $planet_bnthelper_string;

@@ -242,9 +242,15 @@ else
                                       }
                                       echo "</SELECT></TD></TR>";
           echo "<TR><TD><tt>          Beacon     </tt></TD><TD COLSPAN=5><INPUT TYPE=TEXT SIZE=70 NAME=beacon VALUE=\"$row[beacon]\"></TD></TR>";
+/*  Throw this old stuff away, the new distance calcs use cartesian coordinates
           echo "<TR><TD><tt>          Distance   </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=distance VALUE=\"$row[distance]\"></TD>";
           echo "<TD ALIGN=Right><tt>  Angle1     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=angle1 VALUE=\"$row[angle1]\"></TD>";
           echo "<TD ALIGN=Right><tt>  Angle2     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=angle2 VALUE=\"$row[angle2]\"></TD></TR>";
+*/
+          echo "<TR><TD><tt>          X   </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=x VALUE=\"$row['x']\"></TD>";
+          echo "<TD ALIGN=Right><tt>  Y     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=y VALUE=\"$row['y']\"></TD>";
+          echo "<TD ALIGN=Right><tt>  Z     </tt></TD><TD><INPUT TYPE=TEXT SIZE=9 NAME=z VALUE=\"$row['z']\"></TD></TR>";
+
           echo "<TR><TD COLSPAN=6>    <HR>       </TD></TR>";
           echo "</TABLE>";
 

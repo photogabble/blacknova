@@ -10,12 +10,12 @@
 	connectdb();
 
 
-	$result = $db->Execute ("SELECT sector_id, angle1, angle2,distance FROM $dbtables[universe] ORDER BY sector_id ASC");
+  $result = $db->Execute ("SELECT sector_id, x, y, z FROM $dbtables[universe] ORDER BY sector_id ASC");
         bigtitle();
 	while (!$result->EOF)
 	{
 		$row = $result->fields;
-    echo "$row[sector_id], $row[angle1], $row[angle2], $row[distance]<BR>";
+    echo "$row[sector_id], $row[x], $row[y], $row[z]<BR>";
     $result->MoveNext();
 	}
 	echo "Click <a href=main.php>here</a> to return to main menu.";
