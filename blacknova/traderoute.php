@@ -2068,7 +2068,7 @@ function traderoute_engage($j)
 
   $db->Execute("UPDATE $dbtables[players] SET turns=turns-$dist[triptime], credits=credits+$total_profit, turns_used=turns_used+$dist[triptime] WHERE player_id=$playerinfo[player_id]");
   $db->Execute("UPDATE $dbtables[ships] SET sector_id=$newsec WHERE ship_id=$shipinfo[ship_id]");
-  $playerinfo[credits]+=$total_profit;
+  $playerinfo[credits]+=$total_profit - $sourcecost;
   $playerinfo[turns]-=$dist[triptime];
 
   echo "<font size=3 color=white><b>$l_tdr_turnsused : <font color=red>$dist[triptime]</font></b><br>";

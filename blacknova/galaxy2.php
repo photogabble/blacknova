@@ -8,9 +8,14 @@
 	include("header.php");
 
 	connectdb();
-        $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
-        $playerinfo = $res->fields;
 
+  if(checklogin())
+  {
+    die();
+  }
+
+  $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+  $playerinfo = $res->fields;
 
 	$result = $db->Execute ("SELECT sector_id, port_type FROM $dbtables[universe] ORDER BY sector_id ASC");
         $result2 = $db->Execute("SELECT distinct sector_id FROM $dbtables[movement_log] WHERE player_id = $playerinfo[player_id] order by sector_id ASC");

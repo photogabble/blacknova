@@ -1,0 +1,8 @@
+This file is used to keep track of things that need doing.
+
+ - Redo the BNN features. More precise death events, custom news, lang support, etc
+ - Insert a log entry when player captures a planet. Add creds and cols values to it
+ - Remove planet trading. It's not used anyway.
+ - Perform html checks on string entries (zone, planet, player, ship). Also escape them properly for inserting in the db, reading the magic quotes setting in php. Also trim and check for space-only names.
+ - Bring the language files up to date (exterior help needed here)
+ - Fix the log when an attacker doesn't destroy a planet, but survives

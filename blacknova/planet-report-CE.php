@@ -112,15 +112,24 @@ function collect_credits($planetarray)
     echo "<BR>";
     $CS = real_space_move($s_p_pair[$i][0]);
 
-    if($CS == "GO")
-      $CS = Take_Credits($s_p_pair[$i][0], $s_p_pair[$i][1]);
+    if ($CS == "HOSTILE")
+    {
+	$CS = "GO";
+    } else if($CS == "GO")
+    {
+	$CS = Take_Credits($s_p_pair[$i][0], $s_p_pair[$i][1]);
+    }
     else
-     echo "<BR> NOT ENOUGH TURNS TO TAKE CREDITS<BR>";
+    {
+	echo "<BR> NOT ENOUGH TURNS TO TAKE CREDITS<BR>";
+    }
+       
+
 
     echo "<BR>";
   }
 
-  if($CS != "GO")
+  if($CS != "GO" && $CS != "HOSTILE")
   {
     echo "<BR>Not enough turns to complete credit collection<BR>";
   }
@@ -348,6 +357,7 @@ function Real_Space_Move($destination)
   $distance = round(sqrt(mypw($x, 2) + mypw($y, 2) + mypw($z, 2)));
 */
   $distance=calc_dist($playerinfo['sector'],$destination);
+
   if($distance<1) {
     // TODO: The query failed. What now?
   }
@@ -414,24 +424,45 @@ function Real_Space_Move($destination)
   }
   else
   {
-    $ok=1;
-    $sector = $destination;
-    $calledfrom = "planet-report.php";
-    include("check_fighters.php");
-    if($ok>0)
-    {
+
+// modified from traderoute.php
+// ********************************
+// ***** Sector Defense Check *****
+// ********************************
+  $hostile = 0;
+
+
+
+  $result98 = $db->Execute("SELECT * FROM $dbtables[sector_defence] WHERE sector_id = $destination AND player_id <> $playerinfo[player_id]");
+  if(!$result98->EOF)
+  {
+     $fighters_owner = $result98->fields;
+     $nsresult = $db->Execute("SELECT * from $dbtables[players] where player_id=$fighters_owner[player_id]");
+     $nsfighters = $nsresult->fields;
+     if ($nsfighters[team] != $playerinfo[team] || $playerinfo[team]==0)
+            $hostile = 1;
+  }
+
+
+  if(($hostile > 0) )
+  {
+	$retval = "HOSTILE";
+	// need to add a language value for this
+	echo "CANNOT MOVE TO SECTOR $destination THROUGH HOSTILE DEFENSES<br>";
+
+
+  } else
+  {
        $stamp = date("Y-m-d H-i-s");
        $update = $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
        $update = $db->Execute("UPDATE $dbtables[ships] SET sector_id=$destination,energy=energy+$energyscooped WHERE ship_id=$shipinfo[ship_id]");
        $l_rs_ready=str_replace("[sector]",$destination,$l_rs_ready);
-       $l_rs_ready=str_replace("[triptime]",NUMBER($triptime),$l_rs_ready);
+       $l_rs_ready= str_replace("[triptime]",NUMBER($triptime),$l_rs_ready);
        $l_rs_ready=str_replace("[energy]",NUMBER($energyscooped),$l_rs_ready);
        echo "$l_rs_ready<BR>";
-       include("check_mines.php");
-    }
-
-    $retval = "GO";
+       $retval = "GO";	
   }
+ }
 
   return($retval);
 }
