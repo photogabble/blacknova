@@ -21,7 +21,10 @@ if(checklogin())
 $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
-$result4 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+$shipinfo = $res->fields;
+
+$result4 = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$shipinfo[sector_id]'");
 $sectorinfo=$result4->fields;
 
 bigtitle();
@@ -34,7 +37,7 @@ if($playerinfo[turns] < 1)
   die();
 }
 
-if($playerinfo[dev_warpedit] < 1)
+if($shipinfo[dev_warpedit] < 1)
 {
   echo "$l_warp_none<BR><BR>";
   TEXT_GOTOMAIN();
@@ -72,7 +75,7 @@ if($zoneinfo[allow_warpedit] == 'L')
   }
 }
 
-$result2 = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start=$playerinfo[sector] ORDER BY link_dest ASC");
+$result2 = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start=$shipinfo[sector_id] ORDER BY link_dest ASC");
 if($result2 < 1)
 {
   echo "$l_warp_nolink<BR><BR>";

@@ -19,6 +19,9 @@ if(checklogin())
 $result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
 $playerinfo=$result->fields;
 
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+$shipinfo = $res->fields;
+
 if($playerinfo[turns] < 1)
 {
   echo "$l_warp_turn<BR><BR>";
@@ -27,7 +30,7 @@ if($playerinfo[turns] < 1)
   die();
 }
 
-if($playerinfo[dev_warpedit] < 1)
+if($shipinfo[dev_warpedit] < 1)
 {
   echo "$l_warp_none<BR><BR>";
   TEXT_GOTOMAIN();
@@ -35,7 +38,7 @@ if($playerinfo[dev_warpedit] < 1)
   die();
 }
 
-$res = $db->Execute("SELECT allow_warpedit,$dbtables[universe].zone_id FROM $dbtables[zones],$dbtables[universe] WHERE sector_id=$playerinfo[sector] AND $dbtables[universe].zone_id=$dbtables[zones].zone_id");
+$res = $db->Execute("SELECT allow_warpedit,$dbtables[universe].zone_id FROM $dbtables[zones],$dbtables[universe] WHERE sector_id=$shipinfo[sector_id] AND $dbtables[universe].zone_id=$dbtables[zones].zone_id");
 $zoneinfo = $res->fields;
 if($zoneinfo[allow_warpedit] == 'N')
 {
@@ -71,7 +74,7 @@ if($zoneinfo[allow_warpedit] == 'N' && !$oneway)
   die();
 }
 
-$res = $db->Execute("SELECT COUNT(*) as count FROM $dbtables[links] WHERE link_start=$playerinfo[sector]");
+$res = $db->Execute("SELECT COUNT(*) as count FROM $dbtables[links] WHERE link_start=$shipinfo[sector_id]");
 $row = $res->fields;
 $numlink_start=$row[count];
 
@@ -87,7 +90,7 @@ if($numlink_start>=$link_max )
 
 
 
-$result3 = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start=$playerinfo[sector]");
+$result3 = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start=$shipinfo[sector_id]");
 if($result3 > 0)
 {
   while(!$result3->EOF)
@@ -104,14 +107,15 @@ if($result3 > 0)
   $l_warp_linked = str_replace("[target_Sector]", $target_sector, $l_warp_linked);
     echo "$l_warp_linked<BR><BR>";
   }
-  elseif($playerinfo[sector] == $target_sector)
+  elseif($shipinfo[sector_id] == $target_sector)
   {
     echo $l_warp_cantsame;
   }
   else
   {
-    $insert1 = $db->Execute ("INSERT INTO $dbtables[links] SET link_start=$playerinfo[sector], link_dest=$target_sector");
-    $update1 = $db->Execute ("UPDATE $dbtables[players] SET dev_warpedit=dev_warpedit - 1, turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+    $insert1 = $db->Execute ("INSERT INTO $dbtables[links] SET link_start=$shipinfo[sector_id], link_dest=$target_sector");
+    $update1 = $db->Execute ("UPDATE $dbtables[ships] SET dev_warpedit=dev_warpedit - 1 WHERE ship_id=$shipinfo[ship_id]");
+    $update1 = $db->Execute ("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
     if($oneway)
     {
       echo "$l_warp_coneway $target_sector.<BR><BR>";
@@ -124,7 +128,7 @@ if($result3 > 0)
         while(!$result4->EOF)
         {
           $row = $result4->fields;
-          if($playerinfo[sector] == $row[link_dest])
+          if($shipinfo[sector_id] == $row[link_dest])
           {
             $flag2 = 1;
           }
@@ -133,7 +137,7 @@ if($result3 > 0)
       }
       if($flag2 != 1)
       {
-        $insert2 = $db->Execute ("INSERT INTO $dbtables[links] SET link_start=$target_sector, link_dest=$playerinfo[sector]");
+        $insert2 = $db->Execute ("INSERT INTO $dbtables[links] SET link_start=$target_sector, link_dest=$shipinfo[sector_id]");
       }
 
       echo "$l_warp_ctwoway $target_sector.<BR><BR>";

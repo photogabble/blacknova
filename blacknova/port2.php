@@ -566,7 +566,8 @@ else
       ";
 
       /* Update ship cargo, credits and turns */
-      $trade_result     = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost, ship_ore=ship_ore+$trade_ore, ship_organics=ship_organics+$trade_organics, ship_goods=ship_goods+$trade_goods, ship_energy=ship_energy+$trade_energy where player_id=$playerinfo[player_id]");
+      $trade_result     = $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost WHERE player_id=$playerinfo[player_id]");
+      $trade_result = $db->Execute("UPDATE $dbtables[ships] SET ore=ore+$trade_ore, organics=organics+$trade_organics, goods=goods+$trade_goods, energy=energy+$trade_energy WHERE ship_id=$shipinfo[ship_id]");
 
       /* Make all trades positive to change port values*/
       $trade_ore        = round(abs($trade_ore));

@@ -6,7 +6,6 @@ include("languages/$lang");
 $title="Game Settings";
 include("header.php");
 
-
 bigtitle();
 
 //-------------------------------------------------------------------------------------------------
