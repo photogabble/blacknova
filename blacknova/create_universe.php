@@ -268,7 +268,7 @@ switch ($step) {
       $update.="sector_id=9999999";
       $db->Execute("$update");
       print("");
-      PrintFlush("- completed successfully.<BR>");  
+      PrintFlush("- completed successfully.<BR>");
       ### Finding random sectors where port=none and getting their sector ids in one sql query
       ### For Ore Ports
       $initsore = $ore_limit * $initscommod / 100.0;
@@ -406,7 +406,7 @@ switch ($step) {
                $i=0;
                $j++;
             } else {
-	       $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
+            $update.="(port_type='none' and sector_id=$result[sector_id]) or ";
                $i++;
                $j++;
             }
@@ -569,7 +569,7 @@ switch ($step) {
       echo "<B><BR>Configuring game scheduler<BR></B>";
 
       echo "<BR>Update ticks will occur every $sched_ticks minutes<BR>";
- 
+
       echo "Turns will occur every $sched_turns minutes.<br>";
       $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_turns, 0, 'sched_turns.php', '',unix_timestamp(now()))");
 
@@ -618,9 +618,9 @@ switch ($step) {
       echo "<BR>Password: $password<BR></B></center>";
       $stamp=date("Y-m-d H:i:s");
       $password = substr(md5($password),0,$maxlen_password);
-      $db->Execute("INSERT INTO $dbtables[ships] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N',-1,'Y')");
+      $db->Execute("INSERT INTO $dbtables[ships] VALUES('','WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$start_turns,'','N',0,1,0,0,'$start_pod','$start_scoop',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N',-1,'Y')");
       $db->Execute("INSERT INTO $dbtables[zones] VALUES('','WebMaster\'s Territory', 1, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
-  
+
       PrintFlush("<BR><BR><center><BR><B>Congratulations! Universe created successfully.<BR>");
       PrintFlush("Click <A HREF=login.php>here</A> to return to the login screen.</B></center>");
       break;

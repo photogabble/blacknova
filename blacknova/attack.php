@@ -1,5 +1,5 @@
 <?
-  
+
 include("config.php");
 updatecookie();
 include("languages/$lang");
@@ -119,10 +119,10 @@ else
             $resx = $hasbounty->fields;
             $btyamount = $resx[btytotal];
          }
-         if($btyamount <= 0) 
+         if($btyamount <= 0)
          {
             $bounty = ROUND($playerscore * $bounty_maxvalue);
-            $insert = $db->Execute("INSERT INTO $dbtables[bounty] (bounty_on,placed_by,amount) values ($playerinfo[ship_id], 0 ,$bounty)");      
+            $insert = $db->Execute("INSERT INTO $dbtables[bounty] (bounty_on,placed_by,amount) values ($playerinfo[ship_id], 0 ,$bounty)");
             playerlog($playerinfo[ship_id],LOG_BOUNTY_FEDBOUNTY,"$bounty");
             echo $l_by_fedbounty2 . "<BR><BR>";
          }
@@ -387,7 +387,7 @@ else
         {
           $rating=round($targetinfo[rating]/2);
           echo "$l_att_espod<BR><BR>";
-          $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='N',dev_fuelscoop='N',dev_minedeflector=0,on_planet='N',rating='$rating',cleared_defences=' ',dev_lssd='N' WHERE ship_id=$targetinfo[ship_id]");
+          $db->Execute("UPDATE $dbtables[ships] SET hull=0,engines=0,power=0,sensors=0,computer=0,beams=0,torp_launchers=0,torps=0,armour=0,armour_pts=100,cloak=0,shields=0,sector=0,ship_organics=0,ship_ore=0,ship_goods=0,ship_energy=$start_energy,ship_colonists=0,ship_fighters=100,dev_warpedit=0,dev_genesis=0,dev_beacon=0,dev_emerwarp=0,dev_escapepod='$boom_pod',dev_fuelscoop='$boom_scoop',dev_minedeflector=0,on_planet='N',rating='$rating',cleared_defences=' ',dev_lssd='N' WHERE ship_id=$targetinfo[ship_id]");
           playerlog($targetinfo[ship_id], LOG_ATTACK_LOSE, "$playerinfo[character_name]|Y");
           collect_bounty($playerinfo[ship_id],$targetinfo[ship_id]);
         }

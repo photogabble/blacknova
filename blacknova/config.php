@@ -226,6 +226,15 @@ $enhanced_logging = true; // Set enhanced logging (ip and planet activity) on or
 // character to play with stuff and not skew your player's rankings.
 $hide_admin_rank = 1;
 
+// Do players get an escape pod and/or fuel scoop at the start by default or not?
+// Use Y or N to switch it (use uppper case!)
+$start_pod = "N";
+$start_scoop = "N";
+
+// Do they get a pod and/or scoop if they get blown up, escape, and get a new ship?
+$boom_pod = "N";
+$boom_scoop = "N";
+
 
 /*
 You add all your module switches here

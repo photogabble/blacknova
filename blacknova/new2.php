@@ -80,7 +80,7 @@ if ($flag==0)
   if ($res[vv] > 0) $vote_stat = -3;
 
 
-  $result2 = $db->Execute("INSERT INTO $dbtables[ships] VALUES('','$shipname','N','$character','" . substr(md5($makepass),0,$maxlen_password) . "','$username',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$mturns,'','N',0,0,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','$ip',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N',$vote_stat,'Y')");
+  $result2 = $db->Execute("INSERT INTO $dbtables[ships] VALUES('','$shipname','N','$character','" . substr(md5($makepass),0,$maxlen_password) . "','$username',0,0,0,0,0,0,0,0,0,0,$start_armour,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,$mturns,'','N',0,0,0,0,'$start_pod','$start_scoop',0,0, '$stamp',0,0,0,0,'N','$ip',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N',$vote_stat,'Y')");
   if(!$result2) {
     echo $db->ErrorMsg() . "<br>";
   } else {
