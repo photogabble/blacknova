@@ -5,6 +5,26 @@ if (preg_match("/global_funcs.php/i", $PHP_SELF)) {
       die();
 }
 
+//----- Start register_globals fix ---- 
+// seemed like a good enough place to put this in
+// Tested and everything seemed to run with register_globals=Off
+foreach ($_POST as $postkey => $postvar) 
+{ 
+$$postkey = $postvar; 
+} 
+
+foreach ($_GET as $getkey => $getvar) 
+{ 
+$$getkey = $getvar; 
+} 
+
+foreach ($_COOKIE as $cookiekey => $cookievar) 
+{ 
+$$cookiekey = $cookievar; 
+} 
+//------ End register_globals fix 
+
+
 
 if ($userpass != '' and $userpass != '+') {
   $username = substr($userpass, 0, strpos($userpass, "+"));
