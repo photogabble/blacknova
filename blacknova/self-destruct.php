@@ -19,7 +19,7 @@ if(checklogin())
 bigtitle();
 
 $sure = $_POST['sure'];
-$pass = $_POST['pass'];
+$pass = md5($_POST['pass']);
 
 $result = $db->Execute("SELECT ship_id,character_name,password FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $result->fields;

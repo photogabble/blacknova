@@ -1,3 +1,8 @@
+TheMightyDude (28 August 2003)
+--------------------------------
+Fixed Self-Destruct code, So now it accepts your password :)
+Removed duplacates variables and cleaned it up a little.
+
 TheMightyDude (27 August 2003)
 --------------------------------
 Fixed buying of Sensors in port2.php
