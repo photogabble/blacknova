@@ -1,3 +1,8 @@
+Nospoon (04 October 2002)
+--------------------------------
+Numerous bug fixes
+Added Spanish translation from Miguel Chaves.
+
 TheMightyDude (04 August 2002)
 --------------------------------
 Fix for Warning: Invalid argument supplied for foreach() in planet-report-CE.php on line 217
