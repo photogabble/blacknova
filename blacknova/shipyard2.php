@@ -102,7 +102,115 @@ if(!isset($confirm)) //display info only
 }
 else //ok, now we buy the ship for true
 {
+  $calc_hull = round(mypw($upgrade_factor,$shipinfo[hull]));
+  $calc_engines = round(mypw($upgrade_factor,$shipinfo[engines]));
+  $calc_power = round(mypw($upgrade_factor,$shipinfo[power]));
+  $calc_computer = round(mypw($upgrade_factor,$shipinfo[computer]));
+  $calc_sensors = round(mypw($upgrade_factor,$shipinfo[sensors]));
+  $calc_beams = round(mypw($upgrade_factor,$shipinfo[beams]));
+  $calc_torp_launchers = round(mypw($upgrade_factor,$shipinfo[torp_launchers]));
+  $calc_shields = round(mypw($upgrade_factor,$shipinfo[shields]));
+  $calc_armour = round(mypw($upgrade_factor,$shipinfo[armour]));
+  $calc_cloak = round(mypw($upgrade_factor,$shipinfo[cloak]));
+  $shipvalue = ($calc_hull+$calc_engines+$calc_power+$calc_computer+$calc_sensors+$calc_beams+$calc_torp_launchers+$calc_shields+$calc_armour+$calc_cloak) * $upgrade_cost;
+  $shipvalue /= 2;
+
+  $totalcost = $sship[cost_credits] - $shipvalue;
+
+  //Let's do the regular sanity checks first
+
+  if($playerinfo[turns] < 1)
+    shipyard_die("You need at least one turn to perform this action");
+
+  if(!isset($sship))
+    shipyard_die("Internal error. Cannot find ship class.");
+
+  if($sship[type_id] == $shipinfo['class'])
+    shipyard_die("You already own this model of ship.");
+
+  if($playerinfo[credits] < $totalcost)
+    shipyard_die("You do not have enough credits to complete this transaction.");
+
+  $shipname = substr($shipname, 0, 20);
+  if($shipname == "")
+    shipyard_die("You must specify a name for your new ship.");
+
+  $shipname=htmlspecialchars($shipname,ENT_QUOTES);
+  $shipname=ereg_replace("[^[:digit:][:space:][:alpha:][\']]"," ",$shipname);
+
+  $shipname = trim($shipname);
+  
+  $result = $db->Execute ("SELECT name FROM $dbtables[ships] WHERE name='$shipname' AND ship_id!=$shipinfo[ship_id]");
+
+  if ($result>0)
+  {
+    while (!$result->EOF)
+    {
+      shipyard_die("This ship name is already in use. Please choose another.");
+      $result->MoveNext();
+    }
+  }
+
+  //Okay, we're done checking. Now time to create the new ship and assign it as current
+
+  $db->Execute("INSERT INTO $dbtables[ships] VALUES(" .
+               "''," .             //ship_id
+               "$playerinfo[player_id]," .     //player_id
+               "'$stype'," .            //class
+               "'$shipname'," .   //name
+               "'N'," .            //destroyed
+               "$sship[minhull]," .              //hull
+               "$sship[minengines]," .              //engines
+               "$sship[minpower]," .              //power
+               "$sship[mincomputer]," .              //computer
+               "$sship[minsensors]," .              //sensors
+               "$sship[minbeams]," .              //beams
+               "$sship[mintorp_launchers]," .              //torp_launchers
+               "0," .              //torps
+               "$sship[minshields]," .              //shields
+               "$sship[minarmour]," .              //armour
+               "$start_armour," .  //armour_pts
+               "$sship[mincloak]," .              //cloak
+               "$shipinfo[sector_id]," .              //sector_id
+               "0," .              //ore
+               "0," .              //organics
+               "0," .              //goods
+               "$start_energy," .  //energy
+               "0," .              //colonists
+               "$start_fighters," .//fighters
+               "'N'," .            //on_planet
+               "$shipinfo[dev_warpedit]," .              //dev_warpedit
+               "$shipinfo[dev_genesis]," .              //dev_genesis
+               "$shipinfo[dev_beacon]," .              //dev_beacon
+               "$shipinfo[dev_emerwarp]," .              //dev_emerwarp
+               "'N'," .            //dev_escapepod
+               "'$shipinfo[dev_fuelscoop]'," .            //dev_fuelscoop
+               "$shipinfo[dev_minedeflector]," .              //dev_minedeflector
+               "0," .              //planet_id
+               "''," .             //cleared_defences
+               "'$shipinfo[dev_lssd]'" .            //dev_lssd
+               ")");
+
+  $res = $db->Execute("SELECT ship_id from $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND name='$shipname'");
+  $ship_id = $res->fields[ship_id];
+
+  //Insert current ship in players table
+  $db->Execute("UPDATE $dbtables[players] SET currentship=$ship_id WHERE player_id=$playerinfo[player_id]");
+    
+  //Delete old ship, if we implement multi-ships later maybe we can keep old one too
+  $db->Execute("DELETE FROM $dbtables[ships] WHERE ship_id=$shipinfo[ship_id]");
+
+  //Now update player credits & turns
+  $db->Execute("UPDATE $dbtables[players] SET turns=turns-1, turns_used=turns_used+1, credits=credits-$totalcost WHERE player_id=$playerinfo[player_id]");
+
+  gen_score($playerinfo[player_id]);
+
+  echo "<p>You have just bought a new ship!<p>";
 }
+
+TEXT_GOTOMAIN();
+
+include("footer.php");
 
 function shipyard_die($error_msg)
 {
@@ -113,10 +221,5 @@ function shipyard_die($error_msg)
   include("footer.php");
   die();
 }
-
-
-TEXT_GOTOMAIN();
-
-include("footer.php");
 
 ?>

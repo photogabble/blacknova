@@ -698,32 +698,32 @@ switch ($step) {
                    "'spacewagon.gif', " . //image
                    "'The Spacewagon ship class is often referred to as \"flying trash can\". The surname certainly befits its appearance, as well as functionnality. This is the standard ship issued by the Federation to new colonists departing Earth. This class of ship possesses minimum cargo and weapons space. In addition, its short range engines are not suited for long space travel. Hopping along warp lanes is the only viable way of moving through the universe using this ship.'," .
                    "'Y', " .              //buyable
-                   "1000, " .             //cost_credits
+                   "10000, " .            //cost_credits
                    "0, " .                //cost_ore
                    "0, " .                //cost_goods
                    "0, " .                //cost_energy
                    "0, " .                //cost_organics
                    "10, " .               //turnstobuild
                    "0, " .                //minhull
-                   "54, " .                //maxhull
+                   "5, " .                //maxhull
                    "0, " .                //minengines
-                   "54, " .                //maxengines
+                   "4, " .                //maxengines
                    "0, " .                //minpower
-                   "54, " .                //maxpower (that's MISTER power for you) ;)
+                   "1, " .                //maxpower (that's MISTER power for you) ;)
                    "0, " .                //mincomputer
-                   "54, " .                //maxcomputer
+                   "1, " .                //maxcomputer
                    "0, " .                //minsensors
-                   "54, " .                //maxsensors
+                   "2, " .                //maxsensors
                    "0, " .                //minbeams
-                   "54, " .                //maxbeams
+                   "0, " .                //maxbeams
                    "0, " .                //mintorp_launchers
-                   "54, " .                //maxtorp_launchers
+                   "0, " .                //maxtorp_launchers
                    "0, " .                //minshields
-                   "54, " .                //maxshields
+                   "0, " .                //maxshields
                    "0, " .                //minarmour
-                   "54, " .                //maxarmour
+                   "2, " .                //maxarmour
                    "0, " .                //mincloak
-                   "54  " .                //maxcloak
+                   "4  " .                //maxcloak
                    ")");
       echo "done<br>";
 
