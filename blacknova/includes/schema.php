@@ -135,7 +135,7 @@ $db->Execute("CREATE TABLE $dbtables[ships](" .
              "cleared_defences tinytext," .
              "lang varchar(30) DEFAULT 'english.inc' NOT NULL," .
              "dhtml enum('Y', 'N') DEFAULT 'Y' NOT NULL," .
-             "dev_lssd enum('Y','N') DEFAULT 'Y' NOT NULL default," .^M
+             "dev_lssd enum('Y','N') DEFAULT 'Y' NOT NULL," .
              "PRIMARY KEY (email)," .
              "KEY email (email)," .
              "KEY sector (sector)," .
@@ -163,10 +163,10 @@ $db->Execute("CREATE TABLE $dbtables[universe](" .
              "angle2 float(10,2) DEFAULT '0.00' NOT NULL," .
              "distance bigint(20) unsigned DEFAULT '0' NOT NULL," .
              "fighters bigint(20) DEFAULT '0' NOT NULL," .
-             "last_ship_seen varchar(20) binary NOT NULL default 'No one'," .^M
-             "last_ship_seen_2 varchar(20) binary NOT NULL default 'No one'," .^M
-             "lss_date_2 timestamp(8) NOT NULL," .^M
-             "lss_date timestamp(8) NOT NULL," .^M
+             "last_ship_seen varchar(20) binary NOT NULL default 'No one'," .
+             "last_ship_seen_2 varchar(20) binary NOT NULL default 'No one'," .
+             "lss_date_2 timestamp(8) NOT NULL," .
+             "lss_date timestamp(8) NOT NULL," .
              "PRIMARY KEY (sector_id)," .
              "KEY sector_id (sector_id)," .
              "UNIQUE sector_id_2 (sector_id)," .
