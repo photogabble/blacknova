@@ -9,12 +9,13 @@
   echo "The four horsemen of the apocalypse set forth...<BR>";
   $doomsday = $db->Execute("SELECT * from $dbtables[planets] WHERE colonists > $doomsday_value");
   $chance = 9;
-  if($doomsday->RecordCount() > 200) $chance = 7; // increase chance it will happen if we have lots of planets meeting the criteria 
+  $reccount = $doomsday->RecordCount();
+  if($reccount > 200) $chance = 7; // increase chance it will happen if we have lots of planets meeting the criteria 
   $affliction = rand(1,$chance); // the chance something bad will happen
-  if($doomsday && $affliction < 3)
+  if($doomsday && $affliction < 3 && $reccount > 0)
   {
      $i=1;
-     $targetnum=rand(1,$doomsday->RecordCount());
+     $targetnum=rand(1,$reccount);
      while (!$doomsday->EOF)
      {
         if ($i==$targetnum)
