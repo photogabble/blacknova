@@ -84,7 +84,7 @@ else
 
           $res = $db->Execute("select * from $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE $dbtables[players].player_id=$user");
           $row = $res->fields;
-          $res = $db->Execute("select * from $dbtables[ship_types] WHERE type_id=$row[currentship]");
+          $res = $db->Execute("select * from $dbtables[ship_types] WHERE type_id=$row[class]");
           $shipclass=$res->fields;
 
           echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
