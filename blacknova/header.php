@@ -30,7 +30,11 @@ if($interface == "main.php")
   .portcosts2 {width:7em;border-style:none;font-family: verdana;font-size:12pt;background-color:$color_line2;color:#c0c0c0;}
   .headlines {text-decoration:none; font-size:8Pt; font-family:verdana,Arial,san-serif; font-weight:bold; color:white;}
   .headlines:hover {text-decoration:none; color:#3366ff;}
-  .faderlines {background-color:$color_line2;}";
+  .faderlines {background-color:$color_line2;}
+  .nav          { text-decoration: none; color:lime;}
+  .nav:link     { text-decoration: none; color:lime;}
+  .nav:visited  { text-decoration: none; color:lime;}
+  .nav:hover    { text-decoration: none; color:yellow;}";
 }
 echo "\n  body {font-family: Arial, Helvetica, sans-serif; font-size: x-small;}\n";
 ?>
