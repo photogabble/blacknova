@@ -1,5 +1,9 @@
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------
+Quick fix to planet-report-CE.php. Used faulty code from another file I fixed. :) Sourceforge bug #566757
+
+L. Patrick Smallwood (10 June 2002)
+---------------------------------
 Fader link path should be based on gamepath. Thanks MightyDude: http://forums.blacknova.net/viewtopic.php?topic=800&forum=1&11
 
 Torr (10 JUNE 2002)
