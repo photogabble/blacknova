@@ -1,3 +1,7 @@
+Patrick Smallwood (19 May 2002)
+---------------------------------
+Made the known space map a config.php option.
+
 Patrick Smallwood (9 May 2002)
 ---------------------------------
 Additional cleanup of port's bound checking, faster, better, and more compact.

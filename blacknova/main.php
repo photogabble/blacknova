@@ -245,7 +245,12 @@ if($zoneinfo[zone_id] < 5)
 &nbsp;<a class=mnu href="self-destruct.php"><? echo $l_ohno ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="options.php"><? echo $l_options ?></a>&nbsp;<br>
 &nbsp;<a class=mnu href="navcomp.php"><? echo $l_navcomp ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="galaxy2.php"><? echo $l_map ?></a>&nbsp;<br>
+<?
+if ($ksm_allowed == true)
+{
+echo "&nbsp;<a class=mnu href=\"galaxy2.php\">$l_map</a>&nbsp;<br>";
+}
+?>
 </div>
 </td></tr>
 <tr><td nowrap>
@@ -744,11 +749,11 @@ else
 
 </table>
 
-
 <?
 
 
 //-------------------------------------------------------------------------------------------------
+
 
 $player_bnthelper_string="<!--player info:" . $playerinfo[hull] . ":" .  $playerinfo[engines] . ":"  .  $playerinfo[power] . ":" .  $playerinfo[computer] . ":" . $playerinfo[sensors] . ":" .  $playerinfo[beams] . ":" . $playerinfo[torp_launchers] . ":" .  $playerinfo[torps] . ":" . $playerinfo[shields] . ":" .  $playerinfo[armour] . ":" . $playerinfo[armour_pts] . ":" .  $playerinfo[cloak] . ":" . $playerinfo[credits] . ":" .  $playerinfo[sector] . ":" . $playerinfo[ship_ore] . ":" .  $playerinfo[ship_organics] . ":" . $playerinfo[ship_goods] . ":" .  $playerinfo[ship_energy] . ":" . $playerinfo[ship_colonists] . ":" .  $playerinfo[ship_fighters] . ":" . $playerinfo[turns] . ":" .  $playerinfo[on_planet] . ":" . $playerinfo[dev_warpedit] . ":" .  $playerinfo[dev_genesis] . ":" . $playerinfo[dev_beacon] . ":" .  $playerinfo[dev_emerwarp] . ":" . $playerinfo[dev_escapepod] . ":" .  $playerinfo[dev_fuelscoop] . ":" . $playerinfo[dev_minedeflector] . ":-->";
 $rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
@@ -757,6 +762,7 @@ echo $link_bnthelper_string;
 echo $port_bnthelper_string;
 echo $planet_bnthelper_string;
 echo $rspace_bnthelper_string;
+echo "is it not here?";
 
 include("footer.php");
 
