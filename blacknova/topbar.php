@@ -1,4 +1,5 @@
 <?
+   connectdb();
    $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
    $playerinfo = $res->fields;
    $res = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
