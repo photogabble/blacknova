@@ -170,8 +170,8 @@ $turns = 0;
 	$computer_upgrade_cost				= findupgradecost($computer_upgrade, $playerinfo[computer]);
 	$computer_upgrade_turns				= phpTrueDelta($computer_upgrade, $playerinfo[computer]);
 /***** Calcuate Sensor *****/
-	$sensor_upgrade_cost					= findupgradecost($sensors_upgrade, $playerinfo[sensors]);
-	$sensor_upgrade_turns				= phpTrueDelta($sensors_upgrade, $playerinfo[sensors]);
+	$sensors_upgrade_cost					= findupgradecost($sensors_upgrade, $playerinfo[sensors]);
+	$sensors_upgrade_turns				= phpTrueDelta($sensors_upgrade, $playerinfo[sensors]);
 /***** Calcuate Beams *****/
 	$beams_upgrade_cost					= findupgradecost($beams_upgrade, $playerinfo[beams]);
 	$beams_upgrade_turns					= phpTrueDelta($beams_upgrade, $playerinfo[beams]);
