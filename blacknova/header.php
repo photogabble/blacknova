@@ -4,12 +4,11 @@ ob_start("ob_gzhandler");
 
 ?>
 <!doctype html public "-//w3c//dtd html 3.2//en">
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<HTML>
-
-<HEAD>
-<TITLE><? echo $title; ?></TITLE>
-<STYLE TYPE="text/css">
+<meta http-equiv="Pragma" content="no-cache">
+<html>
+<head>
+<title><? echo $title; ?></title>
+<style type="text/css">
 <!--
 <?
 if($interface == "")
@@ -36,8 +35,8 @@ echo "body {font-family: Arial, Helvetica, sans-serif; font-size: x-small}";
 ?>
 
 -->
-</STYLE>
-</HEAD>
+</style>
+</head>
 
 <?
 
@@ -47,11 +46,11 @@ if(empty($no_body))
 
   if($interface=="main.php")
   {
-  	echo "<BODY BACKGROUND=\"images/bgoutspace1.gif\" bgcolor=#000000 text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
+  	echo "<body background=\"images/bgoutspace1.gif\" bgcolor=#000000 text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
   }
   else
   {
-  	echo "<BODY BACKGROUND=\"\" BGCOLOR=\"#000000\" TEXT=\"#c0c0c0\" LINK=\"#00ff00\" VLINK=\"#808080\" ALINK=\"#ff0000\">";
+  	echo "<body background=\"\" bgcolor=\"#000000\" text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#808080\" alink=\"#ff0000\">";
   }
 
 }
