@@ -285,6 +285,7 @@ function gen_score($sid)
   global $dev_minedeflector_price;
   global $dev_escapepod_price;
   global $dev_fuelscoop_price;
+  global $dev_lssd_price;
   global $fighter_price;
   global $torpedo_price;
   global $armour_price;
