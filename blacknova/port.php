@@ -354,7 +354,7 @@ echo "var form = document.forms[0];\n";
 echo "var i = form.elements.length;\n";
 echo "while (i > 0)\n";
 echo " {\n";
-echo " if ((form.elements[i-1].value != 'Buy') && (form.elements[i-1].value != 'Full'))\n";
+echo " if ((form.elements[i-1].value != '$l_buy') && (form.elements[i-1].value != '$l_full'))\n";
 echo "  {\n";
 echo "  var tmpval = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
 echo "  if (tmpval != form.elements[i-1].value)\n";
