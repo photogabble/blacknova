@@ -165,8 +165,11 @@ $dbtables['adminnews'] = "${db_prefix}adminnews";
 
 function checkavgtech($destination)
 {
-  global $playerinfo,$dbtables;
+  global $username,$dbtables;
   global $db;
+
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+  $playerinfo = $res->fields;
 
   $ship_maxhull = (($playerinfo['hull'] + $playerinfo['engines'] + $playerinfo['computer'] + $playerinfo['beams'] + $playerinfo['torp_launchers'] + $playerinfo['shields'] + $playerinfo['armour'])/7);
   $res = $db->Execute("SELECT * FROM $dbtables[universe],$dbtables[zones] WHERE $dbtables[universe].zone_id=$dbtables[zones].zone_id AND $dbtables[universe].sector_id=$destination");

@@ -350,6 +350,8 @@ function Real_Space_Move($destination)
   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
   $playerinfo = $res->fields;
 
+  if(!checkavgtech($destination)){ TEXT_GOTOMAIN(); include("footer.php"); die(); }
+
   $result2 = $db->Execute("SELECT angle1,angle2,distance FROM $dbtables[universe] WHERE sector_id=$playerinfo[sector]");
   $start = $result2->fields;
   $result3 = $db->Execute("SELECT angle1,angle2,distance FROM $dbtables[universe] WHERE sector_id=$destination");
