@@ -27,17 +27,21 @@ include("languages/$lang" . ".inc");
 /* first placement of cookie - don't use updatecookie. */
 $userpass = $email."+".$pass;
 SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
-// took out the old interface, its not used anymore i guess
-//if($playerinfo[interface]=="N")
-//{
+
+
+/* took out the old interface, its not used anymore i guess
+if($playerinfo[interface]=="N")
+{
   $mainfilename="main.php";
   $interface="main.php";
-//}
-//else
-//{
-//  $mainfilename="maintext.php";
-//  $interface="maintext.php";
-//}
+}
+else
+{
+  $mainfilename="maintext.php";
+  $interface="maintext.php";
+}
+-- End of old interface code */ 
+
 setcookie("interface", $mainfilename);
 setcookie("screenres", $screen_res);
 $banned = 0;

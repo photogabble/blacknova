@@ -325,6 +325,11 @@ if(!empty($planetinfo))
     elseif($command == "productions")
     {
       /* change production percentages */
+      $porganics = stripnum($porganics);
+      $pore = stripnum($pore);
+      $pgoods = stripnum($pgoods);
+      $pernergy = stripnum($penergy);
+
       if($porganics < 0.0 || $pore < 0.0 || $pgoods < 0.0 || $penergy < 0.0 || $pfighters < 0.0 || $ptorp < 0.0)
       {
         echo "$l_planet_p_under<BR><BR>";

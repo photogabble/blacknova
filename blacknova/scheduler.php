@@ -112,7 +112,7 @@ else
   include("footer.php");
   if($sched_type == 1) ob_end_clean();
   if($sched_type != 1)
-        {
-                $db->Execute("UPDATE $dbtables[scheduler] SET last_run=". TIME());
-        }
+  {
+    $db->Execute("UPDATE $dbtables[scheduler] SET last_run=". TIME());
+  }
 }
