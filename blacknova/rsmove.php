@@ -164,6 +164,9 @@ elseif($destination <= $sector_max && $engage == 1)
   {
     $ok=1;
     $sector = $destination;
+    
+    echo "Calc - ".calc_ownership($sector);
+    
     $calledfrom = "rsmove.php";
     include("check_fighters.php");
     if($ok>0)

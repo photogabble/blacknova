@@ -66,6 +66,9 @@ if ($result3>0)
 if ($flag==1)
 {
     $ok=1;
+    
+    calc_ownership($sector);
+    
     $calledfrom = "move.php";
     include("check_fighters.php");
     if($ok>0){
