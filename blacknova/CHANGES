@@ -10,6 +10,7 @@ Added "Starting Equipment" patch to
  attack.php
  create_universe.php
  new2.php
+ login2.php (thanks to TMD)
 
 Added "Send Mail to Alliance" patch to
  mailto2.php
@@ -28,7 +29,23 @@ Language files other than english will need translations added for
 the following field:
  $l_sendm_myallies
 
+Edited planet2.php to put in better stripping of commas (and any other
+non-numerics) from the planetary transfer form.
 
+Changed password system to only accept alpha-numeric passwords in
+ options.php
+ option2.php
+ languages/english.inc
+
+Language files other than english will need translations changed for
+ $l_opt_newpass
+
+Uploaded replacement includes/schema.php for the RPP functions, missed
+during the original creation.
+
+Fixed bug in includes/schema.php during universe_creation to add a new
+"Universe Created" news article to the news table, having a blank table
+in there broke fader.php
 
 
 Nospoon (11 January 2003)
