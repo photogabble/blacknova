@@ -65,7 +65,8 @@ if (strpos($to, $l_sendm_ally)===false)
 else
 {
   $timestamp = date("Y\-m\-d H\:i\:s");
-
+     $content = htmlspecialchars($content);
+     $subject = htmlspecialchars($subject);
      $to = str_replace ($l_sendm_ally, "", $to);
      $to = trim($to);
      $to = addslashes($to);
