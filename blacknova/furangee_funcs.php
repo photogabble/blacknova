@@ -940,6 +940,8 @@ function furangeetrade()
   // ** CHECK FOR A PORT WE CAN USE **
   // *********************************
   if($sectorinfo[port_type] == "none") return;
+  // *** FURANGEE DO NOT TRADE AT SPECIAL PORTS ***
+  if($sectorinfo[port_type] == "special") return;
   // *** FURANGEE DO NOT TRADE AT ENERGY PORTS SINCE THEY REGEN ENERGY ***
   if($sectorinfo[port_type] == "energy") return;
 
@@ -1004,6 +1006,9 @@ function furangeetrade()
     $newore = $playerinfo[ore]+$amount_ore;
     $neworganics = max(0,$playerinfo[organics]-$amount_organics);
     $newgoods = max(0,$playerinfo[goods]-$amount_goods);
+    if ($newore < 0 || $neworganics < 0 || $newgoods < 0) {
+    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: ore $playerinfo[ore] / $newore org $playerinfo[organics] / $neworganics goods $playerinfo[goods] / $newgoods "); 
+    }
     $trade_result = $db->Execute("UPDATE $dbtables[players] SET rating=rating+1, credits=$newcredits WHERE player_id=$playerinfo[player_id]");
     $trade_result = $db->Execute("UPDATE $dbtables[ships] SET ore=$newore, organics=$neworganics, goods=$newgoods WHERE ship_id=$playerinfo[ship_id]");
     $trade_result2 = $db->Execute("UPDATE $dbtables[universe] SET port_ore=port_ore-$amount_ore, port_organics=port_organics+$amount_organics, port_goods=port_goods+$amount_goods WHERE sector_id=$sectorinfo[sector_id]");
@@ -1039,6 +1044,9 @@ function furangeetrade()
     $newore = max(0,$playerinfo[ore]-$amount_ore);
     $neworganics = $playerinfo[organics]+$amount_organics;
     $newgoods = max(0,$playerinfo[goods]-$amount_goods);
+    if ($newore < 0 || $neworganics < 0 || $newgoods < 0) {
+    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: ore $playerinfo[ore] / $newore org $playerinfo[organics] / $neworganics goods $playerinfo[goods] / $newgoods "); 
+    }
     $trade_result = $db->Execute("UPDATE $dbtables[players] SET rating=rating+1, credits=$newcredits WHERE player_id=$playerinfo[player_id]");
     $trace_result = $db->Execute("UPDATE $dbtables[ships] SET ore=$newore, organics=$neworganics, goods=$newgoods WHERE ship_id=$playerinfo[ship_id]");
     $trade_result2 = $db->Execute("UPDATE $dbtables[universe] SET port_ore=port_ore+$amount_ore, port_organics=port_organics-$amount_organics, port_goods=port_goods+$amount_goods where sector_id=$sectorinfo[sector_id]");
@@ -1074,6 +1082,9 @@ function furangeetrade()
     $newore = max(0,$playerinfo[ore]-$amount_ore);
     $neworganics = max(0,$playerinfo[organics]-$amount_organics);
     $newgoods = $playerinfo[goods]+$amount_goods;
+    if ($newore < 0 || $neworganics < 0 || $newgoods < 0) {
+    playerlog($playerinfo[player_id], LOG_RAW, "Furangee Trade Negative ERROR: ore $playerinfo[ore] / $newore org $playerinfo[organics] / $neworganics goods $playerinfo[goods] / $newgoods "); 
+    }
     $trade_result = $db->Execute("UPDATE $dbtables[players] SET rating=rating+1, credits=$newcredits WHERE player_id=$playerinfo[player_id]");
     $trade_result = $db->Execute("UPDATE $dbtables[ships] SET ore=$newore, organics=$neworganics, goods=$newgoods WHERE ship_id=$playerinfo[ship_id]");
     $trade_result2 = $db->Execute("UPDATE $dbtables[universe] SET port_ore=port_ore+$amount_ore, port_organics=port_organics+$amount_organics, port_goods=port_goods-$amount_goods where sector_id=$sectorinfo[sector_id]");
