@@ -267,6 +267,7 @@ elseif($sectorinfo[port_type] == "special")
   if(isLoanPending($playerinfo[ship_id]))
   {
     echo "$l_port_loannotrade<p>";
+    echo "<A HREF=IGB.php>$l_igb_term</a><p>";
     TEXT_GOTOMAIN();
     include("footer.php");
     die();
