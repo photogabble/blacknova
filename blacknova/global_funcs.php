@@ -117,9 +117,7 @@ $dbtables['movement_log'] = "${db_prefix}movement_log";
 
 function mypw($one,$two)
 {
-   $one = (float) $one;
-   $two = (float) $two;
-   return pow($one,$two);
+   return pow($one*1,$two*1);
 }
 
 function bigtitle()
