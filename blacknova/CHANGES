@@ -1,3 +1,7 @@
+TheMightyDude (26 July 2003)
+--------------------------------
+Fixed bug [ 777954 ] Invalid argument supplied for foreach() in planet-report-CE.php
+
 TheMightyDude (21 July 2003)
 --------------------------------
 Fixed bug [674023] Colonists.
