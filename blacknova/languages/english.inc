@@ -11,6 +11,7 @@ $l_reset		 = "Reset";
 $l_all			 = "All";
 
 $l_ore			 = "Ore";
+$l_commodities		 = "Commodities";
 $l_organics		 = "Organics";
 $l_goods		 = "Goods";
 $l_energy		 = "Energy";
