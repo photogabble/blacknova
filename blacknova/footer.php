@@ -1,5 +1,5 @@
 <?
-global $db;
+global $db,$dbtables;
 connectdb();
 $res = $db->Execute("SELECT COUNT(*) as loggedin from $dbtables[ships] WHERE (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP($dbtables[ships].last_login)) / 60 <= 5");
 $row = $res->fields;
