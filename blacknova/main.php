@@ -487,7 +487,7 @@ if($playerinfo[sector] != 0)
          if($result4 == 0 || $totalcount == 0)
          {
             echo "<td align=center>";
-            echo "<br><font color=white>$l_none</font><br><br>";
+            echo "<br><font size=2 color=white>$l_none</font><br><br>";
             echo "</td>";
             $displayed=true;
             break;
@@ -501,14 +501,14 @@ if($playerinfo[sector] != 0)
    if($result4 == 0 || $totalcount == 0 && $displayed != true)
    {
       echo "<tr><td align=center>";
-      echo "<br><font color=white>$l_none</font><br><br>";
+      echo "<br><font size=2 color=white>$l_none</font><br><br>";
       echo "</td></tr>";
    }
 }
 else
 {
     echo "<td align=center valign=top>";
-    echo "<br><font color=white>$l_sector_0</font><br><br>";
+    echo "<br><font size=2 color=white>$l_sector_0</font><br><br>";
     echo "</td>";
 
 }
