@@ -4,7 +4,7 @@ include("config.php");
 include("languages/$lang");
 updatecookie();
 
-$title="$l_opt_title"; 
+$title="$l_opt_title";
 include("header.php");
 
 connectdb();
@@ -20,17 +20,17 @@ bigtitle();
 <SCRIPT language="JavaScript">
 function md5onsubmit()
 {
-	if (document.forms(0).newpass1MD5.value != "")
-		{
-		document.forms(0).oldpass.value = calcMD5(document.forms(0).oldpassMD5.value);
-		document.forms(0).newpass1.value = calcMD5(document.forms(0).newpass1MD5.value);
-		document.forms(0).newpass2.value = calcMD5(document.forms(0).newpass2MD5.value);
+     if (document.forms(0).newpass1MD5.value != "")
+          {
+          document.forms(0).oldpass.value = calcMD5(document.forms(0).oldpassMD5.value);
+          document.forms(0).newpass1.value = calcMD5(document.forms(0).newpass1MD5.value);
+          document.forms(0).newpass2.value = calcMD5(document.forms(0).newpass2MD5.value);
 
-		document.forms(0).oldpassMD5.value = "";
-		document.forms(0).newpass1MD5.value = "";
-		document.forms(0).newpass2MD5.value = "";
-		}
-	return true;
+          document.forms(0).oldpassMD5.value = "";
+          document.forms(0).newpass1MD5.value = "";
+          document.forms(0).newpass2MD5.value = "";
+          }
+     return true;
 }
 </SCRIPT>
 <?
@@ -51,7 +51,7 @@ echo "<TD>$l_opt_curpass</TD>";
 echo "<TD><INPUT TYPE=PASSWORD NAME=oldpassMD5 SIZE=16 MAXLENGTH=$maxlen_password VALUE=\"\"><INPUT TYPE=HIDDEN NAME=oldpass></TD>";
 echo "</TR>";
 echo "<TR BGCOLOR=\"$color_line2\">";
-echo "<TD>$l_opt_newpass</TD>";
+echo "<TD align=\"top\">$l_opt_newpass</TD>";
 echo "<TD><INPUT TYPE=PASSWORD NAME=newpass1MD5 SIZE=16 MAXLENGTH=$maxlen_password VALUE=\"\"><INPUT TYPE=HIDDEN NAME=newpass1></TD>";
 echo "</TR>";
 echo "<TR BGCOLOR=\"$color_line1\">";

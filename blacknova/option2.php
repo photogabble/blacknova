@@ -21,18 +21,24 @@ else
 }
 
 if (($newpass1MD5 != "") AND ($newpass1 == ""))
-	{
-	$newpass1 = substr(md5($newpass1MD5),0,$maxlen_password);
-	$newpass2 = substr(md5($newpass2MD5),0,$maxlen_password);
-	$oldpass = substr(md5($oldpassMD5),0,$maxlen_password);
-	}
+     {
+     $newpass1MD5 = preg_replace("%[^0-9a-zA-Z]%","",$newpass1MD5);
+     $newpass2MD5 = preg_replace("%[^0-9a-zA-Z]%","",$newpass2MD5);
+
+     $newpass1 = substr(md5($newpass1MD5),0,$maxlen_password);
+     $newpass2 = substr(md5($newpass2MD5),0,$maxlen_password);
+     $oldpass = substr(md5($oldpassMD5),0,$maxlen_password);
+     }
 
 if (($newpass1MD5 == "") AND ($newpass1 != ""))
-	{
-	$newpass1 = substr($newpass1,0,$maxlen_password);
-	$newpass2 = substr($newpass2,0,$maxlen_password);
-	$oldpass = substr($oldpass,0,$maxlen_password);
-	}
+     {
+     $newpass1 = preg_replace("%[^0-9a-zA-Z]%","",$newpass1);
+     $newpass2 = preg_replace("%[^0-9a-zA-Z]%","",$newpass12);
+
+     $newpass1 = substr($newpass1,0,$maxlen_password);
+     $newpass2 = substr($newpass2,0,$maxlen_password);
+     $oldpass = substr($oldpass,0,$maxlen_password);
+     }
 
 //-------------------------------------------------------------------------------------------------
 
@@ -42,7 +48,7 @@ if($newpass1 == $newpass2 && $password == $oldpass && $newpass1 != "")
   SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
   setcookie("id",$id);
 }
-if(!preg_match("/^[\w]+$/", $newlang)) 
+if(!preg_match("/^[\w]+$/", $newlang))
 {
    $newlang = $default_lang;
 }
@@ -78,8 +84,8 @@ else
     $res = $db->Execute("UPDATE $dbtables[ships] SET password='$newpass1' WHERE ship_id=$playerinfo[ship_id]");
     if($res)
     {
-    	if ($newpass1MD5 != "") echo "(Server Side MD5)<BR>";
-    	if ($newpass1MD5 == "") echo "(Client Side MD5)<BR>";
+     if ($newpass1MD5 != "") echo "(Server Side MD5)<BR>";
+     if ($newpass1MD5 == "") echo "(Client Side MD5)<BR>";
       echo $l_opt2_passchanged;
     }
     else
@@ -105,7 +111,7 @@ foreach($avail_lang as $curlang)
   if($lang == $curlang[file])
   {
     $l_opt2_chlang = str_replace("[lang]", "$curlang[name]", $l_opt2_chlang);
-    
+
     echo $l_opt2_chlang;
     break;
   }
