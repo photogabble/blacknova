@@ -361,27 +361,18 @@ if($num_planets > 0)
   $i=0;
   while($i < $num_planets)
   {
+
     if($planets[$i][owner] != 0)
     {
       $result5 = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id=" . $planets[$i][owner]);
       $planet_owner = $result5->fields;
-
-      $planetavg = $planet_owner[hull] + $planet_owner[engines] + $planet_owner[computer] + $planet_owner[beams] + $planet_owner[torp_launchers] + $planet_owner[shields] + $planet_owner[armour];
-      $planetavg /= 7;
-
-      if($planetavg < 8)
-        $planetlevel = 0;
-      else if ($planetavg < 12)
-        $planetlevel = 1;
-      else if ($planetavg < 16)
-        $planetlevel = 2;
-      else if ($planetavg < 20)
-        $planetlevel = 3;
-      else
-        $planetlevel = 4;
     }
-    else
-      $planetlevel=0;
+
+    $planetlevel=0;
+    if ($planets[$i][colonists] > 500000 ) { $planetlevel = 1; }
+    if ($planets[$i][colonists] > 5000000 ) { $planetlevel = 2; }
+    if ($planets[$i][colonists] > 50000000 ) { $planetlevel = 3; }
+    if ($planets[$i][colonists] > 100000000 ) { $planetlevel = 4; }
 
     echo "<td align=center valign=top>";
     echo "<A HREF=planet.php?planet_id=" . $planets[$i][planet_id] . ">";
