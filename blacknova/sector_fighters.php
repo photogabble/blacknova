@@ -114,13 +114,14 @@
                     } 
                  }
                  $fighterslost = $total_sector_fighters - $targetfighters;
-                 destroy_fighters($sector,$fighterslost);
 
                  $l_sf_sendlog = str_replace("[player]", $playerinfo[character_name], $l_sf_sendlog);
                  $l_sf_sendlog = str_replace("[lost]", $fighterslost, $l_sf_sendlog);
                  $l_sf_sendlog = str_replace("[sector]", $sector, $l_sf_sendlog);
-                 
                  message_defence_owner($sector,$l_sf_sendlog);
+
+                 destroy_fighters($sector,$fighterslost);
+
                  playerlog($playerinfo[player_id], LOG_DEFS_DESTROYED_F, "$fighterslost|$sector");
                  $armour_lost=$shipinfo[armour_pts]-$playerarmour;
                  $fighters_lost=$shipinfo[fighters]-$playerfighters;
