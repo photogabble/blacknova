@@ -224,7 +224,7 @@ if($zoneinfo[zone_id] < 5)
 <td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
 <? echo $l_commands ?>
 </b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td align="right"><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
@@ -260,7 +260,7 @@ echo "&nbsp;<a class=mnu href=\"galaxy2.php\">$l_map</a>&nbsp;<br>";
 <?
 if(!empty($link_forums))
 {
-    echo "&nbsp;<a class=\"mnu\" href=\"$link_forums\" TARGET=\'_blank\'>$l_forums</a>&nbsp;<br>";
+    echo "&nbsp;<a class=\"mnu\" href=\"$link_forums\" TARGET=\"_blank\">$l_forums</a>&nbsp;<br>";
 }
 ?>
 </div>
@@ -273,14 +273,14 @@ if(!empty($link_forums))
 <br>
 
 <table border="0" cellpadding="0" cellspacing="0" align="center"><tr valign="top">
-<td><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
 <td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
 <? echo $l_main_warpto; ?>
 </b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td align="right"><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
@@ -596,43 +596,49 @@ else
 <td valign=top>
 
 <table border="0" cellpadding="0" cellspacing="0" align="center"><tr valign="top">
-<td><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
 <td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
 <? echo $l_cargo ?>
 </b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td align="right"><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
 </tr></table>
 
-<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 BGCOLOR="#500050" align="center">
-<TR><TD NOWRAP>
-<a class=dis>
-&nbsp;<img align=middle height=12 width=12 alt="<? echo $l_ore ?>" src="images/ore.gif">&nbsp;<? echo $l_ore ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[ship_ore]); ?>&nbsp</div>
-&nbsp;<img align=middle height=12 width=12 alt="<? echo $l_organics ?>" src="images/organics.gif">&nbsp;<? echo $l_organics ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[ship_organics]); ?>&nbsp</div>
-&nbsp;<img align=middle height=12 width=12 alt="<? echo $l_goods ?>" src="images/goods.gif">&nbsp;<? echo $l_goods ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[ship_goods]); ?>&nbsp</div>
-&nbsp;<img align=middle height=12 width=12 alt="<? echo $l_energy ?>" src="images/energy.gif">&nbsp;<? echo $l_energy ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[ship_energy]); ?>&nbsp</div>
-&nbsp;<img align=middle height=12 width=12 alt="<? echo $l_colonists ?>" src="images/colonists.gif">&nbsp;<? echo $l_colonists ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[ship_colonists]); ?>&nbsp</div>
-&nbsp;<img align=middle height=12 width=12 alt="<? echo $l_credits ?>" src="images/credits.gif">&nbsp;<? echo $l_credits ?>&nbsp;<br><div class=mnu align=right>&nbsp;<? echo NUMBER($playerinfo[credits]); ?>&nbsp</div>
-</a>
+<table BORDER=1 CELLPADDING=0 CELLSPACING=0 BGCOLOR="#500050" align="center"> 
+<tr><td>
+<table BORDER=0 CELLPADDING=1 CELLSPACING=0 BGCOLOR="#500050" align="center" class=dis> 
+<tr><td nowrap align='left'><img align=left height=12 width=12 alt="<? echo $l_ore ?>" src="images/ore.gif">&nbsp;<? echo $l_ore ?>&nbsp;</td></tr> 
+ <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_ore]); ?>&nbsp;</span></td></tr>
+<tr><td nowrap align='left'><img align=left height=12 width=12 alt="<? echo $l_organics ?>" src="images/organics.gif">&nbsp;<? echo $l_organics ?>&nbsp;</td></tr> 
+ <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_organics]); ?>&nbsp;</span></td></tr>
+<tr><td nowrap align='left'><img align=left height=12 width=12 alt="<? echo $l_goods ?>" src="images/goods.gif">&nbsp;<? echo $l_goods ?>&nbsp;</td></tr> 
+ <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_goods]); ?>&nbsp;</span></td></tr>
+<tr><td nowrap align='left'><img align=left height=12 width=12 alt="<? echo $l_energy ?>" src="images/energy.gif">&nbsp;<? echo $l_energy ?>&nbsp;</td></tr> 
+ <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_energy]); ?>&nbsp;</span></td></tr>
+<tr><td nowrap align='left'><img align=left height=12 width=12 alt="<? echo $l_colonists ?>" src="images/colonists.gif">&nbsp;<? echo $l_colonists ?>&nbsp;</td></tr> 
+ <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[ship_colonists]); ?>&nbsp;</span></td></tr>
+<tr><td nowrap align='left'><img align=left height=12 width=12 alt="<? echo $l_credits ?>" src="images/credits.gif">&nbsp;<? echo $l_credits ?>&nbsp;</td></tr> 
+ <tr><td nowrap align='right'><span class=mnu>&nbsp;<? echo NUMBER($playerinfo[credits]); ?>&nbsp;</span></td></tr>
+</table>
 </td></tr>
 </table>
 
 <br>
 
 <table border="0" cellpadding="0" cellspacing="0" align="center"><tr valign="top">
-<td><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
 <td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
 <? echo $l_traderoutes ?>
 </b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td align="right"><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
@@ -758,14 +764,14 @@ else
 <br>
 
 <table border="0" cellpadding="0" cellspacing="0" align="center"><tr valign="top">
-<td><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
 <td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
 <? echo $l_realspace ?>
 </b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0" height="100%">
+<td align="right"><table border="0" cellpadding="0" cellspacing="0">
   <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
   <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
 </table></td>
@@ -774,9 +780,9 @@ else
 <TABLE BORDER=1 CELLPADDING=1 CELLSPACING=0 BGCOLOR="#500050" align="center">
 <TR><TD NOWRAP>
 <div class=mnu>
-&nbsp;<a class=mnu href="rsmove.php?engage=1&destination=<? echo $playerinfo[preset1]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset1]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
-&nbsp;<a class=mnu href="rsmove.php?engage=1&destination=<? echo $playerinfo[preset2]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset2]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
-&nbsp;<a class=mnu href="rsmove.php?engage=1&destination=<? echo $playerinfo[preset3]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset3]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
+&nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $playerinfo[preset1]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset1]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
+&nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $playerinfo[preset2]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset2]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
+&nbsp;<a class=mnu href="rsmove.php?engage=1&amp;destination=<? echo $playerinfo[preset3]; ?>">=&gt;&nbsp;<? echo $playerinfo[preset3]; ?></a>&nbsp;<a class=dis href=preset.php>[<? echo $l_set?>]</a>&nbsp;<br>
 &nbsp;<a class=mnu href="rsmove.php">=&gt;&nbsp;<? echo $l_main_other;?></a>&nbsp;<br>
 </div>
 </td></tr>
