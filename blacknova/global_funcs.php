@@ -44,7 +44,7 @@ define(PLOG_GENESIS_DESTROY,2);
 define(PLOG_CAPTURE,3);
 define(PLOG_ATTACKED,4);
 define(PLOG_SCANNED,5);
-define(PLOG_OWNER_DESTRUCTED,6);
+define(PLOG_OWNER_DEAD,6);
 
 //Log constants
 
@@ -392,6 +392,13 @@ function db_kill_player($player_id)
     $sectors[$i] = $res->fields[sector_id];
     $i++;
     $res->MoveNext();
+  }
+
+  $res = $db->Execute("SELECT planet_id FROM $dbtables[planets] WHERE owner='$player_id'");
+  while(!$res->EOF && $res)
+  {
+     planet_log($res->fields[sector_id],$player_id,$player_id,PLOG_OWNER_DEAD);   
+     $res->MoveNext();
   }
 
   $db->Execute("UPDATE $dbtables[planets] SET owner=0,fighters=0, base='N' WHERE owner=$player_id");
@@ -1188,5 +1195,13 @@ function newplayer($email, $char, $pass, $ship_name)
   $db->Execute("INSERT INTO $dbtables[ibank_accounts] (player_id,balance,loan) VALUES ($player_id,0,0)");
 
   return $player_id;
+}
+function planet_log($planet,$owner,$player_id,$action)
+{
+   global $db, $dbtables;
+   $res = $db->Execute("SELECT ip_address from $dbtables[players] WHERE player_id=$player_id");
+   $ip = $res->fields[ip_address];
+   $db->Execute("INSERT INTO $dbtables[planet_log] (planet_id,player_id,owner_id,ip_address,action,time) VALUES ($planet,$player_id,$owner,'$ip',$action,NOW())");
+   
 }
 ?>

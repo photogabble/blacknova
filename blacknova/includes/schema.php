@@ -320,9 +320,10 @@ echo "Creating table: planet_log ";
 $db->Execute("CREATE TABLE $dbtables[planet_log](" .
               "planetlog_id unsigned DEFAULT '0' NOT NULL auto_increment," .
               "planet_id int DEFAULT '0' NOT NULL," .
-              "ship_id int DEFAULT '0' NOT NULL," .
+              "player_id int DEFAULT '0' NOT NULL," .
               "owner_id int DEFAULT '0' NOT NULL," .
               "ip_address tinytext NOT NULL," .
+              "action int DEFAULT '0' NOT NULL," .
               "time TIMESTAMP(14) ," .
               "PRIMARY KEY (planetlog_id)," .
               "KEY ship_id (ship_id)," .

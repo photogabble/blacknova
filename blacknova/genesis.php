@@ -75,6 +75,8 @@ else
           $update2 = $db->Execute($query2);
           $query2 = "UPDATE $dbtables[ships] SET dev_genesis=dev_genesis-1 WHERE ship_id=$shipinfo[ship_id]";
           $update2 = $db->Execute($query2);
+          $logres = $db->Execute("SELECT MAX(planet_id) AS planet_id FROM $dbtables[planets] WHERE owner = $playerinfo[player_id]");
+          planet_log($logres->fields[planet_id],$playerinfo[player_id],$playerinfo[player_id],PLOG_GENESIS_CREATE);
           echo $l_gns_pcreate;
         }
       }
