@@ -18,11 +18,22 @@ if(checklogin())
 $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
-if ($action=="delete")
-{
- $db->Execute("DELETE FROM $dbtables[messages] WHERE ID='".$ID."' AND recp_id='".$playerinfo[ship_id]."'");
+if ($action=="delete") {
+     if(isset($mid)) {
+          $query = "DELETE FROM $dbtables[messages] WHERE ID='$mid[0]'";
+          $mids = sizeof($mid);
+          if($mids >= 2) {
+               for($i=1;$i<$mids;$i++) {
+                    $query .= " OR ID='$mid[$i]'";
+               }
+          }
+          $query .= " AND recp_id='$playerinfo[ship_id]'";
+     } else {
+          $query = "DELETE FROM $dbtables[messages] WHERE ID='$ID' AND recp_id='$playerinfo[ship_id]'";
+     }
+     $db->Execute($query);
 ?>
-<FONT COLOR="#FF0000" Size="7"><B><Blink><Center><? echo $l_readm_delete; ?></Center></Blink></B></FONT><BR>
+<FONT COLOR="#FF0000" Size="4"><B><Center><? echo $l_readm_delete; ?></Center></B></FONT><BR>
 <?
 }
 
@@ -37,10 +48,10 @@ $cur_D = date("Y-m-d");
 $cur_T = date("H:i:s");
 ?>
 
-<Table >
+<form action="<?= $PHP_SELF ?>" method="post">
+<table>
 <TR>
-<TD colspan="2" BGCOLOR="<? echo $color_header; ?>"><? echo $l_readm_center ?></TD>
-<TD rowspan="2" width=75><? echo "<font size=-1>$cur_D<BR>$cur_T</font>" ?></TD>
+<TD colspan="2" valign="middle" BGCOLOR="<? echo $color_header; ?>"><center><strong><? echo $l_readm_center ?></strong><br><? echo "<font size=-1>$cur_D - $cur_T</font>" ?></center></TD>
 </TR>
 <TR BGCOLOR="<? echo $color_line1; ?>">
 <TD>
@@ -57,35 +68,49 @@ $cur_T = date("H:i:s");
    $msg = $res->fields;
    $result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id='".$msg[sender_id]."'");
    $sender = $result->fields;
-?>
-<TR BGCOLOR="<?
+
 if ($line_counter)
 {
- echo $color_line2;
+ $color = $color_line2;
  $line_counter = false;
 }
 else
 {
- echo $color_line1;
+ $color = $color_line1;
  $line_counter = true;
 }
-?>">
-<TD VALIGN=TOP width=150>
-<? echo $sender[character_name]; ?><HR><? echo $l_readm_captn ?><BR><? echo $sender[ship_name] ?><BR><BR><? echo "<font size=-1>$msg[sent]</font>" ?>
-</TD>
-<TD VALIGN=TOP>
-<B><? echo $msg[subject]; ?></B><HR><? echo nl2br($msg[message]); ?>
-</TD>
-<TD>
-<A HREF="readmail.php?action=delete&ID=<? echo $msg[ID]; ?>"><? echo $l_readm_del ?></A><BR>
-<A HREF="mailto2.php?name=<? echo $sender[character_name]; ?>&subject=<? echo $msg[subject] ?>"><? echo $l_readm_repl ?></A><BR>
+?>
+<TR BGCOLOR="<?= $color ?>">
+<td valign="top" width="150" nowrap>
+<? echo $sender[character_name]; ?>
+</td>
+<td valign="top" colspan="2" width="100%">
+<strong><? echo $msg[subject]; ?></strong>
+</td></tr>
+<tr BGCOLOR="<?= $color ?>">
+<td>
+<? echo $l_readm_captn ?><BR><? echo $sender[ship_name] ?><BR><BR><? echo "<font size=-1>$msg[sent]</font>" ?>
+</td>
+<td valign="top" colspan="2">
+<? echo nl2br($msg[message]); ?>
+</td>
+</tr>
+<tr BGCOLOR="<?= $color ?>">
+<td valign="middle" align="left"><input type="checkbox" name="mid[]" value="<?= $msg[ID] ?>"> <font size=-1>Delete?</font></td>
+<td colspan="2" valign="middle" align="left">
+<font size="-1">[<A HREF="readmail.php?action=delete&ID=<? echo $msg[ID]; ?>"><? echo $l_readm_del ?></A>&nbsp;|&nbsp;<A HREF="mailto2.php?name=<? echo $sender[character_name]; ?>&subject=<? echo $msg[subject] ?>"><? echo $l_readm_repl ?></A>]</font>
 </TD>
 </TR>
+<tr><td colspan="2"></td></tr>
 <?
     $res->MoveNext();
   }
 ?>
+<tr><td align="left" valign="middle" colspan="3">
+<input type="hidden" name="action" value="delete">
+<input type="submit" name="delete" value="Delete Marked Messages">
 </TABLE>
+</form>
 <?
  }
 
