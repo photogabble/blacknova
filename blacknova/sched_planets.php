@@ -5,10 +5,10 @@
       die();
   }
 
-  $expoprod = pow($colonist_reproduction_rate + 1, $multiplier);
+  $expoprod = mypw($colonist_reproduction_rate + 1, $multiplier);
   $expoprod *=$multiplier;
 
-  $expocreds = pow($interest_rate, $multiplier);
+  $expocreds = mypw($interest_rate, $multiplier);
 
   echo "<B>PLANETS</B><p>";
 

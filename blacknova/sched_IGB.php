@@ -5,8 +5,8 @@
       die();
   }
 
-  $exponinter = pow($ibank_interest + 1, $multiplier);
-  $expoloan = pow($ibank_loaninterest + 1, $multiplier);
+  $exponinter = mypw($ibank_interest + 1, $multiplier);
+  $expoloan = mypw($ibank_loaninterest + 1, $multiplier);
 
   echo "<B>IBANK</B><p>";
 

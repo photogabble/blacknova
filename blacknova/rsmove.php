@@ -53,7 +53,7 @@ elseif($destination <= $sector_max && empty($engage))
   $x = ($start[distance] * sin($sa1) * cos($sa2)) - ($finish[distance] * sin($fa1) * cos($fa2));
   $y = ($start[distance] * sin($sa1) * sin($sa2)) - ($finish[distance] * sin($fa1) * sin($fa2));
   $z = ($start[distance] * cos($sa1)) - ($finish[distance] * cos($fa1));
-  $distance = round(sqrt(mypw($x, 2) + pow($y, 2) + pow($z, 2)));
+  $distance = round(sqrt(mypw($x, 2) + mypw($y, 2) + mypw($z, 2)));
   $shipspeed = mypw($level_factor, $playerinfo[engines]);
   $triptime = round($distance / $shipspeed);
   if($triptime == 0 && $destination != $playerinfo[sector])
@@ -114,7 +114,7 @@ elseif($destination <= $sector_max && $engage == 1)
   $x = ($start[distance] * sin($sa1) * cos($sa2)) - ($finish[distance] * sin($fa1) * cos($fa2));
   $y = ($start[distance] * sin($sa1) * sin($sa2)) - ($finish[distance] * sin($fa1) * sin($fa2));
   $z = ($start[distance] * cos($sa1)) - ($finish[distance] * cos($fa1));
-  $distance = round(sqrt(mypw($x, 2) + pow($y, 2) + pow($z, 2)));
+  $distance = round(sqrt(mypw($x, 2) + mypw($y, 2) + mypw($z, 2)));
   $shipspeed = mypw($level_factor, $playerinfo[engines]);
   $triptime = round($distance / $shipspeed);
   if($triptime == 0 && $destination != $playerinfo[sector])

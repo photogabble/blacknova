@@ -445,7 +445,7 @@ else
           {
             $salv_organics=0;
           }
-          $ship_value=$upgrade_cost*(round(mypw($upgrade_factor, $targetinfo[hull]))+round(pow($upgrade_factor, $targetinfo[engines]))+round(pow($upgrade_factor, $targetinfo[power]))+round(pow($upgrade_factor, $targetinfo[computer]))+round(pow($upgrade_factor, $targetinfo[sensors]))+round(pow($upgrade_factor, $targetinfo[beams]))+round(pow($upgrade_factor, $targetinfo[torp_launchers]))+round(pow($upgrade_factor, $targetinfo[shields]))+round(pow($upgrade_factor, $targetinfo[armour]))+round(pow($upgrade_factor, $targetinfo[cloak])));
+          $ship_value=$upgrade_cost*(round(mypw($upgrade_factor, $targetinfo[hull]))+round(mypw($upgrade_factor, $targetinfo[engines]))+round(mypw($upgrade_factor, $targetinfo[power]))+round(mypw($upgrade_factor, $targetinfo[computer]))+round(mypw($upgrade_factor, $targetinfo[sensors]))+round(mypw($upgrade_factor, $targetinfo[beams]))+round(mypw($upgrade_factor, $targetinfo[torp_launchers]))+round(mypw($upgrade_factor, $targetinfo[shields]))+round(mypw($upgrade_factor, $targetinfo[armour]))+round(mypw($upgrade_factor, $targetinfo[cloak])));
           $ship_salvage_rate=rand(10,20);
           $ship_salvage=$ship_value*$ship_salvage_rate/100;
 
@@ -544,7 +544,7 @@ else
           {
             $salv_organics=0;
           }
-          $ship_value=$upgrade_cost*(round(mypw($upgrade_factor, $playerinfo[hull]))+round(pow($upgrade_factor, $playerinfo[engines]))+round(pow($upgrade_factor, $playerinfo[power]))+round(pow($upgrade_factor, $playerinfo[computer]))+round(pow($upgrade_factor, $playerinfo[sensors]))+round(pow($upgrade_factor, $playerinfo[beams]))+round(pow($upgrade_factor, $playerinfo[torp_launchers]))+round(pow($upgrade_factor, $playerinfo[shields]))+round(pow($upgrade_factor, $playerinfo[armour]))+round(pow($upgrade_factor, $playerinfo[cloak])));
+          $ship_value=$upgrade_cost*(round(mypw($upgrade_factor, $playerinfo[hull]))+round(mypw($upgrade_factor, $playerinfo[engines]))+round(mypw($upgrade_factor, $playerinfo[power]))+round(mypw($upgrade_factor, $playerinfo[computer]))+round(mypw($upgrade_factor, $playerinfo[sensors]))+round(mypw($upgrade_factor, $playerinfo[beams]))+round(mypw($upgrade_factor, $playerinfo[torp_launchers]))+round(mypw($upgrade_factor, $playerinfo[shields]))+round(mypw($upgrade_factor, $playerinfo[armour]))+round(mypw($upgrade_factor, $playerinfo[cloak])));
           $ship_salvage_rate=rand(10,20);
           $ship_salvage=$ship_value*$ship_salvage_rate/100;
 
