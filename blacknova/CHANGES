@@ -1,5 +1,9 @@
 L. Patrick Smallwood (10 June 2002)
 ---------------------------------
+Quick addition to ranking.php - Adds efficiency rate for each player. 
+
+L. Patrick Smallwood (10 June 2002)
+---------------------------------
 Quick fix to planet-report-CE.php. Used faulty code from another file I fixed. :) Sourceforge bug #566757
 
 L. Patrick Smallwood (10 June 2002)
