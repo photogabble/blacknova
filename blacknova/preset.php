@@ -57,9 +57,9 @@ else
   else
   {
     $update = $db->Execute("UPDATE $dbtables[ships] SET preset1=$preset1,preset2=$preset2,preset3=$preset3 WHERE ship_id=$playerinfo[ship_id]");
-    $l_pre_set = str_replace("[preset1]", "$preset1", $l_pre_set);
-    $l_pre_set = str_replace("[preset2]", "$preset2", $l_pre_set);
-    $l_pre_set = str_replace("[preset3]", "$preset3", $l_pre_set);
+    $l_pre_set = str_replace("[preset1]", "<a href=rsmove.php?engage=1&destination=$preset1>$preset1</a>", $l_pre_set);
+    $l_pre_set = str_replace("[preset2]", "<a href=rsmove.php?engage=1&destination=$preset2>$preset2</a>", $l_pre_set);
+    $l_pre_set = str_replace("[preset3]", "<a href=rsmove.php?engage=1&destination=$preset3>$preset3</a>", $l_pre_set);
     echo $l_pre_set;
   }
 }
@@ -69,3 +69,5 @@ TEXT_GOTOMAIN();
 include("footer.php");
 
 ?> 
+
+
