@@ -210,7 +210,7 @@ switch ($step) {
       $initbenergy = $energy_limit * $initbcommod / 100.0;
 
 // Build Sector 0, Sol
-      print("Constructing sector 0 - Sol ");
+      print("Creating sector 0 - Sol ");
       $sector = array();
       $sector[0] = array('sector_id' => '0',
                          'sector_name' => 'Sol',
@@ -326,7 +326,8 @@ switch ($step) {
 
       // Place the ore ports
       print "Placing $oep ore ports ";
-      for($max += $oep; $i<$max; $i++) {
+      // $max += $oep-1; because Sol is an special port and counts towards the total.
+      for($max += $oep-1; $i<$max; $i++) {
         if(isset($shuffled[$i]['port_type'])) {
           $max++;
           continue;
@@ -373,10 +374,9 @@ switch ($step) {
       PrintFlush("- completed successfully.<br>");
 
       // Place the energy ports
-      // Hmm, we actaully already have one, Alpha Centauri. I wonder if it should
-      // counted...
       print "Placing $enp energy ports ";
-      for($max += $enp; $i<$max; $i++) {
+      // $max += $enp-1; because Alpha Centari is an energy port and counts towards the total.
+      for($max += $enp-1; $i<$max; $i++) {
         if(isset($shuffled[$i]['port_type'])) {
           $max++;
           continue;
@@ -616,6 +616,7 @@ switch ($step) {
             $insert = "INSERT INTO $dbtables[links] (link_start,link_dest) VALUES\n";
           }
           $insert .= "($k1,$v2),\n";
+          $i++
         }
       }
       $insert = substr_replace($insert, ";", -2);
