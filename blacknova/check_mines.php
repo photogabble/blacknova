@@ -75,13 +75,22 @@ if ($num_defences > 0 && $total_sector_mines > 0 && !$owner && $shipavg > $mine_
       echo "$l_chm_youhitsomemines<BR>";
       playerlog($playerinfo[ship_id], LOG_HIT_MINES, "$roll|$sector");
 
-      // Tell the owner that his mines where hit
-
+      // Tell the owner that his mines where hit - It might help to speak the same language though
+		if($mine_owner[lang] != $playerinfo[lang])
+		{
+			include("languages/".$mine_owner['lang'].".inc");
+		}
+			echo "you dont speak the same language";
       $l_chm_hehitminesinsector = str_replace("[chm_playerinfo_character_name]", $playerinfo[character_name], $l_chm_hehitminesinsector);
       $l_chm_hehitminesinsector = str_replace("[chm_roll]", "$roll", $l_chm_hehitminesinsector);
       $l_chm_hehitminesinsector = str_replace("[chm_sector]", $sector, $l_chm_hehitminesinsector);
 
       message_defence_owner($sector,"$l_chm_hehitminesinsector");
+
+		if($mine_owner[lang] != $playerinfo[lang])
+		{
+			include("languages/".$playerinfo['lang'].".inc");
+		}
 
       // If the player has enough mine deflectors then subtract the ammount and continue
       if($playerinfo[dev_minedeflector] >= $roll)
