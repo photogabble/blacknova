@@ -8,6 +8,10 @@
 	include("header.php");
 
 	connectdb();
+if(checklogin())
+{
+  die();
+}
         $res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
         $playerinfo = $res->fields;
 
