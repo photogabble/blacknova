@@ -943,7 +943,7 @@ function GenNextID($id)
 function stripnum($str)
 {
   $str=(string)$str;
-  $output = ereg_replace("[^0-9]","",$str);
+  $output = ereg_replace("[^0-9.]","",$str);
   return $output;
 }
 
