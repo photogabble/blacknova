@@ -3,12 +3,12 @@
 ob_start("ob_gzhandler");
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!doctype html public "-//w3c//dtd html 3.2//en">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <HTML>
 
 <HEAD>
 <TITLE><? echo $title; ?></TITLE>
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <STYLE TYPE="text/css">
 <!--
 <?
@@ -42,7 +42,7 @@ if(empty($no_body))
 
   if($interface=="main.php")
   {
-  	echo "<BODY BACKGROUND=\"images/bgoutspace1.gif\" bgcolor=\"#000000\" text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
+  	echo "<BODY BACKGROUND=\"images/bgoutspace1.gif\" bgcolor=#000000 text=\"#c0c0c0\" link=\"#00ff00\" vlink=\"#00ff00\" alink=\"#ff0000\">";
   }
   else
   {
