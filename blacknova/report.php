@@ -134,7 +134,7 @@ echo "
       <font size=2><b>
       $l_armour&nbsp;&nbsp;&nbsp;
       </b></font><td valign=bottom>
-      $armour_bars;
+      $armour_bars
       </td>
     </tr>
 
