@@ -129,9 +129,9 @@ else
     {
       echo "<span style=\"font-family : courier, monospace; font-size: 12pt; color: #00FF00 \">Furangee Editor</span><BR>";
       echo "<FORM ACTION=furangee_control.php METHOD=POST>";
-      if(empty($user))
+      if(empty($user1))
       {
-        echo "<SELECT SIZE=20 NAME=user>";
+        echo "<SELECT SIZE=20 NAME=user1>";
         $res = $db->Execute("SELECT email,character_name,destroyed,active,sector_id FROM $dbtables[players] JOIN $dbtables[furangee] LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id = $dbtables[ships].player_id WHERE email=furangee_id ORDER BY sector_id");
         while(!$res->EOF)
         {
@@ -151,7 +151,7 @@ else
       {
         if(empty($operation))
         {
-          $res = $db->Execute("SELECT * FROM $dbtables[players] JOIN $dbtables[furangee] LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id = $dbtables[ships].player_id WHERE email=furangee_id AND email='$user'");
+          $res = $db->Execute("SELECT * FROM $dbtables[players] JOIN $dbtables[furangee] LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id = $dbtables[ships].player_id WHERE email=furangee_id AND email='$user1'");
           $row = $res->fields;
           echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
           echo "<TR><TD>Furangee name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
@@ -224,7 +224,7 @@ else
           echo "<TR><TD>Current sector</TD><TD><INPUT TYPE=TEXT NAME=sector VALUE=\"$row[sector_id]\"></TD></TR>";
           echo "</TABLE>";
           echo "<BR>";
-          echo "<INPUT TYPE=HIDDEN NAME=user VALUE=$user>";
+          echo "<INPUT TYPE=HIDDEN NAME=user1 VALUE=$user1>";
           echo "<INPUT TYPE=HIDDEN NAME=operation VALUE=save>";
           echo "<INPUT TYPE=SUBMIT VALUE=Save>";
           //******************************
@@ -262,17 +262,17 @@ else
           $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
           $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
           $_active = empty($active) ? "N" : "Y";
-          $res = $db->Execute("SELECT ship_id FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE email='$user'");
+          $res = $db->Execute("SELECT ship_id FROM $dbtables[players] LEFT JOIN $dbtables[ships] USING(player_id) WHERE email='$user1'");
           $ship_id = $res->fields[ship_id];
 
-          $result = $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',credits='$credits',turns='$turns' WHERE email='$user'");
+          $result = $db->Execute("UPDATE $dbtables[players] SET character_name='$character_name',credits='$credits',turns='$turns' WHERE email='$user1'");
           $result = $db->Execute("UPDATE $dbtables[ships] SET name='$ship_name',destroyed='$_ship_destroyed',hull='$hull',engines='$engines',power='$power',computer='$computer',sensors='$sensors',armour='$armour',shields='$shields',beams='$beams',torp_launchers='$torp_launchers',cloak='$cloak',dev_warpedit='$dev_warpedit',dev_genesis='$dev_genesis',dev_beacon='$dev_beacon',dev_emerwarp='$dev_emerwarp',dev_escapepod='$_dev_escapepod',dev_fuelscoop='$_dev_fuelscoop',dev_minedeflector='$dev_minedeflector',sector_id='$sector',ore='$ship_ore',organics='$ship_organics',goods='$ship_goods',energy='$ship_energy',colonists='$ship_colonists',fighters='$ship_fighters',torps='$torps',armour_pts='$armour_pts' WHERE ship_id=$ship_id");
           if(!$result) {
             echo "Changes to Furangee ship record have FAILED Due to the following Error:<BR><BR>";
             echo $db->ErrorMsg() . "<br>";
           } else {
             echo "Changes to Furangee ship record have been saved.<BR><BR>";
-            $result2 = $db->Execute("UPDATE $dbtables[furangee] SET active='$_active',orders='$orders',aggression='$aggression' WHERE furangee_id='$user'");
+            $result2 = $db->Execute("UPDATE $dbtables[furangee] SET active='$_active',orders='$orders',aggression='$aggression' WHERE furangee_id='$user1'");
             if(!$result2) {
               echo "Changes to Furangee activity record have FAILED Due to the following Error:<BR><BR>";
               echo $db->ErrorMsg() . "<br>";
