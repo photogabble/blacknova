@@ -38,6 +38,14 @@ if(!empty($lang))
 if (!isset($lang) || empty($lang))
   $lang = $default_lang;
 $lang = $lang . ".inc";
+//Planet log constants
+define(PLOG_GENESIS_CREATE,1);
+define(PLOG_GENESIS_DESTROY,2);
+define(PLOG_CAPTURE,3);
+define(PLOG_ATTACKED,4);
+define(PLOG_SCANNED,5);
+define(PLOG_OWNER_DESTRUCTED,6);
+
 //Log constants
 
 define(LOG_LOGIN, 1);
@@ -118,6 +126,7 @@ $dbtables['bounty'] = "${db_prefix}bounty";
 $dbtables['movement_log'] = "${db_prefix}movement_log";        
 $dbtables['ship_types'] = "${db_prefix}ship_types";               
 $dbtables['ships'] = "${db_prefix}ships";
+$dbtables['planet_log'] = "${db_prefix}planet_log";
 
 function mypw($one,$two)
 {

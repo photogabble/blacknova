@@ -316,6 +316,20 @@ $db->Execute("CREATE TABLE $dbtables[movement_log](" .
              ")");
 db_create_result();
 
+echo "Creating table: planet_log ";
+$db->Execute("CREATE TABLE $dbtables[planet_log](" .
+              "planetlog_id unsigned DEFAULT '0' NOT NULL auto_increment," .
+              "planet_id int DEFAULT '0' NOT NULL," .
+              "ship_id int DEFAULT '0' NOT NULL," .
+              "owner_id int DEFAULT '0' NOT NULL," .
+              "ip_address tinytext NOT NULL," .
+              "time TIMESTAMP(14) ," .
+              "PRIMARY KEY (planetlog_id)," .
+              "KEY ship_id (ship_id)," .
+              "KEY planet_id (planet_id)" .
+              ")");
+db_create_result();
+
 echo "Creating table: ship_types ";
 $db->Execute("CREATE TABLE $dbtables[ship_types] (" .
              "type_id int unsigned DEFAULT '1' NOT NULL," .
