@@ -4,137 +4,25 @@ include("languages/$lang");
 
 updatecookie();
 
-
 $basefontsize = 0;
 $stylefontsize = "8Pt";
 $picsperrow = 5;
 
 if($screenres == 640)
-  $picsperrow = 3;
+   $picsperrow = 3;
 
 if($screenres >= 1024)
 {
-  $basefontsize = 1;
-  $stylefontsize = "12Pt";
-  $picsperrow = 7;
+   $basefontsize = 1;
+   $stylefontsize = "12Pt";
+   $picsperrow = 7;
 }
-
-connectdb();
 
 $title=$l_main_title;
 include("header.php");
-if($sched_type==1)
-{ 
-   $lastrun = time(); 
-   $res = $db->Execute("SELECT last_run FROM $dbtables[scheduler] LIMIT 1"); 
-   $result = $res->fields;
-   $sched_counter = floor((TIME()-$result[last_run])/ ($sched_ticks*60)); 
-   if ($sched_counter < 0) $sched_counter = 0; 
-   if ($sched_counter > 5) $sched_counter = 5; 
-   if ($sched_counter > 0) 
-   { 
-      $secs = $sched_counter * $sched_ticks * 60; 
-      $db->Execute("UPDATE $dbtables[scheduler] SET last_run=last_run+$secs"); 
-      $sched_temp=$swordfish; 
-      $swordfish=$adminpass; 
-      for (; $sched_counter > 0; $sched_counter--) 
-      { 
-
-         include("scheduler.php"); 
-      } 
-      $swordfish=$sched_temp; 
-      unset($sched_temp); 
-   } 
-} 
-
-
-
-if(checklogin())
-{
-  die();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
-$playerinfo = $res->fields;
-if($playerinfo['cleared_defences'] > ' ')
-{
-   echo "$l_incompletemove <BR>";
-   echo "<a href=$playerinfo[cleared_defences]>$l_clicktocontinue</a>";
-   die();
-}
-
-
-$res = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
-$sectorinfo = $res->fields;
+include("topbar.php");
 
 srand((double)microtime() * 1000000);
-
-if($playerinfo[on_planet] == "Y")
-{
-  $res2 = $db->Execute("SELECT planet_id, owner FROM $dbtables[planets] WHERE planet_id=$playerinfo[planet_id]");
-  if($res2->RecordCount() != 0)
-  {
-    echo "<A HREF=planet.php?planet_id=$playerinfo[planet_id]>$l_clickme</A> $l_toplanetmenu    <BR>";
-    echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=planet.php?planet_id=$playerinfo[planet_id]&id=".$playerinfo[ship_id]."\">";
-
-    //-------------------------------------------------------------------------------------------------
-    die();
-  }
-  else
-  {
-    $db->Execute("UPDATE $dbtables[ships] SET on_planet='N' WHERE ship_id=$playerinfo[ship_id]");
-    echo "<BR>$l_nonexistant_pl<BR><BR>";
-  }
-}
-
-$res = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='$playerinfo[sector]' ORDER BY link_dest ASC");
-
-$i = 0;
-if($res > 0)
-{
-  while(!$res->EOF)
-  {
-    $links[$i] = $res->fields[link_dest];
-    $i++;
-    $res->MoveNext();
-  }
-}
-$num_links = $i;
-
-$res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE sector_id='$playerinfo[sector]'");
-
-$i = 0;
-if($res > 0)
-{
-  while(!$res->EOF)
-  {
-    $planets[$i] = $res->fields;
-    $i++;
-    $res->MoveNext();
-  }
-}
-$num_planets = $i;
-
-$res = $db->Execute("SELECT * FROM $dbtables[sector_defence],$dbtables[ships] WHERE $dbtables[sector_defence].sector_id='$playerinfo[sector]'
-                                                    AND $dbtables[ships].ship_id = $dbtables[sector_defence].ship_id ");
-$i = 0;
-if($res > 0)
-{
-  while(!$res->EOF)
-  {
-    $defences[$i] = $res->fields;
-    $i++;
-    $res->MoveNext();
-  }
-}
-$num_defences = $i;
-
-$res = $db->Execute("SELECT zone_id,zone_name FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
-$zoneinfo = $res->fields;
-
 $shiptypes[0]= "tinyship.gif";
 $shiptypes[1]= "smallship.gif";
 $shiptypes[2]= "mediumship.gif";
@@ -147,286 +35,339 @@ $planettypes[2]= "mediumplanet.gif";
 $planettypes[3]= "largeplanet.gif";
 $planettypes[4]= "hugeplanet.gif";
 
-?>
+if($sched_type==1)
+{ 
+   $lastrun = time(); 
+   $res = $db->Execute("SELECT last_run FROM $dbtables[scheduler] LIMIT 1"); 
+   $result = $res->fields;
+   $sched_counter = floor((TIME()-$result[last_run])/ ($sched_ticks*60)); 
+   if ($sched_counter < 0)
+      $sched_counter = 0; 
+   if ($sched_counter > 5)
+      $sched_counter = 5; 
+   if ($sched_counter > 0) 
+   { 
+      $secs = $sched_counter * $sched_ticks * 60; 
+      $db->Execute("UPDATE $dbtables[scheduler] SET last_run=last_run+$secs"); 
+      $sched_temp=$swordfish; 
+      $swordfish=$adminpass; 
+      for (; $sched_counter > 0; $sched_counter--) 
+      { 
+         include("scheduler.php"); 
+      } 
+      $swordfish=$sched_temp; 
+      unset($sched_temp); 
+   }
+} 
 
-<table border=1 cellspacing=0 cellpadding=0 bgcolor="#400040" width="75%" align=center>
- <tr>
-  <td align="center" colspan=3>
-   <font color=silver size=<? echo $basefontsize + 2; ?> face="arial"><? echo player_insignia_name($username);?> 
-    <b>
-     <font color=white><? echo $playerinfo[character_name];?>
-     </font>
-    </b>
-   </font>
-  <?php echo $l_abord ?>
-   <b>
-    <font color=white>
-     <a href="report.php"><? echo $playerinfo[ship_name] ?>
-     </a>
-    </font>
-   </b>
-  </td>
- </tr>
-</table>
-<?
- $result = $db->Execute("SELECT * FROM $dbtables[messages] WHERE recp_id='".$playerinfo[ship_id]."' AND notified='N'");
- if ($result->RecordCount() > 0)
- {
-?>
-<script language="javascript" type="text/javascript">{ alert('<? echo $l_youhave . $result->RecordCount() . $l_messages_wait;
- ?>'); }</script>
-<?
-  $db->Execute("UPDATE $dbtables[messages] SET notified='Y' WHERE recp_id='".$playerinfo[ship_id]."'");
- }
-?>
-<table width="75%" cellpadding=0 cellspacing=1 border=0 align=center>
-<tr><td>
-<font color=silver size=<? echo $basefontsize + 2; ?> face="arial">&nbsp;<? echo $l_turns_have; ?></font><font color=white><b><? echo NUMBER($playerinfo[turns]) ?></b></font>
-</td>
-<td align=center>
-<font color=silver size=<? echo $basefontsize + 2; ?> face="arial"><? echo $l_turns_used ?></font><font color=white><b><? echo NUMBER($playerinfo[turns_used]); ?></b></font>
-</td>
-<td align=right>
-<font color=silver size=<? echo $basefontsize + 2; ?> face="arial"><? echo $l_score?></font><font color=white><b><? echo NUMBER($playerinfo[score])?>&nbsp;</b></font>
-</td>
-<tr><td>
-<font color=silver size=<? echo $basefontsize + 2; ?> face="arial">&nbsp;<? echo $l_sector ?>: </font><font color=white><b><? echo $playerinfo[sector]; ?></b></font>
-</td><td align=center>
-
-<?
-if(!empty($sectorinfo[beacon]))
+if(checklogin())
 {
-  echo "<font color=white size=", $basefontsize + 2," face=\"arial\"><b>", $sectorinfo[beacon], "</b></font>";
+  die();
 }
 
-if($zoneinfo[zone_id] < 5)
-  $zoneinfo[zone_name] = $l_zname[$zoneinfo[zone_id]];
+//-------------------------------------------------------------------------------------------------
+
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+$playerinfo = $res->fields;
+if($playerinfo['cleared_defences'] > ' ')
+{
+   echo "$l_incompletemove <BR>";
+   echo "<a href=$playerinfo[cleared_defences]>$l_clicktocontinue</a>";
+   die();
+}
+if($playerinfo[on_planet] == "Y")
+{
+   $res2 = $db->Execute("SELECT planet_id, owner FROM $dbtables[planets] WHERE planet_id=$playerinfo[planet_id]");
+   if($res2->RecordCount() != 0)
+   {
+      echo "<A HREF=planet.php?planet_id=$playerinfo[planet_id]>$l_clickme</A> $l_toplanetmenu    <BR>";
+      echo "<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0;URL=planet.php?planet_id=$playerinfo[planet_id]&id=".$playerinfo[ship_id]."\">";
+      die();
+   }
+   else
+   {
+      $db->Execute("UPDATE $dbtables[ships] SET on_planet='N' WHERE ship_id=$playerinfo[ship_id]");
+      echo "<BR>$l_nonexistant_pl<BR><BR>";
+   }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+$res = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
+$sectorinfo = $res->fields;
+
+$res = $db->Execute("SELECT zone_id,zone_name FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
+$zoneinfo = $res->fields;
+
+$res = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='$playerinfo[sector]' ORDER BY link_dest ASC");
+if($res > 0)
+{
+  while(!$res->EOF)
+  {
+    $links[] = $res->fields[link_dest];
+    $res->MoveNext();
+  }
+}
+$num_links = count($links);
+
+$res = $db->Execute("SELECT * FROM $dbtables[planets] WHERE sector_id='$playerinfo[sector]'");
+if($res > 0)
+{
+  while(!$res->EOF)
+  {
+    $planets[] = $res->fields;
+    $res->MoveNext();
+  }
+}
+$num_planets = count($planets);
+
+$res = $db->Execute("SELECT * FROM $dbtables[sector_defence],$dbtables[ships] WHERE $dbtables[sector_defence].sector_id='$playerinfo[sector]' AND $dbtables[ships].ship_id = $dbtables[sector_defence].ship_id ");
+if($res > 0)
+{
+  while(!$res->EOF)
+  {
+    $defences[] = $res->fields;
+    $res->MoveNext();
+  }
+}
+$num_defences = count($defences);
+
+//-------------------------------------------------------------------------------------------------
+
+function tabletop($tbltitle)
+{
+?>
+<table border="0" cellpadding="0" cellspacing="0" align="center">
+<tr valign="top">
+   <td>
+      <table border="0" cellpadding="0" cellspacing="0">
+      <tr>
+         <td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td>
+      </tr>
+      <tr>
+         <td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td>
+      </tr>
+      </table>
+   </td>
+   <td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b><? echo $tbltitle ?></b></font></td>
+   <td align="right">
+      <table border="0" cellpadding="0" cellspacing="0">
+      <tr>
+         <td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td>
+      </tr>
+      <tr>
+         <td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td>
+      </tr>
+      </table>
+   </td>
+</tr>
+</table>
+<?
+}
+
+function tableentry($file, $text, $enabled = true)
+{
+   if (!$enabled) { return; }
+   echo "&nbsp;<a class=mnu href=\"$file\">$text</a>&nbsp;<br>";
+}
 
 ?>
-</td><td align=right>
-
-<a href="<? echo "zoneinfo.php?zone=$zoneinfo[zone_id]"; ?>"><b><? echo "<font size=", $basefontsize + 2," face=\"arial\">$zoneinfo[zone_name]</font>"; ?></b></a>&nbsp;
-</td></tr>
-</table>
-
 <table width="100%" border=0 align=center cellpadding=0 cellspacing=0>
-
 <tr>
+   <td valign=top>
 
-<td valign=top>
-
-<table border="0" cellpadding="0" cellspacing="0" align="center"><tr valign="top">
-<!-- FOO -->
-<td><table border="0" cellpadding="0" cellspacing="0">
-  <tr><td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
-  <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
-</table></td>
-<td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
-<? echo $l_commands ?>
-</b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0">
-  <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
-  <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
-</table></td>
-</tr></table>
-
+<? tabletop($l_commands); ?>
 <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR="#500050" align="center">
-<TR><TD NOWRAP>
+<TR>
+   <TD NOWRAP>
 <div class=mnu>
-&nbsp;<a class=mnu href="device.php"><? echo $l_devices ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="planet-report.php"><? echo $l_planets ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="log.php"><? echo $l_log ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="defence-report.php"><? echo $l_sector_def ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="readmail.php"><? echo $l_read_msg ?></A>&nbsp;<br>
-&nbsp;<a class=mnu href="mailto2.php"><? echo $l_send_msg ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="ranking.php"><? echo $l_rankings ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="settings.php"><? echo $l_login_settings ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="teams.php"><? echo $l_teams ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="self-destruct.php"><? echo $l_ohno ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="options.php"><? echo $l_options ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="navcomp.php"><? echo $l_navcomp ?></a>&nbsp;<br>
 <?
-if ($ksm_allowed == true)
-{
-echo "&nbsp;<a class=mnu href=\"galaxy2.php\">$l_map</a>&nbsp;<br>";
-}
+tableentry("device.php", $l_devices);
+tableentry("planet-report.php", $l_planets);
+tableentry("log.php", $l_log);
+tableentry("defence-report.php", $l_sector_def);
+tableentry("readmail.php", $l_read_msg);
+tableentry("mailto2.php", $l_send_msg);
+tableentry("ranking.php", $l_rankings);
+tableentry("settings.php", $l_login_settings);
+tableentry("teams.php", $l_teams);
+tableentry("self-destruct.php", $l_ohno);
+tableentry("options.php", $l_options);
+tableentry("navcomp.php", $l_navcomp);
+tableentry("galaxy2.php", $l_map, $ksm_allowed);
 ?>
 </div>
-</td></tr>
-<tr><td nowrap>
+   </td>
+</tr>
+<tr>
+   <td nowrap>
 <div class=mnu>
-<? //&nbsp;<a class=mnu href="help.php">$l_help</a>&nbsp;<br> ?>
-&nbsp;<a class=mnu href="faq.html"><? echo $l_faq ?></a>&nbsp;<br>
-&nbsp;<a class=mnu href="feedback.php"><? echo $l_feedback ?></a>&nbsp;<br>
 <?
-if(!empty($link_forums))
-{
-    echo "&nbsp;<a class=\"mnu\" href=\"$link_forums\" TARGET=\"_blank\">$l_forums</a>&nbsp;<br>";
-}
+tableentry("help.php", $l_help, false);
+tableentry("faq.php", $l_faq);
+tableentry("feedback.php", $l_feedback);
+tableentry("link_forums.php", $l_forums, !empty($link_forums));
 ?>
 </div>
-</td></tr>
-<tr><td nowrap>
-&nbsp;<a class=mnu href="logout.php"><? echo $l_logout ?></a>&nbsp;<br>
-</td></tr>
+   </td>
+</tr>
+<tr>
+   <td nowrap>
+<?
+tableentry("logout.php", $l_logout);
+?>
+   </td>
+</tr>
 </table>
 
 <br>
 
-<table border="0" cellpadding="0" cellspacing="0" align="center"><tr valign="top">
-<td><table border="0" cellpadding="0" cellspacing="0">
-  <tr><td><img src="images/lcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
-  <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
-</table></td>
-<td nowrap bgcolor="#400040"><font face="verdana" size="1" color="#ffffff"><b>
-<? echo $l_main_warpto; ?>
-</b></font></td>
-<td align="right"><table border="0" cellpadding="0" cellspacing="0">
-  <tr><td><img src="images/rcorner.gif" width="8" height="11" border="0" alt=""></td></tr>
-  <tr><td bgcolor="#400040" height="100%"><img src="images/spacer.gif" width="8" height="100%" border="0" alt=""></td></tr>
-</table></td>
-</tr></table>
-
+<? tabletop($l_main_warpto); ?>
 <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR="#500050" align="center">
-<TR><TD NOWRAP>
+<TR>
+   <TD NOWRAP>
 <div class=mnu>
-
 <?
-
 if(!$num_links)
 {
   echo "&nbsp;<a class=dis>$l_no_warplink</a>&nbsp;<br>";
-  $link_bnthelper_string="<!--links:N";
+  $link_bnthelper_string = "<!--links:N";
 }
 else
 {
-  $link_bnthelper_string="<!--links:Y";
+  $link_bnthelper_string = "<!--links:Y";
   for($i=0; $i<$num_links;$i++)
   {
      echo "&nbsp;<a class=\"mnu\" href=\"move.php?sector=$links[$i]\">=&gt;&nbsp;$links[$i]</a>&nbsp;<a class=dis href=\"lrscan.php?sector=$links[$i]\">[$l_scan]</a>&nbsp;<br>";
      $link_bnthelper_string=$link_bnthelper_string . ":" . $links[$i];
   }
 }
-$link_bnthelper_string=$link_bnthelper_string . ":-->";
-echo "</div>";
-echo "</td></tr>";
-echo "<tr><td nowrap align=center>";
-echo "<div class=mnu>";
-echo "&nbsp;<a class=dis href=\"lrscan.php?sector=*\">[$l_fullscan]</a>&nbsp;<br>";
+$link_bnthelper_string = $link_bnthelper_string . ":-->";
 ?>
-
 </div>
-</td></tr>
-</table>
-
-</td>
-
-<td valign=top>
-&nbsp;<br>
-
-<center><font size=<? echo $basefontsize+2; ?> face="arial" color=white><b><? echo $l_tradingport ?>:&nbsp;
-
-<?
-if($sectorinfo[port_type] != "none")
-{
-  echo "<a href=port.php>", ucfirst(t_port($sectorinfo[port_type])), "</a>";
-  $port_bnthelper_string="<!--port:" . $sectorinfo[port_type] . ":" . $sectorinfo[port_ore] . ":" . $sectorinfo[port_organics] . ":" . $sectorinfo[port_goods] . ":" . $sectorinfo[port_energy] . ":-->";
-}
-else
-{
-  echo "</b><font size=", $basefontsize+2,">$l_none</font><b>";
-  $port_bnthelper_string="<!--port:none:0:0:0:0:-->";
-}
-?>
-
-</b></font></center>
-<br>
-
-<center><b><font size=<? echo $basefontsize+2; ?> face="arial" color=white><? echo $l_planet_in_sec . $sectorinfo[sector_id];?>:</font></b></center>
-<table border=0 width="100%">
+   </td>
+</tr>
 <tr>
-
-<?
-
-if($num_planets > 0)
-{
-  $totalcount=0;
-  $curcount=0;
-  $i=0;
-  while($i < $num_planets)
-  {
-    if($planets[$i][owner] != 0)
-    {
-      $result5 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=" . $planets[$i][owner]);
-      $planet_owner = $result5->fields;
-
-      $planetavg = $planet_owner[hull] + $planet_owner[engines] + $planet_owner[computer] + $planet_owner[beams] + $planet_owner[torp_launchers] + $planet_owner[shields] + $planet_owner[armour];
-      $planetavg /= 7;
-
-      if($planetavg < 8)
-        $planetlevel = 0;
-      else if ($planetavg < 12)
-        $planetlevel = 1;
-      else if ($planetavg < 16)
-        $planetlevel = 2;
-      else if ($planetavg < 20)
-        $planetlevel = 3;
-      else
-        $planetlevel = 4;
-    }
-    else
-      $planetlevel=0;
-
-    echo "<td align=center valign=top>";
-    echo "<A HREF=planet.php?planet_id=" . $planets[$i][planet_id] . ">";
-    echo "<img src=\"images/$planettypes[$planetlevel]\" border=0></a><BR><font size=", $basefontsize + 1, " color=#ffffff face=\"arial\">";
-    if(empty($planets[$i][name]))
-    {
-      echo $l_unnamed;
-      $planet_bnthelper_string="<!--planet:Y:Unnamed:";
-    }
-    else
-    {
-      echo $planets[$i][name];
-      $planet_bnthelper_string="<!--planet:Y:" . $planets[$i][name] . ":";
-    }
-
-    if($planets[$i][owner] == 0)
-    {
-      echo "<br>($l_unowned)";
-      $planet_bnthelper_string=$planet_bnthelper_string . "Unowned:-->";
-    }
-    else
-    {
-       echo "<br>($planet_owner[character_name])";
-      $planet_bnthelper_string=$planet_bnthelper_string . $planet_owner[character_name] . ":N:-->";
-    }
-    echo "</font></td>";
-
-    $totalcount++;
-    if($curcount == $picsperrow - 1)
-    {
-      echo "</tr><tr>";
-      $curcount=0;
-    }
-    else
-      $curcount++;
-    $i++;
-  }
-}
-else
-{
-  echo "<td align=center valign=top>";
-  echo "<br><font color=white size=", $basefontsize +2, ">$l_none</font><br><br>";
-  $planet_bnthelper_string="<!--planet:N:::-->";
-}
-?>
-
-</td>
+   <td nowrap align=center>
+   <div class=mnu>
+   &nbsp;<a class=dis href=\"lrscan.php?sector=*\">[<? echo $l_fullscan ?>]</a>&nbsp;<br>
+   </div>
+   </td>
 </tr>
 </table>
+<?
+//----------------------------------------------------------------------------------------------
+echo "</TD><TD valign=top>";
+// BEGINING OF THE MAIN BOX
+//----------------------------------------------------------------------------------------------
 
-<center><b><font size=<? echo $basefontsize+2; ?> face="arial" color=white><? echo $l_ships_in_sec . $sectorinfo[sector_id];?>:</font><br></b></center>
+$fontsize = $basefontsize+2;
+
+//********************************
+//  PORT
+//********************************
+echo "<br>\n";
+echo "<center>\n";
+echo "<font size=$fontsize face=\"arial\" color=white><b>$l_tradingport:&nbsp;\n";
+if($sectorinfo[port_type] != "none")
+{
+   echo "<a href=port.php>", ucfirst(t_port($sectorinfo[port_type])), "</a>\n";
+   $port_bnthelper_string = "<!--port:" . $sectorinfo[port_type] . ":" . $sectorinfo[port_ore] . ":" . $sectorinfo[port_organics] . ":" . $sectorinfo[port_goods] . ":" . $sectorinfo[port_energy] . ":-->";
+}
+else
+{
+   echo "</b><font size=$fontsize>$l_none</font><b>\n";
+   $port_bnthelper_string = "<!--port:none:0:0:0:0:-->";
+}
+echo "</b></font>\n";
+echo "<br>\n";
+//********************************
+//  PLANET
+//********************************
+echo "<br>\n";
+echo "<b><font size=$fontsize face=\"arial\" color=white>$l_planet_in_sec$sectorinfo[sector_id]:</font></b>\n";
+if($num_planets > 0)
+{
+   echo "<table border=0 width=\"100%\">\n";
+   echo "<tr>\n";
+   
+   $totalcount=0;
+   $curcount=0;
+   for($i=0; $i < $num_planets; $i++)
+   {
+      if($planets[$i][owner] != 0)
+      {
+         $result5 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id=" . $planets[$i][owner]);
+         $planet_owner = $result5->fields;
+         
+         $planetavg = ($planet_owner[hull] + $planet_owner[engines] + $planet_owner[computer] + $planet_owner[beams] + $planet_owner[torp_launchers] + $planet_owner[shields] + $planet_owner[armour])/7;         
+         if($planetavg < 8)
+            $planetlevel = 0;
+         else if ($planetavg < 12)
+            $planetlevel = 1;
+         else if ($planetavg < 16)
+            $planetlevel = 2;
+         else if ($planetavg < 20)
+            $planetlevel = 3;
+         else
+            $planetlevel = 4;
+      }
+      else
+      {
+         $planetlevel = 0;
+      }
+
+      echo "  <TD align=center valign=top>\n";
+      echo "      <A HREF=planet.php?planet_id=".$planets[$i][planet_id].">\n";
+      echo "      <img src=\"images/".$planettypes[$planetlevel]."\" border=0>\n";
+      echo "      </A><BR>\n";
+      echo "      <font size=\"$basefontsize+1\" color=#ffffff face=\"arial\">";
+      
+      if(empty($planets[$i][name]))
+      {
+         echo $l_unnamed."<BR>";
+         $planet_bnthelper_string="<!--planet:Y:Unnamed:";
+      }
+      else
+      {
+         echo $planets[$i][name]."<BR>";
+         $planet_bnthelper_string="<!--planet:Y:" . $planets[$i][name] . ":";
+      }
+      if($planets[$i][owner] == 0)
+      {
+         echo "($l_unowned)";
+         $planet_bnthelper_string=$planet_bnthelper_string . "Unowned:-->";
+      }
+      else
+      {
+         echo "($planet_owner[character_name])";
+         $planet_bnthelper_string=$planet_bnthelper_string . $planet_owner[character_name] . ":N:-->";
+      }
+      echo "      </font>";
+      echo "   </TD>";
+
+      $totalcount++;
+      if($curcount == $picsperrow - 1)
+      {
+         echo "</tr>\n<tr>";
+         $curcount=0;
+      }
+      else
+      {
+      $curcount++;
+      }
+   }
+   echo "   </td>\n";
+   echo "</tr>\n";
+   echo "</table>\n";
+}
+else
+{
+  echo " <br><font color=white size=\"fontsize\">$l_none</font><br><br>";
+  $planet_bnthelper_string="<!--planet:N:::-->";
+}
+
+echo "<center><b><font size=$fontsize face=\"arial\" color=white>$l_ships_in_sec $sectorinfo[sector_id]:</font></b></center><br>\n";
 <table border=0 width="100%">
 <tr>
 
@@ -805,16 +746,17 @@ Direct:<BR><INPUT TYPE=TEXT NAME=destination SIZE=10 MAXLENGTH=10><BR><INPUT TYP
 
 //-------------------------------------------------------------------------------------------------
 
-
-$player_bnthelper_string="<!--player info:" . $playerinfo[hull] . ":" .  $playerinfo[engines] . ":"  .  $playerinfo[power] . ":" .  $playerinfo[computer] . ":" . $playerinfo[sensors] . ":" .  $playerinfo[beams] . ":" . $playerinfo[torp_launchers] . ":" .  $playerinfo[torps] . ":" . $playerinfo[shields] . ":" .  $playerinfo[armour] . ":" . $playerinfo[armour_pts] . ":" .  $playerinfo[cloak] . ":" . $playerinfo[credits] . ":" .  $playerinfo[sector] . ":" . $playerinfo[ship_ore] . ":" .  $playerinfo[ship_organics] . ":" . $playerinfo[ship_goods] . ":" .  $playerinfo[ship_energy] . ":" . $playerinfo[ship_colonists] . ":" .  $playerinfo[ship_fighters] . ":" . $playerinfo[turns] . ":" .  $playerinfo[on_planet] . ":" . $playerinfo[dev_warpedit] . ":" .  $playerinfo[dev_genesis] . ":" . $playerinfo[dev_beacon] . ":" .  $playerinfo[dev_emerwarp] . ":" . $playerinfo[dev_escapepod] . ":" .  $playerinfo[dev_fuelscoop] . ":" . $playerinfo[dev_minedeflector] . ":-->";
-$rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
-echo $player_bnthelper_string;
-echo $link_bnthelper_string;
-echo $port_bnthelper_string;
-echo $planet_bnthelper_string;
-echo $rspace_bnthelper_string;
-
-echo "\n";
+if ($allowbnthelper)
+{
+   $player_bnthelper_string="<!--player info:" . $playerinfo[hull] . ":" .  $playerinfo[engines] . ":"  .  $playerinfo[power] . ":" .  $playerinfo[computer] . ":" . $playerinfo[sensors] . ":" .  $playerinfo[beams] . ":" . $playerinfo[torp_launchers] . ":" .  $playerinfo[torps] . ":" . $playerinfo[shields] . ":" .  $playerinfo[armour] . ":" . $playerinfo[armour_pts] . ":" .  $playerinfo[cloak] . ":" . $playerinfo[credits] . ":" .  $playerinfo[sector] . ":" . $playerinfo[ship_ore] . ":" .  $playerinfo[ship_organics] . ":" . $playerinfo[ship_goods] . ":" .  $playerinfo[ship_energy] . ":" . $playerinfo[ship_colonists] . ":" .  $playerinfo[ship_fighters] . ":" . $playerinfo[turns] . ":" .  $playerinfo[on_planet] . ":" . $playerinfo[dev_warpedit] . ":" .  $playerinfo[dev_genesis] . ":" . $playerinfo[dev_beacon] . ":" .  $playerinfo[dev_emerwarp] . ":" . $playerinfo[dev_escapepod] . ":" .  $playerinfo[dev_fuelscoop] . ":" . $playerinfo[dev_minedeflector] . ":-->";
+   $rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
+   echo $player_bnthelper_string;
+   echo $link_bnthelper_string;
+   echo $port_bnthelper_string;
+   echo $planet_bnthelper_string;
+   echo $rspace_bnthelper_string;
+   echo "\n";
+}
 ?>
 <TABLE WIDTH="500" ALIGN=CENTER BORDER=1 CELLSPACING=0 CELLPADDING=1 BGCOLOR="black">
 <TR>
@@ -828,5 +770,4 @@ echo "\n";
 <?
 include("fader.php");
 include("footer.php");
-
 ?>
