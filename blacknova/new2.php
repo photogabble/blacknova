@@ -38,9 +38,9 @@ if ($result>0)
   while (!$result->EOF)
   {
     $row = $result->fields;
-    if ($row[0]==$username) { echo "$l_new_inuse  $l_new_4gotpw1 <a href=mail.php?mail=$username>$l_clickme</a> $l_new_4gotpw2<BR>"; $flag=1;}
-    if ($row[1]==$character) { echo "$l_new_inusechar<BR>"; $flag=1;}
-    if ($row[2]==$shipname) { echo "$l_new_inuseship<BR>"; $flag=1;}
+    if ($row[email]==$username) { echo "$l_new_inuse  $l_new_4gotpw1 <a href=mail.php?mail=$username>$l_clickme</a> $l_new_4gotpw2<BR>"; $flag=1;}
+    if ($row[character_name]==$character) { echo "$l_new_inusechar<BR>"; $flag=1;}
+    if ($row[ship_name]==$shipname) { echo "$l_new_inuseship<BR>"; $flag=1;}
     $result->MoveNext();
   }
 }
