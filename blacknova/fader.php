@@ -2,13 +2,8 @@
 <!--
 /* Original script by Peter Belesis and Andy King. v1.01
 # Copyright (c) 1999 internet.com Corp. All Rights Reserved.
-# See http://www.dhtml.com for more information
+# Under the GPL.
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-# 
 # Heavily modified for use in BNT by L. Patrick Smallwood.
 */
 

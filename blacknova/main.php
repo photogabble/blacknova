@@ -768,7 +768,7 @@ echo "\n";
 <TABLE WIDTH="500" ALIGN=CENTER BORDER=1 CELLSPACING=0 CELLPADDING=1 BGCOLOR="black">
 <TR>
 
-<TD ID=IEfad1 align="center" width="490" class="scroll-ends">
+<TD ID=IEfad1 align="center" width="490" class="faderlines">
 </TD>
 
 </TR>
