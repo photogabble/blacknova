@@ -114,6 +114,8 @@ echo "<center><font size=2 color=white><b>Welcome to this Federation shipyard. W
                "<td valign=bottom>$torp_launchers_bars</td></tr>" .
                "<tr><td><font size=2><b>Cloak</b></td>" .
                "<td valign=bottom>$cloak_bars</td></tr>" .
+               "<tr><td><font color=white size=4><b><br>Price: </b></td>" .
+               "<td><font color=red size=4><b><br>" . NUMBER($sship[cost_credits]) . " C</b></td></tr>" .
                "</table><p>";
           
           if($stype != $shipinfo['class'])
