@@ -1,0 +1,14 @@
+.xoox { border: white solid; border-width: 1px 0px 0px 1px}
+.ooox { border: white solid; border-width: 0px 0px 0px 1px}
+.xoxx { border: white solid; border-width: 1px 0px 1px 1px}
+.xooo { border: white solid; border-width: 1px 0px 0px}
+.xoxo { border: white solid; border-width: 1px 0px}
+.ooxo { border: white solid; border-width: 0px 0px 1px}
+.xxoo { border: white solid; border-width: 1px 1px 0px 0px}
+.oxoo { border: white solid; border-width: 0px 1px 0px 0px}
+.oxxo { border: white solid; border-width: 0px 1px 1px 0px}
+.xxox { border: white solid; border-width: 1px 1px 0px}
+.xxxx { border: 1px white solid}
+.xxog { border: solid; border-width: 1px 1px 0px; border-color: white white white gray }
+.xoog { border: solid; border-width: 1px 0px 0px 1px; border-color: white white white gray}
+.ooog { border: solid; border-width: 0px 0px 0px 1px; border-color: white white white gray}
