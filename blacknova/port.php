@@ -305,11 +305,11 @@ elseif($sectorinfo[port_type] == "special")
   $torpedo_free = $torpedo_max - $playerinfo[torps];
   $armour_max = NUM_ARMOUR($playerinfo[armour]);
   $armour_free = $armour_max - $playerinfo[armour_pts];
-  $colonist_max = NUM_HOLDS($playerinfo[hull]) - $playerinfo[ship_ore] - $playerinfo[ship_organics] - $playerinfo[ship_goods] - $playerinfo[ship_colonists];
+  $colonist_max = NUM_HOLDS($playerinfo[hull]) - $playerinfo[ship_ore] - $playerinfo[ship_organics] - $playerinfo[ship_goods];
   $colonist_free = $colonist_max - $playerinfo[ship_colonists];
 
   TEXT_JAVASCRIPT_BEGIN();
-// MakeMax function //
+
 echo "function MakeMax(name, val)\n";
 echo "{\n";
 echo " if (document.forms[0].elements[name].value != val)\n";
