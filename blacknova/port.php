@@ -694,7 +694,7 @@ return $dropdownvar;
   echo "    <TD>";
   if($playerinfo[ship_fighters] != $fighter_max)
   {
-    echo "<a href='#' onClick=\"MakeMax('fighter_number', $fighter_free);countTotal();return false;\"; $onblur;>" . NUMBER($fighter_free) . "</a></TD>\n";
+    echo "<a href='#' onClick=\"MakeMax('fighter_number', $fighter_free);countTotal();return false;\"; $onblur>" . NUMBER($fighter_free) . "</a></TD>\n";
     echo "    <TD><INPUT TYPE=TEXT NAME=fighter_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
@@ -708,7 +708,7 @@ return $dropdownvar;
   echo "    <TD>";
   if($playerinfo[torps] != $torpedo_max)
   {
-    echo "<a href='#' onClick=\"MakeMax('torpedo_number', $torpedo_free);countTotal();return false;\"; $onblur;>" . NUMBER($torpedo_free) . "</a></TD>\n";
+    echo "<a href='#' onClick=\"MakeMax('torpedo_number', $torpedo_free);countTotal();return false;\"; $onblur>" . NUMBER($torpedo_free) . "</a></TD>\n";
     echo "    <TD><INPUT TYPE=TEXT NAME=torpedo_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
@@ -724,7 +724,7 @@ return $dropdownvar;
   echo "    <TD>";
   if($playerinfo[armour_pts] != $armour_max)
   {
-    echo "<a href='#' onClick=\"MakeMax('armour_number', $armour_free);countTotal();return false;\"; $onblur;>" . NUMBER($armour_free) . "</a></TD>\n";
+    echo "<a href='#' onClick=\"MakeMax('armour_number', $armour_free);countTotal();return false;\"; $onblur>" . NUMBER($armour_free) . "</a></TD>\n";
     echo "    <TD><INPUT TYPE=TEXT NAME=armour_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
@@ -738,7 +738,7 @@ return $dropdownvar;
   echo "    <TD>";
   if($playerinfo[ship_colonists] != $colonist_max)
   {
-    echo "<a href='#' onClick=\"MakeMax('colonist_number', $colonist_free);countTotal();return false;\"; $onblur;>" . NUMBER($colonist_free) . "</a></TD>\n";
+    echo "<a href='#' onClick=\"MakeMax('colonist_number', $colonist_free);countTotal();return false;\"; $onblur>" . NUMBER($colonist_free) . "</a></TD>\n";
     echo "    <TD><INPUT TYPE=TEXT NAME=colonist_number SIZE=6 MAXLENGTH=10 VALUE=0 $onblur>";
   }
   else
