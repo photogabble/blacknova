@@ -1,9 +1,12 @@
 <?
-   connectdb();
-   $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
-   $playerinfo = $res->fields;
-   $res = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
-   $sectorinfo = $res->fields;
+  connectdb();
+  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
+  $playerinfo = $res->fields;
+  $res = $db->Execute("SELECT * FROM $dbtables[universe] WHERE sector_id='$playerinfo[sector]'");
+  $sectorinfo = $res->fields;
+  $res = $db->Execute("SELECT zone_id,zone_name FROM $dbtables[zones] WHERE zone_id='$sectorinfo[zone_id]'");
+  $zoneinfo = $res->fields;
+
 ?>   
 <table border=1 cellspacing=0 cellpadding=0 bgcolor="#400040" width="75%" align=center>
    <tr>
