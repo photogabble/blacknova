@@ -1,3 +1,8 @@
+i_m_sane (24 August 2003)
+--------------------------------
+Combined new and new2 into 1 file.
+Added checks of sector ownership to rsmove and move to fix sector ownership bugs.
+
 TheMightyDude (19 August 2003)
 --------------------------------
 Added Border Patrol feature.
