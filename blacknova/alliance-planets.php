@@ -99,6 +99,7 @@ else
   echo "<TD><B><A HREF=alliance-planets.php?sort=fighters>$l_fighters</A></B></TD>";
   echo "<TD><B><A HREF=alliance-planets.php?sort=torp>$l_torps</A></B></TD>";
   echo "<TD><B>$l_base?</B></TD><TD><B>$l_selling?</B></TD>";
+  echo "<TD><B>Player</B></TD>";
   echo "</TR>";
   $total_organics = 0;
   $total_ore = 0;
@@ -133,19 +134,24 @@ else
     {
       $planet[$i][name] = "$l_unnamed";
     }
+    $owner = $planet[$i][owner];
+    $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$owner");
+    $player = $res->fields[character_name];
+
     echo "<TR BGCOLOR=\"$color\">";
     echo "<TD><A HREF=rsmove.php?engage=1&destination=". $planet[$i][sector_id] . ">". $planet[$i][sector_id] ."</A></TD>";
-    echo "<TD>" . $planet[$i][name] . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][ore]) . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][organics]) . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][goods]) . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][energy]) . "</TD>";
+    echo "<TD>" . $planet[$i][name]              . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][ore])       . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][organics])  . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][goods])     . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][energy])    . "</TD>";
     echo "<TD>" . NUMBER($planet[$i][colonists]) . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][credits]) . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][fighters]) . "</TD>";
-    echo "<TD>" . NUMBER($planet[$i][torps]) . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][credits])   . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][fighters])  . "</TD>";
+    echo "<TD>" . NUMBER($planet[$i][torps])     . "</TD>";
     echo "<TD>" . ($planet[$i][base] == 'Y' ? "$l_yes" : "$l_no") . "</TD>";
     echo "<TD>" . ($planet[$i][sells] == 'Y' ? "$l_yes" : "$l_no") . "</TD>";
+    echo "<TD>" . $player                        . "</TD>";
     echo "</TR>";
 
     if($color == $color_line1)
@@ -170,6 +176,7 @@ else
   echo "<TD>" . NUMBER($total_torp) . "</TD>";
   echo "<TD>" . NUMBER($total_base) . "</TD>";
   echo "<TD>" . NUMBER($total_selling) . "</TD>";
+  echo "<TD></TD>";
   echo "</TR>";
   echo "</TABLE>";
 }
