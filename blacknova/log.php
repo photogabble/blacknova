@@ -803,7 +803,30 @@ case LOG_BOUNTY_FEDBOUNTY:
     $retvalue[text] = str_replace("[figs]", "<font color=white><b>$figs</b></font>", $retvalue[text]);
     $retvalue[title] = $l_log_title[$entry[type]];
     break;
-
+ case LOG_ADMIN_PLANETCHEAT_1:
+    list($cheaterIP,$planetID)= split ("\|", $entry[data]);
+	$l_log_text[LOG_ADMIN_PLANETCHEAT_1] = "IP: [ip]  tried to use the Production Cheat on planetID:  [planet_id].";
+	$l_log_title[LOG_ADMIN_PLANETCHEAT_1] = "Planet-Hack[Production]";
+    $retvalue[text] = str_replace("[ip]", "<font color=white><b>$cheaterIP</b></font>", $l_log_text[$entry[type]]);
+    $retvalue[text] = str_replace("[planet_id]", "<font color=white><b>$planetID</b></font>", $retvalue[text]);
+	$retvalue[title] = $l_log_title[$entry[type]];
+	break;
+ case LOG_ADMIN_PLANETCHEAT_2:
+    list($cheaterIP,$planetID)= split ("\|", $entry[data]);
+	$l_log_text[LOG_ADMIN_PLANETCHEAT_2] = "IP: [ip]  tried to use the Corp Cheat on planetID:  [planet_id].";
+	$l_log_title[LOG_ADMIN_PLANETCHEAT_2] = "Planet-Hack[Corp change over]";
+    $retvalue[text] = str_replace("[ip]", "<font color=white><b>$cheaterIP</b></font>", $l_log_text[$entry[type]]);
+    $retvalue[text] = str_replace("[planet_id]", "<font color=white><b>$planetID</b></font>", $retvalue[text]);
+	$retvalue[title] = $l_log_title[$entry[type]];
+	break;
+ case LOG_ADMIN_PLANETCHEAT_3:
+    list($cheaterIP,$planetID)= split ("\|", $entry[data]);
+	$l_log_text[LOG_ADMIN_PLANETCHEAT_3] = "IP: [ip]  tried to modify planetID:  [planet_id].";
+	$l_log_title[LOG_ADMIN_PLANETCHEAT_3] = "Planet-Hack[Misc]";
+    $retvalue[text] = str_replace("[ip]", "<font color=white><b>$cheaterIP</b></font>", $l_log_text[$entry[type]]);
+    $retvalue[text] = str_replace("[planet_id]", "<font color=white><b>$planetID</b></font>", $retvalue[text]);
+	$retvalue[title] = $l_log_title[$entry[type]];
+	break;
   }
   return $retvalue;
 }

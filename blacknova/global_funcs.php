@@ -127,6 +127,13 @@ define(LOG_PLASMA_STORM,51);           // sent when a plasma storm attacks a pla
 define(LOG_BOUNTY_FEDBOUNTY,52);       // Sent when the federation places a bounty on a player
 define(LOG_PLANET_BOMBED,53);     //Sent after bombing a planet
 define(LOG_ADMIN_ILLEGVALUE, 54);        //sent to admin on planet destruction instead of capture
+
+/* Added for Planet cheating */
+define(LOG_ADMIN_PLANETCHEAT_1, 55);	//sent to admin when a player tries to use the planet bug[production].
+define(LOG_ADMIN_PLANETCHEAT_2, 56);	//sent to admin when a player tries to use the planet bug[corp].
+define(LOG_ADMIN_PLANETCHEAT_3, 57);	//sent to admin when a player tries to use the planet bug[misc].
+
+
 // Database tables variables
 $dbtables['ibank_accounts'] = "${db_prefix}ibank_accounts";
 $dbtables['links'] = "${db_prefix}links";

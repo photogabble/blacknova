@@ -164,9 +164,10 @@ function change_planet_production($prodpercentarray)
 
   global $db, $dbtables;
   global $default_prod_ore, $default_prod_organics, $default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp;
+  global $username;
 
-  $ship_id = $prodpercentarray[ship_id];
-  $team_id = $prodpercentarray[team_id]; 
+  $result = $db->Execute("SELECT ship_id,team FROM $dbtables[ships] WHERE email='$username'");
+  $ship_id = $result->fields[ship_id]; $team_id = $result->fields[team]; 
 
   echo "Click <A HREF=planet-report.php?PRepType=2>here</A> to return to the Change Planet Production Report<br><br>";
 
@@ -176,26 +177,50 @@ function change_planet_production($prodpercentarray)
     {
       while(list($planet_id, $prodpercent) = each($valarray))
       {  
-        if($commod_type == "prod_ore")
+        if($commod_type == "prod_ore" || $commod_type == "prod_organics" || $commod_type == "prod_goods" || $commod_type == "prod_energy" || $commod_type == "prod_fighters" || $commod_type == "prod_torp")
         {
-          $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id");
-          $db->Execute("UPDATE $dbtables[planets] SET sells='N' WHERE planet_id=$planet_id");
-          $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE planet_id=$planet_id");
+          $res = $db->Execute("SELECT COUNT(*) AS owned_planet FROM $dbtables[planets] WHERE planet_id=$planet_id AND owner = $ship_id");
+          if($res->fields['owned_planet']==0)
+          {
+            $planet_hack=True;
+            adminlog(LOG_ADMIN_PLANETCHEAT_1,$_SERVER["REMOTE_ADDR"]."|$planet_id");
+          }
+
+          $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id AND owner = $ship_id");
+          $db->Execute("UPDATE $dbtables[planets] SET sells='N' WHERE planet_id=$planet_id AND owner = $ship_id");
+          $db->Execute("UPDATE $dbtables[planets] SET corp=0 WHERE planet_id=$planet_id AND owner = $ship_id");
         }
         elseif($commod_type == "sells")
         {
-          $db->Execute("UPDATE $dbtables[planets] SET sells='Y' WHERE planet_id=$prodpercent");
+          $db->Execute("UPDATE $dbtables[planets] SET sells='Y' WHERE planet_id=$prodpercent AND owner = $ship_id");
         }
         elseif($commod_type == "corp")
         {
-          $db->Execute("UPDATE $dbtables[planets] SET corp=$team_id WHERE planet_id=$prodpercent");
+          /* Compare entered team_id and one in the db */
+          /* If different then use one from db */
+          $res = $db->Execute("SELECT $dbtables[ships].team as owner FROM $dbtables[ships], $dbtables[planets] WHERE ( $dbtables[ships].ship_id = $dbtables[planets].owner ) AND ( $dbtables[planets].planet_id ='$prodpercent')");
+          if($res) $team_id=$res->fields["owner"]; else $team_id = 0;
+
+          $db->Execute("UPDATE $dbtables[planets] SET corp=$team_id WHERE planet_id=$prodpercent AND owner = $ship_id");
+          if($prodpercentarray[team_id] <> $team_id)
+          {
+            /* Oh dear they are different so send admin a log */
+            $planet_hack=True;
+            adminlog(LOG_ADMIN_PLANETCHEAT_2,$_SERVER["REMOTE_ADDR"]."|$prodpercent");
+          }
         }
         else
         {
-          $db->Execute("UPDATE $dbtables[planets] SET $commod_type=$prodpercent WHERE planet_id=$planet_id");
+          $planet_hack=True;
+          adminlog(LOG_ADMIN_PLANETCHEAT_3,$_SERVER["REMOTE_ADDR"]."|$planet_id");
         }
       }
     }
+  }
+
+  if($planet_hack)
+  {
+    echo "<font color=\"red\"><B>Your Cheat has been logged to the admin.</B></font><br>\n";
   }
 
   echo "<BR>";

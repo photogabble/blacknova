@@ -1,5 +1,10 @@
 TheMightyDude (06 November 2003)
 --------------------------------
+Fixed bug [836756] Planet Hack Bug!
+This will now log to the admin any attempts on using the Planet Hack Bug.
+
+TheMightyDude (06 November 2003)
+--------------------------------
 Fixed null variables due to register_global = Off
 And updated the Register Global Fix.
 
