@@ -3,7 +3,10 @@ include("config.php");
 updatecookie();
 include("languages/$lang");
 
+
 connectdb();
+
+
 
 $title=$l_teamplanet_title;
 include("header.php");
@@ -13,7 +16,8 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
 if ($playerinfo[team]==0)
@@ -26,6 +30,7 @@ if ($playerinfo[team]==0)
 
  return;
 }
+
 
 $query = "SELECT * FROM $dbtables[planets] WHERE corp=$playerinfo[team]";
 if(!empty($sort))
@@ -56,7 +61,7 @@ bigtitle();
 
 
 echo "<BR>";
-echo "<B><A HREF=planet-report.php>$l_teamplanet_personal</A></B>";
+echo "<B><A HREF=planet_report.php>$l_teamplanet_personal</A></B>";
 echo "<BR>";
 echo "<BR>";
 
@@ -83,16 +88,16 @@ else
   echo "$l_pr_clicktosort<BR><BR>";
   echo "<TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=2>";
   echo "<TR BGCOLOR=\"$color_header\">";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=sector>$l_sector</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=name>$l_name</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=ore>$l_ore</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=organics>$l_organics</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=goods>$l_goods</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=energy>$l_energy</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=colonists>$l_colonists</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=credits>$l_credits</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=fighters>$l_fighters</A></B></TD>";
-  echo "<TD><B><A HREF=alliance-planets.php?sort=torp>$l_torps</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=sector>$l_sector</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=name>$l_name</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=ore>$l_ore</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=organics>$l_organics</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=goods>$l_goods</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=energy>$l_energy</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=colonists>$l_colonists</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=credits>$l_credits</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=fighters>$l_fighters</A></B></TD>";
+  echo "<TD><B><A HREF=team_planets.php?sort=torp>$l_torps</A></B></TD>";
   echo "<TD><B>$l_base?</B></TD><TD><B>$l_selling?</B></TD>";
   echo "<TD><B>Player</B></TD>";
   echo "</TR>";
@@ -130,7 +135,7 @@ else
       $planet[$i][name] = "$l_unnamed";
     }
     $owner = $planet[$i][owner];
-    $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$owner");
+    $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$owner");
     $player = $res->fields[character_name];
 
     echo "<TR BGCOLOR=\"$color\">";
