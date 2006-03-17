@@ -8,9 +8,9 @@
 *    this value, so the called file can modify the triggering     *
 *    scheduler entry if it needs to.                              *
 *                                                                 *
-*  - loop : Set this to 'Y' if you want the event to be looped    *
-*    endlessly. If this value is set to 'Y', the 'spawn' field is *
-*    not used.                                                    *
+*  - repeate : Set this to 'Y' if you want the event to be        *
+*    repeated endlessly. If this value is set to 'Y', the 'spawn' *
+*    field is not used.                                           *
 *                                                                 *
 *  - ticks_left : Used internally by the scheduler. It represents *
 *    the number of mins elapsed since the last call. ALWAYS set   *
@@ -26,8 +26,8 @@
 *    work, loop must be set to 'N'. When the event has been run   *
 *    spawn number of times, it is deleted from the scheduler.     *
 *                                                                 *
-*  - file : This is the file that will be called when an event    *
-*    has been trigerred.                                          *
+*  - sched_file : This is the file that will be called when an    *
+*    event has been trigerred.                                    *
 *                                                                 *
 *  - extra_info : This is a text variable that can be used to     *
 *    store any extra information concerning the event triggered.  *
@@ -39,7 +39,7 @@
 * be called multiple times in a single execution. If you need to  *
 * define functions, you can put them in the sched_funcs.php file  *
 * that is included by the scheduler. Else put them in your own    *
-* include file, with an include statement. THEY CANNOT BE    *
+* include file, with an include statement. THEY CANNOT BE         *
 * DEFINED IN YOUR MAIN FILE BODY. This would cause PHP to issue a *
 * multiple function declaration error.                            *
 *                                                                 *
@@ -47,7 +47,6 @@
 ******************************************************************/
 
 require_once("config.php");
-if ($sched_type == 1) ob_start();
 $title="System Update";
 
 include("header.php");
@@ -80,7 +79,7 @@ else
        $multiplier = (int) $multiplier;
        $ticks_left = ($sched_ticks + $event[ticks_left]) % $event[ticks_full];
 
-       if($event[loop] == 'N')
+       if($event[repeate] == 'N')
        {
          if($multiplier > $event[spawn])
            $multiplier = $event[spawn];
@@ -99,7 +98,7 @@ else
        $sched_i = 0;
        while($sched_i < $multiplier)
        {
-         include("$event[file]");
+         include("$event[sched_file]");
          $sched_i++;
        }
        $sched_res->MoveNext();
@@ -110,9 +109,5 @@ else
   echo "<p>The scheduler took $runtime seconds to execute.<p>";
 
   include("footer.php");
-  if($sched_type == 1) ob_end_clean();
-  if($sched_type != 1)
-  {
-    $db->Execute("UPDATE $dbtables[scheduler] SET last_run=". TIME());
-  }
+  $db->Execute("UPDATE $dbtables[scheduler] SET last_run=". TIME());
 }
