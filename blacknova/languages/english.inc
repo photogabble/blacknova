@@ -2,6 +2,7 @@
 
 
 //general
+
 $l_yes 			 = "Yes";
 $l_no			 = "No";
 $l_here			 = "here";
@@ -35,7 +36,7 @@ $l_ship			 = "Ship";
 $l_ships		 = "Ships";
 $l_set			 = "set";
 $l_realspace		 = "Realspace";
-$l_armourpts		 = "Armour points";
+$l_armorpts		 = "Armour points";
 $l_links		 = "Links";
 
 // main.php
@@ -43,7 +44,6 @@ $l_links		 = "Links";
 $l_main_title 		 = "Main Menu";
 $l_main_warpto = "Warp to";
 $l_main_other = "Other";
-$l_main_shipyard = "Access the <a href=shipyard.php>Shipyard</a>";
 
 $l_traderoutes		 = "Trade Routes";
 $l_trade_control	 = "Trade Control";
@@ -103,7 +103,7 @@ $l_engines		 = "Engines";
 $l_power		 = "Power";
 $l_computer		 = "Computer";
 $l_sensors		 = "Sensors";
-$l_armour		 = "Armour";
+$l_armor		 = "Armour";
 $l_shields		 = "Shields";
 $l_beams		 = "Beam Weapons";
 $l_torp_launch	         = "Torpedo launchers";
@@ -119,8 +119,6 @@ $l_warpedit		 = "Warp Editors";
 $l_genesis		 = "Genesis Torpedoes";
 $l_escape_pod		 = "Escape Pod";
 $l_fuel_scoop		 = "Fuel Scoop";
-$l_total_cargo  = "Total Cargo";
-$l_installed = "Installed";
 
 // device.php
 
@@ -261,8 +259,6 @@ $l_planet_captured	 = "Planet captured";
 $l_planet_notdef	 = "Planet not defeated!";
 $l_planet_caplog	 = "Your planet '[planetname]' in sector [sector] was captured by [name].";
 $l_planet_noone = "nobody";
-$l_planet_readlog_link = "View";
-$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Planetary Transfer";
 $l_planet2_noturn	 = "You need at least one turn to perform a planetary transfer.";
@@ -332,10 +328,10 @@ $l_att_ydown		 = "Your shields are down!";
 $l_att_shits		 = "'s shields are hit for";
 $l_att_yhits		 = "Your shields are hit for";
 $l_att_dmg		 = "damage";
-$l_att_sarm		 = "'s armour breached!";
-$l_att_yarm		 = "Your armour has been breached!";
-$l_att_ashit		 = "'s armour is hit for";
-$l_att_ayhit		 = "Your armour is hit for";
+$l_att_sarm		 = "'s armor breached!";
+$l_att_yarm		 = "Your armor has been breached!";
+$l_att_ashit		 = "'s armor is hit for";
+$l_att_ayhit		 = "Your armor is hit for";
 $l_att_lostf		 = "lost all fighters.";
 $l_att_ylostf		 = "You lost all fighters.";
 $l_att_sdest		 = "'s ship has been destroyed.";
@@ -472,10 +468,10 @@ $l_log_text[LOG_HIT_MINES] = "You hit [mines] mines when travelling in sector [s
 $l_log_title[LOG_HIT_MINES] = "<font color=yellow>Mines alert!</font>";
 $l_log_text[LOG_SHIP_DESTROYED_MINES] = "Your ship was destroyed by a minefield in sector [sector]. ";
 $l_log_title[LOG_SHIP_DESTROYED_MINES] = "<font color=red>Mines alert!</font>";
-$l_log_text[LOG_PLANET_DEFEATED_D] = "Your planet [planet_name] in sector [sector] was defeated in battle by [name]. Fortunately, the strong loyalty of your citizens played in your favor. They have bravely chosen to destroy the planet rather than have it fall into enemy hands. You organize superb funerals in the memory of your faithful people.";
+$l_log_text[LOG_PLANET_DEFEATED_D] = "Your planet [planet_name] in sector [sector] was captured in battle by [name]. Fortunately, the strong loyalty of your citizens played in your favor. They have bravely chosen to destroy the planet rather than have it fall into enemy hands. You organize superb funerals in the memory of your faithful people.";
 $l_log_title[LOG_PLANET_DEFEATED_D] = "<font color=yellow>Planet destroyed</font>";
-$l_log_text[LOG_PLANET_DEFEATED] = "Your planet [planet_name] in sector [sector] was defeated in battle by the wretched [name]. The people of the planet welcome their new ruler. You hear a testimony on BNN : \"We're glad to be rid of that old fart! We don't want no stinking loser who can't protect us!\". You swear to make them pay for their arrogance.";
-$l_log_title[LOG_PLANET_DEFEATED] = "<font color=red>Planet defeated!</font>";
+$l_log_text[LOG_PLANET_DEFEATED] = "Your planet [planet_name] in sector [sector] was captured in battle by the wretched [name]. The people of the planet welcome their new ruler. You hear a testimony on BNN : \"We're glad to be rid of that old fart! We don't want no stinking loser who can't protect us!\". You swear to make them pay for their arrogance.";
+$l_log_title[LOG_PLANET_DEFEATED] = "<font color=red>Planet captured!</font>";
 $l_log_text[LOG_PLANET_NOT_DEFEATED] = "Your planet [planet_name] in sector [sector] was attacked by [name]. The citizens organized a valliant defense however, and managed to destroy the opponent. They salvage some resources from the space debris : [goods] goods, [ore] ore, [organics] organics and [salvage]% of the ship's worth of [credits] credits.";
 $l_log_title[LOG_PLANET_NOT_DEFEATED] = "Victory!";
 $l_log_title[LOG_RAW] = "Notice";
@@ -495,8 +491,8 @@ $l_log_text[LOG_SHIP_SCAN] = "[player] has scanned your ship.";
 $l_log_title[LOG_SHIP_SCAN] = "Ship scan";
 $l_log_text[LOG_SHIP_SCAN_FAIL] = "[player] has attempted to scan your ship, but failed.";
 $l_log_title[LOG_SHIP_SCAN_FAIL] = "Ship scan failed";
-$l_log_text[LOG_FURANGEE_ATTACK] = "Attacking [player]...";
-$l_log_title[LOG_FURANGEE_ATTACK] = "Attack";
+$l_log_text[LOG_Xenobe_ATTACK] = "Attacking [player]...";
+$l_log_title[LOG_Xenobe_ATTACK] = "Attack";
 $l_log_text[LOG_STARVATION] = "One of your planet in [sector] cannot sustain its population! More organics is needed. [starvation] colonists died of hunger.";
 $l_log_title[LOG_STARVATION] = "<font color=yellow>Starvation!</font>";
 $l_log_title[LOG_TOW] = "Towed!";
@@ -540,7 +536,6 @@ $l_log_text[LOG_DEFENCE_DEGRADE] = "Sector Defences Fighters in sector [sector] 
 $l_log_test[LOG_DEFENCE_DEGRADE] = "Sector Defences degraded.";
 $l_log_text[LOG_PLANET_CAPTURED] = "You captured a planet belonging to [owner]. It had [cols] colonists and [credits] credits on it.";
 $l_log_title[LOG_PLANET_CAPTURED] = "Planet captured!";
-$l_log_text[LOG_CHEAT_TEAM] = "Player [player] at IP address [ip] tried to exploit the team kick anyone cheat. His ship was destroyed!";
 
 // modify-defences.php
 
@@ -1019,7 +1014,7 @@ $l_cmb_yourshipdestroyed        = "Your ship has been destroyed!";
 $l_cmb_escapepod        = "Luckily you have an escape pod!";
 $l_cmb_finalcombatstats = "Final Combat Stats";
 $l_cmb_youlostfighters  = "You lost [cmb_fighters_lost] out of [cmb_playerinfo_ship_fighters] total fighters.";
-$l_cmb_youlostarmorpoints       = "You lost [cmb_armor_lost] out of [cmb_playerinfo_armour_pts] total armor points, you have [cmb_attackerarmor] points remaining.";
+$l_cmb_youlostarmorpoints       = "You lost [cmb_armor_lost] out of [cmb_playerinfo_armor_pts] total armor points, you have [cmb_attackerarmor] points remaining.";
 $l_cmb_energyused       = "You used [cmb_energy_lost] energy, from a total of [cmb_playerinfo_ship_energy] energy.";
 $l_cmb_planetdefeated   = "Planet defeated";
 $l_cmb_citizenswanttodie        = "The citizens of this planet have decided they'd rather die than serve a pathetic ruler like you. They use a laser drill to dig a hole to the planet's core. You barely have time to escape into orbit before the whole planet is reduced to a ball of molten lava.";
@@ -1102,7 +1097,7 @@ $l_chm_youhadnominedeflectors  = "You had no mine deflectors.";
 $l_chm_yourshieldshitforminesdmg        = "Your shields are hit for [chm_mines_left] damage.";
 $l_chm_yourshieldsaredown       = "Your shields are down!";
 $l_chm_youlostallyourshields    = "You lost all your shields!";
-$l_chm_yourarmorhitforminesdmg  = "Your armour is hit for [chm_mines_left] damage.";
+$l_chm_yourarmorhitforminesdmg  = "Your armor is hit for [chm_mines_left] damage.";
 $l_chm_yourhullisbreached       = "Your hull is breached!";
 $l_chm_hewasdestroyedbyyourmines        = "[chm_playerinfo_character_name] was destroyed by your mines in sector [chm_sector].";
 $l_chm_yourshiphasbeendestroyed = "Your ship has been destroyed!";
@@ -1206,7 +1201,7 @@ $l_new_pwsent			="Password has been sent to ${HTTP_POST_VARS['username']}.";
 $l_new_login			="to go to the login screen.";
 $l_new_err			="Please go back or <a href=new.php>click here</a> and try again.";
 $l_new_topic			="Traders Password";
-$l_new_message			="Greetings,\r\n\r\nSomeone from the IP address $ip requested that your password for Traders be sent to you.\r\n\r\nYour password is: [pass]\r\n\r\nThank you\r\n\r\nThe Traders web team.";
+$l_new_message			="Greetings,\n\nSomeone from the IP address $ip requested that your password for Traders be sent to you.\n\nYour password is: [pass]\n\nThank you\n\nThe Traders web team.";
 
 // logout.php
 
@@ -1219,7 +1214,7 @@ $l_mail_title			="Mail Password";
 $l_mail_noplayer		="No Such Player! - Create a new player <a href=new.php>here</a>.";
 $l_mail_sent			="Password has been sent to";
 $l_mail_topic			="$game_name Password";
-$l_mail_message			="Greetings,\r\n\r\nSomeone from the IP address $ip requested that your password for $game_name be sent to you.\r\n\r\nYour password is: [pass]\r\n\r\nThank you\r\n\r\nThe $game_name web team.";
+$l_mail_message			="Greetings,\n\nSomeone from the IP address $ip requested that your password for $game_name be sent to you.\n\nYour password is: [pass]\n\nThank you\n\nThe $game_name web team.";
 
 // global_funcs.php
 
@@ -1304,10 +1299,10 @@ $l_sf_destfightall = "You destroyed all the fighters.<BR>";
 $l_sf_destfightt2 = "You destroyed [lost] fighters.<BR>";
 $l_sf_lostfight = "You lost all fighters.<BR>";
 $l_sf_lostfight2 = "You lost [lost] fighters.<BR>";
-$l_sf_armorbreach = "Your armour is breached!<BR>";
-$l_sf_armorbreach2 = "Your armour is hit for [lost] damage.<BR>";
+$l_sf_armorbreach = "Your armor is breached!<BR>";
+$l_sf_armorbreach2 = "Your armor is hit for [lost] damage.<BR>";
 $l_sf_sendlog = "[player] destroyed [lost] sector defence fighters in sector [sector].";
-$l_sf_lreport = "You lost [armor] armour points, [fighters] fighters, and used [torps] torpedoes.<BR><BR>";
+$l_sf_lreport = "You lost [armor] armor points, [fighters] fighters, and used [torps] torpedoes.<BR><BR>";
 $l_sf_shipdestroyed = "Your ship has been destroyed!<BR><BR>";
 $l_sf_sendlog2 = "Sector defence fighters destroyed [player] in sector [sector].";
 $l_sf_escape = "Luckily you have an escape pod!<BR><BR>";
@@ -1335,7 +1330,7 @@ $l_by_thefeds  = "The Federation";
 $l_by_cancel   = "Cancel";
 $l_by_yourself = "You can not place a bounty on your self.";
 $l_by_notenough = "You do not have enough credits to place a bounty of that amount.";
-$l_by_toomuch   = "You can not place that bounty. Maximum bounty allowed on another player is [percent] percent of your net worth";
+$l_by_toomuch   = "You can not place that bounty. Maximum bounty allowed on another player is $percent percent of your net worth";
 $l_by_zeroamount = "Bounties must be greater than 0 credits.";
 $l_by_placed     = "The bounty has been placed.";
 $l_by_nobounty = "That bounty no longer exists.";
@@ -1389,10 +1384,12 @@ $l_bigtorps = "A large explosion blossoms in the upper air of the planet.  Your 
 $l_strafesuccess = "It looks like some of your fighters made it through, although you can't tell how many from here.";
 $l_log_text[LOG_PLANET_BOMBED] = "Your planet [planet_name] in sector [sector] was bombed by [name]. You used [beams] energy and [torps] torpedoes in your defense.  You lost [figs] fighters.";
 $l_log_title[LOG_PLANET_BOMBED] = "<font color=red>Planet bombed!</font>";
-$l_lssd = "Last Ship Seen Device";
+$l_lssd = "Last ship seen device";
 $l_lss = "Last ship seen in this sector";
 $l_map = "Map";
 $l_igb_errnobase = "The IGB can not transfer credits to a planet without a base.";
+$l_planet_readlog_link = "View";
+$l_planet_readlog = "[View] Players Log";
 
 
 //Changed messages
@@ -1426,15 +1423,5 @@ $l_insignia[17] = "Rear Admiral";
 $l_insignia[18] = "Vice Admiral";
 $l_insignia[19] = "Admiral";           
 
-// shipyard.php
-
-$l_shipyard_title = "Shipyard";
-$l_planet = "Planet";
-
-$l_cmb_needfighters = "You need at least 1 fighter.";
-
-// planet.php
-$l_log_text[LOG_PLANET_YOUR_CAPTURED] = "Your planet [planet_name] in sector [sector] was defeated in captured by the wretched [name].";
-$l_log_title[LOG_PLANET_YOUR_CAPTURED] = "<font color=red>Planet captured!</font>";
 
 ?>

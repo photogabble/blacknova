@@ -34,7 +34,7 @@ $l_ship			 = "Vaisseau";
 $l_ships		 = "Vaisseaux";
 $l_set			 = "Mod";
 $l_realspace		 = "Espace Réel";
-$l_armourpts		 = "Points d'armure";
+$l_armorpts		 = "Points d'armure";
 $l_links		 = "Links";
 
 // main.php
@@ -101,7 +101,7 @@ $l_engines		 = "Moteurs";
 $l_power		 = "Puissance";
 $l_computer		 = "Ordinateur";
 $l_sensors		 = "Sondeurs";
-$l_armour		 = "Armure";
+$l_armor		 = "Armure";
 $l_shields		 = "Boucliers";
 $l_beams		 = "Rayons";
 $l_torp_launch	         = "Lanceurs de torpilles";
@@ -254,8 +254,6 @@ $l_planet_ison		 = "est sur la planète.";
 $l_planet_captured	 = "Planète capturée";
 $l_planet_notdef	 = "La planète n'a pas été vaincue!";
 $l_planet_noone = "personne";
-$l_planet_readlog_link = "View";
-$l_planet_readlog = "[View] Players Log";
 
 $l_planet2_title	 = "Transfer Planétaire";
 $l_planet2_noturn	 = "Vous avez besoin d'au moins un tour pour effectuer un transfer.";
@@ -486,8 +484,8 @@ $l_log_text[LOG_SHIP_SCAN] = "[player] a sondé votre vaisseau.";
 $l_log_title[LOG_SHIP_SCAN] = "Vaisseau sondé";
 $l_log_text[LOG_SHIP_SCAN_FAIL] = "[player] a essayé de sonder votre vaisseau, mais a échoué.";
 $l_log_title[LOG_SHIP_SCAN_FAIL] = "Tentative de sonde";
-$l_log_text[LOG_FURANGEE_ATTACK] = "Attaque sur [player]...";
-$l_log_title[LOG_FURANGEE_ATTACK] = "Attaque";
+$l_log_text[LOG_Xenobe_ATTACK] = "Attaque sur [player]...";
+$l_log_title[LOG_Xenobe_ATTACK] = "Attaque";
 $l_log_text[LOG_STARVATION] = "Une de vos planètes dans le secteur [sector] ne peut soutenir sa population! Plus de végétaux sont nécéssaires. [starvation] colons sont morts de faim.";
 $l_log_title[LOG_STARVATION] = "<font color=yellow>Famine!</font>";
 $l_log_text[LOG_TOW] = "Votre vaisseau a été remorqué du secteur [sector] vers le secteur [newsector] parce que sa coque dépassait la limite persise de [hull].";
@@ -973,7 +971,7 @@ $l_cmb_yourshipdestroyed        = "Votre vaisseau a été détruit!";
 $l_cmb_escapepod        = "Heureusement, vous aviez un module de secours!";
 $l_cmb_finalcombatstats = "Statistiques du combat";
 $l_cmb_youlostfighters  = "Vous avez perdu [cmb_fighters_lost] de [cmb_playerinfo_ship_fighters] intercepteurs.";
-$l_cmb_youlostarmorpoints       = "Vous avez perdu [cmb_armor_lost] de [cmb_playerinfo_armour_pts] points d'armure, il vous en reste [cmb_attackerarmor].";
+$l_cmb_youlostarmorpoints       = "Vous avez perdu [cmb_armor_lost] de [cmb_playerinfo_armor_pts] points d'armure, il vous en reste [cmb_attackerarmor].";
 $l_cmb_energyused       = "Vous avez utilisé [cmb_energy] unités d'énergie, de [cmb_playerinfo_ship_energy].";
 $l_cmb_planetdefeated   = "Planète vaincue";
 $l_cmb_citizenswanttodie        = "Les citoyens de cette planète ont décidé qu'ils aimaient mieux mourir que de vous servir. Ils utilisent une perceuse pour atteindre le centre de la planète. Vous avez à peine le temps d'attendre l'orbite avant que la planète ne devienne un gigantesque boule de feu.";
@@ -1158,7 +1156,7 @@ $l_new_pwsent			="Le mot de passe a été envoyé à $username.";
 $l_new_login			="pour aller à l'écran de connection.";
 $l_new_err			="S'il vous plaît cliquez <a href=new.php>ici</a> pour réessayer.";
 $l_new_topic			="Mot de passe pour Blacknova Traders";
-$l_new_message			="Salutations,\r\n\r\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\r\n\r\nVotre mot de passe est: [pass]\r\n\r\nMerci\r\n\r\nL'équipe de Blacknova Traders.";
+$l_new_message			="Salutations,\n\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\n\nVotre mot de passe est: [pass]\n\nMerci\n\nL'équipe de Blacknova Traders.";
 
 // logout.php
 
@@ -1171,7 +1169,7 @@ $l_mail_title			="Envoyer le mot de passe";
 $l_mail_noplayer		="Ce joueur n'existe pas! - Créer un nouveau joueur <a href=new.php>ici</a>.";
 $l_mail_sent			="Le mot de passe a été envoyé à";
 $l_mail_topic			="Mot de passe pour $game_name";
-$l_mail_message			="Salutations,\r\n\r\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\r\n\r\nVotre mot de passe est: [pass]\r\n\r\nMerci\r\n\r\nL'équipe de Blacknova Traders.";
+$l_mail_message			="Salutations,\n\nQuelqu'un avec l'ip $ip a demandé que votre mot de passe pour Blacknova Traders soit envoyé à cette adresse.\n\nVotre mot de passe est: [pass]\n\nMerci\n\nL'équipe de Blacknova Traders.";
 
 // global_funcs.php
 
@@ -1362,15 +1360,10 @@ $l_lssd = "Last Seen Device";
 $l_map = "Map";
 $l_lss = "Last ship seen in this sector";
 $l_igb_errnobase = "The IGB can not transfer credits to a planet without a base.";
-/Footer text
-$l_footer_one_player_on = "There is 1 player online.";
-$l_footer_players_on_1 = "There are";
-$l_footer_players_on_2 = "players online.";
-$l_footer_until_update = "seconds until next update.";
 
-//Ship officer insignia
-$l_insignia[0] = "New Recruit";
-$l_insignia[1] = "Crewman";
+//Ship officer insignia                
+$l_insignia[0] = "New Recruit";     
+$l_insignia[1] = "Crewman";            
 $l_insignia[2] = "Crewman First Class";
 $l_insignia[3] = "Petty Officer 3rd Class";
 $l_insignia[4] = "Petty Officer 2nd Class";
@@ -1378,21 +1371,15 @@ $l_insignia[5] = "Petty Officer 1st Class";
 $l_insignia[6] = "Chief Petty Officer";
 $l_insignia[7] = "Senior Chief Petty Officer";
 $l_insignia[8] = "Master Chief Petty Officer";
-$l_insignia[9] = "Ensign";
+$l_insignia[9] = "Ensign";          
 $l_insignia[10] = "Lieutenant Junior Grade";
-$l_insignia[11] = "Lieutenant";
+$l_insignia[11] = "Lieutenant";    
 $l_insignia[12] = "Lieutenant Commander";
-$l_insignia[13] = "Commander";
-$l_insignia[14] = "Captain";
-$l_insignia[15] = "Fleet Captain";
+$l_insignia[13] = "Commander";         
+$l_insignia[14] = "Captain";               
+$l_insignia[15] = "Fleet Captain"; 
 $l_insignia[16] = "Commodore";
 $l_insignia[17] = "Rear Admiral";
 $l_insignia[18] = "Vice Admiral";
-$l_insignia[19] = "Admiral";
-
-// shipyard.php
-
-$l_shipyard_title = "Shipyard";
-$l_planet = "Planet";
-$l_cmb_needfighters = "You need at least 1 fighter.";
+$l_insignia[19] = "Admiral";           
 ?>
