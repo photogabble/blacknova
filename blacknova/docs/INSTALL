@@ -1,15 +1,17 @@
 BlackNova Traders
 
-
 INSTALLATION
 
 1. Untar the distribution (be sure to untar the subdirectories):
    tar xvf bnt-x.x.x.tar
 
-2. Simply edit the config_local.php file to your own settings 
+2. Open the file <www.your-host>/<install-dir>/setup_info.php in your browser. This
+   file will help you understand what settings you should use in your db_config.php file.
+
+3. Edit the db_config.php file to your own settings 
    and manually update your cron file.
 
-   You need ADOdb - see the config_local.php file for details on where to download.
+   PLEASE make sure to edit your game_name to be something unique!
 
    You need to set up a background task thats called every X minutes.
    You can set this to any interval you want, but 5 or 6 minutes are good
@@ -38,48 +40,41 @@ INSTALLATION
    To enable internal scheduling, set $sched_type = 1 in config.php
    If you have access to cron, use the default cron scheduling as described above instead.
 
-3. Create the database:
+4. Create the database:
    mysqladmin -uuser -ppass create dbname
 
-4. Open the file <www.your-host>/<install-dir>/create_universe.php in
+5. Open the file <www.your-host>/<install-dir>/create_universe.php in
    your browser.  You'll need to enter your admin password to access this
    page.  Change the settings to suit the universe you'd like to create -
    and go for it.
 
-5. Open the file <www.your-host>/<install-dir>/index.php in your browser
+6. Open the file <www.your-host>/<install-dir>/index.php in your browser
    - you should now be able to log-in.
 
-6. Create a directory in the blacknova directory called player-log.  It should
-   be given read-write-execute permissions so the user that your webserver
-   runs as can modify the files in player-log and delete files from that
-   directory.
+7. chmod 000 setup_info.php - it contains information that might be a security risk.
 
-7. Hopefully - it works now. :)
-
-
-If you are running php version 4.0.6 or earlier, you will need to comment out 
-a line in header.php - its one of the first few lines and starts with ob.
-There is a comment indicating the line.
-PHP 4.0.6 has a memory leak bug.
+8. Hopefully - it works now. :)
 
 Trouble Shooting:
 If, when you log in, you are presented with another screen telling you to log in,
 chances are that you have incorrectly set up the $gamedomain and $gamepath variables in
-config_local.php
+db_config.php. Test using setup_info.php to find the correct values.
 
-Join the blacknova announcement mailing list to be informed of updates, patches 
-and new releases. Send an email to bnt-announce-request@thegeek.org with the single
-word subscribe in the body of the email. This is an extremely low traffic mailing list, 
-used only for announcements directly related to Blacknova.
-
+Join the blacknova forums to stay informed of updates, patches 
+and new releases. 
 
 BUG REPORTS AND SUPPORT
 
-Bug reports and support request should be submitted on the BlackNova Traders
+Bug reports and patches should be submitted on the BlackNova Traders
 SourceForge page:
 
-	http://www.sourceforge.net/projects/blacknova
+http://www.sourceforge.net/projects/blacknova
 
+SUPPORT
+
+Support should be requested on the main Blacknova Traders site:
+
+http://blacknova.net
 
 Regards,
 
