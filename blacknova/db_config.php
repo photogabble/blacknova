@@ -2,13 +2,13 @@
 
 // Path on the filesystem where the blacknova files
 // will reside:
-$gameroot = "/usr/local/www/blacknova";
+$gameroot = "/home/bob/public_html/bnt";
 
 // The ADOdb db module is now required to run BNT. You
 // can find it at http://php.weblogs.com/ADODB. Enter the
 // path where it is installed here. I suggest simply putting
 // every ADOdb file in a subdir of BNT.
-$ADOdbpath = "ADOdb";
+$ADOdbpath = "backends/adodb";
 
 // Domain & path of the game on your webserver (used to validate login cookie)
 // This is the domain name part of the URL people enter to access your game.
@@ -17,13 +17,13 @@ $ADOdbpath = "ADOdb";
 // Do not enter slashes for $gamedomain or anything that would come after a slash
 // if you get weird errors with cookies then make sure the game domain has TWO dots
 // i.e. if you reside your game on http://www.blacknova.net put .blacknova.net as $gamedomain. If your game is on http://www.some.site.net put .some.site.net as your game domain. Do not put port numbers in $gamedomain.
-$gamedomain = ".blacknova.net";
+$gamedomain = ".127.0.0.1";
 
 // This is the trailing part of the URL, that is not part of the domain.
 // If you enter www.blah.com/blacknova to access the game, you would leave the line as it is.
 // If you do not need to specify blacknova, just enter a single slash eg:
 // $gamepath = "/";
-$gamepath = "/blacknova/";
+$gamepath = "/~bob/bnt/";
 
 // Hostname and port of the database server:
 // These are defaults, you normally won't have to change them
@@ -33,11 +33,11 @@ $dbhost = "localhost";
 $dbport = "";
 
 // Username and password to connect to the database:
-$dbuname = "blacknova_user";
-$dbpass = "blacknova_pass";
+$dbuname = "bnt";
+$dbpass = "bnt";
 
 // Name of the SQL database:
-$dbname = "blacknova_db";
+$dbname = "bnt";
 
 // Type of the SQL database. This can be anything supported by ADOdb. Here are a few:
 // "access" for MS Access databases. You need to create an ODBC DSN.
@@ -54,8 +54,8 @@ $dbname = "blacknova_db";
 // NOTE: only mysql work as of right now, due to SQL compat code
 $db_type = "mysql";
 
-// Set this to 1 to use db persistent connections, 0 otherwise
-$db_persistent = 1;
+// Set this to 1 to use db persistent connections, 0 otherwise - persistent connections can cause load problems!
+$db_persistent = 0;
 
 /* Table prefix for the database. If you want to run more than
 one game of BNT on the same database, or if the current table
@@ -66,7 +66,8 @@ $db_prefix = "bnt_";
 // Administrator's password and email:
 // Be sure to change these. Don't leave them as is.
 $adminpass = "secret";
-$admin_mail = "billg@microsoft.com";
+$admin_mail = "admin@example.com";
+$adminname = "Admin Name";
 
 // Address the forum link, link's to:
 $link_forums = "http://forums.blacknova.net";
