@@ -1,10 +1,47 @@
-<?
+<?php
+//$Id$
 // Separate userpass into username & password to support the legacy of multiple cookies for login.
 if (preg_match("/global_funcs.php/i", $PHP_SELF)) {
       echo "You can not access this file directly!";
       die();
 }
 
+error_reporting(0);
+ini_set('display_errors', 0);
+
+//----- Start register_globals fix ----
+// reg_global_fix,0.1.1,22-09-2004,BNT DevTeam
+
+if(!defined('reg_global_fix'))define('reg_global_fix', True, TRUE);
+
+$reg_globals_on = (bool) ini_get('register_globals');
+if ($register_globals_safe != 1 && !$reg_globals_on)
+if (1==1)
+{
+  foreach ($_POST as $k=>$v)
+  {
+      if (!isset($GLOBALS[$k]))
+      {
+          ${$k}=$v;
+      }
+  }
+  foreach ($_GET as $k=>$v)
+  {
+      if (!isset($GLOBALS[$k]))
+      {
+          ${$k}=$v;
+      }
+  }
+
+  foreach ($_COOKIE as $k=>$v)
+  {
+      if (!isset($GLOBALS[$k]))
+      {
+          ${$k}=$v;
+      }
+  }
+}
+//------ End register_globals fix
 
 if ($userpass != '' and $userpass != '+') {
   $username = substr($userpass, 0, strpos($userpass, "+"));
@@ -16,7 +53,7 @@ if ($userpass != '' and $userpass != '+') {
 $found = 0;
 if(!empty($lang))
 {
-  if(!preg_match("/^[\w]+$/", $lang)) 
+  if(!preg_match("/^[\w]+$/", $lang))
   {
      $lang = $default_lang;
 
@@ -25,7 +62,7 @@ if(!empty($lang))
   {
     if($lang == $value[file])
     {
-      SetCookie("lang",$lang,time()+(3600*2),$gamepath,$gamedomain);
+      SetCookie("lang",$lang,time()+(3600*24)*365,$gamepath,$gamedomain);
       $found = 1;
       break;
     }
@@ -38,17 +75,6 @@ if(!empty($lang))
 if (!isset($lang) || empty($lang))
   $lang = $default_lang;
 $lang = $lang . ".inc";
-//Planet log constants
-define(PLOG_GENESIS_CREATE,1);
-define(PLOG_GENESIS_DESTROY,2);
-define(PLOG_CAPTURE,3);
-define(PLOG_ATTACKED,4);
-define(PLOG_SCANNED,5);
-define(PLOG_OWNER_DEAD,6);
-define(PLOG_DEFEATED,7);
-define(PLOG_SOFA,8);
-define(PLOG_PLANET_DESTRUCT,9);
-
 //Log constants
 
 define(LOG_LOGIN, 1);
@@ -75,7 +101,7 @@ define(LOG_PLANET_SCAN_FAIL, 21);       //sent when a planet scan failed
 define(LOG_PLANET_CAPTURE, 22);         //sent when a planet is captured
 define(LOG_SHIP_SCAN, 23);              //sent when a ship is scanned
 define(LOG_SHIP_SCAN_FAIL, 24);         //sent when a ship scan fails
-define(LOG_FURANGEE_ATTACK, 25);        //furangees send this to themselves
+define(LOG_Xenobe_ATTACK, 25);        //xenobes send this to themselves
 define(LOG_STARVATION, 26);             //sent when colonists are starving... Is this actually used in the game?
 define(LOG_TOW, 27);                    //sent when a player is towed
 define(LOG_DEFS_DESTROYED_F, 28);       //sent when a player destroys fighters
@@ -105,36 +131,25 @@ define(LOG_PLASMA_STORM,51);           // sent when a plasma storm attacks a pla
 define(LOG_BOUNTY_FEDBOUNTY,52);       // Sent when the federation places a bounty on a player
 define(LOG_PLANET_BOMBED,53);     //Sent after bombing a planet
 define(LOG_ADMIN_ILLEGVALUE, 54);        //sent to admin on planet destruction instead of capture
-define(LOG_CHEAT_TEAM,55);            // Sent when someone attempts the kick any team member cheat
-define(LOG_PLANET_YOUR_CAPTURED,56);  // Sent when your planet is captured
-
-
 // Database tables variables
+$dbtables['ibank_accounts'] = "${db_prefix}ibank_accounts";
 $dbtables['links'] = "${db_prefix}links";
 $dbtables['planets'] = "${db_prefix}planets";
 $dbtables['traderoutes'] = "${db_prefix}traderoutes";
-$dbtables['players'] = "${db_prefix}players";                
+$dbtables['news'] = "${db_prefix}news";
+$dbtables['ships'] = "${db_prefix}ships";
+$dbtables['teams'] = "${db_prefix}teams";
 $dbtables['universe'] = "${db_prefix}universe";
 $dbtables['zones'] = "${db_prefix}zones";
-$dbtables['ibank_accounts'] = "${db_prefix}ibank_accounts";             
-$dbtables['IGB_transfers'] = "${db_prefix}IGB_transfers";            
-$dbtables['teams'] = "${db_prefix}teams";
-$dbtables['news'] = "${db_prefix}news";
 $dbtables['messages'] = "${db_prefix}messages";
-$dbtables['furangee'] = "${db_prefix}furangee";
+$dbtables['xenobe'] = "${db_prefix}xenobe";
 $dbtables['sector_defence'] = "${db_prefix}sector_defence";
 $dbtables['scheduler'] = "${db_prefix}scheduler";
 $dbtables['ip_bans'] = "${db_prefix}ip_bans";
+$dbtables['IGB_transfers'] = "${db_prefix}IGB_transfers";
 $dbtables['logs'] = "${db_prefix}logs";
-//$dbtables['gen_id'] = "${db_prefix}gen_id";
 $dbtables['bounty'] = "${db_prefix}bounty";
-$dbtables['movement_log'] = "${db_prefix}movement_log";        
-$dbtables['ship_types'] = "${db_prefix}ship_types";               
-$dbtables['ships'] = "${db_prefix}ships";
-$dbtables['planet_log'] = "${db_prefix}planet_log";
-$dbtables['ip_log'] = "${db_prefix}ip_log";
-
-$dbtables['email_log'] = "${db_prefix}email_log";
+$dbtables['movement_log'] = "${db_prefix}movement_log";
 
 function mypw($one,$two)
 {
@@ -179,11 +194,8 @@ function checklogin()
   global $password, $l_login_died, $l_die_please;
   global $db, $dbtables;
 
-  $result1 = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username' LIMIT 1");
+  $result1 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username' LIMIT 1");
   $playerinfo = $result1->fields;
-
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-  $shipinfo = $res->fields;
 
   /* Check the cookie to see if username/password are empty - check password against database */
   if($username == "" or $password == "" or $password != $playerinfo['password'])
@@ -193,12 +205,12 @@ function checklogin()
   }
 
   /* Check for destroyed ship */
-  if($shipinfo['destroyed'] == "Y")
+  if($playerinfo['ship_destroyed'] == "Y")
   {
     /* if the player has an escapepod, set the player up with a new ship */
-    if($shipinfo['dev_escapepod'] == "Y")
+    if($playerinfo['dev_escapepod'] == "Y")
     {
-      $result2 = $db->Execute("UPDATE $dbtables[ships] SET class=1, hull=0, engines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armour=0, armour_pts=100, cloak=0, shields=0, sector_id=0, ore=0, organics=0, energy=1000, colonists=0, goods=0, fighters=100, on_planet='N', dev_warpedit=0, dev_genesis=0, dev_beacon=0, dev_emerwarp=0, dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, destroyed='N',dev_lssd='N' where ship_id=$shipinfo[ship_id]");
+      $result2 = $db->Execute("UPDATE $dbtables[ships] SET hull=0, engines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=100, cloak=0, shields=0, sector=0, ship_ore=0, ship_organics=0, ship_energy=1000, ship_colonists=0, ship_goods=0, ship_fighters=100, ship_damage=0, on_planet='N', dev_warpedit=0, dev_genesis=0, dev_beacon=0, dev_emerwarp=0, dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, ship_destroyed='N',dev_lssd='N' where email='$username'");
       echo $l_login_died;
       $flag = 1;
     }
@@ -220,10 +232,12 @@ function checklogin()
     $flag=1;
   }
 
+
+
   return $flag;
 }
 
-function connectdb()
+function connectdb($do_die=true)
 {
   /* connect to database - and if we can't stop right there */
   global $dbhost;
@@ -251,7 +265,12 @@ function connectdb()
     $result = $db->Connect("$dbhost", "$dbuname", "$dbpass", "$dbname");
 
   if(!$result)
-    die ("Unable to connect to the database");
+  {
+    if($do_die)
+    {
+      die ("Unable to connect to the database");
+    }
+  }
 }
 
 function updatecookie()
@@ -266,7 +285,7 @@ function updatecookie()
   global $res;
   // The new combined cookie login.
   $userpass = $username."+".$password;
-  SetCookie("userpass",$userpass,time()+(3600*2),$gamepath,$gamedomain);
+  SetCookie("userpass",$userpass,time()+(3600*24)*365,$gamepath,$gamedomain);
   if ($userpass != '' and $userpass != '+') {
       setcookie("username","",0); // Legacy support, delete the old login cookies.
       setcookie("password","",0); // Legacy support, delete the old login cookies.
@@ -281,10 +300,10 @@ function updatecookie()
 function playerlog($sid, $log_type, $data = "")
 {
   global $db, $dbtables;
-  /* write log_entry to the player's log - identified by player's player_id - sid. */
+  /* write log_entry to the player's log - identified by player's ship_id - sid. */
   if ($sid != "" && !empty($log_type))
   {
-    $db->Execute("INSERT INTO $dbtables[logs] VALUES('', $sid, $log_type, NOW(), '$data')");
+    $db->Execute("INSERT INTO $dbtables[logs] VALUES(NULL, $sid, $log_type, NOW(), '$data')");
   }
 }
 
@@ -294,7 +313,7 @@ function adminlog($log_type, $data = "")
   /* write log_entry to the admin log  */
   if (!empty($log_type))
   {
-    $db->Execute("INSERT INTO $dbtables[logs] VALUES('', 0, $log_type, NOW(), '$data')");
+    $db->Execute("INSERT INTO $dbtables[logs] VALUES(NULL, 0, $log_type, NOW(), '$data')");
   }
 }
 
@@ -316,7 +335,7 @@ function gen_score($sid)
   global $dev_lssd_price;
   global $fighter_price;
   global $torpedo_price;
-  global $armour_price;
+  global $armor_price;
   global $colonist_price;
   global $base_ore;
   global $base_goods;
@@ -332,19 +351,19 @@ function gen_score($sid)
   $calc_beams = "ROUND(pow($upgrade_factor,beams))";
   $calc_torp_launchers = "ROUND(pow($upgrade_factor,torp_launchers))";
   $calc_shields = "ROUND(pow($upgrade_factor,shields))";
-  $calc_armour = "ROUND(pow($upgrade_factor,armour))";
+  $calc_armor = "ROUND(pow($upgrade_factor,armor))";
   $calc_cloak = "ROUND(pow($upgrade_factor,cloak))";
-  $calc_levels = "($calc_hull+$calc_engines+$calc_power+$calc_computer+$calc_sensors+$calc_beams+$calc_torp_launchers+$calc_shields+$calc_armour+$calc_cloak)*$upgrade_cost";
+  $calc_levels = "($calc_hull+$calc_engines+$calc_power+$calc_computer+$calc_sensors+$calc_beams+$calc_torp_launchers+$calc_shields+$calc_armor+$calc_cloak)*$upgrade_cost";
 
   $calc_torps = "$dbtables[ships].torps*$torpedo_price";
-  $calc_armour_pts = "armour_pts*$armour_price";
-  $calc_ship_ore = "$dbtables[ships].ore*$ore_price";
-  $calc_ship_organics = "$dbtables[ships].organics*$organics_price";
-  $calc_ship_goods = "$dbtables[ships].goods*$goods_price";
-  $calc_ship_energy = "$dbtables[ships].energy*$energy_price";
-  $calc_ship_colonists = "$dbtables[ships].colonists*$colonist_price";
-  $calc_ship_fighters = "$dbtables[ships].fighters*$fighter_price";
-  $calc_equip = "$calc_torps+$calc_armour_pts+$calc_ship_ore+$calc_ship_organics+$calc_ship_goods+$calc_ship_energy+$calc_ship_colonists+$calc_ship_fighters";
+  $calc_armor_pts = "armor_pts*$armor_price";
+  $calc_ship_ore = "ship_ore*$ore_price";
+  $calc_ship_organics = "ship_organics*$organics_price";
+  $calc_ship_goods = "ship_goods*$goods_price";
+  $calc_ship_energy = "ship_energy*$energy_price";
+  $calc_ship_colonists = "ship_colonists*$colonist_price";
+  $calc_ship_fighters = "ship_fighters*$fighter_price";
+  $calc_equip = "$calc_torps+$calc_armor_pts+$calc_ship_ore+$calc_ship_organics+$calc_ship_goods+$calc_ship_energy+$calc_ship_colonists+$calc_ship_fighters";
 
   $calc_dev_warpedit = "dev_warpedit*$dev_warpedit_price";
   $calc_dev_genesis = "dev_genesis*$dev_genesis_price";
@@ -356,28 +375,32 @@ function gen_score($sid)
   $calc_dev_minedeflector = "dev_minedeflector*$dev_minedeflector_price";
   $calc_dev = "$calc_dev_warpedit+$calc_dev_genesis+$calc_dev_beacon+$calc_dev_emerwarp+$calc_dev_escapepod+$calc_dev_fuelscoop+$calc_dev_minedeflector+$calc_dev_lssd";
 
-  $calc_planet_goods = "SUM($dbtables[planets].organics)*$organics_price+SUM($dbtables[planets].ore)*$ore_price+SUM($dbtables[planets].goods)*$goods_price+SUM($dbtables[planets].energy)*$energy_price";
+  $calc_planet_goods = "if(bnt_planets.planet_id,SUM($dbtables[planets].organics)*$organics_price+SUM($dbtables[planets].ore)*$ore_price+SUM($dbtables[planets].goods)*$goods_price+SUM($dbtables[planets].energy)*$energy_price";
   $calc_planet_colonists = "SUM($dbtables[planets].colonists)*$colonist_price";
   $calc_planet_defence = "SUM($dbtables[planets].fighters)*$fighter_price+IF($dbtables[planets].base='Y', $base_credits+SUM($dbtables[planets].torps)*$torpedo_price, 0)";
-  $calc_planet_credits = "SUM($dbtables[planets].credits)";
+  $calc_planet_credits = "SUM($dbtables[planets].credits),0)";
 
-  $res = $db->Execute("SELECT $calc_levels+$calc_equip+$calc_dev+$dbtables[players].credits+$calc_planet_goods+$calc_planet_colonists+$calc_planet_defence+$calc_planet_credits AS score FROM $dbtables[players] LEFT JOIN $dbtables[planets] ON $dbtables[planets].owner=$dbtables[players].player_id LEFT JOIN $dbtables[ships] ON $dbtables[players].player_id=$dbtables[ships].player_id WHERE $dbtables[players].player_id=$sid AND destroyed='N'");
+  $res = $db->Execute("SELECT $calc_levels+$calc_equip+$calc_dev+$dbtables[ships].credits+$calc_planet_goods+$calc_planet_colonists+$calc_planet_defence+$calc_planet_credits AS score FROM $dbtables[ships] LEFT JOIN $dbtables[planets] ON $dbtables[planets].owner=ship_id WHERE ship_id=$sid AND ship_destroyed='N'");
+  //$debugstring = $db->ErrorMsg();
   $row = $res->fields;
-  $score = $row[score];
-  $res = $db->Execute("SELECT balance, loan FROM $dbtables[ibank_accounts] where player_id = $sid");
+  $score = $row['score'];
+  $res = $db->Execute("SELECT balance, loan FROM $dbtables[ibank_accounts] where ship_id = $sid");
+  //$debugstring .= $db->ErrorMsg();
   if($res)
   {
      $row = $res->fields;
-     $score += ($row[balance] - $row[loan]);
+     $score += ($row['balance'] - $row['loan']);
   }
-  if($score<0) $score=0;
   $score = ROUND(SQRT($score));
-  $db->Execute("UPDATE $dbtables[players] SET score=$score WHERE player_id=$sid");
 
+  $db->Execute("UPDATE $dbtables[ships] SET score=$score WHERE ship_id=$sid");
+  //$debugstring = $db->ErrorMsg();
+  //for debugging  return teh query so it can be tested
+ // $score .=" SELECT $calc_levels+$calc_equip+$calc_dev+$dbtables[ships].credits+$calc_planet_goods+$calc_planet_colonists+$calc_planet_defence+$calc_planet_credits AS score FROM $dbtables[ships] LEFT JOIN $dbtables[planets] ON $dbtables[planets].owner=ship_id WHERE ship_id=$sid AND ship_destroyed='N' ".$debugstring;
   return $score;
 }
 
-function db_kill_player($player_id)
+function db_kill_player($ship_id)
 {
   global $default_prod_ore;
   global $default_prod_organics;
@@ -390,10 +413,10 @@ function db_kill_player($player_id)
 
   include("languages/english.inc");
 
-  $db->Execute("UPDATE $dbtables[ships] SET destroyed='Y',on_planet='N',sector_id=0,cleared_defences=' ' WHERE player_id=$player_id");
-  $db->Execute("DELETE from $dbtables[bounty] WHERE placed_by = $player_id");
+  $db->Execute("UPDATE $dbtables[ships] SET ship_destroyed='Y',on_planet='N',sector=0,cleared_defences=' ' WHERE ship_id=$ship_id");
+  $db->Execute("DELETE from $dbtables[bounty] WHERE placed_by = $ship_id");
 
-  $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner='$player_id' AND base='Y'");
+  $res = $db->Execute("SELECT DISTINCT sector_id FROM $dbtables[planets] WHERE owner='$ship_id' AND base='Y'");
   $i=0;
 
   while(!$res->EOF && $res)
@@ -403,14 +426,7 @@ function db_kill_player($player_id)
     $res->MoveNext();
   }
 
-  $res = $db->Execute("SELECT planet_id FROM $dbtables[planets] WHERE owner='$player_id'");
-  while(!$res->EOF && $res)
-  {
-     planet_log($res->fields[sector_id],$player_id,$player_id,PLOG_OWNER_DEAD);   
-     $res->MoveNext();
-  }
-
-  $db->Execute("UPDATE $dbtables[planets] SET owner=0,fighters=0, base='N' WHERE owner=$player_id");
+  $db->Execute("UPDATE $dbtables[planets] SET owner=0,fighters=0, base='N' WHERE owner=$ship_id");
 
   if(!empty($sectors))
   {
@@ -419,21 +435,26 @@ function db_kill_player($player_id)
       calc_ownership($sector);
     }
   }
-  $db->Execute("DELETE FROM $dbtables[sector_defence] where player_id=$player_id");
+  $db->Execute("DELETE FROM $dbtables[sector_defence] where ship_id=$ship_id");
 
-  $res = $db->Execute("SELECT zone_id FROM $dbtables[zones] WHERE corp_zone='N' AND owner=$player_id");
+  $res = $db->Execute("SELECT zone_id FROM $dbtables[zones] WHERE corp_zone='N' AND owner=$ship_id");
   $zone = $res->fields;
 
-  $db->Execute("UPDATE $dbtables[universe] SET zone_id=1 WHERE zone_id=$zone[zone_id]");
+$db->Execute("UPDATE $dbtables[universe] SET zone_id=1 WHERE zone_id=$zone[zone_id]");
 
-  $query = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id='$player_id'");
-  $name = $query->fields;
 
-  $headline = $name[character_name] . $l_killheadline;
 
-  $newstext=str_replace("[name]",$name[character_name],$l_news_killed);
+$query = $db->Execute("select character_name from $dbtables[ships] where ship_id='$ship_id'");
+$name = $query->fields;
 
-  $news = $db->Execute("INSERT INTO $dbtables[news] (headline, newstext, user_id, date, news_type) VALUES ('$headline','$newstext','$player_id',NOW(), 'killed')");
+
+$headline = $name[character_name] . $l_killheadline;
+
+
+$newstext=str_replace("[name]",$name[character_name],$l_news_killed);
+
+$news = $db->Execute("INSERT INTO $dbtables[news] (headline, newstext, user_id, date, news_type) VALUES ('$headline','$newstext','$ship_id',NOW(), 'killed')");
+
 }
 
 function NUMBER($number, $decimals = 0)
@@ -467,10 +488,10 @@ function NUM_TORPEDOES($level_torp_launchers)
   return round(mypw($level_factor, $level_torp_launchers) * 100);
 }
 
-function NUM_ARMOUR($level_armour)
+function NUM_ARMOUR($level_armor)
 {
   global $level_factor;
-  return round(mypw($level_factor, $level_armour) * 100);
+  return round(mypw($level_factor, $level_armor) * 100);
 }
 
 function NUM_BEAMS($level_beams)
@@ -514,7 +535,6 @@ function explode_mines($sector, $num_mines)
 
     $result3 = $db->Execute ("SELECT * FROM $dbtables[sector_defence] WHERE sector_id='$sector' and defence_type ='M' order by quantity ASC");
     echo $db->ErrorMsg();
-    
     //Put the defence information into the array "defenceinfo"
     if($result3 > 0)
     {
@@ -576,7 +596,7 @@ function message_defence_owner($sector, $message)
        while(!$result3->EOF)
        {
 
-          playerlog($result3->fields[player_id],LOG_RAW, $message);
+          playerlog($result3->fields[ship_id],LOG_RAW, $message);
           $result3->MoveNext();
        }
     }
@@ -595,19 +615,19 @@ function distribute_toll($sector, $toll, $total_fighters)
        {
           $row = $result3->fields;
           $toll_amount = ROUND(($row['quantity'] / $total_fighters) * $toll);
-          $db->Execute("UPDATE $dbtables[players] set credits=credits + $toll_amount WHERE player_id = $row[player_id]");
-          playerlog($row[player_id], LOG_TOLL_RECV, "$toll_amount|$sector");
+          $db->Execute("UPDATE $dbtables[ships] set credits=credits + $toll_amount WHERE ship_id = $row[ship_id]");
+          playerlog($row[ship_id], LOG_TOLL_RECV, "$toll_amount|$sector");
           $result3->MoveNext();
        }
     }
 
 }
 
-function defence_vs_defence($player_id)
+function defence_vs_defence($ship_id)
 {
    global $db, $dbtables;
 
-   $result1 = $db->Execute("SELECT * from $dbtables[sector_defence] where player_id = $player_id");
+   $result1 = $db->Execute("SELECT * from $dbtables[sector_defence] where ship_id = $ship_id");
    if($result1 > 0)
    {
       while(!$result1->EOF)
@@ -615,7 +635,7 @@ function defence_vs_defence($player_id)
          $row=$result1->fields;
          $deftype = $row[defence_type] == 'F' ? 'Fighters' : 'Mines';
          $qty = $row['quantity'];
-         $result2 = $db->Execute("SELECT * from $dbtables[sector_defence] where sector_id = $row[sector_id] and player_id <> $player_id ORDER BY quantity DESC");
+         $result2 = $db->Execute("SELECT * from $dbtables[sector_defence] where sector_id = $row[sector_id] and ship_id <> $ship_id ORDER BY quantity DESC");
          if($result2 > 0)
          {
             while(!$result2->EOF && $qty > 0)
@@ -627,15 +647,15 @@ function defence_vs_defence($player_id)
                   $db->Execute("DELETE FROM $dbtables[sector_defence] WHERE defence_id = $cur[defence_id]");
                   $qty -= $cur['quantity'];
                   $db->Execute("UPDATE $dbtables[sector_defence] SET quantity = $qty where defence_id = $row[defence_id]");
-                  playerlog($cur[player_id], LOG_DEFS_DESTROYED, "$cur[quantity]|$targetdeftype|$row[sector_id]");
-                  playerlog($row[player_id], LOG_DEFS_DESTROYED, "$cur[quantity]|$deftype|$row[sector_id]");
+                  playerlog($cur[ship_id], LOG_DEFS_DESTROYED, "$cur[quantity]|$targetdeftype|$row[sector_id]");
+                  playerlog($row[ship_id], LOG_DEFS_DESTROYED, "$cur[quantity]|$deftype|$row[sector_id]");
                }
                else
                {
                   $db->Execute("DELETE FROM $dbtables[sector_defence] WHERE defence_id = $row[defence_id]");
                   $db->Execute("UPDATE $dbtables[sector_defence] SET quantity=quantity - $qty WHERE defence_id = $cur[defence_id]");
-                  playerlog($cur[player_id], LOG_DEFS_DESTROYED, "$qty|$targetdeftype|$row[sector_id]");
-                  playerlog($row[player_id], LOG_DEFS_DESTROYED, "$qty|$deftype|$row[sector_id]");
+                  playerlog($cur[ship_id], LOG_DEFS_DESTROYED, "$qty|$targetdeftype|$row[sector_id]");
+                  playerlog($row[ship_id], LOG_DEFS_DESTROYED, "$qty|$deftype|$row[sector_id]");
                   $qty = 0;
                }
                $result2->MoveNext();
@@ -647,25 +667,25 @@ function defence_vs_defence($player_id)
    }
 }
 
-function kick_off_planet($player_id,$whichteam)
+function kick_off_planet($ship_id,$whichteam)
 {
    global $db, $dbtables;
 
-   $result1 = $db->Execute("SELECT * from $dbtables[planets] where owner = '$player_id' ");
+   $result1 = $db->Execute("SELECT * from $dbtables[planets] where owner = '$ship_id' ");
 
    if($result1 > 0)
    {
       while(!$result1->EOF)
       {
          $row = $result1->fields;
-         $result2 = $db->Execute("SELECT * from $dbtables[ships] where on_planet = 'Y' and planet_id = '$row[planet_id]' and player_id <> '$player_id' ");
+         $result2 = $db->Execute("SELECT * from $dbtables[ships] where on_planet = 'Y' and planet_id = '$row[planet_id]' and ship_id <> '$ship_id' ");
          if($result2 > 0)
          {
             while(!$result2->EOF )
             {
                $cur = $result2->fields;
                $db->Execute("UPDATE $dbtables[ships] SET on_planet = 'N',planet_id = '0' WHERE ship_id='$cur[ship_id]'");
-               playerlog($cur[player_id], LOG_PLANET_EJECT, "$cur[sector]|$row[character_name]");
+               playerlog($cur[ship_id], LOG_PLANET_EJECT, "$cur[sector]|$row[character_name]");
                $result2->MoveNext();
             }
          }
@@ -767,7 +787,7 @@ function calc_ownership($sector)
       $nbcorps++;
     else
     {
-      $res = $db->Execute("SELECT team FROM $dbtables[players] WHERE player_id=" . $owners[$loop][id]);
+      $res = $db->Execute("SELECT team FROM $dbtables[ships] WHERE ship_id=" . $owners[$loop][id]);
       if($res && $res->RecordCount() != 0)
       {
         $curship = $res->fields;
@@ -810,11 +830,11 @@ function calc_ownership($sector)
   //Unallied ship, another ship in a corp, war
   if($numunallied > 0)
   {
-    $query = "SELECT team FROM $dbtables[players] WHERE (";
+    $query = "SELECT team FROM $dbtables[ships] WHERE (";
     $i=0;
     foreach($ships as $ship)
     {
-      $query = $query . "player_id=$ship";
+      $query = $query . "ship_id=$ship";
       $i++;
       if($i!=$nbships)
         $query = $query . " OR ";
@@ -885,7 +905,7 @@ function calc_ownership($sector)
       $res = $db->Execute("SELECT zone_id FROM $dbtables[zones] WHERE corp_zone='N' && owner=" . $owners[$winner][id]);
       $zone = $res->fields;
 
-      $res = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=" . $owners[$winner][id]);
+      $res = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=" . $owners[$winner][id]);
       $ship = $res->fields;
 
       $db->Execute("UPDATE $dbtables[universe] SET zone_id=$zone[zone_id] WHERE sector_id=$sector");
@@ -896,19 +916,21 @@ function calc_ownership($sector)
 
 function player_insignia_name($a_username) {
 
+// Somewhat inefficient, but I think this is the best way to do this.
+
 global $db, $dbtables, $username, $player_insignia;
 global $l_insignia;
 
-$res = $db->Execute("SELECT score FROM $dbtables[players] WHERE email='$a_username'");
-$playerinfo = $res->fields;  
+$res = $db->Execute("SELECT score FROM $dbtables[ships] WHERE email='$a_username'");
+$playerinfo = $res->fields;
 $score_array = array('1000', '3000', '6000', '9000', '12000', '15000', '20000', '40000', '60000', '80000', '100000', '120000', '160000', '200000', '250000', '300000', '350000', '400000', '450000', '500000');
 
 for ( $i=0; $i<count($score_array); $i++)
-{           
+{
     if ( $playerinfo[score] < $score_array[$i])
      {
        $player_insignia = $l_insignia[$i];
-       break;    
+       break;
      }
 }
 
@@ -942,39 +964,23 @@ switch ($ptype) {
     case "special":
         $ret=$l_special;
         break;
+
+
 }
 
 return $ret;
 }
 
-/*
-function GenNextID($id)
-{
-  global $db, $dbtables;
-
-  $db->Execute("LOCK TABLES $dbtables[gen_id] write");
-  $res = $db->Execute("SELECT count FROM $dbtables[gen_id] WHERE name='$id'");
-  if(!$res)
-    return(-1);
-  $count = $res->fields[count];
-  $res = $db->Execute("UPDATE $dbtables[gen_id] SET count=count+1 WHERE name='$id'");
-  $count++;
-  $db->Execute("UNLOCK TABLES");
-  return($count);
-}
-*/
-
 function stripnum($str)
 {
-  $str=(string)$str;
-  $output = ereg_replace("[^0-9.]","",$str);
-  return $output;
+    $output = preg_replace('/[^0-9]/','',$str);
+    return $output;
 }
 
 function collect_bounty($attacker,$bounty_on)
 {
    global $db,$dbtables,$l_by_thefeds;
-   $res = $db->Execute("SELECT * FROM $dbtables[bounty],$dbtables[players] WHERE bounty_on = $bounty_on AND bounty_on = player_id and placed_by <> 0");
+   $res = $db->Execute("SELECT * FROM $dbtables[bounty],$dbtables[ships] WHERE bounty_on = $bounty_on AND bounty_on = ship_id and placed_by <> 0");
    if($res)
    {
       while(!$res->EOF)
@@ -986,10 +992,10 @@ function collect_bounty($attacker,$bounty_on)
          }
          else
          {
-            $res2 = $db->Execute("SELECT * FROM $dbtables[players] WHERE player_id = $bountydetails[placed_by]");
+            $res2 = $db->Execute("SELECT * FROM $dbtables[ships] WHERE ship_id = $bountydetails[placed_by]");
             $placed = $res2->fields[character_name];
          }
-         $update = $db->Execute("UPDATE $dbtables[players] SET credits = credits + $bountydetails[amount] WHERE player_id = $attacker");
+         $update = $db->Execute("UPDATE $dbtables[ships] SET credits = credits + $bountydetails[amount] WHERE ship_id = $attacker");
          $delete = $db->Execute("DELETE FROM $dbtables[bounty] WHERE bounty_id = $bountydetails[bounty_id]");
 
          playerlog($attacker, LOG_BOUNTY_CLAIMED, "$bountydetails[amount]|$bountydetails[character_name]|$placed");
@@ -1004,7 +1010,7 @@ function collect_bounty($attacker,$bounty_on)
 function cancel_bounty($bounty_on)
 {
    global $db,$dbtables;
-   $res = $db->Execute("SELECT * FROM $dbtables[bounty],$dbtables[players] WHERE bounty_on = $bounty_on AND bounty_on = player_id");
+   $res = $db->Execute("SELECT * FROM $dbtables[bounty],$dbtables[ships] WHERE bounty_on = $bounty_on AND bounty_on = ship_id");
    if($res)
    {
       while(!$res->EOF)
@@ -1012,8 +1018,8 @@ function cancel_bounty($bounty_on)
          $bountydetails = $res->fields;
          if($bountydetails[placed_by] <> 0)
          {
-            $update = $db->Execute("UPDATE $dbtables[players] SET credits = credits + $bountydetails[amount] WHERE player_id = $bountydetails[placed_by]");
-    
+            $update = $db->Execute("UPDATE $dbtables[ships] SET credits = credits + $bountydetails[amount] WHERE ship_id = $bountydetails[placed_by]");
+
             playerlog($bountydetails[placed_by],LOG_BOUNTY_CANCELLED,"$bountydetails[amount]|$bountydetails[character_name]");
          }
          $delete = $db->Execute("DELETE FROM $dbtables[bounty] WHERE bounty_id = $bountydetails[bounty_id]");
@@ -1022,26 +1028,10 @@ function cancel_bounty($bounty_on)
    }
 }
 
-function get_player($player_id)
+function get_player($ship_id)
 {
    global $db,$dbtables;
-   $res = $db->Execute("SELECT character_name from $dbtables[players] where player_id = $player_id");
-   if($res)
-   {
-      $row = $res->fields;
-      $character_name = $row[character_name];
-      return $character_name;
-   }
-   else
-   {
-      return "Unknown";
-   }
-}
-
-function get_player_from_ship($ship_id)
-{
-   global $db,$dbtables;
-   $res = $db->Execute("SELECT character_name from $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE ship_id = $ship_id");
+   $res = $db->Execute("SELECT character_name from $dbtables[ships] where ship_id = $ship_id");
    if($res)
    {
       $row = $res->fields;
@@ -1060,12 +1050,12 @@ function log_move($ship_id,$sector_id)
    $res = $db->Execute("INSERT INTO $dbtables[movement_log] (ship_id,sector_id,time) VALUES ($ship_id,$sector_id,NOW())");
 }
 
-function isLoanPending($player_id)
+function isLoanPending($ship_id)
 {
   global $db, $dbtables;
   global $IGB_lrate;
 
-  $res = $db->Execute("SELECT loan, UNIX_TIMESTAMP(loantime) AS time FROM $dbtables[ibank_accounts] WHERE player_id=$player_id");
+  $res = $db->Execute("SELECT loan, UNIX_TIMESTAMP(loantime) AS time FROM $dbtables[ibank_accounts] WHERE ship_id=$ship_id");
   if($res)
   {
     $account=$res->fields;
@@ -1084,232 +1074,4 @@ function isLoanPending($player_id)
     return false;
 
 }
-
-function newplayer($email, $char, $pass, $ship_name)
-{
-  global $db, $dbtables;
-  global $start_credits, $start_turns, $default_lang;
-  global $start_armour, $start_energy, $start_fighters, $max_turns;
-
-  $stamp=date("Y-m-d H:i:s");
-
-  $query = $db->Execute("SELECT MAX(turns_used + turns) AS mturns FROM $dbtables[players]");
-  $res = $query->fields;
-
-  $mturns = $res[mturns];
-
-  if($mturns > $max_turns)
-    $mturns = $max_turns;
-
-  if($mturns < $start_turns)
-    $mturns = $start_turns;
-
-  //Create player
-  $db->Execute("INSERT INTO $dbtables[players] VALUES(" .
-               "''," .             //player_id
-               "0," .              //currentship
-               "'$char'," .        //character_name
-               "'$pass'," .        //password
-               "'$email'," .       //email
-               "$start_credits," . //credits
-               "$mturns," .        //turns
-               "0," .              //turns_used
-               "'$stamp'," .       //last_login
-               "0," .              //rating
-               "0," .              //score
-               "0," .              //team
-               "0," .              //team_invite
-               "'N'," .            //interface
-               "'1.1.1.1'," .      //ip_address
-               "0," .              //preset1
-               "0," .              //preset2
-               "0," .              //preset3
-               "'Y'," .            //trade_colonists
-               "'N'," .            //trade_fighters
-               "'N'," .            //trade_torps
-               "'Y'," .            //trade_energy
-               "'$default_lang'," .//lang
-               "'Y'" .             //dhtml
-               ")");
-  
-  //Get the new player's id
-  $res = $db->Execute("SELECT player_id from $dbtables[players] WHERE email='$email'");
-  $player_id = $res->fields[player_id];
-  
-  //Create player's ship
-  $db->Execute("INSERT INTO $dbtables[ships] VALUES(" .
-               "''," .             //ship_id
-               "$player_id," .     //player_id
-               "'1'," .            //class
-               "'$ship_name'," .   //name
-               "'N'," .            //destroyed
-               "0," .              //hull
-               "0," .              //engines
-               "0," .              //power
-               "0," .              //computer
-               "0," .              //sensors
-               "0," .              //beams
-               "0," .              //torp_launchers
-               "0," .              //torps
-               "0," .              //shields
-               "0," .              //armour
-               "$start_armour," .  //armour_pts
-               "0," .              //cloak
-               "0," .              //sector_id
-               "0," .              //ore
-               "0," .              //organics
-               "0," .              //goods
-               "$start_energy," .  //energy
-               "0," .              //colonists
-               "$start_fighters," .//fighters
-               "'N'," .            //on_planet
-               "0," .              //dev_warpedit
-               "0," .              //dev_genesis
-               "0," .              //dev_beacon
-               "0," .              //dev_emerwarp
-               "'Y'," .            //dev_escapepod
-               "'N'," .            //dev_fuelscoop
-               "0," .              //dev_minedeflector
-               "0," .              //planet_id
-               "''," .             //cleared_defences
-               "'N'" .            //dev_lssd
-               ")");
-
-  echo $db->ErrorMsg();
-  //Get the new ship's id
-  $res = $db->Execute("SELECT ship_id from $dbtables[ships] WHERE player_id=$player_id");
-  $ship_id = $res->fields[ship_id];
-  
-  //Insert current ship in players table
-  $db->Execute("UPDATE $dbtables[players] SET currentship=$ship_id WHERE player_id=$player_id");
-
-  //Create player's zone
-  $zone_name = "$char" . "\'s Territory";
-  $db->Execute("INSERT INTO $dbtables[zones] VALUES(" .
-               "''," .             //zone_id
-               "'$zone_name'," .   //zone_name
-               "$player_id," .     //owner
-               "'N'," .            //corp_zone
-               "'Y'," .            //allow_beacon
-               "'Y'," .            //allow_attack
-               "'Y'," .            //allow_planetattack
-               "'Y'," .            //allow_warpedit
-               "'Y'," .            //allow_planet
-               "'Y'," .            //allow_trade
-               "'Y'," .            //allow_defenses
-               "0" .               //max_hull
-               ")");
-
-  //Create the IGB account
-  $db->Execute("INSERT INTO $dbtables[ibank_accounts] (player_id,balance,loan) VALUES ($player_id,0,0)");
-
-  return $player_id;
-}
-function planet_log($planet,$owner,$player_id,$action)
-{
-   global $db, $dbtables,$enhanced_logging;
-   if($enhanced_logging)
-   {
-      $res = $db->Execute("SELECT ip_address from $dbtables[players] WHERE player_id=$player_id");
-      $ip = $res->fields[ip_address];
-      $db->Execute("INSERT INTO $dbtables[planet_log] (planet_id,player_id,owner_id,ip_address,action,time) VALUES ($planet,$player_id,$owner,'$ip',$action,NOW())");
-   }
-   
-}
-
-function ip_log($player_id,$ip_address)
-{
-   global $db, $dbtables,$enhanced_logging;
-   if($enhanced_logging)
-   {
-      $res = $db->Execute("INSERT INTO $dbtables[ip_log] (player_id,ip_address,time) VALUES ($player_id,'$ip_address',NOW())");
-   }
-}
-
-function cleanjs($dontkill)
-{
-echo "<script language=\"javascript\" type=\"text/javascript\">\n";
-echo "function clean_js()\n";
-echo "{\n";
-echo "// Here we cycle through all form values (other than buy, or full), and regexp out all non-numerics. (1,000 = 1000)\n";
-echo "// Then, if its become a null value (type in just a, it would be a blank value. blank is bad.) we set it to zero.\n";
-echo "var form = document.forms[0];\n";
-echo "var i = form.elements.length;\n";
-echo "while (i > 0)\n";
-echo " {\n";
-echo " if ((form.elements[i-1].type == 'text') && (form.elements[i-1].name != '$dontkill'))\n";
-echo "  {\n";
-echo "  var tmpval = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
-echo "  if (tmpval != form.elements[i-1].value)\n";
-echo "   {\n";
-echo "   form.elements[i-1].value = form.elements[i-1].value.replace(/\D+/g, \"\");\n";
-echo "   }\n";
-echo "  }\n";
-echo " if (form.elements[i-1].value == '')\n";
-echo "  {\n";
-echo "  form.elements[i-1].value ='0';\n";
-echo "  }\n";
-echo " i--;\n";
-echo " }\n";
-echo "}\n";
-echo "</script>\n";
-}
-
-// calculate the distance between two sectors.
-// We even run the queries ourselves.
-function calc_dist($src,$dst) {
-  global $db;
-  global $dbtables;
-
-  $results = $db->Execute("SELECT x,y,z FROM ".$dbtables['universe'].
-                          " WHERE sector_id=$src OR sector_id=$dst");
-
-// Make sure you check for this when calling this function.
-  if(!$results) return 0;
-
-
-  $x = $results->fields['x'];
-  $y = $results->fields['y'];
-  $z = $results->fields['z'];
-
-  $results->MoveNext();
-
-  $x -= $results->fields['x'];
-  $y -= $results->fields['y'];
-  $z -= $results->fields['z'];
-
-  $x = sqrt($x*$x + $y*$y + $z*$z);
-
-// Make sure it's never less than 1.
-//  if($x > 1) return 1;
-
-  return $x;
-}
-
-function MakeBars($level, $max)
-{
-  global $l_n_a;
-  
-  $diff = $max - $level;
-  $img = "";
-
-  for ($i=0;$i<$level;$i++)
-  {
-    $bright = floor($i / 5) + 1;
-    if($bright > 5)
-      $bright = 5;
-    $img .= "<img src=images/dialon$bright.gif>&nbsp;";
-  }
-
-  for ($i=0;$i<$diff;$i++)
-  {
-    $img .= "<img src=images/dialoff.gif>&nbsp;";
-  }
-
-  if($img == "")
-    $img = "<font size=2><b>$l_n_a</b></font>";
-
-  return $img;
-}
-
 ?>

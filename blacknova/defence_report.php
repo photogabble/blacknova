@@ -13,10 +13,10 @@ if(checklogin())
   die();
 }
 
-$res = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $res->fields;
 
-$query = "SELECT * FROM $dbtables[sector_defence] WHERE player_id=$playerinfo[player_id]";
+$query = "SELECT * FROM $dbtables[sector_defence] WHERE ship_id=$playerinfo[ship_id]";
 if(!empty($sort))
 {
   $query .= " ORDER BY";
@@ -63,10 +63,10 @@ else
   echo "$l_pr_clicktosort<BR><BR>";
   echo "<TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=2>";
   echo "<TR BGCOLOR=\"$color_header\">";
-  echo "<TD><B><A HREF=defence-report.php?sort=sector>$l_sector</A></B></TD>";
-  echo "<TD><B><A HREF=defence-report.php?sort=quantity>$l_qty</A></B></TD>";
-  echo "<TD><B><A HREF=defence-report.php?sort=type>$l_sdf_type</A></B></TD>";
-  echo "<TD><B><A HREF=defence-report.php?sort=mode>$l_sdf_mode</A></B></TD>";
+  echo "<TD><B><A HREF=defence_report.php?sort=sector>$l_sector</A></B></TD>";
+  echo "<TD><B><A HREF=defence_report.php?sort=quantity>$l_qty</A></B></TD>";
+  echo "<TD><B><A HREF=defence_report.php?sort=type>$l_sdf_type</A></B></TD>";
+  echo "<TD><B><A HREF=defence_report.php?sort=mode>$l_sdf_mode</A></B></TD>";
   echo "</TR>";
   $color = $color_line1;
   for($i=0; $i<$num_sectors; $i++) {

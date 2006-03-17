@@ -1,7 +1,7 @@
 <?
 global $db,$dbtables;
 connectdb();
-$res = $db->Execute("SELECT COUNT(*) as loggedin from $dbtables[players] WHERE (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP($dbtables[players].last_login)) / 60 <= 5 and email NOT LIKE '%@furangee'");
+$res = $db->Execute("SELECT COUNT(*) as loggedin from $dbtables[ships] WHERE (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP($dbtables[ships].last_login)) / 60 <= 5 and email NOT LIKE '%@xenobe'");
 $row = $res->fields;
 $online = $row[loggedin];
 ?><br>
@@ -50,11 +50,11 @@ echo $l_footer_players_on_2;
 </center><br>
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
    <tr>
-    <td><font color=silver size=-4><a href="http://www.sourceforge.net/projects/blacknova" class="nav">BlackNova Traders</a></font></td>
-    <td align=right><font color=silver size=-4>© 2000-2002 <a href="mailto:webmaster@blacknova.net" class="nav">Ron Harwood</a></font></td>
+    <td><font color=silver size=-4><a href="http://www.sourceforge.net/projects/blacknova">BlackNova Traders</a></font></td>
+    <td align=right><font color=silver size=-4>Copyright 2000-2005 Ron Harwood and L. Patrick Smallwood</font></td>
    </tr>
    <tr>
-    <td><font color=silver size=-4><a href="news.php" class="nav">Local BlackNova News</a></font></td>
+    <td><font color=silver size=-4><a href="news.php">Local BlackNova News</a></font></td>
    </tr>
   </table>
 </body>

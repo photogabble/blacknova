@@ -20,11 +20,8 @@ srand((double)microtime() * 1000000);
 
 
 // get user info
-$result = $db->Execute("SELECT * FROM $dbtables[players] WHERE email='$username'");
+$result = $db->Execute("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 $playerinfo = $result->fields;
-
-$res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-$shipinfo = $res->fields;
 
 if($sector == "*")
 {
@@ -46,17 +43,17 @@ if($sector == "*")
   echo "$l_lrs_used " . NUMBER($fullscan_cost) . " $l_lrs_turns. " . NUMBER($playerinfo[turns] - $fullscan_cost) . " $l_lrs_left.<BR><BR>";
 
   // deduct the appropriate number of turns
-  $db->Execute("UPDATE $dbtables[players] SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost WHERE player_id='$playerinfo[player_id]'");
+  $db->Execute("UPDATE $dbtables[ships] SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost where ship_id='$playerinfo[ship_id]'");
 
   // user requested a full long range scan
-  $l_lrs_reach=str_replace("[sector]",$shipinfo[sector_id],$l_lrs_reach);
+  $l_lrs_reach=str_replace("[sector]",$playerinfo[sector],$l_lrs_reach);
   echo "$l_lrs_reach<BR><BR>";
 
   // get sectors which can be reached from the player's current sector
-  $result = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='$shipinfo[sector_id]' ORDER BY link_dest");
+  $result = $db->Execute("SELECT * FROM $dbtables[links] WHERE link_start='$playerinfo[sector]' ORDER BY link_dest");
   echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=\"100%\">";
   echo "<TR BGCOLOR=\"$color_header\"><TD><B>$l_sector</B><TD></TD></TD><TD><B>$l_lrs_links</B></TD><TD><B>$l_lrs_ships</B></TD><TD colspan=2><B>$l_port</B></TD><TD><B>$l_planets</B></TD><TD><B>$l_mines</B></TD><TD><B>$l_fighters</B></TD>";
-  if($shipinfo['dev_lssd'] == 'Y')
+  if($playerinfo['dev_lssd'] == 'Y')
   {
   echo "<TD><B>$l_lss</B></TD>";
   }
@@ -71,7 +68,7 @@ if($sector == "*")
     $num_links = $row2[count];
 
     // get number of ships in scanned sector
-    $result2 = $db->Execute("SELECT COUNT(*) AS count FROM $dbtables[ships] WHERE sector_id='$row[link_dest]' AND on_planet='N' and destroyed='N'");
+    $result2 = $db->Execute("SELECT COUNT(*) AS count FROM $dbtables[ships] WHERE sector='$row[link_dest]' AND on_planet='N' and ship_destroyed='N'");
     $row2 = $result2->fields;
     $num_ships = $row2[count];
 
@@ -99,10 +96,10 @@ if($sector == "*")
 
 
     echo "<TR BGCOLOR=\"$color\"><TD><A HREF=move.php?sector=$row[link_dest]>$row[link_dest]</A></TD><TD><A HREF=lrscan.php?sector=$row[link_dest]>Scan</A></TD><TD>$num_links</TD><TD>$num_ships</TD><TD WIDTH=12>$image_string</TD><TD>" . t_port($port_type) . "</TD><TD>$has_planet</TD><TD>$has_mines</TD><TD>$has_fighters</TD>";
-    if($shipinfo['dev_lssd'] == 'Y')
+    if($playerinfo['dev_lssd'] == 'Y')
      {
        
-        $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $shipinfo[ship_id] AND sector_id = $row[link_dest] ORDER BY time DESC LIMIT 1");
+        $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $playerinfo[ship_id] AND sector_id = $row[link_dest] ORDER BY time DESC LIMIT 1");
         if(!$resx)
         {
            echo "<TD>None</TD>";
@@ -110,7 +107,7 @@ if($sector == "*")
         else
         {
            $myrow = $resx->fields;
-           echo "<TD>" . get_player_from_ship($myrow[ship_id]) . "</TD>";
+           echo "<TD>" . get_player($myrow[ship_id]) . "</TD>";
         }
     }
     echo "</TR>";
@@ -161,7 +158,7 @@ else
   $num_links=$i;
 
   // get sectors which can be reached from the player's current sector
-  $result3a = $db->Execute("SELECT link_dest FROM $dbtables[links] WHERE link_start='$shipinfo[sector_id]'");
+  $result3a = $db->Execute("SELECT link_dest FROM $dbtables[links] WHERE link_start='$playerinfo[sector]'");
 
   $i=0;
 
@@ -224,7 +221,7 @@ else
   if($sector != 0)
   {
     // get ships located in the scanned sector
-    $result4 = $db->Execute("SELECT $dbtables[players].player_id,name,character_name,cloak FROM $dbtables[ships] LEFT JOIN $dbtables[players] USING(player_id) WHERE sector_id='$sector' AND on_planet='N'");
+    $result4 = $db->Execute("SELECT ship_id,ship_name,character_name,cloak FROM $dbtables[ships] WHERE sector='$sector' AND on_planet='N'");
     if($result4->EOF)
     {
       echo "$l_none";
@@ -249,7 +246,7 @@ else
         if($roll < $success)
         {
           $num_detected++;
-          echo $row['name'] . "(" . $row['character_name'] . ")<BR>";
+          echo $row['ship_name'] . "(" . $row['character_name'] . ")<BR>";
         }
         $result4->MoveNext();
       }
@@ -308,7 +305,7 @@ else
     }
     else
     {
-      $result5 = $db->Execute("SELECT character_name FROM $dbtables[players] WHERE player_id=$planet[owner]");
+      $result5 = $db->Execute("SELECT character_name FROM $dbtables[ships] WHERE ship_id=$planet[owner]");
       $planet_owner_name = $result5->fields;
       echo " ($planet_owner_name[character_name])";
     }
@@ -332,7 +329,7 @@ else
   {
      echo "<TR BGCOLOR=\"$color_line2\"><TD><B>$l_lss</B></TD></TR>";
      echo "<TR><TD>";
-     $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $shipinfo[ship_id] AND sector_id = $sector ORDER BY time DESC LIMIT 1");
+     $resx = $db->Execute("SELECT * from $dbtables[movement_log] WHERE ship_id <> $playerinfo[ship_id] AND sector_id = $sector ORDER BY time DESC LIMIT 1");
      if(!$resx)
      {
         echo "None";
@@ -340,7 +337,7 @@ else
      else
      {
         $myrow = $resx->fields;
-        echo get_player_from_ship($myrow[player_id]);
+        echo get_player($myrow[ship_id]);
      }
   }
   else
@@ -355,7 +352,7 @@ else
 
 
 //-------------------------------------------------------------------------------------------------
-$rspace_bnthelper_string="<!--rspace:" . $sectorinfo['x'] . ":" . $sectorinfo['y'] . ":" . $sectorinfo['z'] . ":-->";
+$rspace_bnthelper_string="<!--rspace:" . $sectorinfo[distance] . ":" . $sectorinfo[angle1] . ":" . $sectorinfo[angle2] . ":-->";
 echo $link_bnthelper_string;
 echo $port_bnthelper_string;
 echo $planet_bnthelper_string;

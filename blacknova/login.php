@@ -57,36 +57,6 @@ bigtitle();
 	<TD align="left"><INPUT TYPE="PASSWORD" NAME="pass" SIZE="20" MAXLENGTH="20" VALUE="<?php echo "$password" ?>"></TD>
 </TR>
 <TR><TD colspan=2><center>Forgot your password?  Enter it blank and press login.</center></TD></TR></TABLE>
-<SCRIPT LANGUAGE="JavaScript" type="text/javascript">
-// <!--
-var swidth = 0;
-if(self.screen)
-{
-  swidth = screen.width;
-  document.write("<INPUT TYPE=\"HIDDEN\" NAME=\"res\" VALUE=\"" + swidth + "\"></INPUT>");
-}
-if(swidth != 640 && swidth != 800 && swidth != 1024)
-{
-  document.write("<TABLE><TR><TD COLSPAN=2>");
-  document.write("<? echo $l_login_chooseres;?><BR>");
-  document.write("<CENTER><INPUT TYPE=\"RADIO\" NAME=\"res\" VALUE=\"640\">640x480</INPUT>");
-  document.write("<INPUT TYPE=\"RADIO\" NAME=\"res\" CHECKED VALUE=\"800\">800x600</INPUT>");
-  document.write("<INPUT TYPE=\"RADIO\" NAME=\"res\" VALUE=\"1024\">1024x768</INPUT></CENTER>");
-  document.write("</TD></TR></TABLE>");
-}
-// -->
-</SCRIPT>
-<NOSCRIPT>
-<TABLE><TR>
-	<TD COLSPAN="2">
-	<? echo $l_login_chooseres;?><BR>
-	<INPUT TYPE="RADIO" NAME="res" VALUE="640">640x480</INPUT>
-	<INPUT TYPE="RADIO" NAME="res" CHECKED VALUE="800">800x600</INPUT>
-	<INPUT TYPE="RADIO" NAME="res" VALUE="1024">1024x768</INPUT></CENTER>
-	</TD>
-</TR>
-</NOSCRIPT>
-</TABLE>
 <BR>
 <INPUT TYPE="SUBMIT" VALUE="<? echo $l_login_title;?>">
 <BR><BR>

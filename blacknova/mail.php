@@ -1,51 +1,25 @@
 <?
-include("config.php");
-include("languages/$lang");
+	include("config.php");
+  include("languages/$lang");
 
-$title=$l_mail_title;
-include("header.php");
+	$title=$l_mail_title;
+	include("header.php");
 
-connectdb();
+  connectdb();
 
-bigtitle();
+	bigtitle();
 
-$result = $db->Execute ("select email, password from $dbtables[players] where email='$mail'");
+	$result = $db->Execute ("select email, password from $dbtables[ships] where email='$mail'");
 
-if(!$result->EOF) 
-{
-  $playerinfo=$result->fields;
-  $l_mail_message=str_replace("[pass]",$playerinfo[password],$l_mail_message);
+	if(!$result->EOF) {
+	$playerinfo=$result->fields;
+	$l_mail_message=str_replace("[pass]",$playerinfo[password],$l_mail_message);
+	mail("$mail", "$l_mail_topic", "$l_mail_message\r\n\r\nhttp://$SERVER_NAME","From: webmaster@$SERVER_NAME\r\nReply-To: webmaster@$SERVER_NAME\r\nX-Mailer: PHP/" . phpversion());
+	echo "$l_mail_sent $mail.";
+        } else {
+                echo "<b>$l_mail_noplayer</b><br>";
+        }
 
-  $msg = $l_mail_message;
-  $msg .="\r\n\r\nhttp://$SERVER_NAME$gamepath\r\n";
-  $msg = ereg_replace("\r\n.\r\n","\r\n. \r\n",$msg);
-  $hdrs = "From: BlackNova Mailer <$admin_mail>\r\n";
-  $e_response=mail($mail,$l_mail_topic,$msg,$hdrs);
-  if ($Enable_EmailLoggerModule AND $modules['ELM'])
-  {
-    if ($e_response===TRUE)
-    {
-      echo "<font color=\"lime\">Password has been sent to $mail.</font> - \n";
-      AddELog($mail,ReqPassword,'Y',$l_mail_topic,$e_response);
-    }
-    else
-    {
-      echo "<font color=\"red\">Password failed to send to $mail.</font> - \n";
-      AddELog($mail,ReqPassword,'N',$l_mail_topic,$e_response);
-    }
-  }
-  else
-  {
-    echo "<font color=\"lime\">Password has been sent to $mail.</font><br>";
-  }
-  echo "<br>";
-  echo "<A HREF=login.php class=nav>$l_clickme</A> $l_new_login";
-}
-else
-{
-  echo "<b>$l_mail_noplayer</b><br>";
-}
-
-include("footer.php");
+	include("footer.php");
 ?>
 

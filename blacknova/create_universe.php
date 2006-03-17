@@ -1,12 +1,19 @@
-<?
+<?php
+//$Id$
+// This is required by Setup Info, So DO NOT REMOVE
+// create_universe_port_fix,0.2.0,25-02-2004,TheMightyDude
+
 include("config.php");
 include("languages/$lang");
+
 
 /*
 ##############################################################################
 # Create Universe Script                                                     #
 #                                                                            #
 # ChangeLog                                                                  #
+#  Sep 2, 04 - TheMightyDude - Completely Rewritten from scratch             #                                                                #
+#              It should now be more Load balanced for PHP and MySQL         #
 #  Nov 2, 01 - Wandrer - Rewritten mostly from scratch                       #
 ##############################################################################
 */
@@ -17,32 +24,141 @@ include("languages/$lang");
 ##############################################################################
 */
 
+## HTML Table Functions ##
+
+if (!function_exists('PrintFlush'))
+{
+    function PrintFlush($Text="")
+    {
+        print "$Text";
+        flush();
+    }
+}
+
+
+if (!function_exists('TRUEFALSE'))
+{
+    function TRUEFALSE($truefalse,$Stat,$True,$False)
+    {
+        return(($truefalse == $Stat) ? $True : $False);
+    }
+}
+
+if (!function_exists('Table_Header'))
+{
+    function Table_Header($title="")
+    {
+        PrintFlush( "<div align=\"center\">\n");
+        PrintFlush( "  <center>\n");
+        PrintFlush( "  <table border=\"0\" cellpadding=\"1\" width=\"700\" cellspacing=\"1\" bgcolor=\"#000000\">\n");
+        PrintFlush( "    <tr>\n");
+        PrintFlush( "      <th width=\"700\" colspan=\"2\" height=\"20\" bgcolor=\"#9999CC\" align=\"left\"><font face=\"Verdana\" color=\"#000000\" size=\"2\">$title</font></th>\n");
+        PrintFlush( "    </tr>\n");
+    }
+}
+
+if (!function_exists('Table_Row'))
+{
+    function Table_Row($data,$failed="Failed",$passed="Passed")
+    {
+        $err = TRUEFALSE(0,mysql_errno(),"No errors found",mysql_errno() . ": " . mysql_error());
+        PrintFlush( "    <tr title=\"$err\">\n");
+        PrintFlush( "      <td width=\"600\" bgcolor=\"#CCCCFF\"><font face=\"Verdana\" size=\"1\" color=\"#000000\">$data</font></td>\n");
+        if(mysql_errno()!=0)
+            {PrintFlush( "      <td width=\"100\" align=\"center\" bgcolor=\"#C0C0C0\"><font face=\"Verdana\" size=\"1\" color=\"red\">$failed</font></td>\n");}
+        else
+            {PrintFlush( "      <td width=\"100\" align=\"center\" bgcolor=\"#C0C0C0\"><font face=\"Verdana\" size=\"1\" color=\"Blue\">$passed</font></td>\n");}
+        echo "    </tr>\n";
+    }
+}
+
+
+if (!function_exists('Table_2Col'))
+{
+    function Table_2Col($name,$value)
+    {
+        PrintFlush("    <tr>\n");
+        PrintFlush( "      <td width=\"600\" bgcolor=\"#CCCCFF\"><font face=\"Verdana\" size=\"1\" color=\"#000000\">$name</font></td>\n");
+        PrintFlush( "      <td width=\"100\" bgcolor=\"#C0C0C0\"><font face=\"Verdana\" size=\"1\" color=\"#000000\">$value</font></td>\n");
+        PrintFlush( "    </tr>\n");
+    }
+}
+
+if (!function_exists('Table_1Col'))
+{
+    function Table_1Col($data)
+    {
+        PrintFlush( "    <tr>\n");
+        PrintFlush( "      <td width=\"700\" colspan=\"2\" bgcolor=\"#C0C0C0\" align=\"left\"><font face=\"Verdana\" color=\"#000000\" size=\"1\">$data</font></td>\n");
+        PrintFlush( "    </tr>\n");
+    }
+}
+
+if (!function_exists('Table_Spacer'))
+{
+    function Table_Spacer()
+    {
+        PrintFlush( "    <tr>\n");
+        PrintFlush( "      <td width=\"100%\" colspan=\"2\" bgcolor=\"#9999CC\" height=\"1\"></td>\n");
+        PrintFlush( "    </tr>\n");
+    }
+}
+
+if (!function_exists('Table_Footer'))
+{
+    function Table_Footer($footer='')
+    {
+        if(!empty($footer))
+        {
+            PrintFlush( "    <tr>\n");
+            PrintFlush( "      <td width=\"100%\" colspan=\"2\" bgcolor=\"#9999CC\" align=\"left\"><font face=\"Verdana\" color=\"#000000\" size=\"1\">$footer</font></td>\n");
+            PrintFlush( "    </tr>\n");
+        }
+        PrintFlush( "  </table>\n");
+        PrintFlush( "  </center>\n");
+        PrintFlush( "</div><p>\n");
+    }
+}
+
+## ---- ##
+
 ### Description: Create Benchmark Class
 
-class c_Timer {
-   var $t_start = 0;
-   var $t_stop = 0;
-   var $t_elapsed = 0;
+class c_Timer
+{
+    var $t_start = 0;
+    var $t_stop = 0;
+    var $t_elapsed = 0;
 
-   function start() { $this->t_start = microtime(); }
+    function start()
+    {
+        $this->t_start = microtime();
+    }
 
-   function stop()  { $this->t_stop  = microtime(); }
+    function stop()
+    {
+        $this->t_stop = microtime();
+    }
 
-   function elapsed() {
-      $start_u = substr($this->t_start,0,10); $start_s = substr($this->t_start,11,10);
-      $stop_u  = substr($this->t_stop,0,10);  $stop_s  = substr($this->t_stop,11,10);
-      $start_total = doubleval($start_u) + $start_s;
-      $stop_total  = doubleval($stop_u) + $stop_s;
-      $this->t_elapsed = $stop_total - $start_total;
-      return $this->t_elapsed;
-   }
+    function elapsed()
+    {
+        $start_u = substr($this->t_start,0,10);
+        $start_s = substr($this->t_start,11,10);
+        $stop_u  = substr($this->t_stop,0,10);
+        $stop_s  = substr($this->t_stop,11,10);
+        $start_total = doubleval($start_u) + $start_s;
+        $stop_total  = doubleval($stop_u) + $stop_s;
+        $this->t_elapsed = $stop_total - $start_total;
+        return $this->t_elapsed;
+    }
 }
-
-function PrintFlush($Text="") {
-print "$Text";
-flush();
-}
-
+/*
+//function PrintFlush($Text="")
+//{
+//    print "$Text";
+//    flush();
+//}
+ */
 ### End defining functions.
 
 ### Start Timer
@@ -51,7 +167,7 @@ $BenchmarkTimer->start();
 
 ### Set timelimit and randomize timer.
 
-// set_time_limit(0); - This causes an error when running in safe_mode, and its a bad thing. 
+set_time_limit(0);
 srand((double)microtime()*1000000);
 
 ### Include config files and db scheme.
@@ -74,51 +190,106 @@ bigtitle();
 
 ### Manually set step var if info isn't correct.
 
-if($swordfish != $adminpass) {
-$step="0";
+if($adminpass!= $_POST['swordfish'])
+{
+    $step="0";
 }
 
-if($swordfish == $adminpass && $engage == "") {
-$step="1";
+if($engage == "" && $adminpass == $_POST['swordfish'] )
+{
+    $step="1";
 }
 
-if($swordfish == $adminpass && $engage == "1") {
-$step="2";
+if($engage == "1" && $adminpass == $_POST['swordfish'] )
+{
+    $step="2";
 }
 
 ### Main switch statement.
 
 switch ($step) {
-// Stage 1, Getting things started
    case "1":
       echo "<form action=create_universe.php method=post>";
       echo "<table>";
-      echo "<tr><td><b><u>Base/Planet Setup</u></b></td><td></td></tr>";
-      echo "<tr><td>Percent Special</td><td><input type=text name=special size=5 maxlength=5 value=1></td></tr>";
-      echo "<tr><td>Percent Ore</td><td><input type=text name=ore size=5 maxlength=5 value=15></td></tr>";
-      echo "<tr><td>Percent Organics</td><td><input type=text name=organics size=5 maxlength=5 value=10></td></tr>";
-      echo "<tr><td>Percent Goods</td><td><input type=text name=goods size=5 maxlength=5 value=15></td></tr>";
-      echo "<tr><td>Percent Energy</td><td><input type=text name=energy size=5 maxlength=5 value=10></td></tr>";
-      echo "<tr><td>Percent Empty</td><td>Equal to 100 - total of above.</td></tr>";
-      echo "<tr><td>Initial Commodities to Sell<br><td><input type=text name=initscommod size=6 maxlength=6 value=100.00> % of max</td></tr>";
-      echo "<tr><td>Initial Commodities to Buy<br><td><input type=text name=initbcommod size=6 maxlength=6 value=100.00> % of max</td></tr>";
-      echo "<tr><td><b><u>Sector/Link Setup</u></b></td><td></td></tr>";
-      $fedsecs = intval($sector_max / 200);
-      $loops = intval($sector_max / 500);
-      echo "<tr><td>Number of sectors total (<b>overrides config.php</b>)</td><td><input type=text name=sektors size=5 maxlength=5 value=$sector_max></td></tr>";
-      echo "<TR><TD>Number of Federation sectors</TD><TD><INPUT TYPE=TEXT NAME=fedsecs SIZE=6 MAXLENGTH=6 VALUE=$fedsecs></TD></TR>";
-      echo "<tr><td>Number of loops</td><td><input type=text name=loops size=6 maxlength=6 value=$loops></td></tr>";
-      echo "<tr><td>Percent of sectors with unowned planets</td><td><input type=text name=planets size=5 maxlength=5 value=10></td></tr>";
-      echo "<tr><td></td><td><input type=hidden name=engage value=1><input type=hidden name=step value=2><input type=hidden name=swordfish value=$swordfish><input type=submit value=Submit><input type=reset value=Reset></td></tr>";
-      echo "</table>";
-      echo "</form>";
-      break;
 
-// Stage 2, Configuration
+// Domain Check
+if ($bnt_ls)
+    {
+      echo "<tr><td colspan=2 aling=center>";
+      echo "<table border=1 cellspacing=0 cellpadding=2 width=100%>";
+      echo "<tr><td>";
+
+      echo "<FONT COLOR=red><B>Domain Check!</B></FONT><BR>";
+      echo "Make sure you call the <B>create_universe.php</B> from the same URL as:<BR>";
+      echo "- your cronjob calls <B>scheduler.php</B><BR>";
+
+        echo "<BR>This URL will be used on the Public list: ";
+        $gm_url = $SERVER_NAME;
+        if ( ($gm_url == "localhost") || ($gm_url == "127.0.0.1") || ($gm_url == "") )
+        {
+            $gm_url = $gamedomain . $gamepath;
+            $gm_url = (substr($gm_url,0,1)==".")?substr($gm_url,1):$gm_url;
+            echo "<FONT COLOR=red><B>http://$gm_url</B></FONT><BR>";
+            echo "It is better if you run the create_universe.php from the correct URL!<BR>";
+            echo "Or correct the gamedomain and gamepath in your <B>config_local.php</B><BR>";
+            echo "This URL is trasmited if your cronjob calls scheduler.php with localhost!";
+        } else {
+            $gm_url = $gm_url . strrev(strstr(strrev($PHP_SELF),"/"));
+            echo "<FONT COLOR=green><B>http://$gm_url</B></FONT><BR>";
+            echo "YES, if this URL is correct ... continue !<BR>";
+            echo "Remember: if your cronjob calls scheduler.php with localhost than run create_universe with localhost to check the correctnes of the transmitted URL!";
+        }
+
+
+      echo "</td></tr>";
+      echo "</table></td></tr>";
+    }
+echo"</table>";
+// Domain Check End
+
+    Table_Header("Create Universe [Base/Planet Setup]");
+    Table_2Col("Percent Special","<input type=text name=special size=10 maxlength=10 value=1>");
+    Table_2Col("Percent Ore","<input type=text name=ore size=10 maxlength=10 value=15>");
+    Table_2Col("Percent Organics","<input type=text name=organics size=10 maxlength=10 value=10>");
+    Table_2Col("Percent Goods","<input type=text name=goods size=10 maxlength=10 value=15>");
+    Table_2Col("Percent Energy","<input type=text name=energy size=10 maxlength=10 value=10>");
+
+    Table_1Col("Percent Empty: Equal to 100 - total of above.");
+
+    Table_2Col("Initial Commodities to Sell [% of max]","<input type=text name=initscommod size=10 maxlength=10 value=100.00>");
+    Table_2Col("Initial Commodities to Buy [% of max]","<input type=text name=initbcommod size=10 maxlength=10 value=100.00>");
+    Table_Footer(" ");
+
+    Table_Header("Create Universe [Sector/Link Setup] --- Stage 1");
+
+    $fedsecs = intval($sector_max / 200);
+    $loops = intval($sector_max / 500);
+
+    Table_2Col("Number of sectors total (<b>overrides config.php</b>)","<input type=text name=sektors size=10 maxlength=10 value=$sector_max>");
+    Table_2Col("Number of Federation sectors","<input type=text name=fedsecs size=10 maxlength=10 value=$fedsecs>");
+    Table_2Col("Number of loops","<input type=text name=loops size=10 maxlength=10 value=$loops>");
+    Table_2Col("Percent of sectors with unowned planets","<input type=text name=planets size=10 maxlength=10 value=10>");
+    Table_Footer(" ");
+
+    echo "<input type=hidden name=engage value=1>\n";
+    echo "<input type=hidden name=step value=2>\n";
+    echo "<input type=hidden name=swordfish value=$swordfish>\n";
+
+    Table_Header("Submit Settings");
+    Table_1Col("<p align='center'><input type=submit value=Submit><input type=reset value=Reset></p>");
+    Table_Footer(" ");
+
+    echo "</form>";
+      break;
    case "2":
+
+    Table_Header("Create Universe Confirmation [So you would like your $sector_max sector universe to have:] --- Stage2");
+
       $sector_max = round($sektors);
-      if($fedsecs > $sector_max) {
-         echo "The number of Federation sectors must be smaller than the size of the universe!";
+      if($fedsecs > $sector_max)
+      {
+    Table_1Col("<FONT COLOR=RED>The number of Federation sectors must be smaller than the size of the universe!</FONT>");
+    Table_Footer(" ");
          break;
       }
       $spp = round($sector_max*$special/100);
@@ -128,43 +299,47 @@ switch ($step) {
       $enp = round($sector_max*$energy/100);
       $empty = $sector_max-$spp-$oep-$ogp-$gop-$enp;
       $nump = round ($sector_max*$planets/100);
-      echo "So you would like your $sector_max sector universe to have:<BR><BR>";
-      echo "$spp special ports<BR>";
-      echo "$oep ore ports<BR>";
-      echo "$ogp organics ports<BR>";
-      echo "$gop goods ports<BR>";
-      echo "$enp energy ports<BR>";
-      echo "$initscommod% initial commodities to sell<BR>";
-      echo "$initbcommod% initial commodities to buy<BR>";
-      echo "$empty empty sectors<BR>";
-      echo "$fedsecs Federation sectors<BR>";
-      echo "$loops loops<BR>";
-      echo "$nump unowned planets<BR><BR>";
-      echo "If this is correct, click confirm - otherwise go back.<BR>";
-      echo "<form action=create_universe.php method=post>";
-      echo "<input type=hidden name=step value=3>";
-      echo "<input type=hidden name=spp value=$spp>";
-      echo "<input type=hidden name=oep value=$oep>";
-      echo "<input type=hidden name=ogp value=$ogp>";
-      echo "<input type=hidden name=gop value=$gop>";
-      echo "<input type=hidden name=enp value=$enp>";
-      echo "<input type=hidden name=initscommod value=$initscommod>";
-      echo "<input type=hidden name=initbcommod value=$initbcommod>";
-      echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
-      echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=sektors value=$sector_max>";
-      echo "<input type=hidden name=engage value=2>";
-      echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
-      echo "</form>";
-      echo "<BR><BR><FONT COLOR=RED>";
-      echo "WARNING: ALL TABLES WILL BE DROPPED AND THE GAME WILL BE RESET WHEN YOU CLICK 'CONFIRM'!</FONT>";
-      break;
 
-// Stage 3, Out with the old and in with the new
+      echo "<form action=create_universe.php method=post>\n";
+      echo "<input type=hidden name=step value=3>\n";
+      echo "<input type=hidden name=spp value=$spp>\n";
+      echo "<input type=hidden name=oep value=$oep>\n";
+      echo "<input type=hidden name=ogp value=$ogp>\n";
+      echo "<input type=hidden name=gop value=$gop>\n";
+      echo "<input type=hidden name=enp value=$enp>\n";
+      echo "<input type=hidden name=initscommod value=$initscommod>\n";
+      echo "<input type=hidden name=initbcommod value=$initbcommod>\n";
+      echo "<input type=hidden name=nump value=$nump>\n";
+      echo "<input type=hidden name=fedsecs value=$fedsecs>\n";
+      echo "<input type=hidden name=loops value=$loops>\n";
+      echo "<input type=hidden name=engage value=2>\n";
+      echo "<input type=hidden name=swordfish value=$swordfish>\n";
+
+    Table_2Col("Special ports",$spp);
+    Table_2Col("Ore ports",$oep);
+    Table_2Col("Organics ports",$ogp);
+    Table_2Col("Goods ports",$gop);
+    Table_2Col("Energy ports",$enp);
+    Table_Spacer();
+    Table_2Col("Initial commodities to sell",$initscommod."%");
+    Table_2Col("Initial commodities to buy",$initbcommod."%");
+    Table_Spacer();
+    Table_2Col("Empty sectors",$empty);
+    Table_2Col("Federation sectors",$fedsecs);
+    Table_2Col("Loops",$loops);
+    Table_2Col("Unowned planets",$nump);
+    Table_Spacer();
+
+    Table_1Col("<p align='center'><input type=submit value=Confirm></p>");
+    Table_Spacer();
+
+    Table_1Col("<FONT COLOR=RED>WARNING: ALL TABLES WILL BE DROPPED AND THE GAME WILL BE RESET WHEN YOU CLICK 'CONFIRM'!</FONT>");
+    Table_Footer(" ");
+
+      echo "</form>";
+
+      break;
    case "3":
-      $sector_max = round($sektors);
       create_schema();
       echo "<form action=create_universe.php method=post>";
       echo "<input type=hidden name=step value=4>";
@@ -176,30 +351,17 @@ switch ($step) {
       echo "<input type=hidden name=initscommod value=$initscommod>";
       echo "<input type=hidden name=initbcommod value=$initbcommod>";
       echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
+      echo "<input type=hidden name=fedsecs value=$fedsecs>";
       echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=sektors value=$sector_max>";
       echo "<input type=hidden name=engage value=2>";
       echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
+      echo "<p align='center'><input type=submit value=Confirm></p>";
       echo "</form>";
       break;
-
-// Stage 4, Galaxies-R-Us
    case "4":
-      $sector_max = round($sektors);
-// Build the zones table. Only four zones here. The rest are named after players for
-// when they manage to dominate a sector.
-      print("Building zone descriptions ");
-      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('1', 'Unchartered space', 0, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '0' )");
-      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('2', 'Federation space', 0, 'N', 'N', 'N', 'N', 'N', 'N',  'Y', 'N', '$fed_max_hull')");
-      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('3', 'Free-Trade space', 0, 'N', 'N', 'Y', 'N', 'N', 'N','Y', 'N', '0')");
-      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('4', 'War Zone', 0, 'N', 'Y', 'Y', 'Y', 'Y', 'Y','N', 'Y', '0')");
-      $update = $db->Execute("UPDATE $dbtables[universe] SET zone_id='2' WHERE sector_id<$fedsecs");
-      print("");
-      PrintFlush("- completed successfully.<BR>");
 
-// Setup some need values for product amounts
+    Table_Header("Setting up Sectors --- STAGE 4");
+
       $initsore = $ore_limit * $initscommod / 100.0;
       $initsorganics = $organics_limit * $initscommod / 100.0;
       $initsgoods = $goods_limit * $initscommod / 100.0;
@@ -209,249 +371,293 @@ switch ($step) {
       $initbgoods = $goods_limit * $initbcommod / 100.0;
       $initbenergy = $energy_limit * $initbcommod / 100.0;
 
-// Build Sector 0, Sol
-      print("Creating sector 0 - Sol ");
-      $sector = array();
-      $sector[0] = array('sector_id' => '0',
-                         'sector_name' => 'Sol',
-                         'zone_id' => '2',
-                         'port_type' => 'special',
-                         'port_organics' => '0',
-                         'port_ore' => '0',
-                         'port_goods' => '0',
-                         'port_energy' => '0',
-                         'beacon' => 'Sol: Hub of the Universe',
-                         'x' => '0',
-                         'y' => '0',
-                         'z' => '0');
-      print("");
-      PrintFlush("- completed successfully.<BR>");
+      $insert = $db->Execute("INSERT INTO $dbtables[universe] (sector_id, sector_name, zone_id, port_type, port_organics, port_ore, port_goods, port_energy, beacon, angle1, angle2, distance) VALUES ('0', 'Sol', '1', 'special', '0', '0', '0', '0', 'Sol: Hub of the Universe', '0', '0', '0')");
+    Table_Row("Creating Sol sector","Failed","Created");
 
-// Build Sector 1, Alpha Centauri
-      print("Creating sector 1 - Alpha Centauri ");
-      $sector[1] = array('sector_id' => '1',
-                         'sector_name' => 'Alpha Centari',
-                         'zone_id' => '2',
-                         'port_type' => 'energy',
-                         'port_organics' => $initborganics,
-                         'port_ore' => $initbore,
-                         'port_goods' => $initbgoods,
-                         'port_energy' => $initsenergy,
-                         'beacon' => 'Alpha Centari: Gateway to the Galaxy',
-                         'x' => '0',
-                         'y' => '0',
-                         'z' => '1');
-      print("");
-      PrintFlush("- completed successfully.<BR>");
+      $update = $db->Execute("UPDATE $dbtables[universe] SET sector_id=0 WHERE sector_id=1");
+    Table_Row("Converting Sol Sector Id to 0","False","True");
 
-// Here's where the remaining sectors get built
-      print("Creating remaining ".($sector_max-2)." sectors ");
-      $collisions=0;
-      for($i=2; $i<$sector_max; $i++) {
-        $sector[$i]= array('sector_id' => "$i");
-        $collision = FALSE;
-        while(TRUE) {
-          // Lot of shortcuts here. Basically we generate a spherical coordinate and convert it to cartesian.
-          // Why? Cause random spherical coordinates tend to be denser towards the center.
-          // Should really be like a spiral arm galaxy but this'll do for now.
-          $radius = rand(100,$universe_size*100)/100;
+      $insert = $db->Execute("INSERT INTO $dbtables[universe] (sector_id, sector_name, zone_id, port_type, port_organics, port_ore, port_goods, port_energy, beacon, angle1, angle2, distance) VALUES ('1', 'Alpha Centauri', '1', 'energy',  '0', '0', '0', '0', 'Alpha Centauri: Gateway to the Galaxy', '0', '0', '1')");
+    Table_Row("Creating Alpha Centauri in sector 1","Failed","Created");
 
-          $temp_a = deg2rad(rand(0,36000)/100-180);
-          $temp_b = deg2rad(rand(0,18000)/100-90);
-          $temp_c = $radius*sin($temp_b);
+    Table_Spacer();
 
-          $sector[$i]['x'] = round(cos($temp_a)*$temp_c);
-          $sector[$i]['y'] = round(sin($temp_a)*$temp_c);
-          $sector[$i]['z'] = round($radius*cos($temp_b));
+      $remaining = $sector_max-2;
+      ### Cycle through remaining sectors
 
-          // Collision check
-          if(isset($index[$sector[$i]['x'].','.$sector[$i]['y'].','.$sector[$i]['z']])) {
-            $collisions++;
-          } else {
-            break;
-         }
-      }
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
 
-        $index[$sector[$i]['x'].','.$sector[$i]['y'].','.$sector[$i]['z']]=&$sector[$i];
+        $loopsize = 500;
+        $loops = round($sector_max / $loopsize)+1;
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>($sector_max)) $finish=($sector_max);
+        $start=2;
 
-        // The Federation owns the first series of sectors. Logical because they
-        // probably numbered them as they were found.
-        if($i<$fedsecs) {
-          $sector[$i]['zone_id'] = '2'; // Federation space
-            } else {
-          $sector[$i]['zone_id'] = '1'; // Uncharted
-         }
-      }
-      if($collisions) {
-        print("- $collisions sector collisions repaired ");
-            } else {
-        print("- no sector collisions detected ");
+        for($i=1; $i<=$loops; $i++)
+        {
+            $insert="INSERT INTO $dbtables[universe] (sector_id,zone_id,angle1,angle2,distance) VALUES ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $distance=intval(rand(1,$universe_size));
+                $angle1=rand(0,180);
+                $angle2=rand(0,90);
+                $insert.="(NULL,'1',$angle1,$angle2,$distance)";
+                if($j<($finish-1)) $insert .= ", "; else $insert .= ";";
             }
-      PrintFlush("- completed successfully.<BR>");
+            ### Now lets post the information to the mysql database.
+//          $db->Execute("$insert");
+            if ($start<$sector_max && $finish<=$sector_max) $db->Execute($insert);
 
+        Table_Row("Inserting loop $i of $loops Sector Block [".($start)." - ".($finish-1)."] into the Universe.","Failed","Inserted");
 
-// Locations are mapped out so now we need ports.
-      $shuffled = array();
-      print "Preparing for port placement ";
-      // Build up an array of references for conveniece
-      for($i=0; $i<$sector_max; $i++) {
-        $shuffled[$i] = &$sector[$i];
-      }
+            $start = $finish;
+            $finish += $loopsize;
+            if ($finish>($sector_max)) $finish=($sector_max);
+        };
 
-      // Give it a really good shuffling. Once isn't enough, the sectors that get
-      // ports will tend to be packed at the high end. Five seems to give a good,
-      // even distribution.
-      for($i=0;$i<5;$i++){
-        shuffle($shuffled);
-      }
-      print("");
-      PrintFlush("- preperations completed successfully.<br>");
+    Table_Spacer();
 
-      // Now we have two indexes, one normal and one referencing the array randomly.
-      // This makes port placement easier because they can be added sequentually
-      // using the shuffled reference array.
+      $replace = $db->Execute("REPLACE INTO $dbtables[zones] (zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('1', 'Unchartered space', 0, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '0' )");
+    Table_Row("Setting up Zone (Unchartered space)","Failed","Set");
 
-      // Place the special ports
-      print "Placing $spp special ports ";
-      for($i=0, $max = $spp; $i<$max; $i++) {
-        if(isset($shuffled[$i]['port_type'])) {
-          $max++;
-          continue;
-         }
-        $shuffled[$i]['zone_id'] = '3';
-        $shuffled[$i]['port_type'] = 'special';
-      }
-      print("");
-      PrintFlush("- completed successfully.<br>");
+      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('2', 'Federation space', 0, 'N', 'N', 'N', 'N', 'N', 'N',  'Y', 'N', '$fed_max_hull')");
+    Table_Row("Setting up Zone (Federation space)","Failed","Set");
 
-      // Place the ore ports
-      print "Placing $oep ore ports ";
-      // $max += $oep-1; because Sol is an special port and counts towards the total.
-      for($max += $oep-1; $i<$max; $i++) {
-        if(isset($shuffled[$i]['port_type'])) {
-          $max++;
-          continue;
-        }
-        $shuffled[$i]['port_type'] = 'ore';
-        $shuffled[$i]['port_ore'] = $initsore;
-        $shuffled[$i]['port_organics'] = $initborganics;
-        $shuffled[$i]['port_goods'] = $initbgoods;
-        $shuffled[$i]['port_energy'] = $initbenergy;
-      }
-      print("");
-      PrintFlush("- completed successfully.<br>");
+      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('3', 'Free-Trade space', 0, 'N', 'N', 'Y', 'N', 'N', 'N','Y', 'N', '0')");
+    Table_Row("Setting up Zone (Free-Trade space)","Failed","Set");
 
-      // Place the organics ports
-      print "Placing $ogp organics ports ";
-      for($max += $ogp; $i<$max; $i++) {
-        if(isset($shuffled[$i]['port_type'])) {
-          $max++;
-          continue;
-        }
-        $shuffled[$i]['port_type'] = 'organics';
-        $shuffled[$i]['port_ore'] = $initbore;
-        $shuffled[$i]['port_organics'] = $initsorganics;
-        $shuffled[$i]['port_goods'] = $initbgoods;
-        $shuffled[$i]['port_energy'] = $initbenergy;
+      $replace = $db->Execute("REPLACE INTO $dbtables[zones](zone_id, zone_name, owner, corp_zone, allow_beacon, allow_attack, allow_planetattack, allow_warpedit, allow_planet, allow_trade, allow_defenses, max_hull) VALUES ('4', 'War Zone', 0, 'N', 'Y', 'Y', 'Y', 'Y', 'Y','N', 'Y', '0')");
+    Table_Row("Setting up Zone (War Zone)","Failed","Set");
+
+      $update = $db->Execute("UPDATE $dbtables[universe] SET zone_id='2' WHERE sector_id<$fedsecs");
+    Table_Row("Setting up the $fedsecs Federation Sectors","Failed","Set");
+
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Special Ports
+
+# !!!!! DO NOT ALTER LOOPSIZE !!!!!
+# This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($spp / $loopsize);
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$spp) $finish=($spp);
+
+    # Well since we hard coded a special port already, we start from 1.
+        $start=1;
+
+    Table_Spacer();
+
+        $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' order by rand() desc limit $spp");
+        $update="UPDATE $dbtables[universe] SET zone_id='3',port_type='special' WHERE ";
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $update="UPDATE $dbtables[universe] SET zone_id='3',port_type='special' WHERE ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $result = $sql_query->fields;
+                $update .= "(port_type='none' and sector_id=$result[sector_id])";
+                if($j<($finish-1)) $update .= " or "; else $update .= ";";
+                $sql_query->Movenext();
             }
-      print("");
-      PrintFlush("- completed successfully.<br>");
+            $db->Execute($update);
 
-      // Place the goods ports
-      print "Placing $gop goods ports ";
-      for($max += $gop; $i<$max; $i++) {
-        if(isset($shuffled[$i]['port_type'])) {
-          $max++;
-          continue;
+    Table_Row("Loop $i of $loops (Setting up Special Ports) Port [".($start+1)." - $finish]","Failed","Selected");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$spp) $finish=($spp);
         }
-        $shuffled[$i]['port_type'] = 'goods';
-        $shuffled[$i]['port_ore'] = $initbore;
-        $shuffled[$i]['port_organics'] = $initborganics;
-        $shuffled[$i]['port_goods'] = $initsgoods;
-        $shuffled[$i]['port_energy'] = $initbenergy;
-         }
-      print("");
-      PrintFlush("- completed successfully.<br>");
 
-      // Place the energy ports
-      print "Placing $enp energy ports ";
-      // $max += $enp-1; because Alpha Centari is an energy port and counts towards the total.
-      for($max += $enp-1; $i<$max; $i++) {
-        if(isset($shuffled[$i]['port_type'])) {
-          $max++;
-          continue;
-        }
-        $shuffled[$i]['port_type'] = 'energy';
-        $shuffled[$i]['port_ore'] = $initbore;
-        $shuffled[$i]['port_organics'] = $initborganics;
-        $shuffled[$i]['port_goods'] = $initbgoods;
-        $shuffled[$i]['port_energy'] = $initsenergy;
-      }
-      print("");
-      PrintFlush("- completed successfully.<br>");
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Ore Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
 
-      // Now we wrap the whole thing up and stuff it into the database.
-      print "Transferring universe data to database ";
-      for($i=0; $i<$sector_max; $i++){
-        // Every 500 (and zero) we send it off to be processed.
-        if($i%500 == 0) {
-          // Don't want to handle zero here, we have to do something special
-          // with it anyway
-          if($i) {
-            $insert = substr_replace($insert, ";", -2);
-            $results = $db->Execute($insert);
-            $insert=str_replace("\n","<br>",$insert);
-//            print "<br>".$insert."<br>";
-            PrintFlush($db->ErrorMsg());
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($oep / $loopsize);
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$oep) $finish=($oep);
+        $start=0;
+
+    Table_Spacer();
+
+        $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' order by rand() desc limit $oep");
+        $update="UPDATE $dbtables[universe] SET port_type='ore',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $update="UPDATE $dbtables[universe] SET port_type='ore',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $result = $sql_query->fields;
+                $update .= "(port_type='none' and sector_id=$result[sector_id])";
+                if($j<($finish-1)) $update .= " or "; else $update .= ";";
+                $sql_query->Movenext();
             }
-          // Set things up for the next batch
-          $insert = "INSERT INTO $dbtables[universe] (sector_id,sector_name,zone_id,port_type,".
-            "port_organics,port_ore,port_goods,port_energy,beacon,x,y,z) VALUES \n";
+            $db->Execute($update);
+
+    Table_Row("Loop $i of $loops (Setting up Ore Ports) Block [".($start+1)." - $finish]","Failed","Selected");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$oep) $finish=($oep);
         }
 
-        // Add a sector to the current batch
-        $insert .= "('".$sector[$i]['sector_id']."',".
-                   (isset($sector[$i]['sector_name'])?"'".$sector[$i]['sector_name']."'":"NULL").",".
-                   (isset($sector[$i]['zone_id'])?$sector[$i]['zone_id']:"").",".
-                   (isset($sector[$i]['port_type'])?"'".$sector[$i]['port_type']."'":"'none'").",".
-                   (isset($sector[$i]['port_organics'])?(
-                     $sector[$i]['port_organics'].",".
-                     $sector[$i]['port_ore'].",".
-                     $sector[$i]['port_goods'].",".
-                     $sector[$i]['port_energy']):"0,0,0,0").",".
-                   (isset($sector[$i]['beacon'])?"'".$sector[$i]['beacon']."'":"NULL").",".
-                   $sector[$i]['x'].",".
-                   $sector[$i]['y'].",".
-                   $sector[$i]['z']."),\n";
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Organic Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
 
-        // Handle zero specially here
-        if(!$i) {
-          // Stick it in the database all by itself
-          $insert = substr_replace($insert, ";", -2);
-          $results = $db->Execute($insert);
-          PrintFlush($db->ErrorMsg());
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
 
-          // Darn it, MySQL insists on reindexing record zero to record one
-          // so we change it back.
-          $update = "UPDATE $dbtables[universe] SET sector_id=0 WHERE sector_id=1;";
-          $results = $db->Execute($update);
-          PrintFlush($db->ErrorMsg());
+        $loopsize = 500;
+        $loops = round($ogp / $loopsize);
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$ogp) $finish=($ogp);
+        $start=0;
 
-          // Set things up for the next batch
-          $insert = "INSERT INTO $dbtables[universe] (sector_id,sector_name,zone_id,port_type,".
-            "port_organics,port_ore,port_goods,port_energy,beacon,x,y,z) VALUES \n";
-         }
-      }
-      // There will always be at least one sector left over so it's
-      // taken care of here.
-      $insert = substr_replace($insert, ";", -2);
-      $results = $db->Execute($insert);
-      PrintFlush($db->ErrorMsg());
-      print("");
-      PrintFlush("- completed successfully.<br>");
+    Table_Spacer();
 
+        $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' order by rand() desc limit $ogp");
+        $update="UPDATE $dbtables[universe] SET port_type='organics',port_ore=$initsore,port_organics=$initborganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
 
-      // build a form for the next stage
+        for($i=1; $i<=$loops; $i++)
+        {
+            $update="UPDATE $dbtables[universe] SET port_type='organics',port_ore=$initbore,port_organics=$initsorganics,port_goods=$initbgoods,port_energy=$initbenergy WHERE ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $result = $sql_query->fields;
+                $update .= "(port_type='none' and sector_id=$result[sector_id])";
+                if($j<($finish-1)) $update .= " or "; else $update .= ";";
+                $sql_query->Movenext();
+            }
+            $db->Execute($update);
+
+    Table_Row("Loop $i of $loops (Setting up Organics Ports) Block [".($start+1)." - $finish]","Failed","Selected");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$ogp) $finish=($ogp);
+        }
+
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Goods Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($gop / $loopsize);
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$gop) $finish=($gop);
+        $start=0;
+
+    Table_Spacer();
+
+        $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' order by rand() desc limit $gop");
+        $update="UPDATE $dbtables[universe] SET port_type='goods',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $update="UPDATE $dbtables[universe] SET port_type='goods',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $result = $sql_query->fields;
+                $update .= "(port_type='none' and sector_id=$result[sector_id])";
+                if($j<($finish-1)) $update .= " or "; else $update .= ";";
+                $sql_query->Movenext();
+            }
+            $db->Execute($update);
+
+    Table_Row("Loop $i of $loops (Setting up Goods Ports) Block [".($start+1)." - $finish]","Failed","Selected");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$gop) $finish=($gop);
+        }
+
+      ### Finding random sectors where port=none and getting their sector ids in one sql query
+      ### For Energy Ports
+      $initsore = $ore_limit * $initscommod / 100.0;
+      $initsorganics = $organics_limit * $initscommod / 100.0;
+      $initsgoods = $goods_limit * $initscommod / 100.0;
+      $initsenergy = $energy_limit * $initscommod / 100.0;
+      $initbore = $ore_limit * $initbcommod / 100.0;
+      $initborganics = $organics_limit * $initbcommod / 100.0;
+      $initbgoods = $goods_limit * $initbcommod / 100.0;
+      $initbenergy = $energy_limit * $initbcommod / 100.0;
+
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($enp / $loopsize);
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$enp) $finish=($enp);
+
+    # Well since we hard coded an energy port already, we start from 1.
+        $start=1;
+
+    Table_Spacer();
+
+        $sql_query=$db->Execute("select sector_id from $dbtables[universe] WHERE port_type='none' order by rand() desc limit $enp");
+        $update="UPDATE $dbtables[universe] SET port_type='energy',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $update="UPDATE $dbtables[universe] SET port_type='energy',port_ore=$initbore,port_organics=$initborganics,port_goods=$initsgoods,port_energy=$initbenergy WHERE ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $result = $sql_query->fields;
+                $update .= "(port_type='none' and sector_id=$result[sector_id])";
+                if($j<($finish-1)) $update .= " or "; else $update .= ";";
+                $sql_query->Movenext();
+            }
+            $db->Execute($update);
+
+    Table_Row("Loop $i of $loops (Setting up Energy Ports) Block [".($start+1)." - $finish]","Failed","Selected");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$enp) $finish=($enp);
+        }
+
+    Table_Spacer();
+    Table_Footer("Completed successfully");
+
       echo "<form action=create_universe.php method=post>";
       echo "<input type=hidden name=step value=5>";
       echo "<input type=hidden name=spp value=$spp>";
@@ -462,175 +668,150 @@ switch ($step) {
       echo "<input type=hidden name=initscommod value=$initscommod>";
       echo "<input type=hidden name=initbcommod value=$initbcommod>";
       echo "<input type=hidden name=nump value=$nump>";
-      echo "<INPUT TYPE=HIDDEN NAME=fedsecs VALUE=$fedsecs>";
+      echo "<input type=hidden name=fedsecs value=$fedsecs>";
       echo "<input type=hidden name=loops value=$loops>";
-      echo "<input type=hidden name=sektors value=$sector_max>";
       echo "<input type=hidden name=engage value=2>";
       echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
+      echo "<p align='center'><input type=submit value=Confirm></p>";
       echo "</form>";
       break;
-
-// Stage 5, Planets-R-Us
    case "5":
-      $sector_max = round($sektors);
 
-      PrintFlush("Creating $nump planets ");
+        $p_add=0;$p_skip=0;$i=0;
 
-      $results = $db->Execute("SELECT $dbtables[universe].sector_id ".
-                              "FROM $dbtables[universe], $dbtables[zones] ".
-                              "WHERE $dbtables[zones].zone_id=$dbtables[universe].zone_id ".
-                                "AND $dbtables[zones].allow_planet='N'");
-      if(!$results) die("DB error while gathering 'No planet' zones");
+Table_Header("Setting up Universe Sectors --- Stage 5");
 
-      $blocked = array();
-
-      while (!$results->EOF) {
-        $blocked[$results->fields['sector_id']] = 1;
-        $results->MoveNext();
-      }
-
-      for($i=0; $i<$nump; $i++) {
-        $n = rand(0,$sector_max-1);
-        if($blocked[$n]) {
-          $i--;
-          continue;
-        }
-        if(!$i%500) {
-          if($i) {
-            $insert = substr_replace($insert, ";", -2);
-            $BenchmarkTimer->pause();
-            $results = $db->Execute($insert);
-            $BenchmarkTimer->resume();
-            if(!$results) {
-         PrintFlush($db->ErrorMsg());
-              print "<pre>";
-              print_r($insert);
-              PrintFlush("</pre>");
-              die("DB error while placing planets");
+        do
+        {
+            $num = rand(2, ($sector_max-1));
+            $select = $db->Execute("SELECT $dbtables[universe].sector_id FROM $dbtables[universe], $dbtables[zones] WHERE $dbtables[universe].sector_id=$num AND $dbtables[zones].zone_id=$dbtables[universe].zone_id AND $dbtables[zones].allow_planet='N'") or die("DB error");
+            if($select->RecordCount() == 0)
+            {
+                $insert = $db->Execute("INSERT INTO $dbtables[planets] (colonists, owner, corp, prod_ore, prod_organics, prod_goods, prod_energy, prod_fighters, prod_torp, sector_id) VALUES (2,0,0,$default_prod_ore,$default_prod_organics,$default_prod_goods,$default_prod_energy, $default_prod_fighters, $default_prod_torp,$num)");
+                $p_add++;
             }
-          }
-          $insert = "INSERT INTO $dbtables[planets] (colonists,owner,corp,prod_ore,prod_organics,prod_goods,".
-                    "prod_energy,prod_fighters,prod_torp,sector_id) VALUES\n";
         }
-        $insert .= "(2,0,0,$default_prod_ore,$default_prod_organics,$default_prod_goods,".
-                   "$default_prod_energy,$default_prod_fighters,$default_prod_torp,$n),\n";
-      }
-      $insert = substr_replace($insert, ";", -2);
-      $results = $db->Execute($insert);
-      print "";
-      if(!$results) {
-         PrintFlush($db->ErrorMsg());
-        print "<pre>";
-        print_r($insert);
-        PrintFlush("</pre>");
-        die("DB error while placing planets");
-      }
-      PrintFlush("- completed.<br>");
+        while ($p_add < $nump);
 
-      $links=array();
-      $hi=-1;
-      for($l = 0; $l<$loops; $l++) {
-        $lo=$hi+1;
-        $hi = round(($sector_max)*($l+1)/$loops)-1;
-        echo"Creating warp loop ".($l+1)." of $loops (from sector $lo to $hi)\n";
-        for($i=$lo; $i<$hi; $i++) {
-          $links[$i][] = $i+1;
-          $links[$i+1][] = $i;
+Table_Row("Selecting $nump sectors to place unowned planets in.","Failed","Selected");
+
+Table_Spacer();
+
+## Adds Sector Size *2 amount of links to the links table ##
+
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($sector_max / $loopsize)+1;
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$sector_max) $finish=($sector_max);
+        $start=0;
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $update = "INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $k = $j + 1;
+                $update .= "($j,$k), ($k,$j)";
+                if($j<($finish-1)) $update .= ", "; else $update .= ";";
+            }
+            if ($start<$sector_max && $finish<=$sector_max) $db->Execute($update);
+
+            Table_Row("Creating loop $i of $loops sectors (from sector ".($start)." to ".($finish-1).") - loop $i","Failed","Created");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$sector_max) $finish=$sector_max;
         }
-        $links[$lo][]=$hi;
-        $links[$hi][]=$lo;
-        echo "- completed.<br>";
-      }
 
+//      PrintFlush("<BR>Sector Links created successfully.<BR>");
 
-      PrintFlush("Randomly generating $sector_max two-way warps ");
-      $dups = 0;
-      for($i=0; $i<$sector_max; $i++) {
-        do {
-          do {
-            $x = rand(1,$sector_max-1);
-            $y = rand(1,$sector_max-1);
-          } while ($x==$y);
+####################
 
-          // Only need to check in one direction because only
-          // two-way links exist so far.
-          $duplicate=FALSE;
-          if(isset($links[$x])) {
-            foreach($links[$x] as $v) {
-              if($y == $v) {
-                $duplicate=TRUE;
-                $dups++;
-                break;
-              }
+Table_Spacer();
+
+//      PrintFlush("<BR>Randomly One-way Linking $i Sectors (out of $sector_max sectors)<br>\n");
+
+## Adds Sector Size amount of links to the links table ##
+
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($sector_max / $loopsize)+1;
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$sector_max) $finish=($sector_max);
+        $start=0;
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $link1=intval(rand(1,$sector_max-1));
+                $link2=intval(rand(1,$sector_max-1));
+                $insert.="($link1,$link2)";
+                if($j<($finish-1)) $insert .= ", "; else $insert .= ";";
             }
-          }
-        } while ($duplicate);
-        $links[$x][]=$y;
-        $links[$y][]=$x;
-      }
-      PrintFlush("- $dups duplicates prevented - completed.<br>");
+#           PrintFlush("<font color='#FFFF00'>Creating loop $i of $loopsize Random One-way Links (from sector ".($start)." to ".($finish-1).") - loop $i</font><br>\n");
 
+            if ($start<$sector_max && $finish<=$sector_max) $db->Execute($insert);
 
-      PrintFlush("Randomly generating $sector_max one-way warps ");
-      $dups = 0;
-      for($i=0; $i<$sector_max; $i++) {
-        do {
-          do {
-            $x = rand(1,$sector_max-1);
-            $y = rand(1,$sector_max-1);
-          } while ($x==$y);
+//          $db->Execute($insert);
 
-          $duplicate=FALSE;
-          if(isset($links[$x])) {
-            foreach($links[$x] as $v) {
-              if($y == $v) {
-                $duplicate=TRUE;
-                $dups++;
-                break;
-              }
-            }
-          }
-        } while ($duplicate);
-        $links[$x][]=$y;
-      }
-      PrintFlush("- $dups duplicates prevented - completed.<br>");
+Table_Row("Creating loop $i of $loops Random One-way Links (from sector ".($start)." to ".($finish-1).") - loop $i","Failed","Created");
 
-
-      PrintFlush("Dumping warps to database ");
-      $i = 0;
-      foreach($links as $k1 => $v1) {
-        foreach($links[$k1] as $k2 => $v2) {
-          if(!($i%5000)) {
-            if($i) {
-              $insert = substr_replace($insert, ";", -2);
-              $results = $db->Execute($insert);
-              if(!$results) {
-                PrintFlush($db->ErrorMsg());
-                print "<pre>\n";
-                print_r($insert);
-                PrintFlush("</pre>");
-                die("DB error while placing one-way warps");
-              }
-            }
-            $insert = "INSERT INTO $dbtables[links] (link_start,link_dest) VALUES\n";
-          }
-          $insert .= "($k1,$v2),\n";
-          $i++;
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$sector_max) $finish=($sector_max);
         }
-      }
-      $insert = substr_replace($insert, ";", -2);
-      $results = $db->Execute($insert);
-      print "";
-      if(!$results) {
-        PrintFlush($db->ErrorMsg());
-        print "<pre>\n";
-        print_r($insert);
-        PrintFlush("</pre>");
-        die("DB error while inserting links");
-      }
-      PrintFlush("- completed.<br>");
 
+//      PrintFlush("Completed successfully.<BR>\n");
+
+######################
+
+Table_Spacer();
+
+//      PrintFlush("<BR>Randomly Two-way Linking Sectors<br>\n");
+
+## Adds Sector Size*2 amount of links to the links table ##
+
+    # !!!!! DO NOT ALTER LOOPSIZE !!!!!
+    # This should be balanced 50%/50% PHP/MySQL load :)
+
+        $loopsize = 500;
+        $loops = round($sector_max / $loopsize)+1;
+        if($loops <= 0) $loops = 1;
+        $finish = $loopsize;
+        if ($finish>$sector_max) $finish=($sector_max);
+        $start=0;
+
+        for($i=1; $i<=$loops; $i++)
+        {
+            $insert="INSERT INTO $dbtables[links] (link_start,link_dest) VALUES ";
+            for($j=$start; $j<$finish; $j++)
+            {
+                $link1=intval(rand(1,$sector_max-1));
+                $link2=intval(rand(1,$sector_max-1));
+                $insert.="($link1,$link2), ($link2,$link1)";
+                if($j<($finish-1)) $insert .= ", "; else $insert .= ";";
+            }
+//          PrintFlush("<font color='#FFFF00'>Creating loop $i of $loopsize Random Two-way Links (from sector ".($start)." to ".($finish-1).") - loop $i</font><br>\n");
+//          $db->Execute($insert);
+            if ($start<$sector_max && $finish<=$sector_max) $db->Execute($insert);
+
+Table_Row("Creating loop $i of $loops Random Two-way Links (from sector ".($start)." to ".($finish-1).") - loop $i","Failed","Created");
+
+            $start=$finish;
+            $finish += $loopsize;
+            if ($finish>$sector_max) $finish=($sector_max);
+        }
+
+Table_Footer("Completed successfully.");
 
       echo "<form action=create_universe.php method=post>";
       echo "<input type=hidden name=step value=7>";
@@ -646,351 +827,81 @@ switch ($step) {
       echo "<input type=hidden name=loops value=$loops>";
       echo "<input type=hidden name=engage value=2>";
       echo "<input type=hidden name=swordfish value=$swordfish>";
-      echo "<input type=submit value=Confirm>";
+      echo "<p align='center'><input type=submit value=Confirm></p>";
       echo "</form>";
       break;
-
-// Stage 7, Let there be life
    case "7":
-      echo "<B><BR>Configuring game scheduler<BR></B>";
 
-      echo "<BR>Update ticks will occur every $sched_ticks minutes<BR>";
- 
-      echo "Turns will occur every $sched_turns minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_turns, 0, 'sched_turns.php', '',unix_timestamp(now()))");
+    Table_Header("Configuring game scheduler --- Stage 7");
 
-      echo "Defenses will be checked every $sched_turns minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_turns, 0, 'sched_defenses.php', '',unix_timestamp(now()))");
+    Table_2Col("Update ticks will occur every $sched_ticks minutes.","<p align='center'><font face=\"Verdana\" size=\"1\" color=\"Blue\">Already Set</font></p>");
 
-      echo "Furangees will play every $sched_turns minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_turns, 0, 'sched_furangee.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_turns, 0, 'sched_turns.php', NULL,unix_timestamp(now()))");
+    Table_Row("Turns will occur every $sched_turns minutes","Failed","Inserted");
 
-      echo "Interests on IGB accounts will be accumulated every $sched_IGB minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_IGB, 0, 'sched_IGB.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_turns, 0, 'sched_defenses.php', NULL,unix_timestamp(now()))");
+    Table_Row("Defenses will be checked every $sched_turns minutes","Failed","Inserted");
 
-      echo "News will be generated every $sched_news minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_news, 0, 'sched_news.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_turns, 0, 'sched_xenobe.php', NULL,unix_timestamp(now()))");
+    Table_Row("Xenobes will play every $sched_turns minutes.","Failed","Inserted");
 
-      echo "Planets will generate production every $sched_planets minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_planets, 0, 'sched_planets.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_igb, 0, 'sched_igb.php', NULL,unix_timestamp(now()))");
+    Table_Row("Interests on IGB accounts will be accumulated every $sched_IGB minutes.","Failed","Inserted");
 
-      echo "Ports will regenerate every $sched_ports minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_ports, 0, 'sched_ports.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_news, 0, 'sched_news.php', NULL,unix_timestamp(now()))");
+    Table_Row("News will be generated every $sched_news minutes.","Failed","Inserted");
 
-      echo "Ships will be towed from fed sectors every $sched_turns minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_turns, 0, 'sched_tow.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_planets, 0, 'sched_planets.php', NULL,unix_timestamp(now()))");
+    Table_Row("Planets will generate production every $sched_planets minutes.","Failed","Inserted");
 
-      echo "Rankings will be generated every $sched_ranking minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_ranking, 0, 'sched_ranking.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_ports, 0, 'sched_ports.php', NULL,unix_timestamp(now()))");
+    Table_Row("Ports will regenerate every $sched_ports minutes.","Failed","Inserted");
 
-      echo "Sector Defences will degrade every $sched_degrade minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_degrade, 0, 'sched_degrade.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_turns, 0, 'sched_tow.php', NULL,unix_timestamp(now()))");
+    Table_Row("Ships will be towed from fed sectors every $sched_turns minutes.","Failed","Inserted");
 
-      echo "The planetary apocalypse will occur every $sched_apocalypse minutes.<br>";
-      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES('', 'Y', 0, $sched_apocalypse, 0, 'sched_apocalypse.php', '',unix_timestamp(now()))");
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_ranking, 0, 'sched_ranking.php', NULL,unix_timestamp(now()))");
+    Table_Row("Rankings will be generated every $sched_ranking minutes.","Failed","Inserted");
 
-      echo "<B><BR>Configuring ship types<p></B>";
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_degrade, 0, 'sched_degrade.php', NULL,unix_timestamp(now()))");
+    Table_Row("Sector Defences will degrade every $sched_degrade minutes.","Failed","Inserted");
 
-      echo "Inserting ship type: Spacewagon..."; //starting ship
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "1, " .                //type_id
-                   "'Spacewagon', " .     //name
-                   "'spacewagon.gif', " . //image
-                   "'The Spacewagon ship class is often referred to as \"flying trash can\". The surname certainly befits its appearance, as well as functionnality. This is the standard ship issued by the Federation to new colonists departing Earth. This class of ship possesses minimum cargo and weapons space. In addition, its short range engines are not suited for long space travel. Hopping along warp lanes is the only viable way of moving through the universe using this ship.'," .
-                   "'Y', " .              //buyable
-                   "10000, " .            //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "10, " .               //turnstobuild
-                   "0, " .                //minhull
-                   "5, " .                //maxhull
-                   "0, " .                //minengines
-                   "4, " .                //maxengines
-                   "0, " .                //minpower
-                   "1, " .                //maxpower (that's MISTER power for you) ;)
-                   "0, " .                //mincomputer
-                   "1, " .                //maxcomputer
-                   "0, " .                //minsensors
-                   "2, " .                //maxsensors
-                   "0, " .                //minbeams
-                   "0, " .                //maxbeams
-                   "0, " .                //mintorp_launchers
-                   "0, " .                //maxtorp_launchers
-                   "0, " .                //minshields
-                   "0, " .                //maxshields
-                   "0, " .                //minarmour
-                   "2, " .                //maxarmour
-                   "0, " .                //mincloak
-                   "4  " .                //maxcloak
-                   ")");
-      echo "done<br>";
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, $sched_apocalypse, 0, 'sched_apocalypse.php', NULL,unix_timestamp(now()))");
+    Table_Row("The planetary apocalypse will occur every $sched_apocalypse minutes.","Failed","Inserted");
 
-      echo "Inserting ship type: Stinger..."; //base attack ship
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "2, " .                //type_id
-                   "'Stinger', " .        //name
-                   "'stinger.gif', " .    //image
-                   "'This small attack ship is a favorite among space pirates. Its small, lightweigth hull allows for tight turning and a good cruise speed. Since most of the ship\'s limited interior space is used by the weapons system and engines, this ship can carry minimal cargo. Ideal for small slave raids.'," .
-                   "'Y', " .              //buyable
-                   "80000, " .            //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "50, " .               //turnstobuild
-                   "3, " .                //minhull
-                   "4, " .                //maxhull
-                   "5, " .                //minengines
-                   "8, " .                //maxengines
-                   "4, " .                //minpower
-                   "8, " .                //maxpower 
-                   "4, " .                //mincomputer
-                   "8, " .                //maxcomputer
-                   "4, " .                //minsensors
-                   "8, " .                //maxsensors
-                   "4, " .                //minbeams
-                   "8, " .                //maxbeams
-                   "0, " .                //mintorp_launchers
-                   "1, " .                //maxtorp_launchers
-                   "0, " .                //minshields
-                   "2, " .                //maxshields
-                   "0, " .                //minarmour
-                   "2, " .                //maxarmour
-                   "4, " .                //mincloak
-                   "4  " .                //maxcloak
-                   ")");
-      echo "done<br>";
+      $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', '60', '60', '0', 'bnt_ls_client.php', NULL, unix_timestamp(now()))");
+        Table_Row("The Master server list update will occur every 60 minutes.","Failed","Inserted");
 
-      echo "Inserting ship type: Marauder..."; //base trade ship
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "3, " .                //type_id
-                   "'Marauder', " .       //name
-                   "'marauder.gif', " .   //image
-                   "'The marauder is the standard Feredation supply ship. It offers reasonable cargo space and can be decently outfitted with enough armour to resist attacks from pirates. It is well-liked by Federation officials, who turn its spacious cargo bay into luxuriant living quarters.'," .
-                   "'Y', " .              //buyable
-                   "120000, " .           //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "60, " .               //turnstobuild
-                   "5, " .                //minhull
-                   "12, " .               //maxhull
-                   "2, " .                //minengines
-                   "6, " .                //maxengines
-                   "1, " .                //minpower
-                   "4, " .                //maxpower 
-                   "1, " .                //mincomputer
-                   "4, " .                //maxcomputer
-                   "2, " .                //minsensors
-                   "4, " .                //maxsensors
-                   "1, " .                //minbeams
-                   "4, " .                //maxbeams
-                   "1, " .                //mintorp_launchers
-                   "4, " .                //maxtorp_launchers
-                   "2, " .                //minshields
-                   "6, " .                //maxshields
-                   "2, " .                //minarmour
-                   "6, " .                //maxarmour
-                   "2, " .                //mincloak
-                   "4  " .                //maxcloak
-                   ")");
-      echo "done<br>";
+      if ($bnt_ls===true)
+      {
+            $db->Execute("INSERT INTO $dbtables[scheduler] VALUES(NULL, 'Y', 0, 60, 0, 'bnt_ls_client.php', NULL,unix_timestamp(now()))");
+        Table_Row("The public list updater will occur every 60 minutes","Failed","Inserted");
 
-      echo "Inserting ship type: Katana..."; //base balanced
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "4, " .                //type_id
-                   "'Katana', " .         //name
-                   "'katana.gif', " .     //image
-                   "'The Katana is the latest technological wonder of the Federation. This ship combines most of the advantages of the Stinger class with those of the Marauder. Nice all-rounder, this ship is perfect for the successful space adventurer. It is also the strongest ship made available to the general population by the Federation.'," .
-                   "'Y', " .              //buyable
-                   "180000, " .           //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "55, " .               //turnstobuild
-                   "3, " .                //minhull
-                   "8, " .                //maxhull
-                   "3, " .                //minengines
-                   "6, " .                //maxengines
-                   "2, " .                //minpower
-                   "6, " .                //maxpower 
-                   "2, " .                //mincomputer
-                   "6, " .                //maxcomputer
-                   "1, " .                //minsensors
-                   "6, " .                //maxsensors
-                   "1, " .                //minbeams
-                   "6, " .                //maxbeams
-                   "1, " .                //mintorp_launchers
-                   "6, " .                //maxtorp_launchers
-                   "1, " .                //minshields
-                   "6, " .                //maxshields
-                   "3, " .                //minarmour
-                   "6, " .                //maxarmour
-                   "3, " .                //mincloak
-                   "5  " .                //maxcloak
-                   ")");
-      echo "done<br>";
+            $creating=1;
+            include("bnt_ls_client.php");
+      }
+    Table_Footer("Completed successfully");
 
-/************************************************************
-Added some more playable ships for testing
-************************************************************/
+    Table_Header("Inserting Admins Acount Information");
 
-      echo "Inserting ship type: Destroyer..."; 
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "5, " .                //type_id
-                   "'Destroyer', " .         //name
-                   "'destroyer.gif', " .     //image
-                   "'The Destroyer is an older model Federation military ship.  The Federation has upgraded and made this model available to the public.  This is the same ship the Federation has used for years to do escorts and short range patrols.  They have stripped down this ship, but a few upgrades could bring it back to its former glory.'," .
-                   "'Y', " .              //buyable
-                   "8500000, " .           //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "120, " .               //turnstobuild
-                   "1, " .                //minhull
-                   "5, " .                //maxhull
-                   "3, " .                //minengines
-                   "10, " .                //maxengines
-                   "3, " .                //minpower
-                   "12, " .                //maxpower 
-                   "1, " .                //mincomputer
-                   "14, " .                //maxcomputer
-                   "1, " .                //minsensors
-                   "6, " .                //maxsensors
-                   "1, " .                //minbeams
-                   "12, " .                //maxbeams
-                   "1, " .                //mintorp_launchers
-                   "12, " .                //maxtorp_launchers
-                   "1, " .                //minshields
-                   "12, " .                //maxshields
-                   "3, " .                //minarmour
-                   "14, " .                //maxarmour
-                   "0, " .                //mincloak
-                   "2 " .                //maxcloak
-                   ")");
-      echo "done<br>";
-
-      echo "Inserting ship type: Cruiser..."; 
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "6, " .                //type_id
-                   "'Cruiser', " .         //name
-                   "'cruiser.gif', " .     //image
-                   "'The Cruiser is an older model Federation military ship.  The Federation has upgraded and made this model available to the public.  This is the same ship the Federation has used for years to  mediate border disputes and do long  range patrols.  They have stripped down this ship, but a few upgrades could bring it back to its former glory.'," .
-                   "'Y', " .              //buyable
-                   "92500000, " .           //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "325, " .               //turnstobuild
-                   "1, " .                //minhull
-                   "6, " .                //maxhull
-                   "4, " .                //minengines
-                   "16, " .                //maxengines
-                   "4, " .                //minpower
-                   "18, " .                //maxpower 
-                   "4, " .                //mincomputer
-                   "20, " .                //maxcomputer
-                   "2, " .                //minsensors
-                   "6, " .                //maxsensors
-                   "3, " .                //minbeams
-                   "18, " .                //maxbeams
-                   "1, " .                //mintorp_launchers
-                   "18, " .                //maxtorp_launchers
-                   "1, " .                //minshields
-                   "18, " .                //maxshields
-                   "3, " .                //minarmour
-                   "20, " .                //maxarmour
-                   "0, " .                //mincloak
-                   "2 " .                //maxcloak
-                   ")");
-      echo "done<br>";
-
-      echo "Inserting ship type: Transport..."; 
-      $db->Execute("INSERT INTO $dbtables[ship_types] VALUES (" .
-                   "7, " .                //type_id
-                   "'Transport', " .         //name
-                   "'transport.gif', " .     //image
-                   "'This is the standard Federation transport ship.  It can carry quite alot of cargo but does not have much in the way of weapons.  A good cloaking system is its only real defense.  This is a good ship to have if you have allies to help defend you.  But if your on your own.... better keep an eye out for pirates.'," .
-                   "'Y', " .              //buyable
-                   "17500000, " .           //cost_credits
-                   "0, " .                //cost_ore
-                   "0, " .                //cost_goods
-                   "0, " .                //cost_energy
-                   "0, " .                //cost_organics
-                   "135, " .               //turnstobuild
-                   "6, " .                //minhull
-                   "25, " .                //maxhull
-                   "4, " .                //minengines
-                   "18, " .                //maxengines
-                   "2, " .                //minpower
-                   "6, " .                //maxpower 
-                   "0, " .                //mincomputer
-                   "2, " .                //maxcomputer
-                   "0, " .                //minsensors
-                   "5, " .                //maxsensors
-                   "0, " .                //minbeams
-                   "2, " .                //maxbeams
-                   "0, " .                //mintorp_launchers
-                   "2, " .                //maxtorp_launchers
-                   "0, " .                //minshields
-                   "2, " .                //maxshields
-                   "1, " .                //minarmour
-                   "6, " .                //maxarmour
-                   "4, " .                //mincloak
-                   "18 " .                //maxcloak
-                   ")");
-      echo "done<br>";
-
-/************************************************************
-Ships from here will have to be built, and the stats above
-will probably all be changed when testing, so no use defining
-these right now.
-************************************************************/
-
-      echo "Inserting ship type: Wraith...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Raven...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Triton...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Phoenix...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Sequoia...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Valkyrie...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Nemesis...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Golem...";
-      echo "done<br>";
-
-      echo "Inserting ship type: Behemoth...";
-      echo "done<br>";
+      $update = $db->Execute("INSERT INTO $dbtables[ibank_accounts] (ship_id,balance,loan) VALUES (1,0,0)");
+    Table_Row("Inserting Admins ibank Information","Failed","Inserted");
 
       $password = substr($admin_mail, 0, $maxlen_password);
-      echo "<BR><BR><center><B>Your admin login is: <BR>";
-      echo "<BR>Username: $admin_mail";
-      echo "<BR>Password: $password<BR></B></center>";
-      newplayer($admin_mail, "WebMaster", $password, "WebMaster\'s Ship");
-  
-      PrintFlush("<BR><BR><center><BR><B>Congratulations! Universe created successfully.<BR>");
-      PrintFlush("Click <A HREF=login.php>here</A> to return to the login screen.</B></center>");
-      break;
+      $stamp=date("Y-m-d H:i:s");
+      $db->Execute("INSERT INTO $dbtables[ships] VALUES(NULL,'WebMaster','N','WebMaster','$password','$admin_mail',0,0,0,0,0,0,0,0,0,0,$start_armor,0,$start_credits,0,0,0,0,$start_energy,0,$start_fighters,0,$start_turns,'N',0,1,0,0,'N','N',0,0, '$stamp',0,0,0,0,'N','1.1.1.1',0,0,0,0,'Y','N','N','Y',' ','$default_lang', 'Y','N')");
 
-// Pre-stage, What's the password?
+    Table_1Col("Admins login Information:<br>Username: '$admin_mail'<br>Password: '$password'");
+    Table_Row("Inserting Admins Ship Information","Failed","Inserted");
+
+      $db->Execute("INSERT INTO $dbtables[zones] VALUES(NULL,'WebMaster\'s Territory', 1, 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0)");
+    Table_Row("Inserting Admins Zone Information","Failed","Inserted");
+    Table_Footer("Completed successfully.");
+
+      PrintFlush("<BR><BR><center><BR><B>Congratulations! Universe created successfully.</B><BR>");
+      PrintFlush("<B>Click <A HREF=login.php>here</A> to return to the login screen.</B></center>");
+
+      break;
    default:
       echo "<form action=create_universe.php method=post>";
       echo "Password: <input type=password name=swordfish size=20 maxlength=20>&nbsp;&nbsp;";
@@ -1000,9 +911,11 @@ these right now.
       break;
 }
 
-// Done, And it took God seven days
 $StopTime=$BenchmarkTimer->stop();
 $Elapsed=$BenchmarkTimer->elapsed();
 PrintFlush("<br>Elapsed Time - $Elapsed");
 include("footer.php");
+
+
+
 ?>

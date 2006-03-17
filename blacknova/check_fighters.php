@@ -23,7 +23,7 @@
           $row = $result3->fields;
           $defences[$i] = $row;
            $total_sector_fighters += $defences[$i]['quantity'];
-          if($defences[$i][player_id] != $playerinfo[player_id])
+          if($defences[$i][ship_id] != $playerinfo[ship_id])
           {
              $owner = false;
           }
@@ -36,95 +36,53 @@
     {
         // find out if the fighter owner and player are on the same team
         // All sector defences must be owned by members of the same team
-        $fm_owner = $defences[0]['player_id'];
-        $result2 = $db->Execute("SELECT * from $dbtables[players] where player_id=$fm_owner");
+        $fm_owner = $defences[0]['ship_id'];
+	$result2 = $db->Execute("SELECT * from $dbtables[ships] where ship_id=$fm_owner");
         $fighters_owner = $result2->fields;
         if ($fighters_owner[team] != $playerinfo[team] || $playerinfo[team]==0)
         {
            switch($response) {
-
               case "fight":
-                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $playerinfo[ship_id]");
                  bigtitle();
                  include("sector_fighters.php");
 
                  break;
-
               case "retreat":
-                 if( $calledfrom == 'rsmove.php' )
-                 {
-                   $shipspeed = mypw($level_factor, $shipinfo['engines']);
-                   $turns_back = 2 * round($distance / $shipspeed);
-                   if($turns_back == 0 )
-                   {
-                     $turns_back = 2;
-                   }
-
-                 }
-                 else
-                   $turns_back = 2; //Warp
-
-                 //TODO: what happens if we don't have enough turns for BOTH moves (forth+back)?? Destroy the ship? Order him to wait turns?
-
-                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $playerinfo[ship_id]");
                  $stamp = date("Y-m-d H-i-s");
-                 $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-$turns_back, turns_used=turns_used+$turns_back WHERE player_id=$playerinfo[player_id]");
-                 $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
+                 $db->Execute("UPDATE $dbtables[ships] SET last_login='$stamp',turns=turns-2, turns_used=turns_used+2, sector=$playerinfo[sector] where ship_id=$playerinfo[ship_id]");
                  bigtitle();
                  echo "$l_chf_youretreatback<BR>";
                  TEXT_GOTOMAIN();
                  die();
                  break;
-
               case "pay":
-                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $playerinfo[ship_id]");
                  $fighterstoll = $total_sector_fighters * $fighter_price * 0.6;
                  if($playerinfo[credits] < $fighterstoll)
                  {
-                   if( $calledfrom == 'rsmove.php' )
-                   {
-                     $shipspeed = mypw($level_factor, $shipinfo['engines']);
-                     $turns_back = 2 * round($distance / $shipspeed);
-                     if($turns_back == 0 )
-                     {
-                       $turns_back = 2;
-                     }
-                   }
-                   else
-                     $turns_back = 2; //Warp
-
-                   echo "$l_chf_notenoughcreditstoll<BR>";
-                   echo "$l_chf_movefailed<BR>";
-                   // undo the move
-
-                   //TODO: what happens if we don't have enough turns for BOTH moves (forth+back)?? Destroy the ship? Order him to wait turns?
-
-                   $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
-                   $stamp = date("Y-m-d H-i-s");
-                   $db->Execute("UPDATE $dbtables[players] SET last_login='$stamp',turns=turns-$turns_back, turns_used=turns_used+$turns_back WHERE player_id=$playerinfo[player_id]");
-                   $db->Execute("UPDATE $dbtables[ships] SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
-
-                   $ok=0;
+                    echo "$l_chf_notenoughcreditstoll<BR>";
+                    echo "$l_chf_movefailed<BR>";
+                    // undo the move
+                    $db->Execute("UPDATE $dbtables[ships] SET sector=$playerinfo[sector] where ship_id=$playerinfo[ship_id]");
+                    $ok=0;
                  }
                  else
                  {
                     $tollstring = NUMBER($fighterstoll);
                     $l_chf_youpaidsometoll = str_replace("[chf_tollstring]", $tollstring, $l_chf_youpaidsometoll);
                     echo "$l_chf_youpaidsometoll<BR>";
-                    $db->Execute("UPDATE $dbtables[players] SET credits=credits-$fighterstoll WHERE player_id=$playerinfo[player_id]");
+                    $db->Execute("UPDATE $dbtables[ships] SET credits=credits-$fighterstoll where ship_id=$playerinfo[ship_id]");
                     distribute_toll($sector,$fighterstoll,$total_sector_fighters);
-                    playerlog($playerinfo[player_id], LOG_TOLL_PAID, "$tollstring|$sector");
+                    playerlog($playerinfo[ship_id], LOG_TOLL_PAID, "$tollstring|$sector");
                     $ok=1;
                  }
                  break;
-
               case "sneak":
                  {
-                    $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $shipinfo[ship_id]");
-                    $res=$db->Execute("SELECT GREATEST(sensors) AS sensors FROM $dbtables[ships] WHERE player_id=$fm_owner");
-                    $sensors = $res->fields[sensors];
-
-                    $success = SCAN_SUCCESS($sensors, $shipinfo[cloak]);
+                    $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = ' ' WHERE ship_id = $playerinfo[ship_id]");
+                    $success = SCAN_SUCCESS($fighters_owner[sensors], $playerinfo[cloak]);
                     if($success < 5)
                     {
                        $success = 5;
@@ -149,17 +107,14 @@
                     }
                  }
                  break;
-
               default:
                  $interface_string = $calledfrom . '?sector='.$sector.'&destination='.$destination.'&engage='.$engage;
-                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = '$interface_string' WHERE ship_id = $shipinfo[ship_id]");
-
+                 $db->Execute("UPDATE $dbtables[ships] SET cleared_defences = '$interface_string' WHERE ship_id = $playerinfo[ship_id]");
                  $fighterstoll = $total_sector_fighters * $fighter_price * 0.6;
                  bigtitle();
                  echo "<FORM ACTION=$calledfrom METHOD=POST>";
                  $l_chf_therearetotalfightersindest = str_replace("[chf_total_sector_fighters]", $total_sector_fighters, $l_chf_therearetotalfightersindest);
                  echo "$l_chf_therearetotalfightersindest<br>";
-
                  if($defences[0]['fm_setting'] == "toll")
                  {
                     $l_chf_creditsdemanded = str_replace("[chf_number_fighterstoll]", NUMBER($fighterstoll), $l_chf_creditsdemanded);
@@ -170,7 +125,6 @@
                  {
                     echo "$l_chf_inputpay";
                  }
-
                  echo "$l_chf_inputfight";
                  echo "$l_chf_inputcloak<BR>";
                  echo "<INPUT TYPE=SUBMIT VALUE=$l_chf_go><BR><BR>";
