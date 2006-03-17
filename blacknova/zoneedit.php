@@ -20,7 +20,7 @@ $curzone = $res->fields;
 
 if($curzone[corp_zone] == 'N')
 {
-  $result = $db->Execute("SELECT player_id FROM $dbtables[players] WHERE email='$username'");
+  $result = $db->Execute("SELECT ship_id FROM $dbtables[ships] WHERE email='$username'");
   $ownerinfo = $result->fields;
 }
 else
@@ -29,7 +29,7 @@ else
   $ownerinfo = $result->fields;
 }
 
-if(($curzone[corp_zone] == 'N' && $curzone[owner] != $ownerinfo[player_id]) || ($curzone[corp_zone] == 'Y' && $curzone[owner] != $ownerinfo[id] && $row[owner] == $ownerinfo[creator]))
+if(($curzone[corp_zone] == 'N' && $curzone[owner] != $ownerinfo[ship_id]) || ($curzone[corp_zone] == 'Y' && $curzone[owner] != $ownerinfo[id] && $row[owner] == $ownerinfo[creator]))
   zoneedit_die($l_ze_notowner);
 
 if($command == change)
