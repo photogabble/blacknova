@@ -25,14 +25,10 @@
     die();
   }
 
-	$result = $db->Execute ("SELECT * FROM $dbtables[players] WHERE email='$username'");
+	$result = $db->Execute ("SELECT * FROM $dbtables[ships] WHERE email='$username'");
 	$playerinfo=$result->fields;
-
-  $res = $db->Execute("SELECT * FROM $dbtables[ships] WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
-  $shipinfo = $res->fields;
-
-	$current_sector = $shipinfo['sector_id'];
-	$computer_tech  = $shipinfo['computer'];
+	$current_sector = $playerinfo['sector'];
+	$computer_tech  = $playerinfo['computer'];
 
 	$result2 = $db->Execute ("SELECT * FROM $dbtables[universe] WHERE sector_id='$current_sector'");
 	$sectorinfo=$result2->fields;
