@@ -16,7 +16,7 @@
 //
 // File: main.php
 
-include_once ("./global_includes.php"); 
+ include_once ("./global_includes.php"); 
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
