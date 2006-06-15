@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="links">
+        <field name="link_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="link_start" type="I4"><notnull/><default value="0"></default></field>
+        <field name="link_dest" type="I4"><notnull/><default value="0"></default></field>
+        <index name="link_start">
+            <col>link_start</col>
+        </index>
+        <index name="link_dest">
+            <col>link_dest</col>
+        </index>
+    </table>
+</schema>

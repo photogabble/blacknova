@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="email_log">
+        <field name="log_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="sp_name" type="C" size="20"><notnull/><default value=""/></field>
+        <field name="sp_IP" type="C" size="16"><notnull/><default value=""/></field>
+        <field name="dp_name" type="X"><notnull/><default value=""/></field>
+        <field name="e_subject" type="C" size="80"><default value=""/></field>
+        <field name="e_status" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="e_type" type="I1"><notnull/><default value="0"/></field>
+        <field name="e_stamp" type="C" size="20"><notnull/><default value=""/></field>
+        <field name="e_response" type="C" size="255"><notnull/><default value=""/></field>
+        <index name="owner_id">
+            <col>owner_id</col>
+        </index>
+    </table>
+</schema>

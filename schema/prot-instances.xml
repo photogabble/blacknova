@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="instances">
+        <field name="instance_id" type="I1">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="gamenumber" type="I1"><notnull/><default value="0"/></field>
+    </table>
+</schema>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="sector_defense">
+        <field name="defense_id" type="I4">
+            <key/>
+            <autoincrement/>
+            <notnull/>
+        </field>
+        <field name="player_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="sector_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="defense_type" type="C" size="1"><notnull/><default value="M"/></field>
+        <field name="firing_order" type="I1"><notnull/><default value="0"/></field>
+        <field name="damage_type" type="C" size="1"><notnull/><default value="A"/></field>
+        <field name="damage_amount" type="F"><notnull/><default value="0"/></field>
+        <field name="quantity" type="F"><notnull/><default value="0"/></field>
+        <field name="fm_setting" type="C" size="6"><notnull/><default value="toll"/></field>
+        <index name="sector_defense_sector_id">
+            <col>sector_id</col>
+        </index>
+        <index name="sector_defense_player_id">
+            <col>player_id</col>
+        </index>
+        <index name="sector_defense_defense_type">
+            <col>defense_type</col>
+        </index>
+    </table>
+</schema>

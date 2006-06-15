@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="shoutbox">
+        <field name="sb_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="player_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="sb_date" type="T"><notnull/></field>
+        <field name="sb_text" type="X"><notnull/></field>
+        <field name="sb_channel" type="C" size="50"><notnull/></field>
+    </table>
+</schema>

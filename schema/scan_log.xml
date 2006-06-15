@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="scan_log">
+        <field name="event_id" type="I4">
+            <autoincrement/>
+            <key/>
+        </field>
+        <field name="player_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="sector_id" type="I4"><notnull/><default value="0"/></field>
+        <index name="scan_log_player_id">
+            <col>player_id</col>
+        </index>
+        <index name="scan_log_sector_id">
+            <col>sector_id</col>
+        </index>
+    </table>
+</schema>

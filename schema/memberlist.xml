@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="memberlist">
+        <field name="member_id" type="I2">
+            <autoincrement/>
+            <key/>
+        </field>
+        <field name="email" type="X"><notnull/></field>
+    </table>
+</schema>

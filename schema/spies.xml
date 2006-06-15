@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="spies">
+        <field name="spy_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="active" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="owner_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="planet_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="ship_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="job_id" type="I1"><notnull/><default value="0"/></field>
+        <field name="spy_percent" type="N" size="8.6"><notnull/><default value="0.0"/></field>
+        <field name="move_type" type="C" size="10"><default value="toship"/><notnull/></field>
+        <field name="try_sabot" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="try_inter" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="try_birth" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="try_steal" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="try_torps" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="try_fits" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="try_capture" type="C" size="1"><default value="Y"/><notnull/></field>
+        <index name="spies_planet_id">
+            <col>planet_id</col>
+        </index>
+        <index name="spies_owner_id">
+            <col>owner_id</col>
+        </index>
+        <index name="spies_active">
+            <col>active</col>
+        </index>
+        <index name="spies_ship_id">
+            <col>ship_id</col>
+        </index>
+        <index name="spies_job_id">
+            <col>job_id</col>
+        </index>
+    </table>
+</schema>

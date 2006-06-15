@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="detect">
+        <field name="det_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="owner_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="det_type" type="I1"><notnull/><default value="0"/></field>
+        <field name="det_time" type="T"></field>
+        <field name="detect_data" type="C" size="255"></field>
+        <field name="unique_value" type="I4"></field>
+        <index name="owner_id">
+            <col>owner_id</col>
+        </index>
+    </table>
+</schema>

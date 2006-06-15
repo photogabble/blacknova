@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="news">
+        <field name="news_id" type="I2">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="news_data" type="C" size="20"><notnull/></field>
+        <field name="user_id" type="I2"></field>
+        <field name="date" type="T"></field>
+        <field name="news_type" type="C" size="12"></field>
+        <index name="news_id">
+            <col>news_id</col>
+        </index>
+        <index name="date">
+            <col>date</col>
+        </index>
+    </table>
+</schema>

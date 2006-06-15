@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="scheduler">
+        <field name="sched_id" type="I1">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="timer" type="I4"><notnull/><default value="0"/></field>
+        <field name="sched_file" type="C" size="22"><notnull/></field>
+        <field name="extra_info" type="C" size="50"><notnull/></field>
+        <field name="last_run" type="T"></field>
+        <index name="last_run">
+            <col>last_run</col>
+        </index>
+    </table>
+</schema>

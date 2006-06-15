@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="alerts">
+        <desc>Stores the admin-set news items for the fader</desc>
+        <field name="an_id" type="I1">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="an_text" type="C" size="70"></field>
+    </table>
+</schema>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="ship_types">
+        <field name="type_id" type="I1">
+            <key/>
+            <notnull/>
+            <default value="1"/>
+        </field>
+        <field name="name" type="C" size="12"></field>
+        <field name="image" type="C" size="16"></field>
+        <field name="description" type="C" size="255"></field>
+        <field name="buyable" type="C" size="1"><default value="Y"/><notnull/></field>
+        <field name="cost_ore" type="F"><default value="0"/><notnull/></field>
+        <field name="cost_goods" type="F"><default value="0"/><notnull/></field>
+        <field name="cost_energy" type="F"><default value="0"/><notnull/></field>
+        <field name="cost_organics" type="F"><default value="0"/><notnull/></field>
+        <field name="turnstobuild" type="I4"><default value="0"/><notnull/></field>
+        <field name="minhull" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxhull" type="I1"><default value="0"/><notnull/></field>
+        <field name="minengines" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxengines" type="I1"><default value="0"/><notnull/></field>
+        <field name="minpengines" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxpengines" type="I1"><default value="0"/><notnull/></field>
+        <field name="minpower" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxpower" type="I1"><default value="0"/><notnull/></field>
+        <field name="mincomputer" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxcomputer" type="I1"><default value="0"/><notnull/></field>
+        <field name="minsensors" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxsensors" type="I1"><default value="0"/><notnull/></field>
+        <field name="minbeams" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxbeams" type="I1"><default value="0"/><notnull/></field>
+        <field name="mintorp_launchers" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxtorp_launchers" type="I1"><default value="0"/><notnull/></field>
+        <field name="minshields" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxshields" type="I1"><default value="0"/><notnull/></field>
+        <field name="minarmor" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxarmor" type="I1"><default value="0"/><notnull/></field>
+        <field name="mincloak" type="I1"><default value="0"/><notnull/></field>
+        <field name="maxcloak" type="I1"><default value="0"/><notnull/></field>
+    </table>
+</schema>

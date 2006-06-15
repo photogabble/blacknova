@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="players">
+        <field name="player_id" type="I2">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="currentship" type="I4"><notnull/><default value="0"/></field>
+        <field name="character_name" type="C" size="20"><notnull/></field>
+        <field name="sessionid" type="C" size="32"></field>
+        <field name="credits" type="F"><default value="0"/><notnull/></field>
+        <field name="turns" type="I4"><notnull/><default value="0"/></field>
+        <field name="turns_used" type="I4"><notnull/><default value="0"/></field>
+        <field name="last_login" type="T"></field>
+        <field name="last_update" type="T"></field>
+        <field name="times_dead" type="I2"><notnull/><default value="0"/></field>
+        <field name="rating" type="I2"><notnull/><default value="0"/></field>
+        <field name="score" type="F"><notnull/><default value="0"/></field>
+        <field name="team" type="I2"><notnull/><default value="0"/></field>
+        <field name="team_invite" type="I2"><notnull/><default value="0"/></field>
+        <field name="ip_address" type="C" size="16"><notnull/><default value="0"/></field>
+        <field name="acl" type="I2"><notnull/></field>
+        <field name="account_id" type="I4"><notnull/></field>
+        <!-- This will become the preferences table -->
+        <field name="trade_colonists" type="C" size="1"><notnull/><default value="Y"/></field>
+        <field name="trade_fighters" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="trade_torps" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="trade_energy" type="C" size="1"><notnull/><default value="Y"/></field>
+        <field name="template" type="C" size="20"><notnull/></field>
+        <field name="sb_footer" type="C" size="1"><notnull/><default value="Y"/></field>
+        <field name="sb_lines" type="I1"><notnull/><default value="5"/></field>
+        <field name="sb_backwards" type="C" size="1"><notnull/><default value="Y"/></field>
+        <field name="gender" type="C" size="1"><notnull/><default value="M"/></field>
+        <field name="use_gravatar" type="C" size="1"><notnull/><default value="N"/></field>
+        <index name="players_currentship">
+            <col>currentship</col>
+        </index>
+        <index name="players_email">
+            <col>email</col>
+        </index>
+        <index name="players_team">
+            <col>team</col>
+        </index>
+        <index name="players_password">
+            <col>password</col>
+        </index>
+        <index name="players_score">
+            <col>score</col>
+        </index>
+        <index name="players_last_login">
+            <col>last_login</col>
+        </index>
+    </table>
+</schema>

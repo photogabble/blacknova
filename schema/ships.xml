@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="ships">
+        <field name="ship_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="player_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="class" type="I1"><notnull/><default value="1"/></field>
+        <field name="name" type="C" size="50"></field>
+        <field name="destroyed" type="C" size="1"><default value="N"/><notnull/></field>
+        <field name="hull" type="I1"><notnull/><default value="0"/></field>
+        <field name="engines" type="I1"><notnull/><default value="0"/></field>
+        <field name="pengines" type="I1"><notnull/><default value="0"/></field>
+        <field name="power" type="I1"><notnull/><default value="0"/></field>
+        <field name="computer" type="I1"><notnull/><default value="0"/></field>
+        <field name="sensors" type="I1"><notnull/><default value="0"/></field>
+        <field name="beams" type="I1"><notnull/><default value="0"/></field>
+        <field name="torp_launchers" type="I1"><notnull/><default value="0"/></field>
+        <field name="torps" type="F" ><notnull/><default value="0"/></field>
+        <field name="shields" type="I1"><notnull/><default value="0"/></field>
+        <field name="armor" type="I1"><notnull/><default value="0"/></field>
+        <field name="armor_pts" type="F" ><notnull/><default value="0"/></field>
+        <field name="cloak" type="I1"><notnull/><default value="0"/></field>
+        <field name="sector_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="ore" type="F" ><notnull/><default value="0"/></field>
+        <field name="organics" type="F" ><notnull/><default value="0"/></field>
+        <field name="goods" type="F" ><notnull/><default value="0"/></field>
+        <field name="energy" type="F" ><notnull/><default value="0"/></field>
+        <field name="colonists" type="F" ><notnull/><default value="0"/></field>
+        <field name="fighters" type="F" ><notnull/><default value="0"/></field>
+        <field name="on_planet" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="dev_warpedit" type="I4"><notnull/><default value="0"/></field>
+        <field name="dev_genesis" type="I4"><notnull/><default value="0"/></field>
+        <field name="dev_emerwarp" type="I2"><notnull/><default value="0"/></field>
+        <field name="dev_escapepod" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="dev_fuelscoop" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="dev_minedeflector" type="F" ><notnull/><default value="0"/></field>
+        <field name="planet_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="cleared_defenses" type="C" size="99"><notnull/><default value=""/></field>
+        <index name="ships_sector_id">
+            <col>sector_id</col>
+        </index>
+        <index name="ships_player_id">
+            <col>player_id</col>
+        </index>
+        <index name="ships_planet_id">
+            <col>planet_id</col>
+        </index>
+        <index name="ships_destroyed">
+            <col>destroyed</col>
+        </index>
+    </table>
+</schema>

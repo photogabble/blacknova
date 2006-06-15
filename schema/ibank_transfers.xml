@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="ibank_transfers">
+        <field name="transfer_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="amount" type="F"><notnull/><default value="0"/></field>
+        <field name="source_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="dest_id" type="I2"><notnull/><default value="0"/></field>
+        <field name="transfer_time" type="T"></field>
+        <index name="source_id">
+            <col>source_id</col>
+        </index>
+        <index name="dest_id">
+            <col>dest_id</col>
+        </index>
+        <index name="transfer_time">
+            <col>time</col>
+        </index>
+    </table>
+</schema>

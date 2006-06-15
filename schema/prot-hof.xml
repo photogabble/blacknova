@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="hof">
+        <field name="hof_id" type="I2">
+            <autoincrement/>
+            <key/>
+        </field>
+        <field name="character_name" type="C" size="20"><notnull/></field>
+        <field name="email" type="X"><notnull/></field>
+        <field name="turns_used" type="I4"><notnull/><default value="0"/></field>
+        <field name="times_dead" type="I2"><notnull/><default value="0"/></field>
+        <field name="score" type="F"><notnull/><default value="0"/></field>
+        <field name="rating" type="I2"><notnull/><default value="0"/></field>
+        <index name="hof_character_name">
+            <col>character_name</col>
+        </index>
+    </table>
+</schema>

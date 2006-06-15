@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="teams">
+        <field name="team_id" type="I2">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="creator" type="I2"><notnull/><default value="0"/></field>
+        <field name="team_name" type="C" size="20"></field>
+        <field name="description" type="C" size="20"></field>
+        <field name="number_of_members" type="I1"><notnull/><default value="0"/></field>
+        <index name="creator">
+            <col>creator</col>
+        </index>
+    </table>
+</schema>

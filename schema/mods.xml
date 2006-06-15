@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="mods">
+        <field name="mod_id" type="I2">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="name" type="C" size="30"></field>
+        <field name="file" type="C" size="30"></field>
+        <field name="author" type="C" size="30"></field>
+        <field name="version" type="F"></field>
+        <field name="description" type="C" size="255"></field>
+    </table>
+</schema>

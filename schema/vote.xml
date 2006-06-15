@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="vote">
+        <field name="vote_id" type="I1">
+            <autoincrement/>
+            <key/>
+        </field>
+        <field name="vote_text" type="X"></field>
+    </table>
+</schema>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="ip_log">
+        <field name="log_id" type="I8">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="player_id" type="I2"></field>
+        <field name="ip_address" type="C" size="16"><notnull/><default value=""/></field>
+        <field name="proxy_address" type="C" size="16"><default value=""/></field>
+        <field name="client_ip_address" type="C" size="16"><default value=""/></field>
+        <field name="referer" type="C" size="255"><default value=""/></field>
+        <field name="getvars" type="C" size="255"><default value=""/></field>
+        <field name="postvars" type="C" size="255"><default value=""/></field>
+        <field name="sector_id" type="I4"></field>
+        <field name="url" type="C" size="255"><default value=""/></field>
+        <field name="time" type="T"></field>
+        <field name="os" type="C" size="30"></field>
+        <field name="platform" type="C" size="30"></field>
+        <field name="useragent" type="C" size="120"></field>
+        <field name="browser" type="C" size="30"></field>
+        <field name="bversion" type="C" size="20"></field>
+        <field name="refreshes" type="I2"></field>
+        <index name="player_id">
+            <col>player_id</col>
+        </index>
+    </table>
+</schema>

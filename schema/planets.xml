@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="planets">
+        <field name="planet_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="sector_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="name" type="C" size="15"><default value=""/></field>
+        <field name="type" type="I1"><default value="0"/></field>
+        <field name="planet_eff" type="I1"><notnull/><default value="0"/></field>
+        <field name="planet_morale" type="I1"><notnull/><default value="0"/></field>
+        <field name="organics" type="I8"><notnull/><default value="0"/></field>
+        <field name="ore" type="I8"><notnull/><default value="0"/></field>
+        <field name="goods" type="I8"><notnull/><default value="0"/></field>
+        <field name="energy" type="I8"><notnull/><default value="0"/></field>
+        <field name="colonists" type="I8"><notnull/><default value="0"/></field>
+        <field name="credits" type="F"><notnull/><default value="0"/></field>
+        <field name="computer" type="I1"><notnull/><default value="0"/></field>
+        <field name="sensors" type="I1"><notnull/><default value="0"/></field>
+        <field name="beams" type="I1"><notnull/><default value="0"/></field>
+        <field name="torp_launchers" type="I1"><notnull/><default value="0"/></field>
+        <field name="torps" type="I8"><notnull/><default value="0"/></field>
+        <field name="shields" type="I1"><notnull/><default value="0"/></field>
+        <field name="armor" type="I1"><notnull/><default value="0"/></field>
+        <field name="armor_pts" type="I8"><notnull/><default value="0"/></field>
+        <field name="cloak" type="I1"><notnull/><default value="0"/></field>
+        <field name="fighters" type="I8"><notnull/><default value="0"/></field>
+        <field name="owner" type="I2"><notnull/><default value="0"/></field>
+        <field name="team" type="I2"><default value="0"/></field>
+        <field name="base" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="sells" type="C" size="1"><notnull/><default value="N"/></field>
+        <field name="defeated" type="C" size="1"><notnull/><default value="0"/></field>
+        <field name="prod_eff" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_morale" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_organics" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_ore" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_goods" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_energy" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_fighters" type="I1"><notnull/><default value="0"/></field>
+        <field name="prod_torp" type="I1"><notnull/><default value="0"/></field>
+        <index name="planets_owner">
+            <col>owner</col>
+        </index>
+        <index name="planets_team">
+            <col>team</col>
+        </index>
+        <index name="planets_base">
+            <col>base</col>
+        </index>
+        <index name="planets_sector_id">
+            <col>sector_id</col>
+        </index>
+        <index name="planets_defeated">
+            <col>defeated</col>
+        </index>
+    </table>
+</schema>

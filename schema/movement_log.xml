@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="movement_log">
+        <field name="event_id" type="I8">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="ship_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="player_id" type="I2"><default value="0"/></field>
+        <field name="source" type="I4"><default value="0"/></field>
+        <field name="destination" type="I4"><default value="0"/></field>
+        <field name="ship_class" type="I1"><default value="0"/></field>
+        <field name="error_factor" type="I1"><default value="0"/></field>
+        <field name="time" type="T"></field>
+        <index name="movement_log_ship_id">
+            <col>ship_id</col>
+        </index>
+        <index name="movement_log_source">
+            <col>source</col>
+        </index>
+        <index name="movement_log_player_id">
+            <col>player_id</col>
+        </index>
+    </table>
+</schema>

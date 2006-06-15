@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+    <table name="universe">
+        <field name="sector_id" type="I4">
+            <key/>
+            <autoincrement/>
+        </field>
+        <field name="sector_name" type="C" size="30"></field>
+        <field name="zone_id" type="I4"><notnull/><default value="0"/></field>
+        <field name="star_size" type="I1"><notnull/><default value="0"/></field>
+        <field name="x" type="I2"><notnull/><default value="0"/></field>
+        <field name="y" type="I2"><notnull/><default value="0"/></field>
+        <field name="z" type="I2"><notnull/><default value="0"/></field>
+        <field name="beacon" type="C" size="50"></field>
+        <index name="universe_sector_id">
+            <col>sector_id</col>
+        </index>
+        <index name="universe_zone_id">
+            <col>zone_id</col>
+        </index>
+    </table>
+</schema>
