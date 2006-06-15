@@ -1,0 +1,33 @@
+body{background-color:inherit;color:silver;font-family:Verdana, Arial, sans-serif;font-size:0.6em}
+body.index{background-color:#000;color:#fff;margin:0;padding:0;width:100%}
+div.left,.footleft{text-align:left}
+td.indexpage{background-color:inherit;color:#fff;font-size:12px}
+td.indexpage2{background-color:#58595B;color:#fff;font-size:12px;width:50%}
+td.infobox{padding:3px;width:50%}
+p.center,div.center,.footcenter{text-align:center}
+table.center{margin:0 auto}
+div.thinline{border-bottom:1px solid #333}
+div.index{background-color:#58595B;color:inherit;padding:2px}
+.foot div{float:left;width:33%}
+.footer{background-color:inherit;color:silver;font-size:0.6em}
+.rightalign,.footright{text-align:right}
+input.colorinputbox{background-color:#FFFFA0;color:#000}
+select.indexdropdown{background:#000;border-style:none;color:#ff3;font-weight:700}
+td.halfwidth{width:50%}
+.mainheader{font-size:1.2em}
+.textcolor{background-color:inherit;color:#ccc}
+.smalltext{font-size:0.6em;margin:0}
+.bgcolor2{background-color:#500050;color:inherit}
+.maxheight{height:100%}
+.mostwidth{width:80%}
+a.dis{font-weight:700}
+img{border:0}
+ul.nostyle{border:none;height:1%;list-style:none;margin:0;padding:1px}
+.headlines,a.mnu,span.mnu{background-color:inherit;color:#fff;font-weight:700;text-decoration:none}
+.headlines:hover,a.dis:hover{background-color:inherit;color:#36f;text-decoration:none}
+.faderlines,.headingcolor{background-color:#400040;color:inherit}
+.nav,a{text-decoration:none}
+.nav:link,.nav:visited{background-color:inherit;color:#0f0}
+.nav:hover,a:active,.php_code_link{background-color:inherit;color:red}
+a:link,a:visited{background-color:inherit;color:#ff3}
+.indexyellow{background-color:#ff3;color:#000;font-size:12px;font-weight:700}

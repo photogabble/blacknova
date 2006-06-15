@@ -1,0 +1,69 @@
+body        { font-family:Verdana, Arial, sans-serif; font-size:0.6em; color:#c0c0c0; background-color:inherit }
+body.index  { background-color:#000; width:100%; color:#c0c0c0; margin:0; padding:0 }
+div.left,.footleft { text-align:left }
+td.indexpage  { font-size:12px; color:#fff; background-color:inherit }
+td.indexpage2 { font-size:12px; color:#fff; background-color:#58595B; width:50% }
+td.infobox { padding:3px; width: 50%; }
+p.center,div.center,.footcenter { text-align:center }
+table.center { margin:0 auto }
+div.thinline { border-bottom:0.5px solid #333; }
+div.index   { background-color:#58595B; color:inherit; padding:2px }
+.foot div { width:33%; float:left }
+.footer     { background-color:inherit; color:silver; font-size:0.6em }
+.rightalign,.footright { text-align:right }
+
+input.colorinputbox { background-color: #FFFFA0; color: inherit; }
+select.indexdropdown { color:#ff3; font-weight:bold; background:black; border-style:none; }
+td.halfwidth { width:50% }
+
+.mainheader { font-size:1.2em }
+.portcosts1 { background-color:#300030; color:inherit; border-style:none }
+.portcosts2 { background-color:#400040; color:inherit; border-style:none }
+.textcolor  { background-color:inherit; color:#ccc }
+.highlightcolor { background-color:inherit; color:#fff }
+.smalltext  { font-size:0.6em; margin:0 }
+.bgcolor2   { background-color:#500050; color:inherit }
+.maxheight  { height:100% }
+.mostwidth  { width:80% }
+.rsform     { font-family:Verdana, Arial, sans-serif; font-size:1.5em; font-weight:700; color:#fff; background-color:#500050 }
+a.dis       { font-weight:700 }
+a.mnu:visited { background-color:inherit; text-decoration:none; color:#ff0; font-weight:700 }
+a.mnu:hover { background-color:inherit; text-decoration:none; color:#36f; font-weight:700 }
+p.forms     { text-align:center; margin:0 }
+div.mnu     { width:100%; background-color:#500050; text-align:left; text-decoration:none; color:#fff; font-size:0.7em; font-weight:700; border-style:solid; border-width:1px }
+div.mnu2    { text-align:center; border-style:solid; border-width:1px }
+form.rsform { font-family:Verdana, Arial, sans-serif; font-size:0.6em; font-weight:700; color:#fff; background-color:#500050; margin:0; padding:2px }
+img         { border:0 }
+table.dis   { text-decoration:none; color:silver; font-weight:700; background-color:inherit }
+td.indexwidth { width:300px }
+td.maxwidth { width:100% }
+ul.nostyle { list-style:none; border:none; height:1%; margin:0; padding:1px; font-size:1.5em }
+ul.cargostyle { list-style:none; border:none; margin:0; padding:1px; font-size:1.5em }
+.num { background-color:inherit; color:gray; border-right:1px solid gray; padding-right:4px; text-align:right }
+.phpline    { padding-left:7px }
+.php_background { background-color:#E2EDFD; color:inherit }
+.php_comment { background-color:inherit; color:#ff8000 }
+.php_default { background-color:inherit; color:#00b }
+.php_html    { background-color:inherit; color:#000 }
+.php_keyword { background-color:inherit; color:#070 }
+.php_string  { background-color:inherit; color:#d00 }
+code { white-space:nowrap; line-height:normal }
+table#showsource { color:#000; background-color:#f5f5f5; border:1px dashed purple; margin:0; padding:0.5em }
+.tab-container   { background-color:#fff; border:1px solid #6D99B6; color:#000 }
+.tabs li   { display:inline }
+.tab-panes { margin:3px }
+.tabs a:hover,.tabs a.tab-active { background-color:#fff; background-image:url(""); background-repeat:repeat-x; border-right:1px; color:inherit; border-style:solid }
+.tabs a { height:27px; font:14px Verdana, Arial, sans-serif !important; font-weight:700 !important; position:relative; color:#2B4353; text-decoration:none; border-left:1px solid #fff; border-right:1px solid #6D99B6; background-color:inherit; margin:0 -4px 0 0; padding:6px 10px 10px }
+label.setedit,input.setedit { display:block; width:150px; float:left; margin-bottom:10px }
+label.setedit { text-align:left; width:150px; padding-right:20px }
+br.setedit    { clear:left }
+.newplayheader { font-weight:700; font-size:1.5em; color:#eee; background-color:#400040 }
+.newplayermain { font-family:Verdana, Arial, sans-serif; font-size:1.2em; color:silver; background-color:inherit }
+.faderlines,.headingcolor { background-color:#400040; color:inherit }
+.headlines,a.mnu,span.mnu { background-color:inherit; text-decoration:none; font-weight:700; color:#fff }
+.headlines:hover,a.dis:hover { background-color:inherit; text-decoration:none; color:#36f }
+.nav,a { text-decoration:none }
+.nav:link,.nav:visited { background-color:inherit; color:#0f0 }
+.nav:hover,a:active,.php_code_link { background-color:inherit; color:red }
+a:link,a:visited { background-color:inherit; color:#ff3 }
+table.bigger { font-size:1.5em;}
