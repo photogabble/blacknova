@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------------------------------
+echo "Postgres is ";
+$throwaway = $db->ServerInfo();
+$pg_version = $throwaway['version'];
+echo $pg_version;
+if ($pg_version > '7.2.3')   
+{
+    echo "Yes";                 
+}        
+else
+{    
+    echo "No";
+}  
+
+---------------------------------------------------------------------------------------------------
+postgres - get unix_timestamp : SELECT EXTRACT(EPOCH FROM ngs_news.date) as date from ngs_news;

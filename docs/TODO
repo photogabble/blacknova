@@ -1,0 +1,114 @@
+This file is used to keep track of things that need doing, and all feature requests.
+
+TODO: get rid of admin_mail_name, have it use admin player (id=1) name.
+FREQ: vote S1-062804-2 - Ship Defense Visibility - Fighters and Torps on board - must be shown on the main screen of the game.
+FREQ: vote S1-062804-3 - Base Button - A "base" button will be added to the game that allows creation of bases by automatically transferring commodities and credits from a player's ship in the same sector to the planet. This transfer/build function will charge the player the same number of turns as if it had been done manually.
+FREQ: vote S1-062804-4 - Planetary "Select All" Button - A button or checkbox to select all planets listed on the Planetary Report screen will be added to automate the selection of planets for credit harvesting.
+FREQ: vote S1-070104-1 - Admin Mass Cheater Deletion - Administrators will be provided with a mass cheater asset selection and deletion function.
+FREQ: vote S1-070104-3 - Player Stats - A player statistics page will be added to the standardized code. ** - Please discuss with iamsure first.
+FREQ: vote S1-070104-4 - Start Date Display - The start date of games will be added to the standardized game code and displayed on the login page.
+FREQ: Spies should be able to focus on a task - right now, each task adds to the likelihood of a spy doing "something" - it should be the opposite.
+FREQ: Planets should be able to "produce" spies
+FREQ: Break all files over 1,000 lines into multiple files for easier maintenance and modification.
+FREQ: Switch include calls to use a path - "./file.php", so apache doesnt have to resolve/translate the path. (speedup)
+FREQ: Redo the NNN features. More precise death events, custom news, lang support, etc
+FREQ: Insert a log entry when player captures a planet. Add creds and cols values to it.
+FREQ: Perform html checks on string entries (zone, planet, player, ship). 
+FREQ: Escape string entries (zone, planet, player, ship) properly for inserting in the db, reading the magic quotes setting in php. 
+FREQ: Trim and check string entries (zone, planet, player, ship) for space-only names.
+FREQ: Migrate readmail.php away from using multiple open/close php-tags.
+FREQ: Migrate all files to use templates
+FREQ: Landed on a planet, take off (into sector) doesnt check defenses.
+FREQ: Add block list of names for player/ship/teams for admins, and should use the sounds-like function too.
+FREQ: I'd like to have the ability, as co-ordinator, to see what my team is doing. where they are located etc etc
+FREQ: How about showing Fighters and Torps On the Planet Report: Planetary Defenses page?
+FREQ: lrscan should show star size
+FREQ: On the planetary status page it would be nice to list how many digs and spies were present on each planet.
+FREQ: Sectors controlled by player, sectors controlled by team in news.
+FREQ: IP_LOG should include post data in another field.
+FREQ: Admin, Zone editor, save doesnt show results
+FREQ: Admin, Sector editor, save doesnt show results
+FREQ: Admin, planeteditor, save doesnt show results
+FREQ: $max_team_members        = 5;
+FREQ: $IGB_allowloans        = true;
+FREQ: $IGB_allowtransfer    = true;
+FREQ: Fedbounty field in admin editor shouldnt be readonly - LAME!
+FREQ: combat doesnt show numbers in the combat sequence?? (beams hit: blank)
+FREQ: Fed space must lock out based on score - due to downgrade ship, sector 0 wash trail.
+FREQ: Spies and dignitaries should be listed on planetary status
+FREQ: Scan ship display based on ship report (make bars) : http://aatraders.com/phpBB2/viewtopic.php?p=5873#5873
+FREQ: Log filtering based on log entry type
+FREQ: new popup for new messages when landed on a planet (not in main).
+FREQ: In make_galaxy, during long pauses, have it do flushes with status on occasion.
+FREQ: Make the IP log, admin log, and player's logs all a single configurable retain length (# days)
+FREQ: Ports in the game should have graphics - http://aatraders.com/phpBB2/viewtopic.php?p=5609#5609
+FREQ: Team messages should be labeled as such when sending
+FREQ: Stupid user limiter for large # of turns movement (say 1/5th avail turns)
+FREQ: mail needs to set reply-to address
+FREQ: Visited sectors should indicate # of planets in map
+FREQ: IGB needs an all from ship deposit
+FREQ: There should be a sent box - show what messages were sent
+FREQ: Inviting someone to a team should send a message telling them they have been invited
+FREQ: An option to delete multiple spies from spy menu
+FREQ: IP collision on new player sends email to admin
+FREQ: IP Ban editor manual ip adds
+FREQ: Democratic vote for reset
+FREQ: IGB limit settable by admin
+FREQ: The "you've got a new message" screen should have a link to the mail.
+FREQ: Genesis should allow multiple planets to be created at once, and it should autoname them.
+FREQ: Message blocking by player or all
+FREQ: Countdown to next reset
+FREQ: Link to server list on login page
+FREQ: Port - cant afford? Shows in red instead
+FREQ: Spies arent listed in user editor, also need a general spy editor.
+FREQ: Message system should have quote/reply. (AATrade)
+FREQ: AI should be shown in a seperate list on ranking
+FREQ: Banned player check should be in header/on all pages.
+FREQ: IGB Transfer history should be a menu option in admin panel
+FREQ: User editor should show who's planet a player is parked on
+FREQ: Make galaxy should allow you to save multiple configurations, and ask which you want to use
+FREQ: Persistent player option
+FREQ: Banlist of names for player/ship/planet/team names
+FREQ: New item: Basemaker, makes a base if you have all you need on a ship
+FREQ: warpeditor - link back to the warp editor menu after you delete a warp link
+FREQ: Email notify on new messages - setting in options, also is a config option (server-wide disable)
+FREQ: Split phase 4 of make galaxy in two if possible
+FREQ: main.php?id=75 -- there should be no id tag on the end.
+FREQ: Add stealing from planets if cloak succeeds.
+FREQ: I'd like a deposit all and withdraw all option for the IGB.
+FREQ: Backup button - reverses the last move regardless of function (move/rsmove/plasma)
+FREQ: Bounty needs to check existing bounties before letting you place new bounties.
+FREQ: Banner code additions (iframe?)
+FREQ: Mystery player system - names are hidden til you kill someone
+FREQ: I'd would like to see info on the max distince the computer can go in the ship info.
+FREQ: Threat calculator when attacking OR when entering a sector w/ defenses - should show odds of success.
+FREQ: Config option : No attack for X turns, X hours
+FREQ: Config option: No $ transfers for X turns, X hours
+FREQ: Config values need descriptions
+FREQ: You should be able to upgrade planets with the money on the planet - right now you have to move it to the ship.
+FREQ: Anywhere you can spend credits should have a "from IGB" option
+FREQ: During create_uni it should set the game to not available to players.
+FREQ: Install should test for the correct versions of PHP, MySQL, Postgres, etc.
+FREQ: If php version is < 4.1.0, check for $_ variables and dont let it run!
+FREQ: There should be a port editor in admin panel
+FREQ: There should be a sector d editor in admin panel
+FREQ: There shouldnt be a news schedule event - they should populate at the time they occur
+FREQ: Master server list fix
+FREQ: Player profile support
+FREQ: You should be given the option to go back to the NAV Computer. (After a successful route, after a failed route, etc). 
+FREQ: Advanced sector defenses can return to a planet being attacked
+FREQ: New port type - "info center" - lists bounties, ship v. player lookup
+FREQ: SOFA should log to players log, but less repetitive
+FREQ: Distributor probes - evens stuff across planets
+FREQ: Add option - allow_ibank_xfer - if its not allowed, lock out ibank transfers
+FREQ: Notes/textbox per sector for players
+FREQ: Multi-sector scanner (similar to the matrix, but device-based, and cost = doing it manually. ie, like traderoutes)
+FREQ: Warpeditor should allow multiple warp edits in a single page
+FREQ: Need batch planet defense level upgrade menu
+FREQ: Sector scans from landed on a planet should give a bonus to scans (+20% per planet in sector?)
+FREQ: Persistent players
+FREQ: Planned reset date added to settings page
+FREQ: When a ship is destroyed, and there is a non-100% salvage value, the remainder should become debris
+FREQ: warpeditor - Add an option to delete more than one warp link at a time.
+FREQ: Transfer of "all" from planet to ship should fill to max, like cash to planets without bases. (today it stops if too much)
+FREQ: planet degrade for sector defenses doesnt select from all planets that have bases and sufficient energy

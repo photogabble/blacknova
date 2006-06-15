@@ -1,0 +1,51 @@
+Blacknova Traders - README
+
+A web-based massively multi-player strategy game of space trading and combat.
+
+Version 0.64
+http://www.blacknova.net / http://www.blacknovatraders.com
+
+Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Requirements: 
+    PHP4.22+
+    MySQL-3.23.32+ (We test with 3.23.52+)
+    Apache
+
+Download:
+    You can get the newest version at http://gna.org/projects/blacknova or http://sourceforge.net/projects/blacknova
+
+Credits:
+    Blacknova Traders was inspired by many space-themed 
+    BBS games (Tradewars, Galactic Warzone, Yankee Trader, Ultimate Universe, and so on).
+    but it shares no code with them.  It is
+    written 100% in PHP/HTML/SQL/JS.
+    Please refer to the DEVCREDIT file to see
+    the current list of developers.
+
+Installation:
+    Please see the INSTALL file.
+
+ChangeLog:
+    Please see the CHANGES file.    
+
+Documentation:
+    Please look in the docs/ directory.
+
+Updates:
+    Visit our homepages at http://www.blacknova.net / http://www.blacknovatraders.com
+
+Enjoy!

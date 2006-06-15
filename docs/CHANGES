@@ -1,0 +1,229 @@
+NEW: Body now has an id attribute, allowing users to author user stylesheets with Greasemonkey on Firefox.
+
+Brian Gustin (Nov 07, 2004)
+-----------------------------------
+FIXED: BUG: server_list_client missing ". ~ line 81 in db query (fatal error T_STRING)
+FIXED: BUG: sched_ranking.php SQL error  starting ~ line 31 fixed.
+(fixes placed in changes. Added known bug to bugs list, issue known but fix non-ideal, so not committed)
+
+L. Patrick Smallwood (October 30, 2004)
+---------------------------------
+NEW: New admin panel - statistics. Offers information about all visitors, currently listing browsers.
+NEW: Showsource now highlights functions and links them to php.net's manual.
+NEW: Ports, not enough credits, show amount needed in addition to "not enough credits".
+Fixed: BUG: Showsource was insecure, didnt show subdirectories, etc - Fixed.
+Fixed: BUG: always include/require files by their absolute paths (./foo.inc is ok) -- results in less processing time per include.
+Fixed: BUG: Teammates cannot attack each other's planets - team OR personal - without leaving their team.
+Fixed: BUG: IP editing didnt work (error once you added someone).
+
+L. Patrick Smallwood (October 30, 2004)
+---------------------------------
+Fixed: BUG: Ship graphics had black box around them / not transparent - Fixed.
+Fixed: BUG: "Webmaster's ship" - apos handling in various screens incorrect - should be Fixed now.
+Fixed: BUG: Transferring credits to a planet would bug out above ~ 1B credits. Fixed.
+NEW: Accounts now have "Notes" - Admins can enter notes about players, for admins' private use.
+NEW: Player table now split into players and accounts - accounts table is specific to logins.
+NEW: Support for https games throughout the game - setting from install/db_config.php
+NEW: Max hull and avg tech level are now consistently "Average combat level" - visual on ship report, blocked in traderoutes and all movements.
+Fixed: BUG: New player signups would occasionally kick back with "XXX is blank" errors when they werent blank - fixed.
+Fixed: BUG: Star can be placed over center text in main if viewport is too small - fixed.
+Fixed: BUG: &apos; is only a valid character entity in XHTML1+, not in HTML4, so we now use &#39; - which is valid and the same character.
+Fixed: BUG: Migrated from dbtables to db_prefix for all entries.
+WORKAROUND: BUG: Sched_turns kicks players out due to session killer - it shouldnt kill active sessions, however - need a permanent fix (KNOWN-BUG)
+Fixed: BUGS: Several issues relating to not including global_functions in files that need it.
+Fixed: BUG: global_include's security check was for the wrong filename
+Fixed: BUG: Newbie nice settings display was incorrect
+Fixed: BUGS: Numerous bugs related to the new template structure/layout
+Fixed: BUG: Preset display inaccurate if there are traderoutes setup in a sector
+NEW: Settings now entirely templated
+NEW: "Repeat password" to ensure no errors
+
+L. Patrick Smallwood (September 26, 2004)
+---------------------------------
+Fixed: BUG: Benchmark timer didn't include backend libraries and other items. It now includes practically everything in the game.
+Fixed: BUG: Split global_functions into two files - common_functions (called in every file in the game), and global, which is called in many, but not all.
+NEW: Extensive breakup of IGB, Traderoutes, and planet files into seperate files for better maintenance, speed, and organization.
+NEW: Ban editor lets you enter a reason for the ban - Thanks to GCFL.net!
+NEW: If link_score = 1, player score is a link that allows a player to click to update their score. - Thanks to GCFL.net!
+NEW: Bounties now let you enter a reason for the bounty - Thanks to GCFL.net!
+
+L. Patrick Smallwood (August 21, 2004)
+---------------------------------
+Fixed: BUG: User editor didn't function correctly
+Fixed: BUG: Performance Monitor looked like crap
+Fixed: BUG: Presets didn't work at all
+
+L. Patrick Smallwood (August 21, 2004)
+---------------------------------
+Thanks to BugSquashing Party:
+Fixed: BUG: Attacking sector defenses (suicide) results in log with no sector #.
+Fixed: BUG: Message sent to team sends to wrong people - even people outside team
+Fixed: BUG: Team report displayed incorrect team, errors, etc.
+Fixed: BUG: Player log, bottom of log, link before old date is garbled.
+Fixed: EXPLOIT: Create team doesnt check if you are already in a team
+Fixed: BUG: Team->create team->invite player list shouldnt be triggered.
+Fixed: BUG: Team name and description fields had inconsistent lengths throughout the game
+Fixed: BUG: After creating a team, teamname shows incorrectly
+Fixed: BUG: Capturing an unowned planet didn't show "Unowned" in the log.
+Fixed: BUG: images/armour.png -> images/armor.png
+Fixed: BUG: Confirm code wasn't populating with the value from the email automatically.
+Fixed: BUG: IGB link in planet.php displays even if you dont have a base.
+Fixed: BUG: Webmaster ship destroyed means he cant access the admin panel - webmaster is now always reincarnate.
+Fixed: BUG: Error page for incorrect login didnt show fader correctly
+
+
+L. Patrick Smallwood (August 15, 2004)
+---------------------------------
+During BugSquashing Party:
+Fixed: BUG: Scheduler bug with degrade defenses
+Fixed: BUG: Warpto on main fixed - thanks TMD
+Fixed: BUG: CSS now completely compliant (no warnings on font family)
+Fixed: BUG: IGB deposit values not showing correctly
+Fixed: BUG: Newplayer email is no longer fugly (also lang-driven, and templated)
+NOTABUG: Realspace traderoute to 0 or 1 doesnt work (Those are upgrade/device ports - you can't traderoute those).
+---
+Fixed: BUG: make_galaxy is not language safe - in progress (Now 100% language safe)
+Fixed: BUG: IGB check doesnt let planets in sector access it. (Now does allow access)
+Fixed: BUG: Planet created production sets torps to 0, not what is in config values. (Now set to defaults according to config values)
+Fixed: BUG: AI confirm code needs to vary, and you shouldnt be able to login as one. (Now varies, cant login as one)
+
+L. Patrick Smallwood (August 3, 2004)
+---------------------------------
+NEW: One fourth of all files now templated!
+NEW: traderoute_setttings, igb_deposit, igb_error, igb_withdraw all templated
+NEW: "browser" table - this enables admins to see the browser information of users, for use in reducing multi-accounts.
+NEW: We now support "persistent tables" - db tables that don't get deleted when you make galaxy. They can be updated, and changed with new releases, but it wont drop the data in the table. Ideal for "Hall of fame" type items. Name the schema file "perm-" and then the schema name. perm-hof.xml is included as an example (although its not used yet).
+NEW: "Preset" table - will replace the hardcoded presets in the player table - not used yet.
+NEW: "Hall of fame" (HOF) table - will store players records across resets - not used yet.
+NEW: Sessions table now uses both encryption (md5crypt) and gzip compression
+Fixed: BUG: Index once again register globals clean
+Fixed: BUG: "times_dead" field in the player table, so we now get a count on the number of times a player dies.
+Fixed: BUG: We now use sha1 protection in the make_galaxy admin login - better security.
+Fixed: BUG: The admin panel now uses SHA1 for encryption of admin password (to match the rest of the game).
+Fixed: BUG: detect, logs, sessions and news no longer use "data" as field names - violation of SQL reserved words.
+Fixed: BUG: Fallback SHA1 (backends/SHA1) secured and renamed (SHA1class.php).
+Fixed: BUG: mk_galaxy security issues (direct access, weak password handling, no password check) fixed.
+Fixed: BUG: Fixed security issue with ai players having predictable c_code - now uses same system as players.
+Fixed: BUG: All files in main directory now php-driven (no html files)
+CHANGE: dbtables is now depreciated - use {$db_prefix} instead. This enables drop-in tables in schema.
+CHANGE: Traderoutes no longer a monolithic file - now split into 6 files to make maintenance and modification easier.
+CHANGE: IGB no longer a monolithic file - now split into 16 files to make maintenance and modification easier.
+CHANGE: Armour/armor, and defence/defense now consistently use American English spelling convention.
+
+L. Patrick Smallwood (July 7, 2004)
+---------------------------------
+Fixed: BUG: You can access igb from any sector - not just from sectors with special ports.
+Fixed: BUG: User editor doesn't have an "Activated" button for players
+Fixed: BUG: when buying new ship, it sets shipname to blank due to sql error.
+Fixed: BUG: IP Log viewer doesnt work
+Fixed: BUG: Self destruct gets mad errors
+Fixed: BUG: Sector ownership isnt updating correctly - calc ownership?
+Fixed: BUG: Sector ownership with two different planet owners should mean war
+Fixed: BUG: minimum password length should check (if new still passes in cleartext) (old config option not functional now)
+Fixed: BUG: User editor - confirmation code is not saving correctly
+Fixed: BUG: Starting credits are not listed in settings
+Fixed: BUG: If you change your password, it shouldnt ask you to relogin
+Fixed: BUG: new.php sends cleartext password - it should md5 it immediately
+Fixed: BUG: make galaxy creates planets without respecting star_size much.
+Fixed: BUG: If you are a member of a team already, dont display a link to create a new team
+
+L. Patrick Smallwood (January 8, 2004)
+---------------------------------
+Bad login and bad confirm code attempts are logged, and ipbanned after 10 attempts in one day
+Bad Admin account attempts are also logged and ipbanned
+Langdir is now a safe variable - unable to be exploited
+Fixed shipyard accepts negative cost ship - now resets to value of newship.
+New function - validate email - uses the definitive email regex from Mastering Regex expressions for email check.
+Stars are now reflected in their alt tags
+Schedule turns SQL/variable bug fixed
+[U]nexplored sectors are in fact now specific to the user
+Global funcs variable bug fixed 
+Genesis obeys sector laws
+Admin planet editor has "delete" planet option
+Genesis optimized
+Make galaxy checks for warplinks to the same destination
+Login lets you save password again
+Login allows cleartext login - with a severe warning and no http redirect
+You can now access the igb from shipyards
+Average tech level calculation was only using 7 techs.. now it uses all 11 - even for EWD degrade
+After editing a planet in admin, "unnamed" used to become 0 - not any more.
+make_galaxy no longer 'forgets' to give planets names - unnamed planets are named "unnamed".
+Log no longer has dhtml - almost everyone hated it
+Log is accessible after you die
+Self-destruct does.
+Self-destruct doesnt ask you to logout - you maintain your session so you can view the log/blackbox
+Death is checked on all pages that need a login - even self-destructed deaths
+Always_reincarnate now works seperate from newbie_nice
+newbie_nice and always_reincarnate are now disabled by default
+Shipyards now have an icon, and the name of the port type (shipyard) - thanks LFOX!
+Max torps on ship in report page now number'd() with commas. - thanks LFOX!
+You can no longer access the KSM (galaxy2) if its disabled.
+Shipreport no longer "noisy" for screenreaders - thanks Brennan!
+Organics are now "food". Goods are now "Machinery".
+New log entry: Ship destroyed while (unsuccessfully) attacking planet
+New log entry: Ship destroyed while (unsuccessfully) attacking a player
+Log improvement: Ships dying while attacking your planet - salvage in credits shown NUMBER()'d.
+Log improvement: Bounty placed on you while attacking smaller player shown NUMBER()'d.
+Install now does a file integrity check on all files in the main directory to ensure no problems from bad upload
+sched_prune now trims the ip_log to a admin-configurable number of days (defaults to 2 weeks). (Dramatic space savings!)
+Movement log now removes all redudant entries before adding new ones (good space saving)
+Complete removal of config.php - the only file admins need to edit is db_config.php
+Complete restructure of global_* - now six files seperated based on their contents (functions, classes, defines)
+Sessions table now mostly accurate gauge of who is online
+DB locks removed - watch for issues in combat and attack. I think its safe.
+Transitioning away from dbtables usage to ${db_prefix} usage. Less rigid variables = good.
+Creating planets now auto-names them for you in the format XX-sector-num_planets_in_sector. XX is random uppercase letters.
+Huge cleanup of "last_login" - removed hundreds of redundant sql calls.
+Fixed shipyard trade-in value to full, its also a config option for admins (trade_in_value).
+We now include an .htaccess file which will disable url-based php_sessid passing.
+Added "Invitation List" - Allows admins to set allowed emails - if you arent on the list, you arent getting in.
+Sched_news is gone - now occurs when the events occur. Took seconds off the scheduler by doing so!
+Infinite planet and colonist news - there is no finite limit to news events (there could be a 100,000 billion colonist entry)
+News Fader now part of footer (inspired by AATrade)
+Footer now on every page - including make_galaxy and install.
+----since-supernova
+Negative number fixes in planet, planet2, traderoutes, port, igb
+Ip_log fixed, referer and url now reported correctly
+Economy reverted to BNT style - faster/more aggressive
+Clean up spy log bug fixed
+Added view source link for all pages
+If player_id or sector_id isn't set, it will be null in the ip_log, not 0.
+make_galaxy re-organized, now 8 phases, none over 30 seconds in execution time on test server
+ip_log no longer shows scheduler runs if it is authorized (has correct swordfish)
+Destroy planet with genesis torp - fixed alert bug, and php warnings
+Dump.php didn't work - wrong file. Now it works again.
+If server closed, updates no longer occur (even if you call the scheduler).
+FREQ: Removed login screen from IGB
+All colors in css are now in rgb format to be css compliant.
+BUG: The team ship grid now has a column header for plasma engines.
+BUG: Title was often hardcoded in english in files (not lang safe) - now all lang entries.
+Fader matches based on file (index fader is red, rest is purple).
+BUG: Ship graphics in main now match those in shipyard.
+Galaxy map now shows sectors even if you just moved into them (and not into another)
+LRScans (not full scans) now cost 1 turn per sector scanned, while full scan costs 3.
+Config values now have categories
+Increased default galaxy size to 3000
+Numerous bugs in nav_computer fixed
+HTML validation for common views in: main, report, port, traderoute, log, lrscan, zoneinfo, news, settings, feedback, galaxy2, readmail, preset, port2, teams, new, confirm, mines, planet.
+Added manual "activated" checkbox in admin editor
+AI functions now a part of admin
+Smarty updated to latest version
+ADODB updated to latest version
+Added ALT tag for the ship icon in main
+Increased max amounts for energy ports to exceed largest ship possible
+Sector editor now shows star size
+<b> is depreciated, moved to <strong>
+</input> is forbidden - removed.
+language="javascript" is depreciated, moved to type="text/javascript"
+All occurances of onclick, onfocus, onchange, hidden, checkbox, reset, Radio, submit, input, and width changed to lowercase
+nowrap and readonly attributes now no longer compact (nowrap="nowrap").
+All files moved to new naming scheme - words seperated by _ not - .
+Planet menu no longer lets you build a base if you dont have enough turns
+Movement log now updates as soon as you enter a sector
+Taking over someone else's planet is correctly logged
+Defence_report bug fixed - thanks Trukfixer!
+Warplinks in 0/1/2 missing bug fixed - thanks Trukfixer!
+Prices werent updating in port, fixed - thanks Trukfixer!
+
+The Nova Gaming System is based off of the original BlackNova Traders code (specifically a post-.41 cvs snapshot). Their
+CHANGELOG information can be found in their project files.

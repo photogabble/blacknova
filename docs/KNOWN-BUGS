@@ -1,0 +1,70 @@
+BUG: Install - file checksum test only tests root directory
+BUG: Install, download db_config.php doesnt work right anymore
+BUG: Scheduler runs should be independent of each other - an error in one shouldnt stop the others from running
+BUG: Scheduler runs should be logged for the admin
+BUG: Email log viewer is all black (css/table)
+BUG: Admin map should have an option to show all sectors.
+BUG: Upgrade factor with fractional values not fully supported yet.
+BUG: Planet menu for teammates gives the "rename planet" option, but it doesnt work since they arent the owner (option shouldnt be offered)
+BUG: AI players dont show up on the LSSD.
+BUG: AI player can create planet over planet_max in a sector, and it captures the wrong planet.
+BUG: Admin logs should include IGB transfers between players
+BUG: The scan and attack links for ships are inverted compared to those for planets
+BUG: There's no fail-safe for ship attacks like there is for planets!
+BUG: Login error due to case sensitivity doesn't get recorded in log (that's with user = correct case and pass = incorrect, as well as user = incorrect case and pass = correct case)
+BUG: There is no method for admins to edit team status for a player (ie, in player editor, a team editor, etc).
+BUG: Shipyards should pay you back for cargo, spies, and everything else onboard when buying a new ship
+BUG: Options menu - new hardcoded text needs lang entries (shoutbox, etc)
+BUG: LRScan planet display links to the planet (like it does in main), but you cant get to the planet from another sector. It shouldnt link.
+BUG: Non-standard ports, dont work throughout the game, and with the public server lists
+BUG: You can set traderoutes to shipyard ports.
+BUG: In the Planet status report, when you click on a planet's sector, you realspace there, regardless of turns.
+BUG: if you go to the spy menu and sort by planet owner, it won't let you, there will be a fatal error mssg
+BUG: Unowned planets take all effort to attack em - 200 energy/100beams, etc... should be minimum required.
+BUG: Dying by moving into a sectors fighters doesnt result in a death log for the owner of the fighters (mines do).
+BUG: Fix the log when an attacker doesn't destroy a planet, but survives.
+BUG: Traderoutes don't check if planet is friendly or foe (if planet is taken while traderouting, it continues to dump defenses?)
+BUG: Team invite menu shouldnt offer players that are already in a team, and several other bugs
+BUG: make_galaxy isnt honoring max warp links settings
+BUG: map starts at sector 0 even in sector 559
+BUG: when you use plasma engines to go to the same sector that you are in, it still uses up energy
+BUG: noscript on port and planets need to remove the links to makemax somehow
+BUG: Lock sessions to not allow multiple browsers on same session
+BUG: AI level setting doesnt change the ship level accordingly
+BUG: You can attack yourself (DUH!)
+BUG: Ship/planet cloaked not checked in attack, scan, and send message.
+BUG: When SCRIPT Elements are used, the NOSCRIPT element is required in the document.
+BUG: Attack and kill a player, no log
+BUG: On OpenBSD, dbhost has to be set to 127.0.0.1, NOT "localhost"
+BUG: On some hosts, smtp host has to be set to 127.0.0.1
+BUG: Make rules page requirement to signup
+BUG: genesis doesnt work on postgresql
+BUG: Sector defense logs always twice. 
+BUG: Bounties clear on player death - they should last PAST the death. (Player ship destruction? Not death?)
+BUG: Only one side of the trade gets quantities updated correctly (possible exploit-- reduces port degredation).
+BUG: Planets selling commodities are helpless
+BUG: Attack numbers should be Number()'d.
+BUG: Warpedit - allows more than max warplinks to be created
+BUG: Traderoutes do not check bounties
+BUG: Port2 should check for bounties.
+BUG: Reply to message should select the sender - currently it selects "first player"
+BUG: ranking on next and previous pages should retain the sort order,but they dont.
+BUG: It does not display in your log when your sector defenses are completely destroyed in one attack
+BUG: Full scan should show [U]nexplored status
+BUG: Attacking a planet, beams show up as a decimal #
+BUG: Escape Pods have a % chance to go to sector 0, but does it log the move to the lssd?
+BUG: Traderoutes - preset is somehow being set to blank
+BUG: Good/Evil should be shown on planet scans
+BUG: Admin, ip bans edit, no bans defined, unban, error
+BUG: Scheduler should have the same abuse/attempt check as admin panel and logins
+BUG: User-triggered scheduler doesnt work.
+BUG: team-report isnt multi-language
+BUG: Admin, Drop/reinstall AI db, save/drop doesnt work
+BUG: Admin, Create new AI, save/create doesnt work
+BUG: Admin, Clear AI logs, clear doesnt work
+BUG: Admin, AI editor doesnt work
+BUG: Login attempt, blank password, player - no log generated
+BUG: One of my planets was attacked earlier today. In my log, both the name and location of the planet are reported incorrectly.
+BUG: Send message to team members sends to all
+BUG: Get colonists from sol to planet, realspace, doesnt work.
+BUG: spy_summary.php fatal error on undefined function linecolor() (fixed at crazybri by putting function from global_functions into spy_summary. actually should be included somewhere)

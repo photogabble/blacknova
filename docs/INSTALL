@@ -1,0 +1,127 @@
+Welcome to BNT.
+
+--- Unix based installs ---
+
+STEP ONE:
+
+Uncompress the archive into the desired directory. For example:
+
+[user@BNT /user]$ cd public_html
+[user@BNT public_html]$ tar zxvf ~/BNT-0.XX-unstable-complete.tar.gz
+
+If you are doing so directly onto a Unix machine, the permissions should be set
+automatically. If not, then please refer to the OFFICIAL CHMOD LIST.
+
+STEP TWO:
+
+Use your webbrowser to access install.php, follow the instructions.
+
+STEP THREE:
+
+Before you run make_galaxy, follow the instructions, which tell you to make sure to: 
+[user@BNT public_html]$ chmod 0704 config/db_config.php 
+
+STEP FOUR:
+
+Finally, edit your crontab. Crontabs on unix allow the system to periodically update values in the game, including 
+adding turns and degrading sector defenses.
+
+The entry in crontab should look like this:
+*/5 * * * * /usr/bin/lynx http://example.com/scheduler.php?swordfish=sword-pass >/dev/null
+
+STEP FIVE:
+
+Now you should be all set, just run the make galaxy script now: http://www.example.com/user/make_galaxy.php
+
+In case you have permissions problems, we have included the chmod's we perform prior to tarballing:
+
+OFFICIAL CHMOD LIST:
+
+chmod -R 0505 BNT
+cd BNT
+mkdir templates_c
+chmod -R 0507 templates_c
+chmod 0404 check_defenses.php
+chmod 0404 combat.php
+chmod 0404 fader.php
+chmod 0404 global_funcs.php
+chmod 0404 header.php
+chmod 0404 ai_funcs.php
+chmod 0404 sched_apocalypse.php
+chmod 0404 sched_degrade.php
+chmod 0404 sched_igb.php
+chmod 0404 sched_ai.php
+chmod 0404 sched_news.php
+chmod 0404 sched_planets.php
+chmod 0404 sched_ports.php
+chmod 0404 sched_ranking.php
+chmod 0404 sched_spies.php
+chmod 0404 sched_turns.php
+chmod 0404 sched_repair.php
+chmod 0404 sector_fighters.php
+chmod 0404 spy_funcs.php
+cd config
+chmod 0404 *
+
+--- Windows based installs ---
+
+STEP ONE:
+
+Unzip the release into your docroot.
+
+STEP TWO:                 
+
+Use your webbrowser to access install.php, follow the instructions.
+
+STEP THREE:               
+
+Make sure to set the attributes on db_config.php to be read-only after your install.
+
+STEP FOUR:
+
+Find a way to run a scheduled update. Whether you use a windows version of lynx/cron, or windows scheduler,
+you need to have a web-browser of some kind access the scheduler page.
+
+It should load the scheduler page once every 5 minutes, and it should look like this:
+
+http://example.com/scheduler.php?swordfish=sword-pass
+
+STEP FIVE:
+
+Run the make_galaxy.php script.
+
+
+Troubleshooting issues:
+
+Q: I'm on Windows, and I get error...
+A: Please post it on our bug form at sourceforge.
+
+Q: I'm using php-4.02... 
+A: The only version of php currently supported is 4.22+. Older versions will almost definitely not work, and we will NOT help with problems
+you encounter trying to install with any version older than 4.22. php-4.22 was released over two years ago as of this writing, and numerous security
+problems existed in versions prior to 4.22. Further, numerous functions in the game require a recent version of php.
+
+Q: I'm using php-5...
+A: We have been able to get the game running on php5, but we don't support it officially yet. If you'd like to assist with our efforts to get it 
+officially supported, let us know!
+
+Q: I get a fatal error about require'ing phpSniff
+A: This is because your version of php is too old. You need to upgrade to a recent version. If you *still* see the error after upgrading to at least
+php-4.22, please let us know.
+
+Q: I get an error about Smarty
+A: Ensure that smarty is in backends/smarty . If you STILL have the problem, try redownloading it. On occasion downloads can
+become corrupted. Also ensure the ownership is set according to the chmod directions above.
+
+Q: I get an error about adodb
+A: Ensure that adodb is in backends/adodb. If you STILL have the problem try redownloading it. On occasion downloads can 
+become corrupted. Also ensure the ownership is set according to the chmod directions above.
+
+Q: I'm using totally-rarely-used-webserver...
+A: The only webserver currently supported is Apache. Other webservers will almost definitely work, but we will NOT help with 
+problems you encounter trying to install with any version other than Apache.
+
+Q: HA! Mr. I-AM-SURE, I found an issue not listed here!
+A: Great, report it to us at http://www.blacknova.net .
+
+Enjoy.
