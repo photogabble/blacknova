@@ -1,0 +1,99 @@
+#!/bin/sh
+touch ~/.cvspass
+echo "Grabbing today's CVS";
+cvs -Q -z3 -d:pserver:anoncvs@subversions.gnu.org:/cvsroot/novasystem export -r HEAD novasystem
+mv novasystem ngs
+sed -e 's/release_version = "CVS"/release_version = "'$1'"/g'  ngs/config/config.ini > ngs/config/config.cvs
+mv -f ngs/config/config.cvs ngs/config/config.ini
+echo "Setting secure chmods";
+chmod -R 0505 ngs
+cd ngs
+mkdir templates_c
+chmod -R 0507 templates_c
+chmod 0404 check_defenses.php
+chmod 0404 combat.php
+chmod 0404 fader.php
+chmod 0404 global_funcs.php
+chmod 0404 header.php
+chmod 0404 kabal_funcs.php
+chmod 0404 ngs_ls_client.php
+chmod 0404 sched_apocalypse.php
+chmod 0404 sched_degrade.php
+chmod 0404 sched_igb.php
+chmod 0404 sched_kabal.php
+chmod 0404 sched_news.php
+chmod 0404 sched_planets.php
+chmod 0404 sched_ports.php
+chmod 0404 sched_ranking.php
+chmod 0404 sched_spies.php
+chmod 0404 sched_tow.php
+chmod 0404 sched_turns.php
+chmod 0404 sector_fighters.php
+chmod 0404 spy_funcs.php
+cd config
+chmod 0404 *
+cd ..
+echo "Tarballing the simple unstable release (ngs-unstable-$1.tar.gz)";
+tar zcf ~/ngs-unstable-$1.tar.gz *
+cd backends
+mkdir smarty
+cd smarty
+echo "Grabbing Smarty";
+wget --quiet http://smarty.php.net/do_download.php?download_file=Smarty-2.5.0.tar.gz
+echo "Untarring Smarty";
+tar zxf Smarty-2.5.0.tar.gz
+rm -rf Smarty-2.5.0.tar.gz
+mv Smarty-2.5.0/* .
+rm -rf Smarty-2.5.0
+cd ..
+mkdir adodb
+cd adodb
+echo "Grabbing adodb";
+wget --quiet http://phplens.com/lens/dl/adodb360.tgz
+echo "Untarring adodb";
+tar zxf adodb360.tgz
+rm -rf adodb360.tgz
+mv adodb/* .
+rm -rf adodb
+cd ..
+mkdir phpmailer
+cd phpmailer
+echo "Grabbing phpmailer";
+wget --quiet http://unc.dl.sourceforge.net/sourceforge/phpmailer/phpmailer-1.70.tar.gz
+echo "Untarring phpmailer";
+tar zxf phpmailer-1.70.tar.gz
+rm -rf phpmailer-1.70.tar.gz
+mv phpmailer/* .
+rm -rf phpmailer
+cd ..
+cd ..
+echo "Setting secure chmods";
+chmod -R 0505 *
+chmod -R 0507 templates_c
+chmod 0404 check_defenses.php
+chmod 0404 combat.php
+chmod 0404 fader.php
+chmod 0404 global_funcs.php
+chmod 0404 header.php
+chmod 0404 kabal_funcs.php
+chmod 0404 ngs_ls_client.php
+chmod 0404 sched_apocalypse.php
+chmod 0404 sched_degrade.php
+chmod 0404 sched_igb.php
+chmod 0404 sched_kabal.php
+chmod 0404 sched_news.php
+chmod 0404 sched_planets.php
+chmod 0404 sched_ports.php
+chmod 0404 sched_ranking.php
+chmod 0404 sched_spies.php
+chmod 0404 sched_tow.php
+chmod 0404 sched_turns.php
+chmod 0404 sector_fighters.php
+chmod 0404 spy_funcs.php
+cd config
+chmod 0404 *
+cd ..
+echo "Tarballing the complete release (ngs-unstable-complete-$1.tar.gz)";
+tar zcf ~/ngs-unstable-complete-$1.tar.gz *
+cd ..
+rm -rf *
