@@ -1,0 +1,9 @@
+uncompress adodb into the adodb directory,
+uncompress smarty templates into the smarty directory.
+
+*DO NOT MAKE ANY CHANGES TO THEM*
+
+The idea for backends is that they can be replaced with other systems. They use the
+raw project code from those projects.
+
+
