@@ -454,8 +454,6 @@ else // user requested a single sector (standard) long range scan
 
     $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id='$port_sector_info[sector_id]'");
 
-    // Easter egg comment - byte my easter egg! :)
-
     // since we don't know if we are going to show any planets yet,
     // just walk though them and keep track.
     // if there are none or we don't show any (cause of cloak) then

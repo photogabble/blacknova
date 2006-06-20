@@ -68,7 +68,7 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
     global $session_time_out;
     $session_kill = time() - $session_time_out;
     $session_stamp = date("Y-m-d H:i:s", time()+$session_time_out);
-    $debug_query = $db->Execute("SELECT character_name from {$db->prefix}players WHERE last_login < '$session_stamp'");
+    $debug_query = $db->Execute("SELECT character_name from {$db->prefix}players WHERE last_login < '?'", array($session_stamp));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     if ($debug_query) // Returns false if db isnt setup yet.
@@ -103,7 +103,7 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
         $players_online = "  " . $l_footer_players_on_1 . " " . $online . " " . $l_footer_players_on_2;
     }
 
-    $res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date LIKE '$startdate%' ORDER BY news_id"); // Matches based on y-m-d.
+    $res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date LIKE '?' ORDER BY news_id", array($startdate . '%')); // Matches based on y-m-d.
     if ($res)
     {
         if ($adminnews != '')
@@ -165,7 +165,6 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
 }
 
 // Functions end
-// Easter egg comment - This aint no joke, damnit I aint playin!
 
 if (is_object($db) && ($raw_prefix != $db->prefix))
 {

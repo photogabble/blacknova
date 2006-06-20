@@ -41,11 +41,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner='?'", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team='?'", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -64,7 +64,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id='?'", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -85,7 +85,7 @@ global $dplanet_id, $minimum, $maximum, $igb_tconsolidate, $ibank_paymentfee;
 global $l_igb_notenturns, $l_igb_back, $l_igb_logout, $l_igb_transfersuccessful;
 global $l_igb_currentpl, $l_igb_in, $l_igb_turncost, $l_igb_unnamed;
 
-$res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=$dplanet_id");
+$res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id='?'", array($dplanet_id));
 if (!$res || $res->EOF)
 {
     $backlink = "igb_transfer.php";
@@ -124,6 +124,7 @@ if ($maximum != 0)
 
 $query .= " AND planet_id != $dplanet_id";
 
+// DB NOT CLEANED!
 $res = $db->Execute($query);
 $amount = $res->fields;
 
@@ -153,14 +154,15 @@ if ($maximum != 0)
 
 $query .= " AND planet_id != $dplanet_id";
 
+// DB NOT CLEANED!
 $debug_query = $db->Execute($query);
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-$debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits + $transfer WHERE planet_id=$dplanet_id");
+$debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits + '?' WHERE planet_id='?', array($transfer, $dplanet_id));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-$debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns - $tcost, turns_used=turns_used + $tcost WHERE " .
-                            "player_id = $playerinfo[player_id]");
+$debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns - '?', turns_used=turns_used + '?' WHERE " .
+                            "player_id='?'", array($tcost, $tcost, $playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $template->assign("l_igb_transfersuccessful", $l_igb_transfersuccessful);

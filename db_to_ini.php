@@ -17,7 +17,7 @@ for ($i=1; $i<count($categories); $i++)
 {
     $line =  "[" . $categories[$i] . "]\n";
     $inires = fwrite($inifile,$line); //write the line to the file
-    $debug_query = $db->Execute("SELECT * FROM {$raw_prefix}languages where category='$categories[$i]' order by name asc");
+    $debug_query = $db->Execute("SELECT * FROM {$raw_prefix}languages where category='?' order by name asc", array($categories[$i]));
     while (!$debug_query->EOF)
     {
         $line = $debug_query->fields['name'] . " = \"" . addslashes($debug_query->fields['value']) . "\";\n";

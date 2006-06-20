@@ -32,8 +32,6 @@ if (!@include_once ("./backends/adodb/adodb-xmlschema.inc.php"))
     die();
 }
 
-// Easter egg comment - But you cant be any geek off the street. You gotta be handy with the steel if you know what I mean, earn your keep.
-
 $default_lang = "english"; 
 $default_template = "classic";
 // Horrible hack. Truly. However, with the config file not chosen until 20.php, we need a language for the user. 

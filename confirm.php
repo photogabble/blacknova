@@ -88,8 +88,6 @@ $template->assign("code", $c_code);
 $template->assign("submit", $_POST['submit']);
 $template->display("$templateset/confirm.tpl");
 
-// Easter egg comment - Its.. YOUR.. TURN.. NOW. Now you suck, suck it hard! Go down baby, you suck, lick it hard and move your tongue around.
-
 // If they have clicked submit, check everything.
 if ($_POST['submit'] == 'submit')
 {

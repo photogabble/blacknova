@@ -32,11 +32,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner='?'", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team='?'", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -55,7 +55,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id='?'", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -83,7 +83,7 @@ while (!$res->EOF)
     $res->MoveNext();
 }
 
-$res = $db->Execute("SELECT name, planet_id, sector_id FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id] ORDER BY sector_id ASC");
+$res = $db->Execute("SELECT name, planet_id, sector_id FROM {$db->prefix}planets WHERE owner='?' ORDER BY sector_id ASC", array($playerinfo['player_id']));
 while (!$res->EOF)
 {
     $planets[] = $res->fields;

@@ -47,8 +47,6 @@ setcookie("PHPSESSID","",0,"/");
 
 session_destroy();
 
-// Easter egg comment - Ah, man, this is too funky for me. I'm goin' home. Hey, Mergatroid, let's go!
-
 $current_score = number_format(gen_score($db,$playerinfo['player_id']),0,$local_number_dec_point, $local_number_thousands_sep);
 
 $l_logout_text = str_replace("[name]",$playerinfo['character_name'],$l_logout_text);

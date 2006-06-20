@@ -24,7 +24,6 @@ if ($pos !== false)
 // Dynamic functions
 dynamic_loader ($db, "db_output.php");
 
-// Easter egg comment - "Yes, but as a KNOWN scientist it was a bit surprising that the girl blinded ME with science"
 $port_add_results = db_output($db,sql_port_grow(),__LINE__,__FILE__);
 
 $multiplier = 0;

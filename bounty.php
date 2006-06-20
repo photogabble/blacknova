@@ -346,7 +346,6 @@ switch ($response)
     break;
 }
 
-// Easter egg comment - Golly jeepers, where'd you get those peepers? Peep show, creep show, where did you get those eyes?
 //-------------------------------------------------------------------------------------------------
 
 global $l_global_mmenu;

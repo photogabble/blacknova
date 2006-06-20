@@ -374,8 +374,6 @@ if ($ok > 0)
     log_move($db, $playerinfo['player_id'],$shipinfo['ship_id'],$source_sector,$destination,$shipinfo['class'],$shipinfo['cloak']);
 }
 
-// Easter egg comment - She looks like one of those rap guys girlfriends.. I mean her butt, its just so .. BIG!
-
 if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_hullsize))
 {
     $fm_owner = $defenses[0]['player_id'];

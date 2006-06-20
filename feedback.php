@@ -58,7 +58,6 @@ if (!isset($subject))
 $empty_content = FALSE;
 $mail_result = FALSE;
 
-// Easter egg comment - Take your fast car and keep on driving.
 if (empty($_POST['content']))
 {
     $empty_content = TRUE;

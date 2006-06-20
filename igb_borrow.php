@@ -42,11 +42,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner='?'", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team='?'", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -65,7 +65,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id='?'", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -127,12 +127,12 @@ $l_igb_loanreminder1 = str_replace("[mins]", $mins, $l_igb_loanreminder1);
 $l_igb_loanreminder1 = $l_igb_loanreminder1 . "<br><br>" . $l_igb_loanreminder2;
 
 $stamp = date("Y-m-d H:i:s");
-$debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET loan=$amount3, loantime='$stamp' WHERE " .
-                            "player_id=$playerinfo[player_id]");
+$debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET loan='?', loantime='?' WHERE " .
+                            "player_id='?'", array($amount3, $stamp, $playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-$debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits+$amount WHERE " .
-                            "player_id=$playerinfo[player_id]");
+$debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits+'?' WHERE " .
+                            "player_id='?'", array($amount, $playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $template->assign("l_igb_takenaloan", $l_igb_takenaloan);
