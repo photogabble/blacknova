@@ -24,7 +24,7 @@ if ($pos !== false)
 }
 
 // Template Lite
-$template = new Template_Lite;
+$template = new bnt_smarty;
 
 $l_welcome_make = str_replace("[project]", $l_project_name, $l_welcome_make);
 $template->assign("l_welcome_make",$l_welcome_make);
