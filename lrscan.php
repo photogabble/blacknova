@@ -90,7 +90,7 @@ if ($_GET['sector'] == "*")
     echo $l_lrs_used . " " . number_format($fullscan_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . " " . $l_lrs_turns . " " . number_format($playerinfo['turns'] - $fullscan_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . $l_lrs_left. "<br><br>";
 
     // deduct the appropriate number of turns
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$fullscan_cost, turns_used=turns_used+$fullscan_cost WHERE player_id='$playerinfo[player_id]'");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-'?', turns_used=turns_used+'?' WHERE player_id='?'", array($fullscan_cost, $fullscan_cost, playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // user requested a full long range scan
@@ -98,7 +98,7 @@ if ($_GET['sector'] == "*")
     echo $l_lrs_reach . "<br><br>";
 
     // get sectors which can be reached from the player's current sector
-    $result = $db->Execute("SELECT distinct(link_dest), link_start FROM {$db->prefix}links WHERE link_start='$shipinfo[sector_id]' ORDER BY link_dest");
+    $result = $db->Execute("SELECT distinct(link_dest), link_start FROM {$db->prefix}links WHERE link_start='?' ORDER BY link_dest", array($shipinfo['sector_id']));
     echo "<table border=0 cellspacing=0 cellpadding=0 width=\"100%\">\n";
     echo " <tr bgcolor=\"$color_header\">\n<td><strong>$l_sector</strong><td>\n</td><td><strong>$l_lrs_links</strong></td><td><strong>$l_lrs_ships</strong></td><td colspan=2><strong>$l_port</strong></td><td><strong>$l_planets</strong></td><td><strong>$l_mines</strong></td><td><strong>$l_fighters</strong></td><td><strong>$l_lss</strong></td></tr>";
 
@@ -107,11 +107,11 @@ if ($_GET['sector'] == "*")
     {
         $row = $result->fields;
         // get number of sectors which can be reached from scanned sector
-        $result2 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start='$row[link_dest]'");
+        $result2 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start='?'", array($row['link_dest']));
         $num_links = $result2->RecordCount();
 
         // get number of ships in scanned sector
-        $result2 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE sector_id='$row[link_dest]' AND on_planet='N' and destroyed='N'");
+        $result2 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE sector_id='?' AND on_planet='N' and destroyed='N'", array($row['link_dest']));
         
         $num_ships = 0;
         while (!$result2->EOF)
@@ -137,10 +137,11 @@ if ($_GET['sector'] == "*")
             $result2->MoveNext();
         }
         
+        // DB NOT CLEANED! (first db call)
         // get port type and discover the presence of a planet in scanned sector
         $result2 = $db->SelectLimit("SELECT port_type FROM {$db->prefix}ports WHERE sector_id='$row[link_dest]'",1);
-        $resultSDa = $db->Execute("SELECT SUM(quantity) as mines from {$db->prefix}sector_defense WHERE sector_id='$row[link_dest]' and defense_type='M'");
-        $resultSDb = $db->Execute("SELECT SUM(quantity) as fighters from {$db->prefix}sector_defense WHERE sector_id='$row[link_dest]' and defense_type='F'");
+        $resultSDa = $db->Execute("SELECT SUM(quantity) as mines from {$db->prefix}sector_defense WHERE sector_id='?' and defense_type='M'", array($row['link_dest']));
+        $resultSDb = $db->Execute("SELECT SUM(quantity) as fighters from {$db->prefix}sector_defense WHERE sector_id='?' and defense_type='F'", array($row['link_dest']));
 
         $query96 = $result2->fields;
         $defM = $resultSDa->fields;
@@ -151,7 +152,7 @@ if ($_GET['sector'] == "*")
         $has_planets = 0;
         $i='';
 
-        $result3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id='$row[link_dest]'");
+        $result3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id='?'", array($row['link_dest']));
         while (!$result3->EOF)
         {
             $uber = 0;
@@ -198,7 +199,7 @@ if ($_GET['sector'] == "*")
              ///
                 if ($uber == 0 && $spy_success_factor)  // Still not yet 'visible'
                 {
-                    $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = '" . $hiding_planet[$i]['planet_id'] . "' AND owner_id = '$playerinfo[player_id]'");
+                    $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id='?' AND owner_id='?'", array($hiding_planet[$i]['planet_id'], $playerinfo['player_id']));
                     if ($res_s->RecordCount())
                     $uber = 1;
                 }
@@ -239,6 +240,7 @@ if ($_GET['sector'] == "*")
         echo "<tr bgcolor=\"$color\"><td><a href=\"move.php?move_method=warp&amp;destination=$row[link_dest]\">$row[link_dest]</a></td><td><a href=\"lrscan.php?sector=$row[link_dest]\">$l_scan</a></td><td>$num_links</td><td>$num_ships</td><td width=12>$image_string</td><td>" . t_port($db, $port_type) . "</td><td>$has_planets</td><td>$has_mines</td><td>$has_fighters</td>";
         if ($row['link_dest'] != '1')
         {
+            // DB NOT CLEANED!
             $resx = $db->SelectLimit("SELECT * from {$db->prefix}movement_log WHERE player_id != $playerinfo[player_id] AND source = $row[link_dest] ORDER BY time DESC",1);
             db_op_result($db,$resx,__LINE__,__FILE__);
             $myrow = $resx->fields;
@@ -313,20 +315,20 @@ else // user requested a single sector (standard) long range scan
     echo $l_lrs_used . " " . number_format($lrscan_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . " " . $l_lrs_turns . " " . number_format($playerinfo['turns'] - $lrscan_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . " " . $l_lrs_left . "<br><br>";
 
     // deduct the appropriate number of turns
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$lrscan_cost, turns_used=turns_used+$lrscan_cost WHERE player_id='$playerinfo[player_id]'");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-'?', turns_used=turns_used+'?' WHERE player_id='?'", array($lrscan_cost, $lrscan_cost, $playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // get scanned sector information
-    $debug_query = $db->Execute("SELECT sector_name,x,y,z FROM {$db->prefix}universe WHERE sector_id='$_GET[sector]'");
+    $debug_query = $db->Execute("SELECT sector_name,x,y,z FROM {$db->prefix}universe WHERE sector_id='?'", array($_GET['sector']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $sector_scan_info = $debug_query->fields;
 
-    $debug_query = $db->Execute("SELECT sector_id,port_type FROM {$db->prefix}ports WHERE sector_id='$_GET[sector]'");
+    $debug_query = $db->Execute("SELECT sector_id,port_type FROM {$db->prefix}ports WHERE sector_id='?'", array($_GET['sector']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $port_sector_info = $debug_query->fields;
 
     // get sectors which can be reached from the player's current sector
-    $debug_query = $db->Execute("SELECT link_dest FROM {$db->prefix}links WHERE link_start='$shipinfo[sector_id]' AND link_dest = '$_GET[sector]'");
+    $debug_query = $db->Execute("SELECT link_dest FROM {$db->prefix}links WHERE link_start='?' AND link_dest='?'", array($shipinfo['sector_id'], $_GET['sector']));
     $scan_link_check = $debug_query->RecordCount();
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
@@ -356,7 +358,7 @@ else // user requested a single sector (standard) long range scan
     echo "<tr><td>";
 
     // get sectors which can be reached through scanned sector
-    $result3 = $db->Execute("SELECT link_dest FROM {$db->prefix}links WHERE link_start='$_GET[sector]' ORDER BY link_dest ASC");
+    $result3 = $db->Execute("SELECT link_dest FROM {$db->prefix}links WHERE link_start='?' ORDER BY link_dest ASC", array($_GET['sector']));
 
     if ($result3 > 0)
     {
@@ -386,7 +388,7 @@ else // user requested a single sector (standard) long range scan
         // get ships located in the scanned sector
         $result4 = $db->Execute("SELECT {$db->prefix}players.player_id,name,character_name,cloak FROM {$db->prefix}ships " .
                                 "LEFT JOIN {$db->prefix}players ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id " .
-                                "WHERE sector_id='$_GET[sector]' AND on_planet='N'");
+                                "WHERE sector_id='?' AND on_planet='N'", array($_GET['sector']));
         if ($result4->EOF)
         {
             echo "$l_none";
@@ -452,7 +454,7 @@ else // user requested a single sector (standard) long range scan
     echo "<tr bgcolor=\"$color_line2\"><td><strong>$l_planets</strong></td></tr>";
     echo "<tr><td>";
 
-    $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id='$port_sector_info[sector_id]'");
+    $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id='?'", array($port_sector_info['sector_id']));
 
     // since we don't know if we are going to show any planets yet,
     // just walk though them and keep track.
@@ -505,7 +507,7 @@ else // user requested a single sector (standard) long range scan
     
             if ($uber == 0 && $spy_success_factor)  // Still not yet 'visible'
             {
-                $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = '" . $hiding_planet[$i]['planet_id'] . "' AND owner_id = '$playerinfo[player_id]'");
+                $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id='?' AND owner_id='?'", array($hiding_planet[$i]['planet_id'], $playerinfo['player_id']));
                 if ($res_s->RecordCount())
                 {
                     $uber = 1;
@@ -539,8 +541,8 @@ else // user requested a single sector (standard) long range scan
         echo "</tr></table>";
     }
 
-    $resultSDa = $db->Execute("SELECT SUM(quantity) as mines from {$db->prefix}sector_defense WHERE sector_id='$_GET[sector]' and defense_type='M'");
-    $resultSDb = $db->Execute("SELECT SUM(quantity) as fighters from {$db->prefix}sector_defense WHERE sector_id='$_GET[sector]' and defense_type='F'");
+    $resultSDa = $db->Execute("SELECT SUM(quantity) as mines from {$db->prefix}sector_defense WHERE sector_id='?' and defense_type='M'", array($_GET['sector']));
+    $resultSDb = $db->Execute("SELECT SUM(quantity) as fighters from {$db->prefix}sector_defense WHERE sector_id='?' and defense_type='F'", array($_GET['sector']));
     $defM = $resultSDa->fields;
     $defF = $resultSDb->fields;
 
@@ -560,6 +562,7 @@ else // user requested a single sector (standard) long range scan
         echo "<tr bgcolor=\"$color_line2\"><td><strong>$l_lss</strong></td></tr>";
         echo "<tr><td>";
 
+        // DB NOT CLEANED!
         $resx = $db->SelectLimit("SELECT * from {$db->prefix}movement_log WHERE player_id != $playerinfo[player_id] AND source = $_GET[sector] ORDER BY time DESC",1);
         db_op_result($db,$resx,__LINE__,__FILE__);
         $myrow = $resx->fields;

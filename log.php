@@ -100,7 +100,7 @@ if ($sha256swordfish == $sha256adminpass) // Check if called by admin script
     }
     else
     {
-        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=$player");
+        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id='?'", array($player));
         $targetname = $res->fields;
         $playerinfo['character_name'] = $targetname['character_name'];
     }
@@ -129,7 +129,7 @@ if (empty($startdate))
     $startdate = date("Y-m-d");
 }
 
-$res = $db->Execute("SELECT * FROM {$db->prefix}logs WHERE player_id=$playerinfo[player_id] AND log_time LIKE '$startdate%' ORDER BY log_time DESC, type DESC");
+$res = $db->Execute("SELECT * FROM {$db->prefix}logs WHERE player_id='?' AND log_time LIKE '?' ORDER BY log_time DESC, type DESC", array($playerinfo['player_id'], $startdate . '%'));
 while (!$res->EOF)
 {
     $logs[] = $res->fields;
