@@ -72,6 +72,7 @@ if ($playerinfo['team']>0)
          "<br>";
 }
 
+// DB NOT CLEANED!
 $query = "SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id]";
 
 if (!empty($sort))

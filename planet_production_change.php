@@ -55,6 +55,7 @@ global $l_sector, $l_name, $l_unnamed, $l_ore, $l_organics, $l_goods, $l_energy,
 global $l_pr_noplanet, $l_team, $l_submit, $l_reset, $l_pr_planetstatus, $l_pr_menulink;
 global $planet_detect_success2, $spy_success_factor, $shipinfo;
 
+// DB NOT CLEANED!
 $query = "SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id] AND base='Y'";
 
 echo "<h1>" . $title. "</h1>\n";

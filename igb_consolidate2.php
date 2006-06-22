@@ -41,11 +41,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner='?'", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team='?'", array($playerinfo['team']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -64,7 +64,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id='?'", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -88,7 +88,7 @@ global $l_igb_currentpl, $l_igb_in, $l_igb_transferamount, $l_igb_plaffected;
 global $l_igb_transferfee, $l_igb_turncost, $l_igb_amounttransferred;
 global $l_igb_consolidate;
 
-$res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id='?'", array($dplanet_id));
+$res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($dplanet_id));
 if (!$res || $res->EOF)
 {
     $backlink = "igb_transfer.php";
@@ -113,7 +113,7 @@ if ($dest['owner'] != $playerinfo['player_id'])
 $minimum = preg_replace('/[^0-9]/','',$minimum);
 $maximum = preg_replace('/[^0-9]/','',$maximum);
 
-$query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner='?' " .
+$query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner=? " .
          "AND credits != 0";
 
 if ($minimum != 0)
@@ -126,7 +126,7 @@ if ($maximum != 0)
     $query .= " AND credits <= $maximum";
 }
 
-$query .= " AND planet_id !='?'";
+$query .= " AND planet_id !=?";
 
 // DB NOT CLEANED!
 $res = $db->Execute($query, array($playerinfo['player_id'], $dplanet_id));

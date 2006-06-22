@@ -54,10 +54,10 @@ if ($shipinfo['colonists'] == 0)
 } 
 elseif ($portinfo['port_type'] == "upgrades" || $portinfo['port_type'] == "devices") 
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET colonists=0 WHERE ship_id='?'", array($shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET colonists=0 WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 WHERE player_id='?'", array($playerinfo['player_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $dump_echo = $l_dump_dumped;
 } 

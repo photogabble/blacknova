@@ -49,7 +49,7 @@ switch ($response)
 {
     case '1': // Display
         echo "<h1>" . $title. "</h1>\n";
-        $res5 = $db->Execute("SELECT * FROM {$db->prefix}players,{$db->prefix}bounty WHERE bounty_on = player_id AND bounty_on='?'", array($bounty_on));
+        $res5 = $db->Execute("SELECT * FROM {$db->prefix}players,{$db->prefix}bounty WHERE bounty_on = player_id AND bounty_on=?", array($bounty_on));
         $j = 0;
         if ($res5)
         {
@@ -79,7 +79,7 @@ switch ($response)
             $color = $color_line1;
             for ($j=0; $j<$num_details; $j++)
             {
-                $someres = $db->execute("SELECT character_name FROM {$db->prefix}players WHERE player_id ='?'", array($bounty_details[$j]['placed_by']));
+                $someres = $db->execute("SELECT character_name FROM {$db->prefix}players WHERE player_id =?", array($bounty_details[$j]['placed_by']));
                 $details = $someres->fields;
                 echo "<tr bgcolor=\"$color\">";
                 echo "<td>&nbsp;" . number_format($bounty_details[$j]['amount'], 0, $local_number_dec_point, $local_number_thousands_sep) . "&nbsp;</td>";
@@ -126,7 +126,7 @@ switch ($response)
             die();
         }
 
-        $res = $db->Execute("SELECT * from {$db->prefix}bounty WHERE bounty_id='?'", array($bid));
+        $res = $db->Execute("SELECT * from {$db->prefix}bounty WHERE bounty_id=?", array($bid));
         if (!$res)
         {
             echo "$l_by_nobounty<br><br>";
@@ -146,9 +146,9 @@ switch ($response)
             die();
         }
 
-        $del = $db->Execute("DELETE FROM {$db->prefix}bounty WHERE bounty_id='?'", array($bid));
+        $del = $db->Execute("DELETE FROM {$db->prefix}bounty WHERE bounty_id=?", array($bid));
         $refund = $bty['amount'];
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1, credits=credits+'?' WHERE player_id='?'", array($refund, $playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1, credits=credits+? WHERE player_id=?", array($refund, $playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         echo "$l_by_canceled<br>";
         global $l_global_mmenu;
@@ -162,7 +162,7 @@ switch ($response)
         $bounty_on = preg_replace('/[^0-9]/','',$bounty_on);
         $ex = $db->Execute("SELECT * from {$db->prefix}players LEFT JOIN {$db->prefix}ships " .
                            "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id " .
-                           "WHERE {$db->prefix}ships.destroyed='N' AND {$db->prefix}players.player_id='?'", array($bounty_on));
+                           "WHERE {$db->prefix}ships.destroyed='N' AND {$db->prefix}players.player_id=?", array($bounty_on));
         if (!$ex)
         {
             echo "$l_by_notexists<br><br>";
@@ -226,7 +226,7 @@ switch ($response)
             $maxtrans = floor($score * $score * $bounty_maxvalue);
             echo "Maximum bounty available to place would be: ". number_format($maxtrans, 0, $local_number_dec_point, $local_number_thousands_sep) ."<br>";
             $previous_bounty = 0;
-            $pb = $db->Execute("SELECT SUM(amount) AS totalbounty FROM {$db->prefix}bounty WHERE bounty_on='?' AND placed_by='?'", array($bounty_on, $playerinfo['player_id']));
+            $pb = $db->Execute("SELECT SUM(amount) AS totalbounty FROM {$db->prefix}bounty WHERE bounty_on=? AND placed_by=?", array($bounty_on, $playerinfo['player_id']));
             if ($pb)
             {
                 $prev = $pb->fields;
@@ -247,7 +247,7 @@ switch ($response)
       $debug_query = $db->Execute("INSERT INTO {$db->prefix}bounty (bounty_on, placed_by, amount, bounty_reason) values " .
                                   "(?,?,?,?)", array($bounty_on, $playerinfo['player_id'] ,$amount, $reason));
       db_op_result($db,$debug_query,__LINE__,__FILE__);
-      $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1, credits=credits-'?' WHERE player_id='?'", array($amount, $playerinfo['player_id']));
+      $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1, credits=credits-? WHERE player_id=?", array($amount, $playerinfo['player_id']));
       db_op_result($db,$debug_query,__LINE__,__FILE__);
       echo "$l_by_placed<br>";
       global $l_global_mmenu;
@@ -260,7 +260,7 @@ switch ($response)
         echo "<h1>" . $title. "</h1>\n";
         $debug_query = $db->Execute("SELECT DISTINCT {$db->prefix}players.* FROM {$db->prefix}ships LEFT JOIN {$db->prefix}players " .
                                     "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id WHERE destroyed='N' AND " .
-                                    "{$db->prefix}players.player_id !='?' ORDER BY character_name ASC", array($playerinfo['player_id']));
+                                    "{$db->prefix}players.player_id !=? ORDER BY character_name ASC", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         echo '<form name="bntform" action="bounty.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
         echo "<table>";
@@ -322,7 +322,7 @@ switch ($response)
             $color = $color_line1;
             for ($i=0; $i<$num_bounties; $i++)
             {
-                $someres = $db->execute("SELECT character_name FROM {$db->prefix}players WHERE player_id='?'", array($bounties[$i]['bounty_on']));
+                $someres = $db->execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($bounties[$i]['bounty_on']));
                 $details = $someres->fields;
                 echo "<tr bgcolor=\"$color\">";
                 echo "<td><a href=bounty.php?bounty_on=" . $bounties[$i]['bounty_on'] . "&response=1>". $details['character_name'] ."</a></td>";

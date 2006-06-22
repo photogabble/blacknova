@@ -44,7 +44,7 @@ global $local_number_dec_point, $local_number_thousands_sep;
 
 if (isset($_GET['sid']))  // Called from the Spy menu
 {
-    $debug_query = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id=$playerinfo[player_id] and ship_id='$_GET[sid]'");
+    $debug_query = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id=? and ship_id=?", array($playerinfo['player_id'], $_GET['sid']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $ok = $debug_query->RecordCount();
 
@@ -54,20 +54,20 @@ if (isset($_GET['sid']))  // Called from the Spy menu
         $thisshipinfo = $shipinfo;
         $thisclassinfo = $classinfo;
         $thissectorinfo = $sectorinfo;
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE currentship='$_GET[sid]'",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE currentship=?",1,-1,array($_GET['sid']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $playerinfo = $debug_query->fields;
     
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE player_id=$playerinfo[player_id] " .
-                                        "AND ship_id=$playerinfo[currentship]",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE player_id=? " .
+                                        "AND ship_id=?",1,-1,array($playerinfo['player_id'], $playerinfo['currentship']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $shipinfo = $debug_query->fields;
     
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ship_types WHERE type_id=$shipinfo[class]",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ship_types WHERE type_id=?",1,-1,array($shipinfo['class']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $classinfo = $debug_query->fields;
     
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}universe WHERE sector_id=$shipinfo[sector_id]",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}universe WHERE sector_id=?",1,-1,array($shipinfo['sector_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $sectorinfo = $debug_query->fields;
     }
@@ -119,8 +119,8 @@ global $l_global_mmenu;
 
 if ($spy_success_factor)
 {
-    $debug_query = $db->Execute("SELECT * from {$db->prefix}spies WHERE owner_id = $playerinfo[player_id] AND " .
-                                "ship_id = $shipinfo[ship_id]");
+    $debug_query = $db->Execute("SELECT * from {$db->prefix}spies WHERE owner_id=? AND " .
+                                "ship_id=?", array($playerinfo['player_id'], $shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $ship_spies = $debug_query->RecordCount();

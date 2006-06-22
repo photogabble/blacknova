@@ -56,7 +56,7 @@ $today = date($local_date_short_format, $today);
 
 $news_array = array();
 // Select news for date range
-$res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date like '$_GET[startdate]%' order by news_id");
+$res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date like ? order by news_id", array($_GET['startdate'].'%'));
 
 // Check to see if there was any news to be shown
 if ($res->EOF && $res)

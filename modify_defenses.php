@@ -72,7 +72,7 @@ if ($playerinfo['turns']<1)
     die();
 }
 
-$result3 = $db->SelectLimit("SELECT * FROM {$db->prefix}sector_defense WHERE defense_id=$defense_id AND sector_id =$sectorinfo[sector_id]",1);
+$result3 = $db->SelectLimit("SELECT * FROM {$db->prefix}sector_defense WHERE defense_id=? AND sector_id=?",1,-1,array($defense_id, $sectorinfo['sector_id']));
 // Put the defense information into the array "defenseinfo"
 if ($result3 == 0)
 {
@@ -91,7 +91,7 @@ if ($defenseinfo['player_id'] == $playerinfo['player_id'])
 else
 {
     $defense_player_id = $defenseinfo['player_id'];
-    $resulta = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE player_id = $defense_player_id ",1);
+    $resulta = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE player_id=?",1,-1, array($defense_player_id));
     $ownerinfo = $resulta->fields;
     $defense_owner = $ownerinfo['character_name'];
 }
@@ -125,7 +125,7 @@ switch ($_POST['response'])
         $sector = $shipinfo['sector_id'] ;
         if ($defenseinfo['defense_type'] == 'F')
         {
-            $countres = $db->Execute("SELECT SUM(quantity) as totalfighters FROM {$db->prefix}sector_defense WHERE sector_id = $sector and defense_type = 'F'");
+            $countres = $db->Execute("SELECT SUM(quantity) as totalfighters FROM {$db->prefix}sector_defense WHERE sector_id=? and defense_type='F'", array($sector));
             $ttl = $countres->fields;
             $total_sector_fighters = $ttl['totalfighters'];
             include_once ("./sector_fighters.php");
@@ -133,7 +133,7 @@ switch ($_POST['response'])
         else
         {
             // Attack mines goes here
-            $countres = $db->Execute("SELECT SUM(quantity) as totalmines FROM {$db->prefix}sector_defense WHERE sector_id = $sector and defense_type = 'M'");
+            $countres = $db->Execute("SELECT SUM(quantity) as totalmines FROM {$db->prefix}sector_defense WHERE sector_id=? and defense_type = 'M'", array($sector));
             $ttl = $countres->fields;
             $total_sector_mines = $ttl['totalmines'];
 
@@ -149,8 +149,8 @@ switch ($_POST['response'])
             }
 
             echo "$l_md_bmines $playerbeams $l_mines<br>";
-            $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=energy-$playerbeams WHERE " .
-                                        "ship_id=$shipinfo[ship_id]");
+            $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=energy-? WHERE " .
+                                        "ship_id=?", array($playerbeams, $shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             explode_mines($db,$sector,$playerbeams);
@@ -208,18 +208,18 @@ switch ($_POST['response'])
         $ship_id = $shipinfo['ship_id'];
         if ($_POST['quantity'] > 0)
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense SET quantity=quantity - $_POST[quantity] WHERE " .
-                                        "defense_id = $defense_id");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense SET quantity=quantity-? WHERE " .
+                                        "defense_id=?", array($_POST['quantity'], $defense_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             if ($defenseinfo['defense_type'] == 'M')
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships set torps=torps + $_POST[quantity] WHERE ship_id = $ship_id");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships set torps=torps +? WHERE ship_id=?",array($_POST['quantity'], $ship_id));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             else
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships set fighters=fighters + $_POST[quantity] WHERE ship_id = $ship_id");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships set fighters=fighters+? WHERE ship_id=?", array($_POST['quantity'], $ship_id));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
 
@@ -228,11 +228,11 @@ switch ($_POST['response'])
         }
 
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 " .
-                                    "WHERE player_id=$playerinfo[player_id]");
+                                    "WHERE player_id=?", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$shipinfo[sector_id] WHERE " .
-                                    "player_id=$playerinfo[player_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=? WHERE " .
+                                    "player_id=?", array($shipinfo['sector_id'],$playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         echo "<h1>" . $title. "</h1>\n";
@@ -254,14 +254,14 @@ switch ($_POST['response'])
             die();
         }
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense SET fm_setting = '$_POST[mode]' WHERE defense_id = $defense_id");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense SET fm_setting =? WHERE defense_id=?",array($_POST['mode'], $defense_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 " .
-                                    "WHERE player_id=$playerinfo[player_id]");
+                                    "WHERE player_id=?", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=? WHERE ship_id=?", array($shipinfo['sector_id'], $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         if ($_POST['mode'] == 'attack')
@@ -314,7 +314,7 @@ switch ($_POST['response'])
         else
         {
             $player_id = $defenseinfo['player_id'];
-            $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$player_id");
+            $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($player_id));
             $fighters_owner = $result2->fields;
 
             if ($fighters_owner['team'] != $playerinfo['team'] || $playerinfo['team'] == 0)

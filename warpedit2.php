@@ -62,7 +62,7 @@ if (!isset($flag2))
 }
 
 $res = $db->Execute("SELECT allow_warpedit,{$db->prefix}universe.zone_id FROM {$db->prefix}zones,{$db->prefix}universe WHERE " .
-                    "sector_id=$shipinfo[sector_id] AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id");
+                    "sector_id=? AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id", array($shipinfo['sector_id']));
 $query97 = $res->fields;
 
 if ($playerinfo['turns'] < 1)
@@ -96,7 +96,7 @@ $_POST['target_sector'] = preg_replace('/[^0-9]/','',$_POST['target_sector']);
 
 echo "<h1>" . $title. "</h1>\n";
 
-$result2 = $db->Execute ("SELECT * FROM {$db->prefix}universe WHERE sector_id=$_POST[target_sector]");
+$result2 = $db->Execute ("SELECT * FROM {$db->prefix}universe WHERE sector_id=?", array($_POST['target_sector']));
 $row = $result2->fields;
 if (!$row)
 {
@@ -108,7 +108,7 @@ if (!$row)
 }
 
 $res = $db->Execute("SELECT allow_warpedit, {$db->prefix}universe.zone_id FROM {$db->prefix}zones, {$db->prefix}universe WHERE " .
-                    "sector_id=$_POST[target_sector] AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id");
+                    "sector_id=? AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id", array($_POST['target_sector']));
 $query97 = $res->fields;
 if ($query97['allow_warpedit'] == 'N' && !$oneway)
 {
@@ -120,7 +120,7 @@ if ($query97['allow_warpedit'] == 'N' && !$oneway)
     die();
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=$shipinfo[sector_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=?", array($shipinfo['sector_id']));
 $numlink_start = $debug_query->RecordCount();
 
 if ($numlink_start >= $link_max )
@@ -133,7 +133,7 @@ if ($numlink_start >= $link_max )
     die();
 }
 
-$result3 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=$shipinfo[sector_id]");
+$result3 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=?", array($shipinfo['sector_id']));
 if ($result3 > 0)
 {
     while (!$result3->EOF)
@@ -161,11 +161,11 @@ if ($result3 > 0)
                                      "VALUES (?,?)", array ($shipinfo['sector_id'], $_POST['target_sector']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET dev_warpedit=dev_warpedit - 1 WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET dev_warpedit=dev_warpedit - 1 WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $debug_query = $db->Execute ("UPDATE {$db->prefix}players SET turns=turns-1, " .
-                                     "turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+                                     "turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         if ($oneway)
@@ -174,7 +174,7 @@ if ($result3 > 0)
         }
         else
         {
-            $result4 = $db->Execute ("SELECT * FROM {$db->prefix}links WHERE link_start=$_POST[target_sector]");
+            $result4 = $db->Execute ("SELECT * FROM {$db->prefix}links WHERE link_start=?", array($_POST['target_sector']));
             if ($result4)
             {
                 while (!$result4->EOF)

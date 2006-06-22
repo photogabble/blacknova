@@ -69,13 +69,13 @@ else
 {
     if ($zoneinfo['team_zone'] == 'N')
     {
-        $result = $db->Execute("SELECT player_id, character_name FROM {$db->prefix}players WHERE player_id=$zoneinfo[owner]");
+        $result = $db->Execute("SELECT player_id, character_name FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
         $ownerinfo = $result->fields;
         $ownername = $ownerinfo['character_name'];
     }
     else
     {
-        $result = $db->Execute("SELECT team_name, creator, team_id FROM {$db->prefix}teams WHERE team_id=$zoneinfo[owner]");
+        $result = $db->Execute("SELECT team_name, creator, team_id FROM {$db->prefix}teams WHERE team_id=?", array($zoneinfo['owner']));
         $ownerinfo = $result->fields;
         $ownername = $ownerinfo['team_name'];
     }

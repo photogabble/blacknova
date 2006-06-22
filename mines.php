@@ -44,7 +44,7 @@ if (!isset($_POST['op']))
 
 //-------------------------------------------------------------------------------------------------
 
-$result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=$shipinfo[sector_id] ");
+$result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=?", array($shipinfo['sector_id']));
 $defenseinfo = $result3->fields;
 
 // Put the defense information into the array "defenseinfo"
@@ -113,7 +113,7 @@ if ($playerinfo['turns'] < 1)
 }
 
 $res = $db->Execute("SELECT allow_defenses, {$db->prefix}universe.zone_id, owner FROM {$db->prefix}zones, {$db->prefix}universe " .
-                    "WHERE sector_id=$shipinfo[sector_id] AND {$db->prefix}zones.zone_id={$db->prefix}universe.zone_id");
+                    "WHERE sector_id=? AND {$db->prefix}zones.zone_id={$db->prefix}universe.zone_id", array($shipinfo['sector_id']));
 $query97 = $res->fields;
 
 if ($query97['allow_defenses'] == 'N')
@@ -127,7 +127,7 @@ else
         if (!$owns_all)
         {
             $defense_owner = $defenses[0]['player_id'];
-            $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$defense_owner");
+            $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($defense_owner));
             $fighters_owner = $result2->fields;
 
             if ($fighters_owner['team'] != $playerinfo['team'] || $playerinfo['team'] == 0)
@@ -144,7 +144,7 @@ else
     if ($query97['allow_defenses'] == 'L')
     {
         $zone_owner = $query97['owner'];
-        $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$zone_owner");
+        $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($zone_owner));
         $zoneowner_info = $result2->fields;
 
         if ($zone_owner != $playerinfo['player_id'])
@@ -232,8 +232,8 @@ else
         {
             if ($fighter_id != 0)
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense set quantity=quantity + $_POST[numfighters], " .
-                                            "fm_setting = '$_POST[mode]' WHERE defense_id = $fighter_id");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense set quantity=quantity+?, " .
+                                            "fm_setting = ? WHERE defense_id=?", array($_POST['numfighters'], $_POST['mode'], $fighter_id));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             else
@@ -249,8 +249,8 @@ else
         {
             if ($mine_id != 0)
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense set quantity=quantity + $_POST[nummines], " .
-                                            "fm_setting = '$_POST[mode]' WHERE defense_id = $mine_id");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense set quantity=quantity+?, " .
+                                            "fm_setting=? WHERE defense_id=?", array($_POST['nummines'], $_POST['mode'], $mine_id));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             else
@@ -263,11 +263,11 @@ else
         }
 
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 " .
-                                    "WHERE player_id=$playerinfo[player_id]");
+                                    "WHERE player_id=?", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET fighters=fighters-$_POST[numfighters], torps=torps-$_POST[nummines] WHERE " .
-                                    "ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET fighters=fighters-?, torps=torps-? WHERE " .
+                                    "ship_id=?", array($_POST['numfighters'], $_POST['nummines'], $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 }

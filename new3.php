@@ -77,7 +77,7 @@ $password = htmlspecialchars($_POST['password'],ENT_QUOTES,"UTF-8");
 if ($invitation_only && !$flag)
 {
    global $l_not_invited;
-   $debug_query = $db->Execute("SELECT email FROM {$db->prefix}memberlist WHERE email='" . strtolower($email). "'");
+   $debug_query = $db->Execute("SELECT email FROM {$db->prefix}memberlist WHERE email=?", array(strtolower($email)));
    db_op_result($db,$debug_query,__LINE__,__FILE__);
    if ($debug_query)
    {

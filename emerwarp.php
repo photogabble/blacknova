@@ -45,12 +45,12 @@ if ($shipinfo['dev_emerwarp'] > 0)
 {
     $source_sector = $shipinfo['sector_id'];
     $dest_sector = mt_rand(0,$sector_max);
-    $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET sector_id='?', " .
-                                 "dev_emerwarp=dev_emerwarp-1 WHERE ship_id='?'", array($dest_sector, $shipinfo['ship_id']));
+    $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET sector_id=?, " .
+                                 "dev_emerwarp=dev_emerwarp-1 WHERE ship_id=?", array($dest_sector, $shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $debug_query = $db->Execute ("UPDATE {$db->prefix}players SET turns_used=turns_used+1, turns=turns-1 " .
-                                 "WHERE player_id='?'", array($playerinfo['player_id']));
+                                 "WHERE player_id=?", array($playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     log_move($db, $playerinfo['player_id'],$shipinfo['ship_id'],$source_sector,$dest_sector,$shipinfo['class'],$shipinfo['cloak']);

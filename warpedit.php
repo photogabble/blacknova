@@ -68,7 +68,7 @@ if ($zoneinfo['allow_warpedit'] == 'N')
 
 if ($zoneinfo['allow_warpedit'] == 'L')
 {
-    $result5 = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id='$zoneinfo[owner]'");
+    $result5 = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
     $zoneteam = $result5->fields;
 
     if ($zoneinfo[owner] != $playerinfo[player_id])
@@ -84,7 +84,7 @@ if ($zoneinfo['allow_warpedit'] == 'L')
     }
 }
 
-$result2 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=$shipinfo[sector_id] ORDER BY link_dest ASC");
+$result2 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=? ORDER BY link_dest ASC", array($shipinfo['sector_id']));
 if ($result2 < 1)
 {
     echo "$l_warp_nolink<br><br>";

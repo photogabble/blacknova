@@ -76,7 +76,7 @@ while(!$res->EOF && $res)
             $ai_count0++;
             //  FIND A TARGET 
             //  IN MY SECTOR, NOT MYSELF, NOT ON A PLANET 
-            $reso0 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and planet_id=0 and ship_id > 1");
+            $reso0 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and planet_id=0 and ship_id > 1", array($playerinfo['sector'], $playerinfo['email']));
             if (!$reso0->EOF)
             {
                 $rowo0 = $reso0->fields;
@@ -126,7 +126,7 @@ while(!$res->EOF && $res)
 
             //  FIND A TARGET 
             //  IN MY SECTOR, NOT MYSELF 
-            $reso1 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
+            $reso1 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($targetlink, $playerinfo['email']));
             if (!$reso1->EOF)
             {
                 $rowo1 = $reso1->fields;
@@ -187,7 +187,7 @@ while(!$res->EOF && $res)
 
             //  FIND A TARGET 
             //  IN MY SECTOR, NOT MYSELF 
-            $reso2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
+            $reso2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($targetlink, $playerinfo['email']));
             if (!$reso2->EOF)
             {
                 $rowo2=$reso2->fields;
@@ -263,7 +263,7 @@ while(!$res->EOF && $res)
 
                 //  FIND A TARGET 
                 //  IN MY SECTOR, NOT MYSELF 
-                $reso3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and ship_id > 1");
+                $reso3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($playerinfo['sector'], $playerinfo['email']));
                 if (!$reso3->EOF)
                 {
                     $rowo3=$reso3->fields;
@@ -351,7 +351,7 @@ if ($needed_ai_ >= 0)
         $sy2roll = mt_rand(0,19);
         $sy3roll = mt_rand(0,19);
         $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
-        $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name='$character'");
+        $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name=?", array($character));
         $namecheck = $resultnm->fields;
         $nametry = 1;
 
@@ -362,7 +362,7 @@ if ($needed_ai_ >= 0)
             $sy2roll = mt_rand(0,19);
             $sy3roll = mt_rand(0,19);
             $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
-            $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name='$character'");
+            $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name=?", array($character));
             $namecheck = $resultnm->fields;
             $nametry++;
         }
@@ -406,7 +406,7 @@ if ($needed_ai_ >= 0)
 
         // Create emailname from character
         $emailname = str_replace(" ","_",$character) . "@aiplayer";
-        $result = $db->Execute ("SELECT email, character_name, ship_name FROM {$db->prefix}players WHERE email='$emailname' OR character_name='$character' OR ship_name='$shipname'");
+        $result = $db->Execute ("SELECT email, character_name, ship_name FROM {$db->prefix}players WHERE email=? OR character_name=? OR ship_name=?", array($emailname, $character, $shipname));
         if ($result>0)
         {
             while (!$result->EOF)
@@ -466,11 +466,10 @@ if ($needed_ai_ >= 0)
 
             $ai_c_code = md5(mt_mt_rand(0,9999));
             // Add AI player record to accounts table
-            $resultaccount = $db->Execute("INSERT INTO {$raw_prefix}users (email, password, c_code, active) VALUES(" .
-                                          "'$emailname','$makepass', '$ai_c_code', 'Y')");
+            $resultaccount = $db->Execute("INSERT INTO {$raw_prefix}users (email, password, c_code, active) VALUES(?,?,?,?)", array($emailname, $makepass, $ai_c_code, 'Y'));
 
             // Get the new player's account id
-            $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email='$emailname'");
+            $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=?", array($emailname));
             db_op_result($db,$res,__LINE__,__FILE__);
             $account_id = $res->fields['account_id'];
 

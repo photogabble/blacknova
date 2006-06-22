@@ -40,11 +40,11 @@ if ($raw_prefix != $db->prefix)
     if (!empty($_SESSION['email']))
     {
         global $db;
-        $debug_query = $db->SelectLimit("SELECT account_id FROM {$raw_prefix}users WHERE email='$_SESSION[email]'",1);
+        $debug_query = $db->SelectLimit("SELECT account_id FROM {$raw_prefix}users WHERE email=?",1,-1,array($_SESSION['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $account_id = $debug_query->fields['account_id'];
 
-        $debug_query = $db->SelectLimit("SELECT player_id FROM {$db->prefix}players WHERE account_id='$account_id'",1);
+        $debug_query = $db->SelectLimit("SELECT player_id FROM {$db->prefix}players WHERE account_id=?",1,-1,array($account_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         gen_score($db,$debug_query->fields['player_id']);
     }

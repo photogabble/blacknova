@@ -61,7 +61,7 @@ if ($score_link)
     {
         $current_score = gen_score($db,$playerinfo['player_id']);
 
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE player_id='$playerinfo[player_id]'",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE player_id=?",1,-1,array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $playerinfo = $debug_query->fields;
     }
@@ -84,7 +84,7 @@ if ($shipinfo['cleared_defenses'] > ' ')
 $planetgone = FALSE;
 if ($shipinfo['on_planet'] == "Y")
 {
-    $res2 = $db->Execute("SELECT planet_id, owner FROM {$db->prefix}planets WHERE planet_id='?'", array($shipinfo['planet_id']));
+    $res2 = $db->Execute("SELECT planet_id, owner FROM {$db->prefix}planets WHERE planet_id=?", array($shipinfo['planet_id']));
     if ($res2->RecordCount() != 0)
     {
         if (strlen(dirname($_SERVER['PHP_SELF'])) > 1)
@@ -103,13 +103,13 @@ if ($shipinfo['on_planet'] == "Y")
     }
     else
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE player_id='?' AND ship_id='?'", array($playerinfo['player_id'], $playerinfo['currentship']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE player_id=? AND ship_id=?", array($playerinfo['player_id'], $playerinfo['currentship']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $planetgone = TRUE;
     }
 }
 
-$res = $db->Execute("SELECT DISTINCT link_dest FROM {$db->prefix}links WHERE link_start='?' ORDER BY link_dest ASC", array($shipinfo['sector_id']));
+$res = $db->Execute("SELECT DISTINCT link_dest FROM {$db->prefix}links WHERE link_start=? ORDER BY link_dest ASC", array($shipinfo['sector_id']));
 
 $i = 0;
 if ($res > 0)
@@ -118,8 +118,8 @@ if ($res > 0)
     {
         $links[$i]['dest'] = $res->fields['link_dest'];
         $tempvar = $links[$i]['dest'];
-        $rez = $db->SelectLimit("SELECT * FROM {$db->prefix}links WHERE link_start='$tempvar' AND " .
-                                "link_dest='$shipinfo[sector_id]'",1);
+        $rez = $db->SelectLimit("SELECT * FROM {$db->prefix}links WHERE link_start=? AND " .
+                                "link_dest=?",1,-1,array($tempvar, $shipinfo['sector_id']));
         if (!$rez->EOF)
         {
             $links[$i]['ways'] = '='; // Two-way link because it found one
@@ -129,9 +129,9 @@ if ($res > 0)
             $links[$i]['ways'] = '-'; // One-way link
         }
 
-        $rez2 = $db->SelectLimit("SELECT sector_id FROM {$db->prefix}scan_log WHERE sector_id='" . $links[$i]['dest'] . "' AND player_id ='". $playerinfo['player_id'] ."'",1);
-        $rez3 = $db->SelectLimit("SELECT source FROM {$db->prefix}movement_log WHERE source='" .$links[$i]['dest']. "' AND player_id ='". $playerinfo['player_id'] ."'",1); 
-        $rez4 = $db->SelectLimit("SELECT destination FROM {$db->prefix}movement_log WHERE destination='" .$links[$i]['dest']. "' AND player_id ='". $playerinfo['player_id'] ."'",1); 
+        $rez2 = $db->SelectLimit("SELECT sector_id FROM {$db->prefix}scan_log WHERE sector_id=? AND player_id =?",1,-1,array($links[$i]['dest'], $playerinfo['player_id']));
+        $rez3 = $db->SelectLimit("SELECT source FROM {$db->prefix}movement_log WHERE source=? AND player_id =?",1,-1, array($links[$i]['dest'], $playerinfo['player_id'])); 
+        $rez4 = $db->SelectLimit("SELECT destination FROM {$db->prefix}movement_log WHERE destination=? AND player_id =?",1,-1,array($links[$i]['dest'], $playerinfo['player_id'])); 
 
         if (!$rez2->EOF || !$rez3->EOF || !$rez4->EOF)
         {
@@ -155,7 +155,7 @@ if (!isset($links))
 calc_ownership($db,$shipinfo['sector_id']);
 $num_links = $i;
 $defenses = array(array());
-$res = $db->Execute("SELECT * FROM {$db->prefix}sector_defense, {$db->prefix}players WHERE {$db->prefix}sector_defense.sector_id='?'
+$res = $db->Execute("SELECT * FROM {$db->prefix}sector_defense, {$db->prefix}players WHERE {$db->prefix}sector_defense.sector_id=?
                                                     AND {$db->prefix}players.player_id = {$db->prefix}sector_defense.player_id ", array($shipinfo['sector_id']));
 $i = 0;
 if ($res > 0)
@@ -201,11 +201,11 @@ if ($player_insignia['rank_icon'] == 0)
 
 // First template begins here.
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id='?' AND notified='N'", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? AND notified='N'", array($playerinfo['player_id']));
 $gotmail = $result->RecordCount();
 if ($gotmail > 0)
 {
-  $debug_query = $db->Execute("UPDATE {$db->prefix}messages SET notified='Y' WHERE recp_id='?'", array($playerinfo['player_id']));
+  $debug_query = $db->Execute("UPDATE {$db->prefix}messages SET notified='Y' WHERE recp_id=?", array($playerinfo['player_id']));
   db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 
@@ -283,7 +283,7 @@ $template->assign("l_planet_in_sec", $l_planet_in_sec);
 $template->assign("l_tradingport", $l_tradingport);
 
 $res = '';
-$res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id='?'", array($shipinfo['sector_id']));
+$res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id=?", array($shipinfo['sector_id']));
 
 $i = 0;
 $successful_display = 0;
@@ -341,7 +341,7 @@ while (!$res->EOF)
     
         if ($uber == 0 && $spy_success_factor)  // Still not yet 'visible'
         {
-            $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id='?' AND owner_id='?'", array($hiding_planet[$i]['planet_id'], $playerinfo['player_id']));
+            $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($hiding_planet[$i]['planet_id'], $playerinfo['player_id']));
             if ($res_s->RecordCount())
             {
                  $uber = 1;
@@ -359,7 +359,7 @@ while (!$res->EOF)
         $planetavg = 0;
         if ($planets[$i]['owner'] != 0)
         {
-            $result5 = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id='?'", array($planets[$i]['owner']));
+            $result5 = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($planets[$i]['owner']));
             $planet_owner = $result5->fields;
 
             $planetavg = $planets[$i]['computer'] + $planets[$i]['sensors'] + $planets[$i]['beams'] + $planets[$i]['torp_launchers'] + $planets[$i]['shields'] + $planets[$i]['cloak'] + ($planets[$i]['colonists'] / ($colonist_limit / 54));
@@ -420,8 +420,8 @@ if ($shipinfo['sector_id'] != 1)
                               LEFT JOIN {$db->prefix}players ON {$db->prefix}ships.player_id={$db->prefix}players.player_id
                               LEFT JOIN {$db->prefix}teams
                               ON {$db->prefix}players.team = {$db->prefix}teams.team_id
-                              WHERE {$db->prefix}ships.player_id!='?'
-                              AND {$db->prefix}ships.sector_id='?'
+                              WHERE {$db->prefix}ships.player_id!=?
+                              AND {$db->prefix}ships.sector_id=?
                               AND {$db->prefix}ships.on_planet='N'", array($playerinfo['player_id'], $shipinfo['sector_id']));
 
     $ships_present = $result4->RecordCount();
@@ -447,7 +447,7 @@ if ($shipinfo['sector_id'] != 1)
 
             if ($roll < $success)
             {
-                $debug_query = $db->CacheSelectLimit("SELECT image,name FROM {$db->prefix}ship_types WHERE type_id=$row[class]",1);
+                $debug_query = $db->CacheSelectLimit("SELECT image,name FROM {$db->prefix}ship_types WHERE type_id=?",1,-1,array($row['class']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 $shipimage = $debug_query->fields;
                 $visible_ship_array[$i]['shipimage']      = $shipimage['image'];
@@ -470,7 +470,7 @@ if ($shipinfo['sector_id'] != 1)
 $shipseen = 0;
 if ($shipinfo['sector_id'] != '1')
 {
-    $resx = $db->SelectLimit("SELECT player_id, ship_class, destination from {$db->prefix}movement_log WHERE player_id != $playerinfo[player_id] AND source = $shipinfo[sector_id] ORDER BY time DESC",1);
+    $resx = $db->SelectLimit("SELECT player_id, ship_class, destination from {$db->prefix}movement_log WHERE player_id!=? AND source=? ORDER BY time DESC",1,-1,array($playerinfo['player_id'], $shipinfo['sector_id']));
     db_op_result($db,$resx,__LINE__,__FILE__);
     $shipseen = $resx->fields;
     if ($shipseen !== FALSE)
@@ -544,7 +544,7 @@ $num_traderoutes = 0;
 
 $traderoutes = array(array());
 // Port query begin
-$query = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE source_type='P' AND source_id='?' AND owner='?' ORDER BY dest_id ASC", array($shipinfo['sector_id'], $playerinfo['player_id']));
+$query = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE source_type='P' AND source_id=? AND owner=? ORDER BY dest_id ASC", array($shipinfo['sector_id'], $playerinfo['player_id']));
 while (!$query->EOF)
 {
     $traderoutes[$i] = $query->fields;
@@ -556,7 +556,7 @@ while (!$query->EOF)
 
 // Sector Defense Trade route query begin
 // This is still under developement
-$query = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE source_type='D' AND source_id='?' AND owner='?' ORDER BY dest_id ASC", array($shipinfo['sector_id'], $playerinfo['player_id']));
+$query = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE source_type='D' AND source_id=? AND owner=? ORDER BY dest_id ASC", array($shipinfo['sector_id'], $playerinfo['player_id']));
 while (!$query->EOF)
 {
     $traderoutes[$i] = $query->fields;
@@ -567,7 +567,7 @@ while (!$query->EOF)
 // Defense query end
 
 // Personal planet traderoute type query begin
-$query = $db->Execute("SELECT * FROM {$db->prefix}planets, {$db->prefix}traderoutes WHERE source_type='L' AND source_id={$db->prefix}planets.planet_id AND {$db->prefix}planets.sector_id='?' AND {$db->prefix}traderoutes.owner='?'", array($shipinfo['sector_id'], $playerinfo['player_id']));
+$query = $db->Execute("SELECT * FROM {$db->prefix}planets, {$db->prefix}traderoutes WHERE source_type='L' AND source_id={$db->prefix}planets.planet_id AND {$db->prefix}planets.sector_id=? AND {$db->prefix}traderoutes.owner=?", array($shipinfo['sector_id'], $playerinfo['player_id']));
 while (!$query->EOF)
 {
     $traderoutes[$i] = $query->fields;
@@ -578,7 +578,7 @@ while (!$query->EOF)
 // Personal planet traderoute type query end
 
 // team planet traderoute type query begin
-$query = $db->Execute("SELECT * FROM {$db->prefix}planets, {$db->prefix}traderoutes WHERE source_type='C' AND source_id={$db->prefix}planets.planet_id AND {$db->prefix}planets.sector_id='?' AND {$db->prefix}traderoutes.owner='?'", array($shipinfo['sector_id'], $playerinfo['player_id']));
+$query = $db->Execute("SELECT * FROM {$db->prefix}planets, {$db->prefix}traderoutes WHERE source_type='C' AND source_id={$db->prefix}planets.planet_id AND {$db->prefix}planets.sector_id=? AND {$db->prefix}traderoutes.owner=?", array($shipinfo['sector_id'], $playerinfo['player_id']));
 while (!$query->EOF)
 {
     $traderoutes[$i] = $query->fields;
@@ -603,7 +603,7 @@ if ($num_traderoutes != 0)
         }
         else
         {
-            $query = $db->SelectLimit("SELECT name FROM {$db->prefix}planets WHERE planet_id=" . $traderoutes[$i]['source_id'],1);
+            $query = $db->SelectLimit("SELECT name FROM {$db->prefix}planets WHERE planet_id=?",1,-1,array($traderoutes[$i]['source_id']));
             if (!$query || $query->RecordCount() == 0)
             {
                 $traderoutes[$i]['description'] = $l_unknown;
@@ -632,7 +632,7 @@ if ($num_traderoutes != 0)
         }
         else
         {
-            $query = $db->Execute("SELECT name FROM {$db->prefix}planets WHERE planet_id='?'", array($traderoutes[$i]['dest_id']));
+            $query = $db->Execute("SELECT name FROM {$db->prefix}planets WHERE planet_id=?", array($traderoutes[$i]['dest_id']));
             if (!$query || $query->RecordCount() == 0)
             {
                 $traderoutes[$i]['description2'] = $l_unknown;
@@ -658,7 +658,7 @@ if ($num_traderoutes != 0)
 $template->assign("traderoutes", $traderoutes);
 
 // Pull the presets for the player from the db.
-$debug_query = $db->Execute("SELECT preset FROM {$db->prefix}presets WHERE player_id='?'", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT preset FROM {$db->prefix}presets WHERE player_id=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $i = 0;
 while (!$debug_query->EOF)

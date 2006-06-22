@@ -31,7 +31,7 @@ include_once ("./global_includes.php");
         die();
     }
 
-    $res2 = $db->Execute("SELECT SUM(amount) as total_bounty FROM {$db->prefix}bounty WHERE placed_by = 0 AND bounty_on = $playerinfo[player_id]");
+    $res2 = $db->Execute("SELECT SUM(amount) as total_bounty FROM {$db->prefix}bounty WHERE placed_by = 0 AND bounty_on=?", array($playerinfo['player_id']));
     if ($res2)
     {
         $bty = $res2->fields;
@@ -59,10 +59,10 @@ include_once ("./global_includes.php");
                 }
                 else
                 {
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-$bty[total_bounty] WHERE player_id = $playerinfo[player_id]");
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-? WHERE player_id=?", array($bty['total_bounty'], $playerinfo['player_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                    $debug_query = $db->Execute("DELETE from {$db->prefix}bounty WHERE bounty_on = $playerinfo[player_id] AND placed_by = 0");
+                    $debug_query = $db->Execute("DELETE from {$db->prefix}bounty WHERE bounty_on=? AND placed_by = 0", array($playerinfo['player_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     echo $l_port_bountypaid . "<br><a href=\"port.php\">" . $l_port_bountypaid2 . "</a><br>";
@@ -257,7 +257,7 @@ include_once ("./global_includes.php");
     {
         echo "    <td>$l_spy</td>\n";
         echo "    <td>". number_format($spy_price, 0, $local_number_dec_point, $local_number_thousands_sep) ."</td>\n";
-        $res = $db->Execute("SELECT count(spy_id) as spy_num from {$db->prefix}spies WHERE owner_id=$playerinfo[player_id] AND ship_id=$shipinfo[ship_id]");
+        $res = $db->Execute("SELECT count(spy_id) as spy_num from {$db->prefix}spies WHERE owner_id=? AND ship_id=?", array($playerinfo['player_id'], $shipinfo['ship_id']));
         $spy_num = number_format($res->fields['spy_num'], 0, $local_number_dec_point, $local_number_thousands_sep);
         echo "    <td>$spy_num</td>\n";
         echo "    <td>$l_unlimited</td>\n";

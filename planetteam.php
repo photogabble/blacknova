@@ -50,7 +50,7 @@ if (!isset($planetinfo))
 
 $planet_id = preg_replace('/[^0-9]/','',$planet_id);
 
-$result2 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+$result2 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
 if ($result2)
 {
     $planetinfo=$result2->fields;
@@ -62,8 +62,8 @@ if ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team'] == 
     if ($command == "planetteam")
     {
         echo ("$l_teamm_toteam<br>");
-        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team='$playerinfo[team]', owner=$playerinfo[player_id] " .
-                                    "WHERE planet_id=$planet_id");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=?, owner=? " .
+                                    "WHERE planet_id=?", array($playerinfo['team'], $playerinfo['player_id'], $planet_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $ownership = calc_ownership($db,$shipinfo['sector_id']);
         planetcount_news($db, $playerinfo['player_id']);
@@ -76,16 +76,16 @@ if ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team'] == 
     if ($command == "planetpersonal" && $planetinfo['team'] == $playerinfo['team'])
     {
         echo ("$l_teamm_topersonal<br>");
-        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team='0', owner=$playerinfo[player_id] WHERE " .
-                                    "planet_id=$planet_id");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team='0', owner=? WHERE " .
+                                    "planet_id=?", array($playerinfo['player_id'], $planet_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $ownership = calc_ownership($db,$shipinfo['sector_id']);
         planetcount_news($db, $playerinfo['player_id']);
 
         // Kick other players off the planet
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE on_planet='Y' AND planet_id = $planet_id " .
-                                    "AND player_id != $playerinfo[player_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE on_planet='Y' AND planet_id=? " .
+                                    "AND player_id!=?", array($planet_id, $playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         if (!empty($ownership))

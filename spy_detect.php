@@ -147,11 +147,11 @@ $line_color = $color_line2;
 
     if (!empty($info_id))
     {
-        $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=$playerinfo[player_id] AND det_id='$info_id'");
+        $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=? AND det_id=?", array($playerinfo['player_id'], $info_id));
         if ($res->RecordCount())
         {
             echo "<font color=red style=\"font-size: 1.5em;\">$l_spy_infodeleted<br><br></font>";
-            $res = $db->Execute("DELETE FROM {$db->prefix}detect WHERE det_id='$info_id'");
+            $res = $db->Execute("DELETE FROM {$db->prefix}detect WHERE det_id=?", array($info_id));
         }
         else 
         {
@@ -173,7 +173,7 @@ $line_color = $color_line2;
         $by2 = "det_time desc";
     }
   
-    $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=$playerinfo[player_id] ORDER BY $by2");
+    $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=? ORDER BY ?", array($playerinfo['player_id'], $by2));
     if (!$res->RecordCount())
     {
         echo "$l_spy_noinfo<br><br>";

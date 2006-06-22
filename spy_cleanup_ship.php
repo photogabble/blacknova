@@ -249,10 +249,10 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         if ($set[$type] != "DISABLED") 
         {  
             $found = 0;
-            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+$spy_cleanup_ship_turns[$type], turns=turns-$spy_cleanup_ship_turns[$type], credits=credits-$spy_cleanup_ship_credits[$type] WHERE player_id=$playerinfo[player_id] ");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+?, turns=turns-?, credits=credits-? WHERE player_id=? ", array($spy_cleanup_ship_turns[$type], $spy_cleanup_ship_turns[$type], $spy_cleanup_ship_credits[$type], $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}ships.cloak, {$db->prefix}players.character_name FROM {$db->prefix}ships INNER JOIN {$db->prefix}players ON {$db->prefix}ships.player_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}spies ON {$db->prefix}players.player_id={$db->prefix}spies.owner_id WHERE {$db->prefix}spies.ship_id=$shipinfo[ship_id] AND {$db->prefix}spies.active='Y' AND {$db->prefix}spies.planet_id='0'");
+            $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}ships.cloak, {$db->prefix}players.character_name FROM {$db->prefix}ships INNER JOIN {$db->prefix}players ON {$db->prefix}ships.player_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}spies ON {$db->prefix}players.player_id={$db->prefix}spies.owner_id WHERE {$db->prefix}spies.ship_id=? AND {$db->prefix}spies.active='Y' AND {$db->prefix}spies.planet_id='0'", array($shipinfo['ship_id']));
             while (!$res->EOF)
             {
                 $info = $res->fields;
@@ -303,7 +303,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
                     $l_spy_spyfoundonship2 = str_replace("[player]", "<strong>$info[character_name]</strong>", $l_spy_spyfoundonship);
                     $l_spy_spyfoundonship2 = str_replace("[spyid]", "<strong>$info[spy_id]</strong>", $l_spy_spyfoundonship2);
                     echo "$l_spy_spyfoundonship2<br>";
-                    $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=$info[spy_id]");
+                    $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=?", array($info['spy_id']));
                     playerlog($db,$info['owner_id'], "LOG_SHIPSPY_KILLED", "$info[spy_id]|$playerinfo[character_name]|$shipinfo[name]");
                 }
                 $res->MoveNext();

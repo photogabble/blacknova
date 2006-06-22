@@ -53,6 +53,7 @@ if ($playerinfo['team'] == 0)
     return;
 }
 
+// DB NOT CLEANED!
 $query = "SELECT * FROM {$db->prefix}planets WHERE team=$playerinfo[team]";
 
 if (!empty($sort))
@@ -138,7 +139,7 @@ else
         }
 
         $owner = $planet[$i]['owner'];
-        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=$owner");
+        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($owner));
         $player = $res->fields['character_name'];
 
         echo "<tr bgcolor=\"$color\">";

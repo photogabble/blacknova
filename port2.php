@@ -300,7 +300,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
 {
     if ($zoneinfo[team_zone] == 'N')
     {
-        $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$zoneinfo[owner]");
+        $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
         $ownerinfo = $res->fields;
 
         if ($playerinfo[player_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
@@ -670,9 +670,10 @@ else
                     </tr>";
 
             // Total cost is " . number_format($total_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . " credits.<br><br>";
-            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-$total_cost,turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-?,turns=turns-1, turns_used=turns_used+1 WHERE player_id=?", array($total_cost, $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
+            // DB NOT CLEANED!
             $query = "UPDATE {$db->prefix}ships SET class=$shipinfo[class] ";
 
             if ($_POST['hull_upgrade'] > $shipinfo['hull'])
@@ -983,10 +984,10 @@ else
             }
 
             // Update ship cargo, credits and turns
-            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-$total_cost WHERE player_id=$playerinfo[player_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1, rating=rating+1, credits=credits-? WHERE player_id=?", array($total_cost, $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET ore=ore+$_POST[trade_ore], organics=organics+$_POST[trade_organics], goods=goods+$_POST[trade_goods], energy=energy+$_POST[trade_energy] WHERE ship_id=$shipinfo[ship_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET ore=ore+?, organics=organics+?, goods=goods+?, energy=energy+? WHERE ship_id=?", array($_POST['trade_ore'], $_POST['trade_organics'], $_POST['trade_goods'], $_POST['trade_energy'], $shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             // Make all trades positive to change port values
@@ -996,7 +997,7 @@ else
             $_POST['trade_energy']     = abs($_POST['trade_energy']);
 
             // Decrease supply and demand on port
-            $debug_query = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore-$_POST[trade_ore], port_organics=port_organics-$_POST[trade_organics], port_goods=port_goods-$_POST[trade_goods], port_energy=port_energy-$_POST[trade_energy] WHERE sector_id=$portinfo[sector_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore-?, port_organics=port_organics-?, port_goods=port_goods-?, port_energy=port_energy-? WHERE sector_id=?", array($_POST['trade_ore'], $_POST['trade_organics'], $_POST['trade_goods'], $_POST['trade_energy'], $portinfo['sector_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "$l_trade_complete.<br><br>";
         }

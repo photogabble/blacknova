@@ -42,7 +42,7 @@ $title = $l_sdf_title;
 include_once ("./header.php");
 updatecookie($db);
 
-$query = "SELECT * FROM {$db->prefix}sector_defense WHERE player_id='?'";
+$query = "SELECT * FROM {$db->prefix}sector_defense WHERE player_id=?";
 
 if (!empty($sort))
 {

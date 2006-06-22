@@ -119,15 +119,15 @@ if (!isset($yplanet))
 
 if ($zoneinfo['team_zone'] == 'N')
 {
-    $result = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email='$_SESSION[email]'"); // Accounts are in the root tables.
+    $result = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=?", array($_SESSION['email'])); // Accounts are in the root tables.
     $account_id = $result->fields['account_id'];
 
-    $result = $db->Execute("SELECT player_id FROM {$db->prefix}players WHERE account_id='$account_id'");
+    $result = $db->Execute("SELECT player_id FROM {$db->prefix}players WHERE account_id=?", array($account_id));
     $ownerinfo = $result->fields;
 }
 else
 {
-    $result = $db->Execute("SELECT creator, team_id FROM {$db->prefix}teams WHERE creator=$zoneinfo[owner]");
+    $result = $db->Execute("SELECT creator, team_id FROM {$db->prefix}teams WHERE creator=?", array($zoneinfo['owner']));
     $ownerinfo = $result->fields;
 }
 
@@ -153,7 +153,7 @@ if ($_GET['command'] == 'change')
         $name = mysql_escape_string($name);
     }
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}zones SET allow_attack='$_POST[attacks]', allow_warpedit='$_POST[warpedits]', allow_planet='$_POST[planets]', allow_trade='$_POST[trades]', allow_defenses='$_POST[defenses]' WHERE zone_id='$zoneinfo[zone_id]'");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}zones SET allow_attack=?, allow_warpedit=?, allow_planet=?, allow_trade=?, allow_defenses=? WHERE zone_id=?", array($_POST['attacks'], $_POST['warpedits'], $_POST['planets'], $_POST['trades'], $_POST['defenses'], $zoneinfo['zone_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     global $l_global_mmenu;

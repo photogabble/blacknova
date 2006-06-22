@@ -144,7 +144,7 @@ $line_color = $color_line2;
 
 // Changing your spy settings on enemy planet
 
-$res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id = '$playerinfo[player_id]' AND spy_id = '$spy_id'");
+$res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id=? AND spy_id=?", array($playerinfo['player_id'], $spy_id));
 $spy = $res->fields;
   
 if ($res->RecordCount())
@@ -247,16 +247,16 @@ if ($res->RecordCount())
 
         if ($dismiss)
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type='$mode', job_id='0', spy_percent='0.0', " .
-                                        "try_sabot='$try_sabot', try_inter='$try_inter', try_birth='$try_birth', " .
-                                        "try_steal='$try_steal', try_torps='$try_torps', try_fits='$try_fits', " .
-                                        "try_capture='$try_capture' WHERE spy_id=$spy_id ");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type=?, job_id='0', spy_percent='0.0', " .
+                                        "try_sabot=?, try_inter=?, try_birth=?, " .
+                                        "try_steal=?, try_torps=?, try_fits=?, " .
+                                        "try_capture=? WHERE spy_id=?", array($mode, $try_sabot, $try_inter, $try_birth, $try_steal, $try_torps, $try_fits, $try_capture, $spy_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "$l_spy_changed2<br>";
         }
         else
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type='$mode', try_sabot='$try_sabot', try_inter='$try_inter', try_birth='$try_birth', try_steal='$try_steal', try_torps='$try_torps', try_fits='$try_fits', try_capture='$try_capture' WHERE spy_id=$spy_id ");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type=?, try_sabot=?, try_inter=?, try_birth=?, try_steal=?, try_torps=?, try_fits=?, try_capture=? WHERE spy_id=?", array($mode, $try_sabot, $try_inter, $try_birth, $try_steal, $try_torps, $try_fits, $try_capture, $spy_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "$l_spy_changed1<br>";
         }

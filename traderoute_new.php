@@ -31,7 +31,7 @@ global $db, $editroute;
 
 if (!empty($_GET['traderoute_id']))
 {
-    $result = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE traderoute_id=$_GET[traderoute_id]");
+    $result = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE traderoute_id=?", array($_GET['traderoute_id']));
     if (!$result || $result->EOF)
     {
         traderoute_die($l_tdr_editerr);
@@ -65,7 +65,7 @@ echo $l_tdr_traderoute . "</strong><p>";
 //---------------------------------------------------
 //---- Get Planet info team and Personal (BEGIN) ----
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id] ORDER BY sector_id");
+$result = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE owner=? ORDER BY sector_id", array($playerinfo['player_id']));
 
 $num_planets = $result->RecordCount();
 $i = 0;
@@ -81,7 +81,7 @@ while (!$result->EOF)
     $result->MoveNext();
 }
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE team=$playerinfo[team] AND team!=0 AND owner!=$playerinfo[player_id] ORDER BY sector_id");
+$result = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE team=? AND team!=0 AND owner!=? ORDER BY sector_id", array($playerinfo['team'], $playerinfo['player_id']));
 $num_team_planets = $result->RecordCount();
 $i = 0;
 while (!$result->EOF)

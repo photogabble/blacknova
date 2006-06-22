@@ -143,7 +143,7 @@ if ($to != '')
 if (strpos($to, $l_sendm_ally) === false)
 {
     $timestamp = date("Y-m-d H:i:s");
-    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE character_name='?'", array($to));
+    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE character_name=?", array($to));
     $target_info = $res->fields;
     $content = htmlspecialchars($content,ENT_QUOTES,"UTF-8");
     $subject = htmlspecialchars($subject,ENT_QUOTES,"UTF-8");
@@ -157,9 +157,9 @@ else
     $to = str_replace ($l_sendm_ally, "", $to);
     $to = trim($to);
 
-    $res = $db->Execute("SELECT team_id FROM {$db->prefix}teams WHERE team_name='?'", array($to));
+    $res = $db->Execute("SELECT team_id FROM {$db->prefix}teams WHERE team_name=?", array($to));
     $row = $res->fields;
-    $res2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE team='?'", array($row['team_id']));
+    $res2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE team=?", array($row['team_id']));
 
     // New lines to prevent SQL injection. Bad stuff.
     $content = htmlspecialchars($content,ENT_QUOTES,"UTF-8");

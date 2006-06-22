@@ -45,7 +45,7 @@ if (!isset($_GET['ship_id']))
 
 $debug_query = $db->Execute("SELECT {$db->prefix}ships.player_id, name, character_name, sector_id FROM {$db->prefix}ships " .
                             "LEFT JOIN {$db->prefix}players ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id " .
-                            "WHERE ship_id=$_GET[ship_id]");
+                            "WHERE ship_id=?", array($_GET['ship_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $otherplayer = $debug_query->fields;

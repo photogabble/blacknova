@@ -58,8 +58,8 @@ if (!get_info($db) || $playerinfo['acl'] < 128) // Check player's ACL to ensure 
     die();
 }
 
-$debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE '$ip_address' LIKE ban_mask OR '$client_ip_address' " .
-                                "LIKE ban_mask OR '$proxy_address' LIKE ban_mask",1);
+$debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE ? LIKE ban_mask OR ? " .
+                                "LIKE ban_mask OR ? LIKE ban_mask",1,-1,array($ip_address, $client_ip_address, $proxy_address));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 if ($debug_query && !$debug_query->EOF)

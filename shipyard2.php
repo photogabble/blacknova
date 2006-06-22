@@ -244,25 +244,25 @@ else // Now we really do buy the ship
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Get new ship_id
-    $debug_query = $db->Execute("SELECT MAX(ship_id) as ship_id from {$db->prefix}ships WHERE player_id=$playerinfo[player_id]" .
-                        " AND class='$_POST[stype]'");
+    $debug_query = $db->Execute("SELECT MAX(ship_id) as ship_id from {$db->prefix}ships WHERE player_id=?" .
+                        " AND class=?", array($playerinfo['player_id'], $_POST['stype']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $ship_id = $debug_query->fields['ship_id'];
 
     // Insert current ship in players table
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET currentship=$ship_id " . 
-                                "WHERE player_id=$playerinfo[player_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET currentship=? " . 
+                                "WHERE player_id=?", array($ship_id, $playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     if ($spy_success_factor)
     {
         spy_buy_new_ship($db,$shipinfo['ship_id']);
     }
-    $debug_query = $db->Execute("DELETE FROM {$db->prefix}ships WHERE ship_id=$shipinfo[ship_id]");
+    $debug_query = $db->Execute("DELETE FROM {$db->prefix}ships WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Now update player credits & turns
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$sship[turnstobuild], turns_used=turns_used+$sship[turnstobuild], credits=credits-$totalcost WHERE player_id=$playerinfo[player_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+?, credits=credits-? WHERE player_id=?", array($sship['turnstobuild'], $sship['turnstobuild'], $totalcost, $playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     gen_score($db,$playerinfo['player_id']);

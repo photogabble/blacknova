@@ -52,56 +52,56 @@ if (!isset($pay))
 
 if ($shipinfo['ore'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set ore=0 WHERE ship_id=$shipinfo[ship_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set ore=0 WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['ore'] = 0;
 }
 
 if ($shipinfo['organics'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set organics=0 WHERE ship_id=$shipinfo[ship_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set organics=0 WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['organics'] = 0;
 }
 
 if ($shipinfo['energy'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=0 WHERE ship_id=$shipinfo[ship_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=0 WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['energy'] = 0;
 }
 
 if ($shipinfo['goods'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set goods=0 WHERE ship_id=$shipinfo[ship_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set goods=0 WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['goods'] = 0;
 }
 
 if ($portinfo['port_ore'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_ore=0 WHERE sector_id=$shipinfo[sector_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_ore=0 WHERE sector_id=?", array($shipinfo['sector_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_ore'] = 0;
 }
 
 if ($portinfo['port_goods']<0)
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}uports set port_goods=0 WHERE sector_id=$shipinfo[sector_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}uports set port_goods=0 WHERE sector_id=?", array($shipinfo['sector_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_goods'] = 0;
 }
 
 if ($portinfo['port_organics']<0)
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_organics=0 WHERE sector_id=$shipinfo[sector_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_organics=0 WHERE sector_id=?", array($shipinfo['sector_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_organics'] = 0;
 }
 
 if ($portinfo['port_energy']<0)
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_energy=0 WHERE sector_id=$shipinfo[sector_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_energy=0 WHERE sector_id=?", array($shipinfo['sector_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_energy'] = 0;
 }
@@ -130,7 +130,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
 {
     if ($zoneinfo[team_zone] == 'N')
     {
-        $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$zoneinfo[owner]");
+        $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
         $ownerinfo = $res->fields;
 
         if ($playerinfo[player_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
