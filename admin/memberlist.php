@@ -42,8 +42,7 @@ if ($_POST['delete'] == 'delete')
     {
         echo "Deleting $_POST[email] from the Invitation list ";
         $silent=0;
-        $query = "DELETE FROM {$db->prefix}memberlist where email='$_POST[email]'";
-        $debug_query = $db->Execute($query);
+        $debug_query = $db->Execute("DELETE FROM {$db->prefix}memberlist where email=?", array($_POST['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
@@ -57,14 +56,13 @@ elseif ($_POST['action'] == 'save')
     if ($_POST['member_id'] == '')
     {
         $silent=0;
-        $query = "INSERT INTO {$db->prefix}memberlist (email) VALUES (?)",array($_POST['email']));
-        $debug_query = $db->Execute($query);
+        $debug_query = $db->Execute("INSERT INTO {$db->prefix}memberlist (email) VALUES (?)",array($_POST['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     else
     {
         $silent=0;
-        $debug_query = $db->Execute("UPDATE {$db->prefix}memberlist SET email=? where member_id=?", array($_POST['email'],$_POST['member_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}memberlist SET email=? where member_id=?", array($_POST['email'], $_POST['member_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
@@ -78,7 +76,7 @@ elseif (($_POST['edit'] == 'edit') || ($_POST['add'] == 'add'))
     $member_id = '';
     if ($_POST['email'] != '' && $_POST['edit'] == 'edit')
     {
-        $debug_query = $db->SelectLimit("SELECT member_id from {$db->prefix}memberlist where email='$_POST[email]'",1);
+        $debug_query = $db->SelectLimit("SELECT member_id from {$db->prefix}memberlist where email=?",1,-1,array($_POST['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $member_id = $debug_query->fields['member_id'];
         $email = $_POST['email'];

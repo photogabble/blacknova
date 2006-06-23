@@ -62,17 +62,17 @@ else
             $res = $db->Execute("SELECT * FROM {$db->prefix}players LEFT JOIN {$db->prefix}ships " .
                                 "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id " .
                                 "LEFT JOIN {$raw_prefix}users ON {$db->prefix}players.account_id = {$raw_prefix}users.account_id " .
-                                "WHERE {$db->prefix}players.player_id=$_POST[user]");
+                                "WHERE {$db->prefix}players.player_id=?", array($_POST['user']));
             $row = $res->fields;
 
-            $res = $db->Execute("select * from {$db->prefix}ship_types WHERE type_id=$row[class]");
+            $res = $db->Execute("SELECT * FROM {$db->prefix}ship_types WHERE type_id=?", array($row['class']));
             $shiptypeinfo = $res->fields;
 
-            $res2 = $db->Execute("select * FROM {$db->prefix}ships WHERE player_id=$_POST[user]");
+            $res2 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id=?", array($_POST['user']));
             $row2 = $res2->fields;
 
             $res4 = $db->Execute("SELECT SUM(amount) as bounty FROM {$db->prefix}bounty WHERE placed_by = 0 AND " .
-                                 "bounty_on = $_POST[user]");
+                                 "bounty_on =?", array($_POST['user']));
             $row4 = $res4->fields;
 
             if ($row4['bounty'] == '')
@@ -132,14 +132,14 @@ else
             $template->assign("sector_id", $row['sector_id']);
             $template->assign("bounty", $bbounty);
 
-            $res3 = $db->Execute("select * FROM {$db->prefix}ibank_accounts WHERE player_id=$_POST[user]");
+            $res3 = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($_POST['user']));
             $row3 = $res3->fields;
 
             $template->assign("igb_balance", $row3['balance']);
             $template->assign("igb_loan", $row3['loan']);
             $template->assign("igb_loantime", $row3['loantime']);
 
-            $res = $db->Execute("select * FROM {$db->prefix}planets WHERE owner=$_POST[user]");
+            $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE owner=?", array($_POST['user']));
 
             $stuff = array();
 
@@ -243,35 +243,35 @@ else
             {
                 // If they didnt set the password, do not overwrite it.
                 echo "Updating PLAYERS table";
-                $query = "UPDATE {$db->prefix}players SET character_name='$_POST[character_name]', " .
-                         "credits='$_POST[credits]', turns='$_POST[turns]', " .
-                         "turns_used='$_POST[turns_used]' " .
-                         "WHERE player_id='$_POST[user]'";
-                $debug_query = $db->Execute($query);
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET character_name=?, " .
+                         "credits=?, turns=?, " .
+                         "turns_used=? " .
+                         "WHERE player_id=?", array($_POST['character_name'], $_POST['credits'], $_POST['turns'], $_POST['turns_used'], $_POST['user']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 echo "<br>Updating ACCOUNTS table";
-                $query = "UPDATE {$raw_prefix}users SET email='$_POST[email]', notes='$_POST[account_notes]', active ='$_POST[active]', c_code='$_POST[c_code]' " .
-                         "WHERE email='$_POST[email]'";
-                $debug_query = $db->Execute($query);
+                $debug_query = $db->Execute("UPDATE {$raw_prefix}users SET email=?, notes=?, active=?, c_code=? " .
+                         "WHERE email=?", array($_POST['email'], $_POST['account_notes'], $_POST['active'], $_POST['c_code'], $_POST['email']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             else
             {
                 // If they did set the password, update it.
                 echo "<br>Updating PLAYERS table";
-                $query = "UPDATE {$db->prefix}players SET character_name='$_POST[character_name]', " .
-                         "email='$_POST[email]', credits='$_POST[credits]', turns='$_POST[turns]', " .
-                         "active ='$_POST[active]', " .
-                         "turns_used='$_POST[turns_used]', password='" . sha1($_POST['password2']) ."' " .
-                         "WHERE player_id='$_POST[user]'";
-                $debug_query = $db->Execute($query);
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET character_name=?, " .
+                         "email=?, credits=?, turns=?, " .
+                         "active=?, " .
+                         "turns_used=?, password=? " .
+                         "WHERE player_id=?", array($_POST['character_name'], $_POST['email'], $_POST['credits'], $_POST['turns'], $_POST['active'], $_POST['turns_used'], sha256($_POST['password2']), $_POST['user']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
 
+            // varibles of SHIPS not settable from admin
+            // on_planet
+            // planet_id
             echo "<br>Updating SHIPS table ";
-            $query = "UPDATE {$db->prefix}ships SET ";
-            $query .= "class='$_POST[ship_class]', name='$_POST[ship_name]', destroyed='$_POST[destroyed]', " .
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET " .
+                      "class='$_POST[ship_class]', name='$_POST[ship_name]', destroyed='$_POST[destroyed]', " .
                       "hull='$_POST[hull]', engines='$_POST[engines]', pengines='$_POST[pengines]', power='$_POST[power]', " .
                       "computer='$_POST[computer]', sensors='$_POST[sensors]', beams='$_POST[beams]', " .
                       "torp_launchers='$_POST[torp_launchers]', torps='$_POST[torps]', shields='$_POST[shields]', " .
@@ -280,22 +280,15 @@ else
                       "goods='$_POST[ship_goods]', energy='$_POST[ship_energy]', colonists='$_POST[ship_colonists]', " .
                       "fighters='$_POST[ship_fighters]', dev_warpedit='$_POST[dev_warpedit]', " .
                       "dev_genesis='$_POST[dev_genesis]', dev_emerwarp='$_POST[dev_emerwarp]', " .
-                      "dev_escapepod='$_POST[dev_escapepod]', dev_fuelscoop='$_POST[dev_fuelscoop]', " .
-                      "dev_minedeflector='$_POST[dev_minedeflector]'";
-            $query .= " WHERE player_id='$_POST[user]'";
-
-            // varibles of SHIPS not settable from admin
-            // on_planet
-            // planet_id
-
-            $debug_query = $db->Execute($query);
+                      "dev_escapepod=?, dev_fuelscoop=?, " .
+                      "dev_minedeflector=?" .
+                      " WHERE player_id=?", array($_POST['dev_escapepod'], $_POST['dev_fuelscoop'], $_POST['dev_minedeflector'], $_POST['user']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             // Store igb data in db
             echo "<br>Updating IBANK_ACCOUNTS table ";
-            $query = "UPDATE {$db->prefix}ibank_accounts SET balance='$_POST[igb_balance]', loan='$_POST[igb_loan]', " .
-                     "loantime='$_POST[igb_loantime]' WHERE player_id='$_POST[user]'";
-            $debug_query = $db->Execute($query);
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=?, loan=?, " .
+                       "loantime=? WHERE player_id=?", array($_POST['igb_balance'], $_POST['igb_loan'], $_POST['igb_loantime'], $_POST['user']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             echo "<br><br>";
@@ -303,7 +296,7 @@ else
             if ($_POST['cleared_defenses'] != '')
             {
                 echo "Updating the cleared defenses ";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=? WHERE player_id=?", array(' ', $_POST['user']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE player_id=?", array($_POST['user']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
 

@@ -75,7 +75,7 @@ else
 { 
     $res = $db->Execute("select * from {$db_prefix}players LEFT JOIN {$db_prefix}ships " .
                         "ON {$db_prefix}players.player_id = {$db_prefix}ships.player_id " .
-                        "WHERE email != '$admin_mail' AND email NOT LIKE '%@aiplayer' ORDER BY character_name ASC"); 
+                        "WHERE email!=? AND email NOT LIKE '%@aiplayer' ORDER BY character_name ASC", array($admin_mail)); 
     $row = $res->fields; 
 
     if ($messagetype=='email')
@@ -92,7 +92,7 @@ else
     elseif ($messagetype=='message')
     {
         $timestamp = date("Y-m-d H:i:s");
-        $r2 = $db->Execute("select player_id FROM {$db_prefix}players  WHERE email = '$admin_mail'");
+        $r2 = $db->Execute("select player_id FROM {$db_prefix}players WHERE email=?", array($admin_mail));
         $admin_id = $r2->fields["player_id"];
     }
 

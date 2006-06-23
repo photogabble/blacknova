@@ -87,7 +87,7 @@ if (empty($_POST['command']))
                  "<td align=center><font size=2 color=white>";
 
             $res2 = $db->Execute("select character_name, player_id, email FROM {$db->prefix}players WHERE " .
-                                "ip_address LIKE '$ban[ban_mask]'");
+                                "ip_address LIKE ?", array($ban['ban_mask']));
             unset($players);
             while (!$res2->EOF)
             {
@@ -170,7 +170,7 @@ elseif ($_POST['command'] == 'showips')
         echo "<td align=center><font size=2 color=white><a href=http://www.geektools.com/cgi-bin/proxy.cgi?query=$ip&targetnic=auto target=_blank class=mnu>$ip</a></td>" .
              "<td align=center><font size=2 color=white>";
 
-        $res = $db->Execute("select {$db->prefix}players.character_name, {$db->prefix}players.player_id, {$raw_prefix}users.email FROM {$raw_prefix}users LEFT JOIN {$db->prefix}players ON {$raw_prefix}users.account_id={$db->prefix}players.player_id WHERE {$db->prefix}players.ip_address ='$ip'");
+        $res = $db->Execute("select {$db->prefix}players.character_name, {$db->prefix}players.player_id, {$raw_prefix}users.email FROM {$raw_prefix}users LEFT JOIN {$db->prefix}players ON {$raw_prefix}users.account_id={$db->prefix}players.player_id WHERE {$db->prefix}players.ip_address=?", array($ip));
 
         unset($players);
         while (!$res->EOF)
@@ -290,11 +290,11 @@ elseif ($_POST['command'] == 'unbanip')
 
     if (!empty($ban))
     {
-        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE ban_mask='$ban'");
+        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE ban_mask=?", array($ban));
     }
     else
     {
-        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE '$ip' LIKE ban_mask");
+        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE ? LIKE ban_mask", array($ip));
     }
 
     $nbbans = $res->RecordCount();
@@ -307,11 +307,11 @@ elseif ($_POST['command'] == 'unbanip')
 
     if (!empty($ban))
     {
-        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ban_mask='$ban'");
+        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ban_mask=?", array($ban));
     }
     else
     {
-        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE '$ip' LIKE ban_mask");
+        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ? LIKE ban_mask", array($ip));
     }
 
     $query_string = "ip_address LIKE '" . $bans[0]['ban_mask'] ."'";
@@ -320,6 +320,7 @@ elseif ($_POST['command'] == 'unbanip')
         $query_string = $query_string . " OR ip_address LIKE '" . $bans[$i]['ban_mask'] . "'";
     }
 
+    // DB NOT CLEANED
     $res = $db->Execute("select DISTINCT character_name FROM {$db->prefix}players WHERE $query_string");
     $nbplayers = $res->RecordCount();
 

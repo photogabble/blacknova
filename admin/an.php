@@ -39,13 +39,11 @@ if(!empty($_POST['command']))
 
 if ($command == "del")
 {
-    $xsql = "SELECT MAX(an_id) as x FROM {$db->prefix}alerts";
-    $debug_query = $db->Execute($xsql);
+    $debug_query = $db->Execute("SELECT MAX(an_id) as x FROM {$db->prefix}alerts");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $row = $debug_query->fields;
 
-    $xsql = "DELETE FROM {$db->prefix}alerts WHERE an_id = $row[x]";
-    $debug_query = $db->Execute($xsql);
+    $debug_query = $db->Execute("DELETE FROM {$db->prefix}alerts WHERE an_id=?", array($row['x']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 

@@ -55,7 +55,7 @@ else
     $sector = $_POST['sector'];
     if (empty($_POST['operation']))
     {
-        $res = $db->Execute("select * FROM {$db->prefix}universe WHERE sector_id=$sector");
+        $res = $db->Execute("select * FROM {$db->prefix}universe WHERE sector_id=?", array($sector));
         $row = $res->fields;
         echo "<table border=1 cellspacing=2 cellpadding=2>";
         echo "<tr><td><tt>          Sector ID  </tt></td><td><font color=#6F0>$sector</font></td>";

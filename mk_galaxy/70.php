@@ -43,9 +43,9 @@ while ($_POST['nump'] >0)
         $planetary_sector = $db->SelectLimit("SELECT {$db->prefix}universe.sector_id, {$db->prefix}universe.star_size, ".
                                              "{$db->prefix}universe.zone_id, {$db->prefix}zones.allow_planet ".
                                              "FROM {$db->prefix}universe, {$db->prefix}zones ".
-                                             "WHERE {$db->prefix}universe.sector_id=$random_sector AND ".
+                                             "WHERE {$db->prefix}universe.sector_id=? AND ".
                                              "{$db->prefix}zones.allow_planet='Y' AND {$db->prefix}universe.zone_id!='2' AND ".
-                                             "{$db->prefix}universe.star_size!='0'",1);
+                                             "{$db->prefix}universe.star_size!='0'",1,-1,array($random_sector));
         db_op_result($db,$planetary_sector,__LINE__,__FILE__);
 
         if (!$planetary_sector->EOF)

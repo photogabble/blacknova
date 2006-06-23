@@ -65,7 +65,7 @@ else
 $planet = $_POST['planet'];
     if (empty($_POST['operation']))
     {
-        $res = $db->Execute("select * FROM {$db->prefix}planets WHERE planet_id=$planet");
+        $res = $db->Execute("select * FROM {$db->prefix}planets WHERE planet_id=?", array($planet));
         $row = $res->fields;
 
         echo "<table border=1 cellspacing=2 cellpadding=2>";
@@ -138,7 +138,7 @@ $planet = $_POST['planet'];
         $_delete = empty($delete) ? "N" : "Y";
         if ($_delete == "Y")
         {
-            $debug_query = $db->Execute("DELETE from {$db->prefix}planets where planet_id=$planet");
+            $debug_query = $db->Execute("DELETE from {$db->prefix}planets where planet_id=?", array($planet));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "<input type=submit value=\"Return to Planet editor\">";
         }

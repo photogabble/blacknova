@@ -51,7 +51,7 @@ elseif ($operation == "drop_ai")
     while (!$res->EOF)
     {
         $ship_id = $res->fields['ship_id'];
-        $debug_query = $db->Execute("DELETE FROM {$db_prefix}ships WHERE ship_id=$ship_id");
+        $debug_query = $db->Execute("DELETE FROM {$db_prefix}ships WHERE ship_id=?", array($ship_id));
         db_op_result($debug_query,__LINE__,__FILE__);
         $res->MoveNext();
     }

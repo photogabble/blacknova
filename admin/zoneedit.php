@@ -55,7 +55,7 @@ else
     $zone = $_POST['zone'];
     if ($_POST['operation'] == "editzone")
     {
-        $res = $db->Execute("select * FROM {$db->prefix}zones WHERE zone_id=$zone");
+        $res = $db->Execute("select * FROM {$db->prefix}zones WHERE zone_id=?", array($zone));
         $row = $res->fields;
         echo "<table border=0 cellspacing=0 cellpadding=5>";
         echo "<tr><td>Zone ID</td><td>$row[zone_id]</td></tr>";

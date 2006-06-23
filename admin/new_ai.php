@@ -52,7 +52,7 @@ if (empty($operation))
     $sy3roll = mt_rand(0,19);
     $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
     $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-    $resultnm = $db->Execute ("SELECT character_name from {$db_prefix}players where character_name='$character'");
+    $resultnm = $db->Execute ("SELECT character_name from {$db_prefix}players where character_name=?", array($character));
     $namecheck = $resultnm->fields;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
     $nametry = 1;
@@ -65,7 +65,7 @@ if (empty($operation))
         $sy3roll = mt_rand(0,19);
         $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
         $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-        $resultnm = $db->Execute ("select character_name from {$db_prefix}players where character_name='$character'");
+        $resultnm = $db->Execute ("select character_name from {$db_prefix}players where character_name=?", array($character));
         $namecheck = $resultnm->fields;
         $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $nametry++;
@@ -116,7 +116,7 @@ elseif ($operation == "create_ai")
     // Create emailname from character
     $emailname = str_replace(" ","_",$character) . "@aiplayer";
     $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-    $result = $db->Execute ("select email, character_name from {$db_prefix}players where email='$emailname' OR character_name='$character'");
+    $result = $db->Execute ("select email, character_name from {$db_prefix}players where email=? OR character_name=?", array($emailname, $character));
 
     if ($result>0)
     {
@@ -171,7 +171,7 @@ elseif ($operation == "create_ai")
 
         // ADD AI RECORD TO ships TABLE ... MODIFY IF ships SCHEMA CHANGES
         $player_id = newplayer($emailname, $character, $makepass, $c_code, $shipname);
-        $res = $db->Execute("SELECT ship_id FROM {$db_prefix}players LEFT JOIN {$db_prefix}ships ON {$db_prefix}players.player_id = {$db_prefix}ships.player_id WHERE {$db_prefix}players.player_id=$player_id");
+        $res = $db->Execute("SELECT ship_id FROM {$db_prefix}players LEFT JOIN {$db_prefix}ships ON {$db_prefix}players.player_id = {$db_prefix}ships.player_id WHERE {$db_prefix}players.player_id=?", array($player_id));
         $ship_id = $res->fields['ship_id'];
 
         $result2 = $db->Execute("UPDATE {$db_prefix}ships SET hull=?, engines=?, pengines=?, power=?, computer=?, sensors=?, beams=?, torp_launchers=?, shields=?, armor=?, cloak=?, torps=?, armor_pts=?, sector_id=?, energy=?, fighters=? WHERE ship_id=?", array($ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $maxtorps, $maxarmor, $sector, $maxenergy, $maxfighters, $ship_id));
