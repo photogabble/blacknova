@@ -104,9 +104,8 @@ function ai_regen()
     } 
 
     //  Update AI Record
-    $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$playerinfo[ship_energy], armor_pts=$playerinfo[armor_pts], " .
-                  "ship_fighters=$playerinfo[ship_fighters], torps=$playerinfo[torps], credits=$playerinfo[credits] " .
-                  "WHERE ship_id=$playerinfo[ship_id]");
+    $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, armor_pts=?, ship_fighters=?, torps=?, credits=? " .
+                  "WHERE ship_id=?", array($playerinfo['ship_energy'], $playerinfo['armor_pts'], $playerinfo['ship_fighters'], $playerinfo['torps'], $playerinfo['credits'], $playerinfo['ship_id']));
     if (!$gene=='' || !$gena=='' || !$genf=='' || !$gent=='')
     {
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal $gene $gena $genf $gent and has been updated."); 

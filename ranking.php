@@ -85,7 +85,7 @@ if ($raw_prefix != $db->prefix)
 
     if ($hide_admin_rank == 1)
     {
-        $query = " AND {$raw_prefix}users.email NOT LIKE '$admin_mail' ";
+        $query = " AND {$raw_prefix}users.email NOT LIKE " . $db->qstr($admin_mail);
     }
     else
     {
@@ -94,7 +94,7 @@ if ($raw_prefix != $db->prefix)
 
     echo $l_header_title;
     // The only non-functional portion is sort on efficiency on postgres.
-    $res = sql_ranking();
+    $res = sql_ranking($db, $query, $by, $max_rank);
     $num_players = $res->RecordCount();
 
     if ((!isset($_GET['offset'])) || ($_GET['offset'] == ''))
