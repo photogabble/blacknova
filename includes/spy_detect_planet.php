@@ -46,7 +46,7 @@ function spy_detect_planet($db,$shipowner_ship_id, $planet_id, $succ)
 
                     $stamp = date("Y-m-d H:i:s");
                     $debug_query = $db->Execute("INSERT INTO {$db->prefix}detect (det_id, owner_id, det_type, det_time, detect_data, unique_value) " .
-                                                "values ('', ?, ?, ?, ?, ?)", array($spyowners['owner_id'], 0, $stamp, "$planet['sector_id']|$planet['character_name']|$planet['name']", $planet['planet_id']));
+                                                "values ('', ?, ?, ?, ?, ?)", array($spyowners['owner_id'], 0, $stamp, "$planet[sector_id]|$planet[character_name]|$planet[name]", $planet['planet_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
                 }
             }

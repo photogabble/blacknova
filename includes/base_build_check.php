@@ -1,3 +1,4 @@
+<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -14,7 +15,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // File: includes/base_build_check.php
-<?php
+
 function base_build_check($planet, $i)
 {
     global $l_yes, $l_no;

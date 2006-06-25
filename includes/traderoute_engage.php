@@ -67,7 +67,7 @@ function traderoute_engage($j)
     global $l_tdr_fighters, $l_tdr_nothingtotrade, $l_submit, $l_tdr_nothingtodump;
     global $l_tdr_timestorep, $l_max_level_move;
     global $spy_success_factor, $planet_detect_success1;
-    global $db;
+    global $db, $dist;
 
     $dist['scooped'] = 0;
     $dist['scooped1'] = 0;

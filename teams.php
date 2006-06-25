@@ -181,7 +181,7 @@ switch ($teamwhat)
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team_invite=0 WHERE " .
-                                            "team_invite=?, array($whichteam));
+                                            "team_invite=?", array($whichteam));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $res = $db->Execute("SELECT DISTINCT sector_id FROM {$db->prefix}planets WHERE owner=? AND base='Y'", array($thisplayer_info['player_id']));

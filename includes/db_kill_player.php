@@ -95,7 +95,7 @@ function db_kill_player($db, $player_id) // Might be able to split out of g_func
         $debug_query->MoveNext();
     }
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET owner=0, corp=0, fighters=0, base='N' WHERE owner=?", array($player_id));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET owner=0, fighters=0, base='N' WHERE owner=?", array($player_id));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     if (!empty($sectors))

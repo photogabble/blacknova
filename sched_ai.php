@@ -594,7 +594,7 @@ if ($needed_ai_ >= 0)
                     {
                         echo "sector is $sector<br>";
                         $maxp = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id = '$sector'");
-                        $num_res = $maxp->numRows(); 
+                        $num_res = $maxp->RecordCount(); 
                         if ($num_res >= $max_star_size)
                         {
                             echo "There are too many planets in sector $sector. <br>";
