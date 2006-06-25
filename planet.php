@@ -594,7 +594,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
     elseif ($command == "name")
     {
         // name menu
-        echo "<form action=\"planet.php" method=\"post\">";
+        echo "<form action=\"planet.php\" method=\"post\">";
         echo "$l_planet_iname:  ";
         echo "<input type=hidden name=command value=cname>";
         echo "<input type=hidden name=planet_id value=$planet_id>";
@@ -1444,7 +1444,7 @@ if ($command != "")
 
 if ($allow_ibank && $planetinfo['base'] == "Y")
 {
-    echo "$l_ifyouneedplan <a href=\"igb_login.php">$l_igb_term</a>.<br><br>";
+    echo "$l_ifyouneedplan <a href=\"igb_login.php\">$l_igb_term</a>.<br><br>";
 }
 
 echo "<a href =\"bounty.php\">$l_by_placebounty</a><p>";

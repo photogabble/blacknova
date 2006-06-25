@@ -75,7 +75,7 @@ include_once ("./global_includes.php");
     $emerwarp_free = $max_emerwarp - $shipinfo['dev_emerwarp'];
 
     echo "<script type=\"text/javascript\" defer=\"defer\" src=\"backends/javascript/clean_forms.js\"></script><noscript></noscript>";
-    echo "\n<script type=\"text/javascript\" defer=\"defer\">\n";
+    echo "\n<script type=\"text/javascript\">\n";
     echo "<!--\n";
 
     echo "function MakeMax(name, val)\n";
@@ -109,7 +109,6 @@ include_once ("./global_includes.php");
     echo "{\n";
     echo "// Here we cycle through all form values (other than buy, or full), and regexp out all non-numerics. (1,000 = 1000)\n";
     echo "// Then, if its become a null value (type in just a, it would be a blank value. blank is bad.) we set it to zero.\n";
-    echo "<script type=\"text/javascript\" defer=\"defer\" src=\"backends/javascript/clean_forms.js\"></script><noscript></noscript>";
     echo "var form = document.forms[0];\n";
     echo "var i = form.elements.length;\n";
     echo "while (i > 0)\n";
@@ -185,7 +184,7 @@ include_once ("./global_includes.php");
 
     echo "\n";
     echo "<a href=\"bounty.php\">$l_by_placebounty</a><br>\n";
-    echo ' <form name="bntform" action="port2.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">\n';
+    echo ' <form name="bntform" action="port2.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
     echo "  <table width=\"100%\" border=0 cellspacing=0 cellpadding=0>\n";
     echo "   <tr bgcolor=\"$color_header\">\n";
     echo "    <td><strong>$l_device</strong></td>\n";

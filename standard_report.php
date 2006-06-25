@@ -261,7 +261,8 @@ else
     echo "}";
     echo "</script> .";
     echo "<br> <input type=checkbox onClick=\"checkAll(this,'TPCreds')\"> Select All <br>. "; 
-    echo '<input type="submit" name="submit_button" value="$l_pr_collectcreds">  <input type="reset" value="$l_reset">';
+    echo "<input type=\"submit\" name=\"submit_button\" value=\"$l_pr_collectcreds\">";
+    echo "<input type=\"reset\" value=\"$l_reset\">";
     echo "</form>";
 }
 
