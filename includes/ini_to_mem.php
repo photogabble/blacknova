@@ -30,7 +30,7 @@ function ini_to_mem ($ini_file)
     {
         foreach ($whatever2 as $config_key=>$config_value)
         {
-            if ($config_category == 'make_galaxy' || $config_category == 'common' || $config_category == 'install')
+            if ($config_category == 'make_galaxy' || $config_category == 'common' || $config_category == 'install' || $config_category =='global_includes')
             {
                 global $$config_key;
                 $$config_key = $config_value;

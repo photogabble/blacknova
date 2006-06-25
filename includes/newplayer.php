@@ -75,7 +75,7 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "?," .                              // template
                                 "?," .                              // account_id
                                 "?" .                               // ACL
-                                ")", array($character, $start_credits, $start_turns, $stamp, $stamp, $default_template, $account_id, $acl));
+                                ")", array($char, $start_credits, $start_turns, $stamp, $stamp, $default_template, $account_id, $acl));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Get the new player's id
@@ -143,7 +143,7 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "0," .   // dev_minedeflector
                                 "0," .   // planet_id
                                 "''" .   // cleared_defenses
-                                ")", array($player_id, ship_name, $start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop));
+                                ")", array($player_id, $ship_name, $start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Get the new ship's id

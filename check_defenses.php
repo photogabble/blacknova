@@ -487,6 +487,15 @@ if ($ok == 1)
         $server_port = ':' . $_SERVER['SERVER_PORT'];
     }
 
+    if ($_SERVER['SERVER_PORT'] == '443')
+    {
+        $server_type = 'https';
+    }
+    else
+    {
+        $server_type = 'http';
+    }
+
     // No click/refresh - seems smoother.
     header("Location: " . $server_type . "://" . $_SERVER['SERVER_NAME'] . $server_port . dirname($_SERVER['PHP_SELF']) . $add_slash_to_url . "main.php");
     die();

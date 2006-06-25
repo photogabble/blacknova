@@ -30,7 +30,7 @@ function get_info($db)
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $accountinfo = $debug_query->fields;
 
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE account_id=?",1,-1,array($accountinfo['account_id'));
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE account_id=?",1,-1,array($accountinfo['account_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $playerinfo = $debug_query->fields;
 

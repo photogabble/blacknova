@@ -120,7 +120,7 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "'Y'," .               // allow_trade
                             "'Y'," .               // allow_defenses
                             "0" .                  // max_level
-                            ")"));
+                            ")");
 $zone_results_array[3] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 // Begin building unique sectors

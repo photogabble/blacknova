@@ -83,7 +83,7 @@ if (!$pos)
         $debug_query = $db->Execute("SELECT name,value FROM {$db->prefix}config_values");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        while (!$debug_query->EOF && $debug_query)
+        while ($debug_query && !$debug_query->EOF)
         {
             $row = $debug_query->fields;
             $$row['name'] = $row['value'];
