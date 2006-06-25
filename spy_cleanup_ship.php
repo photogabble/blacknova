@@ -156,7 +156,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         echo "<br>$l_spy_notinspecial<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");    
+        include_once ("./footer.php");
         die();
     }
 

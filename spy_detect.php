@@ -180,7 +180,7 @@ $line_color = $color_line2;
         echo "<a href=spy.php>$l_clickme</a> $l_spy_linkback<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");    
+        include_once ("./footer.php");
         die();
     }
   
@@ -212,7 +212,7 @@ $line_color = $color_line2;
             break;
       
             case 1:
-                list($inf, $sender, $receiver,$type)= split ("\>", $info['detect_data']);    // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
+                list($inf, $sender, $receiver,$type)= split ("\>", $info['detect_data']); // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
                 if ($type == 'alliance')
                 {
                     $l_spy_datatextF = str_replace("[sender]", "<font color=white><strong>$sender</strong></font>", $l_spy_datatext[2]);

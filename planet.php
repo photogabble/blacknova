@@ -623,7 +623,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         // leave menu
         echo "$l_planet_left<br><br>";
         $destination = $sectorinfo['sector_id'];
-        include ("./check_defenses.php");   //          Need to edit check_defenses a bit more, but it will cause def check when leaving planet.
+        include ("./check_defenses.php"); //          Need to edit check_defenses a bit more, but it will cause def check when leaving planet.
         $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
@@ -682,9 +682,9 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             echo " {\n";
             echo "  if (val != 0)\n";
             echo "  {\n";
-            echo "  document.forms[0].elements[name].value = val;\n";              
-            echo "  }\n";              
-            echo " }\n";     
+            echo "  document.forms[0].elements[name].value = val;\n";
+            echo "  }\n";
+            echo " }\n";
             echo "}\n";
 
             // changeDelta function //

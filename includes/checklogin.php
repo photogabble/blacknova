@@ -161,7 +161,7 @@ function checklogin($db, $email='', $password='')
         include_once("./header.php");
         echo "passthru error " . $login_results;
         echo "<h1>" . $title. "</h1>\n";
-        echo $l_error_occured;          
+        echo $l_error_occured;
         include_once ("./footer.php");
         adminlog($db, "LOG_RAW", "Questionable login - unknown issue from $ip_address");
         die();

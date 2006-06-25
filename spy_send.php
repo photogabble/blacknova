@@ -186,7 +186,7 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 
@@ -195,7 +195,7 @@ if ($planetinfo['owner'] == $playerinfo['player_id'])
     echo "$l_spy_ownplanet<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 elseif ($planetinfo['owner'] == 0)
@@ -203,7 +203,7 @@ elseif ($planetinfo['owner'] == 0)
     echo "$l_spy_unownedplanet<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 
@@ -215,7 +215,7 @@ if ($num_spies >= $max_spies_per_planet)
     echo "$l_spy_planetfull<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 

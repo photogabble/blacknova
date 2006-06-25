@@ -348,7 +348,7 @@ switch ($teamwhat)
             }
         }
 
-        echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";        
+        echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";
         break;
     case 4:
         echo "Not implemented yet. Please file a Feature Request at sourceforge.<br><br>";
@@ -357,7 +357,7 @@ switch ($teamwhat)
     case 5: // Eject member
         if ($thisplayer_info['team'] == $team['team_id'])
         {
-            $who = preg_replace('/[^0-9]/','',$who);   
+            $who = preg_replace('/[^0-9]/','',$who);
             $result = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($who));
             $whotoexpel = $result->fields;
             if (!isset($confirmed))

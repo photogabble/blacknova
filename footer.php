@@ -325,7 +325,7 @@ $template->assign("view_source", $view_source);
 global $BenchmarkTimer;
 if (is_object($BenchmarkTimer))
 {
-    $stoptime = $BenchmarkTimer->stop();          
+    $stoptime = $BenchmarkTimer->stop();
     $elapsed = $BenchmarkTimer->elapsed();
     $elapsed = substr($elapsed,0,5);
 }

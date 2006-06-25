@@ -159,8 +159,8 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 ")", array($zone_name, $player_id));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $stamp = date("Y-m-d H:i:s");     
-    $debug_query = $db->Execute("INSERT INTO {$db->prefix}ibank_accounts (player_id,balance,loan,loantime) VALUES ('$player_id',0,0,'$stamp')");     
+    $stamp = date("Y-m-d H:i:s");
+    $debug_query = $db->Execute("INSERT INTO {$db->prefix}ibank_accounts (player_id,balance,loan,loantime) VALUES ('$player_id',0,0,'$stamp')");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     return $player_id;

@@ -88,7 +88,7 @@ if (isset($_GET['destination']))
 
 if (isset($_POST['destination']))
 {
-    $destination = $_POST['destination'];   
+    $destination = $_POST['destination'];
 }
 
 if (isset($_GET['engage']))
@@ -98,7 +98,7 @@ if (isset($_GET['engage']))
 
 if (isset($_POST['engage']))
 {
-    $engage = $_POST['engage'];   
+    $engage = $_POST['engage'];
 }
 
 if (isset($_POST['go']))
@@ -297,7 +297,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
 
     if (isset($_POST['destination']))    
     {
-        $destination = $_POST['destination'];   
+        $destination = $_POST['destination'];
     }
 
     if (isset($_GET['engage']))
@@ -307,7 +307,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
 
     if (isset($_POST['engage']))    
     {
-        $engage = $_POST['engage'];   
+        $engage = $_POST['engage'];
     }
 
     if (isset($_POST['go']))

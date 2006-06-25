@@ -197,7 +197,7 @@ else
 
                     $debug_query = $db->Execute("INSERT INTO {$db->prefix}bounty (bounty_on, placed_by, amount) values " .
                                                 "(?,?,?)", array($playerinfo['player_id'], 0 ,$bounty));
-                    db_op_result($db,$debug_query,__LINE__,__FILE__);                    
+                    db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     $bounty = number_format($bounty, 0, $local_number_dec_point, $local_number_thousands_sep);
                     playerlog($db,$playerinfo['player_id'], "LOG_BOUNTY_FEDBOUNTY","$bounty");

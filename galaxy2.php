@@ -195,7 +195,7 @@ if (!$result4->EOF)
 }
 
 $ind = 0;
-$sectorcount = $result->RecordCount();    
+$sectorcount = $result->RecordCount();
 while (!$result->EOF)
 {
     $row   = $result->fields;

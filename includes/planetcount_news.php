@@ -15,7 +15,7 @@ function planetcount_news($db, $player_id)
         $rounded = intval(substr($planet_count, 0, 1)) * pow(10, strlen($planet_count)-1);
         if ($planet_count >= $rounded)
         {
-            $news_type = 'planet' . $rounded;   
+            $news_type = 'planet' . $rounded;
             $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id=? and news_type=?", array($player_id, $news_type));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 

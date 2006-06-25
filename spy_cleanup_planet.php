@@ -162,7 +162,7 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 
@@ -171,7 +171,7 @@ if ($playerinfo['player_id'] != $planetinfo['owner'])
     echo "$l_spy_notyourplanet<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
   

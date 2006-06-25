@@ -51,7 +51,7 @@ function defense_vs_defense($db, $player_id)
             $result1->MoveNext();
         }
         $debug_query = $db->Execute("DELETE FROM {$db->prefix}sector_defense WHERE quantity <= 0");
-        db_op_result($db,$debug_query,__LINE__,__FILE__);     
+        db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 }
 ?>

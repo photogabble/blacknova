@@ -225,7 +225,7 @@ $line_color = $color_line2;
             echo "<td><strong><a href=\"spy.php?by1=character_name&by2=$by2&by3=$by3\">$l_spy_shipowner</a></strong></td>";
             echo "<td><strong><a href=\"spy.php?by1=ship_name&by2=$by2&by3=$by3\">$l_spy_shipname</a></strong></td>";
             echo "<td><strong><a href=\"spy.php?by1=ship_type&by2=$by2&by3=$by3\">$l_spy_shiptype</a></strong></td>";
-            echo "<td><font color=white><strong>$l_spy_shiplocation</strong></font></td>";         // Do not create a link here!
+            echo "<td><font color=white><strong>$l_spy_shiplocation</strong></font></td>"; // Do not create a link here!
             echo "<td><strong><a href=\"spy.php?by1=move_type&by2=$by2&by3=$by3\">$l_spy_move</a></strong></td>";
             echo "</tr>";
 

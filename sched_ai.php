@@ -236,8 +236,8 @@ while(!$res->EOF && $res)
         {
             $ai_count3++;
 
-            //  LET SEE IF WE GO HUNTING THIS ROUND BEFORE WE DO ANYTHING ELSE 
-            $hunt = mt_rand(0,3);                               // 25% CHANCE OF HUNTING *
+            // Lets see if we go hunting this round before we do anything else
+            $hunt = mt_rand(0,3); // 25% chance of hunting *
 
             // Uncomment below for Debugging
             //$hunt=0;
@@ -339,7 +339,7 @@ if ($needed_ai_ >= 0)
             echo "<br>Lowering AI average too big !<br>"; } // New code to limit AI size, stops undeafetable AI's being created - GunSlinger
         }
 
-        $fur_cloak = round($furlevel/2);  // Making cloak half the size of the AI player level so users see more of them.  I know this affects other calcs, but not against players - rjordan
+        $fur_cloak = round($furlevel/2); // Making cloak half the size of the AI player level so users see more of them.  I know this affects other calcs, but not against players - rjordan
         $fpf = $furlevel * 1000000;
         echo "creating level $furlevel " . $ai_name . ".<br>";
 

@@ -46,7 +46,7 @@ $planettypes[0] = "tinyplanet";
 $planettypes[1] = "smallplanet";
 $planettypes[2] = "mediumplanet";
 $planettypes[3] = "largeplanet";
-$planettypes[4] = "hugeplanet";               
+$planettypes[4] = "hugeplanet";
 
 $startypes[0] = "";
 $startypes[1] = "redstar";

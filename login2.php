@@ -110,23 +110,23 @@ if ((!isset($_SESSION['langdir'])) || ($_SESSION['langdir'] == ''))
                 switch ($k[0])
                 {
                     case 'en': 
-                        $_SESSION['langdir'] = 'english';  
+                        $_SESSION['langdir'] = 'english';
                         $found = 1; 
                         break;
                     case 'et': 
-                        $_SESSION['langdir'] = 'estonian'; 
+                        $_SESSION['langdir'] = 'estonian';
                         $found = 1; 
                         break;
                     case 'es': 
-                        $_SESSION['langdir'] = 'spanish';  
+                        $_SESSION['langdir'] = 'spanish';
                         $found = 1; 
                         break;
                     case 'fr': 
-                        $_SESSION['langdir'] = 'french';   
+                        $_SESSION['langdir'] = 'french';
                         $found = 1; 
                         break;
                     case 'ru': 
-                        $_SESSION['langdir'] = 'russian';   
+                        $_SESSION['langdir'] = 'russian';
                         $found = 1; 
                         break;
                     default: 
@@ -237,7 +237,7 @@ else
 
             if ($num_rows || $always_reincarnate)
             {
-                echo "<br><br>$l_login_newbie<br><br>";              
+                echo "<br><br>$l_login_newbie<br><br>";
                 $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET hull=0,engines=0,pengines=0,power=0,computer=0,sensors=0,beams=0, torp_launchers=0,torps=0,armor=0,armor_pts=$start_armor, cloak=0,shields=0,sector_id=1,ore=0,organics=0,energy=$start_energy, colonists=0,goods=0,fighters=$start_fighters, on_planet='N',dev_warpedit=0,dev_genesis=0,dev_emerwarp=0,dev_escapepod='$start_pod', dev_fuelscoop='$start_scoop', dev_minedeflector=0,destroyed='N' WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]", array($start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop, $playerinfo['player_id'], $playerinfo['currentship']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 

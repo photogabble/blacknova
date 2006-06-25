@@ -161,15 +161,21 @@ if ($res->RecordCount())
 
         if ($spy['move_type'] == 'none')
         {
-            $set_1 = 'checked';   $set_2 = '';   $set_3 = '';
+            $set_1 = 'checked';
+            $set_2 = '';
+            $set_3 = '';
         }
         elseif ($spy['move_type'] == 'toship')
         {
-            $set_1 = '';   $set_2 = 'checked';   $set_3 = '';
+            $set_1 = '';
+            $set_2 = 'checked';
+            $set_3 = '';
         }
         else
         {
-            $set_1 = '';   $set_2 = '';   $set_3 = 'checked';
+            $set_1 = '';
+            $set_2 = '';
+            $set_3 = 'checked';
         }
 
         if ($spy['planet_id'] == '0')

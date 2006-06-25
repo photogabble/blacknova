@@ -4,7 +4,7 @@
 // These ensure that once we complete support for it, the game admin will be able to run a game that accepts multi-byte input safely (like Japanese).
 function utf8_to_unicode($str)
 {
-    $unicode = array();        
+    $unicode = array();
     $values = array();
     $lookingFor = 1;
         

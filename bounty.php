@@ -131,7 +131,7 @@ switch ($response)
         {
             echo "$l_by_nobounty<br><br>";
             global $l_global_mmenu;
-            echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";            
+            echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
             include_once ("./footer.php");
             die();
         }
