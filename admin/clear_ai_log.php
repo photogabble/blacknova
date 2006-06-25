@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: clearklog.php
+// File: admin/clearklog.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/clearklog.php"));
 if ($pos !== false)

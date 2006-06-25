@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: drop_ai.php
+// File: admin/drop_ai.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/drop_ai.php"));
 if ($pos !== false)

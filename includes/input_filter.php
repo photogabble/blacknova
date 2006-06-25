@@ -14,9 +14,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: input_filter.php
+// File: includes/input_filter.php
 //
 // All get variables are ints only, so lock them down to just that, rejecting any other values.
+
 /*
 foreach ($_GET as $param => $val)
 {

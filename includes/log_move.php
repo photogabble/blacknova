@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: log_move.php
+// File: includes/log_move.php
 // Todo: Figure out why we aren't doing an update here instead of delete/insert.
 // Todo: Possibly to eliminate all previous rows, and not just one previous?
 // Todo: Also, recode to support a return that shows success/failure.

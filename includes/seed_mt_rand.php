@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: function/seed_mt_rand.php
+// File: includes/seed_mt_rand.php
 // Notes: In php>4.2, this isn't neccesary any longer, but it does seem to improve the
 // randomness, so we keep it.
 

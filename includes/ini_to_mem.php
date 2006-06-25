@@ -14,9 +14,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: ini_to_mem.php
-
+// File: includes/ini_to_mem.php
+//
 // Function for placing values in memory from the ini file (used prior to db)
+
 function ini_to_mem ($ini_file)
 {
     // Store the ini values into memory.

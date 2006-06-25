@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: ai_edit.php
+// File: admin/ai_edit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_edit.php"));
 if ($pos !== false)

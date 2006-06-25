@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: main.php
+// File: includes/planet_log.php
 
 function planet_log($db, $planet, $owner, $player_id, $action)
 {

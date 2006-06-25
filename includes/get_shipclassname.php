@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: get_shipclassname.php
+// File: includes/get_shipclassname.php
 
 function get_shipclassname($db, $ship_class_id)
 {

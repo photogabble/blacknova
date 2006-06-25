@@ -14,9 +14,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: fix_magic_quotes.php
+// File: includes/fix_magic_quotes.php
 //
 // Function originally provided at http://www.nyphp.org/phundamentals/storingretrieving.php
+
 function fix_magic_quotes ($var = NULL, $sybase = NULL)
 {
     // if sybase style quoting isn't specified, use ini setting

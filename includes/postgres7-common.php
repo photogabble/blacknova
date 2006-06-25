@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: postgres7-common.php
+// File: includes/postgres7-common.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/postgres7-common.php"));
 if ($pos !== false)

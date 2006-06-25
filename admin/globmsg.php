@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: globmsg.php
+// File: admin/globmsg.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/globmsg.php"));
 if ($pos !== false)
@@ -69,7 +69,7 @@ if (empty($content))
     echo "  </tr>"; 
     echo "</table>"; 
     echo "<input type=hidden name=\"menu\" value=\"globmsg\">"; 
-    echo "</form>";     
+    echo "</form>";
 }
 else
 { 
