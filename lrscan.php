@@ -90,7 +90,7 @@ if ($_GET['sector'] == "*")
     echo $l_lrs_used . " " . number_format($fullscan_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . " " . $l_lrs_turns . " " . number_format($playerinfo['turns'] - $fullscan_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . $l_lrs_left. "<br><br>";
 
     // deduct the appropriate number of turns
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+? WHERE player_id=?", array($fullscan_cost, $fullscan_cost, playerinfo['player_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+? WHERE player_id=?", array($fullscan_cost, $fullscan_cost, $playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // user requested a full long range scan

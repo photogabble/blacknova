@@ -24,6 +24,7 @@ dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
 dynamic_loader ($db, "calc_dist.php"); 
 dynamic_loader ($db, "updatecookie.php");
+dynamic_loader ($db, "num_level.php");
 
 // Load language variables
 load_languages($db, $raw_prefix, 'navcomp');
