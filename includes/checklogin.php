@@ -70,11 +70,11 @@ function checklogin($db, $email='', $password='')
         global $l_login_4gotpw1, $l_login_4gotpw2, $l_login_4gotpw3, $l_login_4gotpw4, $l_login_4gotpw5, $l_clickme;
         global $db, $raw_prefix;
 
-        $debug_query2 = $db->SelectLimit("SELECT * FROM {$raw_prefix}users WHERE email='$email'",1);
+        $debug_query2 = $db->SelectLimit("SELECT * FROM {$raw_prefix}users WHERE email=?",1,-1, array($email));
         db_op_result($db,$debug_query2,__LINE__,__FILE__);
         $accountinfo = $debug_query2->fields;
 
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE account_id='$accountinfo[account_id]'",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE account_id=?",1,-1, array($accountinfo['account_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $playerinfo = $debug_query->fields;
 
@@ -106,8 +106,8 @@ function checklogin($db, $email='', $password='')
         $client_ip_address = getenv("HTTP_CLIENT_IP"); // Get http's IP address for user
 
         // IP was banned
-        $debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE '$ip_address' LIKE ban_mask OR '$client_ip_address' " .
-                                    "LIKE ban_mask OR '$proxy_address' LIKE ban_mask",1);
+        $debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE ? LIKE ban_mask OR ? " .
+                                    "LIKE ban_mask OR ? LIKE ban_mask",1,-1, array($ip_address, $client_ip_address, $proxy_address));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $ban = $debug_query->fields;
 

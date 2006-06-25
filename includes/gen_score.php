@@ -26,7 +26,7 @@ function gen_score($db,$sid)
         //  Add devices, store the total in $calc_dev .
 
         // 1st query - Player's current ship
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE {$db->prefix}ships.player_id=$sid AND destroyed='N'",1);
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE {$db->prefix}ships.player_id=? AND destroyed='N'",1,-1,array($sid));
         db_op_result($db,$debug_query, __LINE__, __FILE__);
         $row = $debug_query->fields;
         $calc_hull = round(pow($upgrade_factor,$row['hull']));
@@ -83,7 +83,7 @@ function gen_score($db,$sid)
         //  Add cargo and store in $calc_planet_cargo .
 
         // 2nd query - planets owned by player and their contents
-        $debug_query = $db->Execute("Select * FROM {$db->prefix}planets WHERE {$db->prefix}planets.owner=$sid");
+        $debug_query = $db->Execute("Select * FROM {$db->prefix}planets WHERE {$db->prefix}planets.owner=?", array($sid));
         db_op_result($db,$debug_query, __LINE__, __FILE__);
 
         $calc_planet_cargo = 0;
@@ -130,7 +130,7 @@ function gen_score($db,$sid)
 
         // 3rd query
         $debug_query = $db->Execute("SELECT {$db->prefix}players.credits as player_credits ".
-                                    "FROM {$db->prefix}players WHERE {$db->prefix}players.player_id=$sid");
+                                    "FROM {$db->prefix}players WHERE {$db->prefix}players.player_id=?", array($sid));
         db_op_result($db,$debug_query, __LINE__, __FILE__);
         $row = $debug_query->fields;
         $calc_player_credits = $row['player_credits'];
@@ -141,7 +141,7 @@ function gen_score($db,$sid)
         //  SQL query - if the player has any loans, add them to the subtotal raw score: $score 
 
         // 4th query
-        $debug_query = $db->Execute("SELECT balance, loan FROM {$db->prefix}ibank_accounts WHERE player_id = $sid");
+        $debug_query = $db->Execute("SELECT balance, loan FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($sid));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     
         if ($debug_query)
@@ -153,7 +153,7 @@ function gen_score($db,$sid)
         //  This function checks the number of spies the player has, and adds their cost to the score calculation.
 
         //  5th query
-        $debug_query = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id = $sid");
+        $debug_query = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id=?", array($sid));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     
         if ($debug_query)
@@ -164,8 +164,8 @@ function gen_score($db,$sid)
     
         // Get the value of all deployed sector fighters
         // 6th query
-        $debug_query = $db->Execute("SELECT sum(quantity) as quantity FROM {$db->prefix}sector_defense WHERE player_id = $sid " .
-                                    "and defense_type ='F'");
+        $debug_query = $db->Execute("SELECT sum(quantity) as quantity FROM {$db->prefix}sector_defense WHERE player_id=? " .
+                                    "and defense_type ='F'", array($sid));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $row = $debug_query->fields;
@@ -173,8 +173,8 @@ function gen_score($db,$sid)
 
         // Get the value of all deployed sector mines
         // 7th query
-        $debug_query = $db->Execute("SELECT sum(quantity) as quantity FROM {$db->prefix}sector_defense WHERE player_id = $sid " .
-                                    "and defense_type ='M'");
+        $debug_query = $db->Execute("SELECT sum(quantity) as quantity FROM {$db->prefix}sector_defense WHERE player_id=? " .
+                                    "and defense_type ='M'", array($sid));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $row = $debug_query->fields;
@@ -186,7 +186,7 @@ function gen_score($db,$sid)
         //  Update the player's score in the db.
 
         //  8th query
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET score=$score WHERE player_id=$sid");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET score=$score WHERE player_id=?", array($sid));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     
         return $score;

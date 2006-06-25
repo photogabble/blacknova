@@ -50,7 +50,7 @@ while ($_POST['nump'] >0)
 
         if (!$planetary_sector->EOF)
         {
-            $debug_query = $db->Execute("SELECT * from {$db->prefix}planets where sector_id=$random_sector");
+            $debug_query = $db->Execute("SELECT * from {$db->prefix}planets where sector_id=?", array($random_sector));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $num_planets_in_sector = $debug_query->RecordCount();

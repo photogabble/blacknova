@@ -30,4 +30,5 @@ class bnt_smarty extends Smarty
         $this->cache_dir = ('../scratch_dir');
     }
 }
+
 ?>

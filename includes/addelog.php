@@ -3,11 +3,11 @@ function AddELog($db,$d_user,$e_type,$e_status,$e_subject,$e_response)
 {
     global $ip_address, $raw_prefix;
 
-    $res = $db->Execute("SELECT email, account_id FROM {$raw_prefix}users WHERE email='$d_user'");
+    $res = $db->Execute("SELECT email, account_id FROM {$raw_prefix}users WHERE email=?", array($d_user));
     $accountinfo = $res->fields;
 
     $result = $db->Execute("SELECT * FROM {$db->prefix}players LEFT JOIN {$db->prefix}ships " .
-                           "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id WHERE account_id='$accountinfo[account_id]'");
+                           "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id WHERE account_id=?", array($accountinfo['account_id']));
     $playerinfo = $result->fields;
 
     if ($e_type == 0) // For Normal Email, For Future Use.

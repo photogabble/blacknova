@@ -12,7 +12,7 @@ function collect_credits($planetarray)
     {
         for ($i = 0; $i < $max; $i++)
         {
-            $res = $db->SelectLimit("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planetarray[$i]",1);
+            $res = $db->SelectLimit("SELECT * FROM {$db->prefix}planets WHERE planet_id=?",1,-1, array($planetarray[$i]));
             $s_p_pair[$i]= array($res->fields['sector_id'], $planetarray[$i]);
         }
     }

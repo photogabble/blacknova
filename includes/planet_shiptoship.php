@@ -79,7 +79,7 @@ function shiptoship($player_id, $ship_id)
     $result2 = $db->Execute ("SELECT {$db->prefix}ships.*, {$db->prefix}players.currentship, {$db->prefix}players.character_name, " .
                              "{$db->prefix}players.rating, " . 
                              "{$db->prefix}players.player_id FROM {$db->prefix}ships LEFT JOIN {$db->prefix}players " .
-                             "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id WHERE ship_id=$ship_id");
+                             "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id WHERE ship_id=?", array($ship_id));
     $targetinfo=$result2->fields;
 
     $targetbeams = num_beams($targetinfo['beams']);
@@ -582,12 +582,12 @@ function shiptoship($player_id, $ship_id)
             $l_cmb_yousalvaged2 = str_replace("[cmb_number_rating_change]", number_format(abs($rating_change), 0, $local_number_dec_point, $local_number_thousands_sep), $l_cmb_yousalvaged2);
 
             echo $l_cmb_yousalvaged1 . "<br>" . $l_cmb_yousalvaged2;
-            $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET ore=ore+$salv_ore, organics=organics+$salv_organics, " .
-                                         "goods=goods+$salv_goods WHERE ship_id=$shipinfo[ship_id]");
+            $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET ore=ore+?, organics=organics+?, " .
+                                         "goods=goods+? WHERE ship_id=?", array($salv_ore, $salv_organics, $salv_goods, $shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $debug_query = $db->Execute ("UPDATE {$db->prefix}players SET credits=credits+$ship_salvage " .
-                                         "WHERE player_id=$playerinfo[player_id]");
+            $debug_query = $db->Execute ("UPDATE {$db->prefix}players SET credits=credits+? " .
+                                         "WHERE player_id=?", array($ship_salvage, $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
     }
@@ -602,9 +602,9 @@ function shiptoship($player_id, $ship_id)
         $target_energy = $targetinfo['energy'];
         playerlog($db,$targetinfo['player_id'], "LOG_ATTACKED_WIN", "$playerinfo[character_name]|$target_armor_lost|$target_fighters_lost");
     
-        $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=$target_energy, " .
-                                     "fighters=fighters-$target_fighters_lost, armor_pts=armor_pts-$target_armor_lost, " .
-                                     "torps=torps-$targettorpnum WHERE ship_id=$targetinfo[ship_id]");
+        $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=?, " .
+                                     "fighters=fighters-?, armor_pts=armor_pts-?, " .
+                                     "torps=torps-? WHERE ship_id=?", array($target_energy, $target_fighters_lost, $target_armor_lost, $targettorpnum, $targetinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 }

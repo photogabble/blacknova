@@ -84,7 +84,7 @@ foreach ($schema_files as $schema_filename)
         if ($_POST['persist'] != 'on')
         {
             $drop_table_names[$i] = str_replace("[table]", $tablename, $l_drop_table);
-            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}$tablename");
+            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}?", array($tablename));
             $results = '';
             $results = db_op_result($db, $debug_query,__LINE__,__FILE__);
             cumulative_error($cumulative, $results);
@@ -96,11 +96,11 @@ foreach ($schema_files as $schema_filename)
         $drop_table_names[$i] = str_replace("[table]", $tablename, $l_drop_table);
         if ($perm != 'root' && $perm != 'prot')
         {
-            $debug_query = $db->Execute("DROP TABLE {$db->prefix}$tablename");
+            $debug_query = $db->Execute("DROP TABLE {$db->prefix}?", array($tablename));
         }
         else
         {
-            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}$tablename");
+            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}?", array($tablename));
         }
 
         $results = '';
@@ -146,13 +146,13 @@ foreach ($schema_files as $schema_filename)
         {
             $alter = substr($schema_filename, strpos($schema_filename,"-")+1);
             $alter = substr($alter, 0, -4);
-            $results = $db->Execute("ALTER TABLE {$raw_prefix}" . $alter . " TYPE=INNODB");
+            $results = $db->Execute("ALTER TABLE {$raw_prefix}? TYPE=INNODB", array($alter));
         }
         else
         {
             $alter = $schema_filename;
             $alter = substr($alter, 0, -4);
-            $results = $db->Execute("ALTER TABLE {$db->prefix}" . $alter . " TYPE=INNODB");
+            $results = $db->Execute("ALTER TABLE {$db->prefix}? TYPE=INNODB", array($alter));
         }
     }
 }
@@ -189,27 +189,27 @@ global $default_prod_fighters;
 global $default_prod_torp;
 
 $set_ore_prodrate = str_replace("[type]", $l_ore, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_ore SET DEFAULT '$default_prod_ore'");
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_ore SET DEFAULT ?", array($default_prod_ore));
 $ore_prodrate_results = db_output($db, db_op_result($db, $debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_organics_prodrate = str_replace("[type]", $l_organics, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_organics SET DEFAULT '$default_prod_organics'");
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_organics SET DEFAULT ?", array($default_prod_organics));
 $organics_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_goods_prodrate = str_replace("[type]", $l_goods, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_goods SET DEFAULT '$default_prod_goods'");
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_goods SET DEFAULT ?", array($default_prod_goods));
 $goods_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_energy_prodrate = str_replace("[type]", $l_energy, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_energy SET DEFAULT '$default_prod_energy'");
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_energy SET DEFAULT ?", array($default_prod_energy));
 $energy_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_fighters_prodrate = str_replace("[type]", $l_fighters, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_fighters SET DEFAULT '$default_prod_fighters'");
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_fighters SET DEFAULT ?", array($default_prod_fighters));
 $fighters_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_torps_prodrate = str_replace("[type]", $l_torps, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_torp SET DEFAULT '$default_prod_torp'");
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_torp SET DEFAULT ?", array($default_prod_torp));
 $torps_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 // Finished

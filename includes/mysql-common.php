@@ -30,7 +30,7 @@ function isLoanPending($player_id)
 {
     global $db, $igb_lrate;
 
-    $debug_query = $db->Execute("SELECT loan, loantime from {$db->prefix}ibank_accounts WHERE player_id=$player_id and (loan != 0) and (((UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(loantime)) / 60) > $igb_lrate) ");
+    $debug_query = $db->Execute("SELECT loan, loantime from {$db->prefix}ibank_accounts WHERE player_id=? and (loan != 0) and (((UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(loantime)) / 60) > ?)", array($player_id, $igb_lrate));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     if (!$debug_query->EOF)
     {
@@ -49,11 +49,10 @@ function sql_log_starvation()
     global $organics_consumption;
 
     // LOGGING Starvation
-    $starv_log = "SELECT owner, sector_id, ROUND(colonists * $starvation_death_rate * $expoprod) AS st_value FROM ".
-                 "{$db->prefix}planets WHERE planet_id NOT IN ($line) AND (organics + (LEAST(colonists, $colonist_limit) " .
-                 "* $colonist_production_rate * $organics_prate * prod_organics / 100.0 * $expoprod) - " .
-                 "(LEAST(colonists, $colonist_limit) * $colonist_production_rate * $organics_consumption * $expoprod) < 0)";
-    $debug_query = $db->Execute($starv_log);
+    $debug_query = $db->Execute("SELECT owner, sector_id, ROUND(colonists * ? * ?) AS st_value FROM ".
+                 "{$db->prefix}planets WHERE planet_id NOT IN (?) AND (organics + (LEAST(colonists, ?) " .
+                 "* ? * ? * prod_organics / 100.0 * ?) - " .
+                 "(LEAST(colonists, ?) * ? * ? * ?) < 0)", array($starvation_death_rate, $expoprod, $line, $colonist_limit, $colonist_production_rate, $organics_prate, $expoprod, $colonist_limit, $colonist_production_rte, $organics_consumption, $expoprod));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     return $debug_query;
 }
@@ -65,22 +64,21 @@ function sql_update_starvation()
     global $colonist_reproduction_rate, $organics_consumption;
     global $ore_prate, $goods_prate, $energy_prate, $credits_prate, $line;
 
-    $planetupdate = "UPDATE {$db->prefix}planets SET organics=0, " .
-                    "colonists = LEAST((colonists - (colonists * $starvation_death_rate * $expoprod) + " .
-                    "(colonists * $colonist_reproduction_rate * $expoprod)), $colonist_limit), " .
-                    "ore=ore + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * " .
-                    "$ore_prate * prod_ore / 100.0 * $expoprod, " .
-                    "goods=goods + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * " .
-                    "$goods_prate * prod_goods / 100.0 * $expoprod, " .
-                    "energy=energy + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) * " .
-                    "$energy_prate * prod_energy / 100.0 * $expoprod, " .
-                    "credits=credits * $expocreds + (LEAST(colonists, $colonist_limit) * $colonist_production_rate) " .
-                    "* $credits_prate * (100.0 - prod_organics - prod_ore - prod_goods - prod_energy - prod_fighters - prod_torp) " .
-                    "/ 100.0 * $expoprod WHERE planet_id NOT IN ($line) AND (organics + (LEAST(colonists, $colonist_limit) * " .
-                    "$colonist_production_rate * $organics_prate * prod_organics / 100.0 * $expoprod) - " .
-                    "(LEAST(colonists, $colonist_limit) * $colonist_production_rate * $organics_consumption * $expoprod) < 0)";
+    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET organics=0, " .
+                    "colonists = LEAST((colonists - (colonists * ? * ?) + " .
+                    "(colonists * ? * ?)), ?), " .
+                    "ore=ore + (LEAST(colonists, ?) * ?) * " .
+                    "? * prod_ore / 100.0 * ?, " .
+                    "goods=goods + (LEAST(colonists, ?) * ?) * " .
+                    "? * prod_goods / 100.0 * ?, " .
+                    "energy=energy + (LEAST(colonists, ?) * ?) * " .
+                    "? * prod_energy / 100.0 * ?, " .
+                    "credits=credits * ? + (LEAST(colonists, ?) * ?) " .
+                    "* ? * (100.0 - prod_organics - prod_ore - prod_goods - prod_energy - prod_fighters - prod_torp) " .
+                    "/ 100.0 * ? WHERE planet_id NOT IN (?) AND (organics + (LEAST(colonists, ?) * " .
+                    "? * ? * prod_organics / 100.0 * ?) - " .
+                    "(LEAST(colonists, ?) * ? * ? * ?) < 0)", array($starvation_death_rate, $expoprod, $colonist_reproduction_rate, $expoprod, $colonist_limit, $colonist_limit, $colonist_production_rate, $ore_prate, $expoprod, $colonist_limit, $colonist_production_rate, $goods_prate, $expoprod, $colonist_limit, $colonist_production_rate, $energy_prate, $expoprod, $expocreds, $colonist_limit, $colonist_production_rate, $credits_prate, $expoprod, $line, $colonist_limit, $colonist_production_rate, $organics_prate, $expoprod, $colonist_limit, $colonist_production_rate, $organics_consumption, $expoprod));
 
-    $debug_query = $db->Execute($planetupdate);
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     return $debug_query;
 }

@@ -1,5 +1,11 @@
 This file is used to keep track of things that need doing, and all feature requests.
 
+TODO: includes/ai_* has not cleaned db entries.
+TODO: in includes, mysql-common.php, mysqlt-common.php, postgres7-common.php has not cleaned db entries.
+TODO: admin/ipedit.php, standard_report.php, ranking.php, server_list_client.php has not cleaned db entries.
+TODO: planet_production_change.php, planet_defense_report.php and planet2.php has not cleaned db entries.
+TODO: igb_consolidate2.php and 3.php has a not cleaned db entry.
+
 TODO: get rid of admin_mail_name, have it use admin player (id=1) name.
 FREQ: vote S1-062804-2 - Ship Defense Visibility - Fighters and Torps on board - must be shown on the main screen of the game.
 FREQ: vote S1-062804-3 - Base Button - A "base" button will be added to the game that allows creation of bases by automatically transferring commodities and credits from a player's ship in the same sector to the planet. This transfer/build function will charge the player the same number of turns as if it had been done manually.

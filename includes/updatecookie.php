@@ -11,7 +11,7 @@ function updatecookie($db)
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Get the player's last update time.
-    $debug_query = $db->SelectLimit("SELECT last_update, turns from {$db->prefix}players WHERE player_id = '$playerinfo[player_id]'",1);
+    $debug_query = $db->SelectLimit("SELECT last_update, turns from {$db->prefix}players WHERE player_id =?",1,-1,array($playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Dynamic functions

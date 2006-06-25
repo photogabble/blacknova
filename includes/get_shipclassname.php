@@ -24,7 +24,8 @@ function get_shipclassname($db, $ship_class_id)
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
-    $res = $db->CacheSelectLimit("SELECT name FROM {$db->prefix}ship_types WHERE type_id = $ship_class_id",1);
+    // This was previously cached - consider caching here.
+    $res = $db->SelectLimit("SELECT name FROM {$db->prefix}ship_types WHERE type_id=?",1,-1,array($ship_class_id));
     db_op_result($db,$res,__LINE__,__FILE__);
 
     if ($res)

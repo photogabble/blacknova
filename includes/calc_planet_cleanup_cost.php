@@ -39,7 +39,7 @@ function calc_planet_cleanup_cost($db,$colo = 0, $type = 1)
     $cl_cost = ($cl_cost * 1000000);
 
     // Here we reduce the costs of scans by 9.9% per spy the owner has on the planet.
-    $res66 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=$planet_id AND owner_id=$planetinfo[owner]");
+    $res66 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $planetinfo['owner']));
     $spies_on_planet = $res66->RecordCount();
   
     $cl_cost = ($cl_cost - ($cl_cost * $spies_on_planet / $max_spies_per_planet * 99/100) );  

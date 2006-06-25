@@ -21,7 +21,7 @@
 
 function log_move($db, $player_id, $ship_id, $source, $destination, $class, $error)
 {
-    $debug_query = $db->Execute("DELETE FROM {$db->prefix}movement_log WHERE player_id = $player_id and source = $source and destination = $destination");
+    $debug_query = $db->Execute("DELETE FROM {$db->prefix}movement_log WHERE player_id=? and source=? and destination=?", array($player_id, $source, $destination));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $stamp = date("Y-m-d H:i:s");

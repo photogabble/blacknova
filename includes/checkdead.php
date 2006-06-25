@@ -13,7 +13,7 @@ function checkdead($db)
     {
         if ($shipinfo['dev_escapepod'] == "Y") // If the player has an escapepod, set the player up with a new ship.
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET class=1, hull=0, engines=0, pengines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=$boom_armor, cloak=0, shields=0, sector_id=1, ore=0, organics=0, energy=$boom_energy, colonists=0, goods=0, fighters=$boom_fighters, on_planet='N', dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, dev_escapepod='$boom_pod', dev_fuelscoop='$boom_scoop', dev_minedeflector=0, destroyed='N' WHERE ship_id=$shipinfo[ship_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET class=1, hull=0, engines=0, pengines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=?, cloak=0, shields=0, sector_id=1, ore=0, organics=0, energy=?, colonists=0, goods=0, fighters=?, on_planet='N', dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, dev_escapepod=?, dev_fuelscoop=?, dev_minedeflector=0, destroyed='N' WHERE ship_id=?", array($boom_armor, $boom_energy, $boom_fighters, $boom_pod, $boom_scoop, $shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             
             if ($spy_success_factor) // If there was a spy onboard, make sure its destroyed.

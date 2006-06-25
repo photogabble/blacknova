@@ -12,13 +12,13 @@ function traderoute_distance($type1, $type2, $start, $dest, $circuit, $sells = '
 
 //  if ($type1 == 'L')
 //  {
-//    $query = $db->Execute("SELECT * FROM {$db->prefix}universe WHERE sector_id=$start");
+//    $query = $db->Execute("SELECT * FROM {$db->prefix}universe WHERE sector_id=?", array($start));
 //    $start = $query->fields;
 //  }
 
 //  if ($type2 == 'L')
 //  {
-//    $query = $db->Execute("SELECT * FROM {$db->prefix}universe WHERE sector_id=$dest");
+//    $query = $db->Execute("SELECT * FROM {$db->prefix}universe WHERE sector_id=?", array($dest));
 //    $dest = $query->fields;
 //  }
 

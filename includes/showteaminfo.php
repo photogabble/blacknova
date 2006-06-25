@@ -39,7 +39,7 @@ function showteaminfo($db,$whichteam,$isowner)
     echo "<tr>";
     echo "<td><font color=white>$l_team_members</font></td>";
     echo "</tr><tr bgcolor=\"$color_line2\">";
-    $result  = $db->Execute("SELECT * FROM {$db->prefix}players WHERE team=$whichteam");
+    $result  = $db->Execute("SELECT * FROM {$db->prefix}players WHERE team=?", array($whichteam));
     while (!$result->EOF)
     {
         $member = $result->fields;
@@ -61,7 +61,7 @@ function showteaminfo($db,$whichteam,$isowner)
     }
 
     // Displays for members name
-    $res = $db->Execute("SELECT player_id,character_name FROM {$db->prefix}players WHERE team_invite=$whichteam");
+    $res = $db->Execute("SELECT player_id,character_name FROM {$db->prefix}players WHERE team_invite=?", array($whichteam));
     echo "<td bgcolor=\"$color_line2\"><font color=\"white\">$l_team_pending <strong>$team[team_name]</strong></font></td>";
     echo "</tr><tr>";
     if ($res->RecordCount() > 0)

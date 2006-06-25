@@ -1,8 +1,8 @@
 <?php
 function direct_test($file, $phpself)
 {
-echo "direct test";
-die();
+    echo "direct test";
+    die();
     // Soon, we can template this!
     global $langdir, $l_error_occured, $l_cannot_access, $raw_prefix;
     $phpfile = substr($file, (strrpos($file, "/") +1));

@@ -10,7 +10,7 @@ function take_credits($sector_id, $planet_id)
     // Get basic Database information (ship, player and planet)
     get_info($db);
 
-    $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+    $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
     $planetinfo = $res->fields;
 
     // Set the name for unamed planets to be "unnamed"
@@ -33,12 +33,12 @@ function take_credits($sector_id, $planet_id)
 //                $NewShipCredits = $CreditsTaken + $credits_on_ship;
 
                 // update the planet record for credits -- dont set to zero, as an update may have occured during.
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-$CreditsTaken WHERE planet_id=$planetinfo[planet_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-? WHERE planet_id=?", array($CreditsTaken, $planetinfo['planet_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 // update the player record
                 // credits & turns
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits+$CreditsTaken, turns=turns-1 WHERE player_id='$playerinfo[player_id]'");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits+?, turns=turns-1 WHERE player_id=?", array($CreditsTaken, $playerinfo['player_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 get_info($db);

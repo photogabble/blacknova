@@ -21,8 +21,7 @@
 function sector_todb($db, $array, $method, $sector_id)
 {
     // Execute a query to get an empty recordset
-    $debug_query_rs = $db->SelectLimit("SELECT * FROM {$db->prefix}universe WHERE " .
-                                       "sector_id = $sector_id",1);
+    $debug_query_rs = $db->SelectLimit("SELECT * FROM {$db->prefix}universe WHERE sector_id=?",1,-1, array($sector_id));
     db_op_result($db,$debug_query_rs,__LINE__,__FILE__);
 
     $tablename = $db->prefix . "universe";

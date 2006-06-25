@@ -112,8 +112,7 @@ for ($i=0; ($i<$special_ports-1); $i++)
 $s = 0;
 
 // This is cute - we tell it to get an array of empty sectors (they all are) other than the unique sectors, and randomize it.
-$query = "SELECT sector_id FROM {$db->prefix}universe WHERE sector_id>3 ORDER BY " . $db->random;
-$empty_sectors = $db->Execute($query);
+$empty_sectors = $db->Execute("SELECT sector_id FROM {$db->prefix}universe WHERE sector_id>3 ORDER BY ?", array($db->random));
 db_op_result($db,$empty_sectors,__LINE__,__FILE__);
 
 unset($insertquery); // Cleanup - this keeps memory usage low!

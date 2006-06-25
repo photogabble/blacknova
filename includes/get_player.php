@@ -24,8 +24,7 @@ function get_player($db, $player_id)
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
-    $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE " .
-                        "player_id = $player_id");
+    $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?",array($player_id));
     db_op_result($db,$res,__LINE__,__FILE__);
     if ($res)
     {

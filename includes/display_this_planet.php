@@ -11,7 +11,7 @@ function display_this_planet($db, $this_planet, $planettypes, $basefontsize, $l_
     $planetlevel = 0;
     if ($this_planet['owner'] != 0)
     {
-        $result5 = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=". $this_planet['owner'] . "");
+        $result5 = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($this_planet['owner']));
         $planet_owner = $result5->fields;
 
         $planetavg = $this_planet['computer'] + $this_planet['sensors'] + $this_planet['beams'] + $this_planet['torp_launchers'] + $this_planet['shields'] + $this_planet['cloak'] + ($this_planet['colonists'] / ($colonist_limit / 54));

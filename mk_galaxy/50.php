@@ -80,8 +80,8 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "'N'," .               // allow_planet
                             "'Y'," .               // allow_trade
                             "'N'," .               // allow_defenses
-                            "'$max_avg_combat_tech'" .                  // max_level
-                            ")");
+                            "?" .                  // max_level
+                            ")", array($max_avg_combat_tech));
 $zone_results_array[1] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $l_ai_space = str_replace("[ai]", $ai_name, $l_ai_space);
@@ -91,7 +91,7 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "allow_planetattack, allow_warpedit, ".
                             "allow_planet, allow_trade, allow_defenses, ".
                             "max_level) VALUES(" .
-                            "'$ai_name Space'," .      // zone_name
+                            "?," .      // zone_name
                             "'0'," .               // owner
                             "'N'," .               // team_zone
                             "'Y'," .               // allow_attack
@@ -101,7 +101,7 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "'Y'," .               // allow_trade
                             "'Y'," .               // allow_defenses
                             "0" .                  // max_level
-                            ")");
+                            ")", array($ai_name . 'Space'));
 $zone_results_array[2] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $zone_names[3] = $l_warzone_space;
@@ -120,7 +120,7 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "'Y'," .               // allow_trade
                             "'Y'," .               // allow_defenses
                             "0" .                  // max_level
-                            ")");
+                            ")"));
 $zone_results_array[3] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 // Begin building unique sectors
@@ -292,7 +292,7 @@ while (!$collisions_repaired)
         }
         else
         {
-            $debug_query2 = $db->Execute("SELECT sector_id from {$db->prefix}universe where x='" . $coll[$xx]['x'] ."' and y='" . $coll[$xx]['y'] ."' and z='" . $coll[$xx]['z'] . "'");
+            $debug_query2 = $db->Execute("SELECT sector_id from {$db->prefix}universe where x=? and y=? and z=?", array($coll[$xx]['x'], $coll[$xx]['y'], $coll[$xx]['z']));
 //            var_dump($debug_query);
             while (!$debug_query2->EOF)
             {

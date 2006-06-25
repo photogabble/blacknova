@@ -21,7 +21,7 @@ function dynamic_loader ($db, $mod)
     if ($db != '') // If database isn't available yet, just load the include.
     {
         // Check database for applicable mods
-        $debug_query = $db->Execute("SELECT * FROM {$db->prefix}mods where file='$mod'");
+        $debug_query = $db->Execute("SELECT * FROM {$db->prefix}mods where file=?", array($mod));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         if (!$debug_query || $debug_query->EOF)

@@ -20,7 +20,7 @@
 function calc_dist($db, $src, $dst) 
 {
     $results = $db->Execute("SELECT x,y,z FROM {$db->prefix}universe WHERE " .
-                            "sector_id=$src OR sector_id=$dst");
+                            "sector_id=? OR sector_id=?", array($src, $dst));
     db_op_result($db,$results,__LINE__,__FILE__);
 
     // Make sure you check for this when calling this function.

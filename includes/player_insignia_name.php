@@ -18,11 +18,11 @@ function player_insignia_name($db,$a_username)
     global $l_insignia_12;
     global $l_insignia_13;
 
-    $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email='$a_username'");
+    $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=?", array($a_username));
     db_op_result($db,$res,__LINE__,__FILE__);
     $account_id = $res->fields['account_id'];
 
-    $res = $db->Execute("SELECT score FROM {$db->prefix}players WHERE account_id='$account_id'");
+    $res = $db->Execute("SELECT score FROM {$db->prefix}players WHERE account_id=?", array($account_id));
     db_op_result($db,$res,__LINE__,__FILE__);
 
     // Dynamic functions

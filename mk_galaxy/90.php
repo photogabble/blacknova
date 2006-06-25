@@ -27,52 +27,50 @@ if ($pos !== false)
 dynamic_loader ($db, "db_output.php");
 dynamic_loader ($db, "newplayer.php");
 
+$stamp = date("Y-m-d H:i:s");
+
 // Commented out by tr0n to avoid the kabal/scheduler bug
 /*
 echo "The AI will play every $sched_turns minutes ";
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_turns, 0, 'sched_ai.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 0, 'sched_ai.php', '', ?)", array($sched_turns, $stamp));
 echo db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 */
 
-// Update ticks will occur every $sched_ticks minutes
-
-$stamp = date("Y-m-d H:i:s");
-
 // v1 Master Server Lists
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(360, 'server_list_client.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(360, 'server_list_client.php', '', ?)", array($stamp));
 $template->assign("l_server_list_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_igb, 'sched_igb.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_igb.php', '', ?)", array($sched_igb, $stamp));
 $template->assign("l_sched_igb_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Planets will generate production every $sched_planets minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_planets, 'sched_planets.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_planets.php', '', ?)", array($sched_planets, $stamp));
 $template->assign("l_sched_planets_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Spies will act every $sched_spies minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_spies, 'sched_spies.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_spies.php', '', ?)", array($sched_spies, $stamp));
 $template->assign("l_sched_spies_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Ports will regenerate every $sched_ports minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_ports, 'sched_ports.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_ports.php', '', ?)", array($sched_ports, $stamp));
 $template->assign("l_sched_ports_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Rankings will be generated every $sched_ranking minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_ranking, 'sched_ranking.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_ranking.php', '', ?)", array($sched_ranking, $stamp));
 $template->assign("l_sched_ranking_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Sector Defenses will degrade every $sched_degrade minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_degrade, 'sched_degrade.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_degrade.php', '', ?)", array($sched_degrade, $stamp));
 $template->assign("l_sched_degrade_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // The planetary apocalypse will occur every $sched_apocalypse minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_apocalypse, 'sched_apocalypse.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_apocalypse.php', '', ?)", array($sched_apocalypse, $stamp));
 $template->assign("l_sched_apoc_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Sched repair is no longer needed - now all tables are innodb, which dont have corruption issues like myisam tables do.
 
 // The database log prune will occur every $sched_prune minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_prune, 'sched_prune.php', '', '$stamp')");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_prune.php', '', ?)", array($sched_prune, $stamp));
 $template->assign("l_sched_prune_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 if (!$ship_classes)
@@ -343,12 +341,7 @@ else
 }
 
 $stamp = date("Y-m-d H:i:s");
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}news (news_data, user_id, date, news_type) VALUES (" .
-                            "'', " .         // news data, not used any more
-                            "1, " .          // user_id
-                            "'$stamp', " .   // date
-                            "'creation' " .  // news_type
-                            ")");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}news (news_data, user_id, date, news_type) VALUES ('', 1, ?, 'creation')", array($stamp));
 $template->assign("l_news_created_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Allowing new account creation

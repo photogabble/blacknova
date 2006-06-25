@@ -37,9 +37,13 @@ function display_all_teams($db)
     // Setting if the order is Ascending or descending, if any. Default is ordered by teams.team_name.
     if ($order)
     {
-        $sql_query = $sql_query ." ORDER BY " . $order . " $by";
+        $res = $db->Execute($sql_query. " ORDER BY ? ?", array($order, $by));
     }
-    $res = $db->Execute($sql_query);
+    else
+    {
+        $res = $db->Execute($sql_query);
+    }
+
 //    echo $sql_query;
     while (!$res->EOF) 
     {
@@ -47,8 +51,7 @@ function display_all_teams($db)
         echo "<tr bgcolor=\"$color_line1\">";
         echo "<td><a href=\"teams.php?teamwhat=1&amp;whichteam=".$row['team_id']."\">".$row['team_name']."</a></td>";
         echo "<td>".$row['number_of_members']."</td>";
-        $sql_query_2 = "SELECT character_name FROM {$db->prefix}players WHERE player_id = $row[creator]";
-        $res2 = $db->Execute($sql_query_2);
+        $res2 = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($row['creator']));
         while (!$res2->EOF)
         {
             $row2 = $res2->fields;

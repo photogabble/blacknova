@@ -20,11 +20,11 @@ function connectdb($adodb_session_db, $adodb_session_driver, $adodb_session_user
 {
     if (!empty($dbport))
     {
-        $adodb_session_connect.= ":$dbport";
+        $adodb_session_connect.= ':'. $dbport;
     }
 
     $db = ADONewConnection("$adodb_session_driver");
-    $result = $db->Connect("$adodb_session_connect", "$adodb_session_user", "$adodb_session_pwd", "$adodb_session_db");
+    $result = $db->Connect($adodb_session_connect, $adodb_session_user, $adodb_session_pwd, $adodb_session_db);
 
     if (!$result)
     {
@@ -35,7 +35,7 @@ function connectdb($adodb_session_db, $adodb_session_driver, $adodb_session_user
     else
     {
         $db->debug = 0;
-        $db->autoRollback = true;
+        $db->autoRollback = true; // Shouldnt this be false?!
         $db->prefix = $raw_prefix;
         return $db;
     }

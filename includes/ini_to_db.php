@@ -44,8 +44,8 @@ function ini_to_db ($db, $ini_file, $ini_table, $storelang)
                 $$config_description = '';
             }
 
-            $debug_query_insert = "INSERT into $ini_table (name, category, value, description) VALUES (?,?,?,?)";
-            $debug_query = $db->Execute($debug_query_insert, array($config_key, $config_category, $config_value, $$config_description));
+            $debug_query_insert = "INSERT into ? (name, category, value, description) VALUES (?,?,?,?)";
+            $debug_query = $db->Execute($debug_query_insert, array($ini_table, $config_key, $config_category, $config_value, $$config_description));
             $current_status = db_op_result($db, $debug_query,__LINE__,__FILE__);
             cumulative_error($cumulative, $current_status);
         }

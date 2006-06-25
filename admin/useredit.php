@@ -271,18 +271,18 @@ else
             // planet_id
             echo "<br>Updating SHIPS table ";
             $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET " .
-                      "class='$_POST[ship_class]', name='$_POST[ship_name]', destroyed='$_POST[destroyed]', " .
-                      "hull='$_POST[hull]', engines='$_POST[engines]', pengines='$_POST[pengines]', power='$_POST[power]', " .
-                      "computer='$_POST[computer]', sensors='$_POST[sensors]', beams='$_POST[beams]', " .
-                      "torp_launchers='$_POST[torp_launchers]', torps='$_POST[torps]', shields='$_POST[shields]', " .
-                      "armor='$_POST[armor]', armor_pts='$_POST[armor_pts]', cloak='$_POST[cloak]', " .
-                      "sector_id='$_POST[sector]', ore='$_POST[ship_ore]', organics='$_POST[ship_organics]', " .
-                      "goods='$_POST[ship_goods]', energy='$_POST[ship_energy]', colonists='$_POST[ship_colonists]', " .
-                      "fighters='$_POST[ship_fighters]', dev_warpedit='$_POST[dev_warpedit]', " .
-                      "dev_genesis='$_POST[dev_genesis]', dev_emerwarp='$_POST[dev_emerwarp]', " .
+                      "class=?, name=?, destroyed=?, " .
+                      "hull=?, engines=?, pengines=?, power=?, " .
+                      "computer=?, sensors=?, beams=?, " .
+                      "torp_launchers=?, torps=?, shields=?, " .
+                      "armor=?, armor_pts=?, cloak=?, " .
+                      "sector_id=?, ore=?, organics=?, " .
+                      "goods=?, energy=?, colonists=?, " .
+                      "fighters=?, dev_warpedit=?, " .
+                      "dev_genesis=?, dev_emerwarp=?, " .
                       "dev_escapepod=?, dev_fuelscoop=?, " .
                       "dev_minedeflector=?" .
-                      " WHERE player_id=?", array($_POST['dev_escapepod'], $_POST['dev_fuelscoop'], $_POST['dev_minedeflector'], $_POST['user']));
+                      " WHERE player_id=?", array($_POST['ship_class'], $_POST['ship_name'], $_POST['destroyed'], $_POST['hull'], $_POST['engines'], $_POST['pengines'], $_POST['power'], $_POST['computer'], $_POST['sensors'], $_POST['beams'], $_POST['torp_launchers'], $_POST['torps'], $_POST['shields'], $_POST['armor'], $_POST['armor_pts'], $_POST['cloak'], $_POST['sector'], $_POST['ship_ore'], $_POST['ship_organics'], $_POST['ship_goods'], $_POST['ship_energy'], $_POST['ship_colonists'], $_POST['ship_fighters'], $_POST['dev_warpedit'], $_POST['dev_genesis'], $_POST['dev_emerwarp'], $_POST['dev_escapepod'], $_POST['dev_fuelscoop'], $_POST['dev_minedeflector'], $_POST['user']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             // Store igb data in db
