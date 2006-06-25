@@ -154,6 +154,15 @@ if ($admin_menu == '')
         $add_slash_to_url = '/';
     }
 
+    if ($_SERVER['SERVER_PORT'] == '443')
+    {
+        $server_type = 'https';
+    }
+    else
+    {
+        $server_type = 'http';
+    }
+
     $adminurl = $server_type . "://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']) . $add_slash_to_url . "admin.php";
 }
 

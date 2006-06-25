@@ -84,7 +84,7 @@ foreach ($schema_files as $schema_filename)
         if ($_POST['persist'] != 'on')
         {
             $drop_table_names[$i] = str_replace("[table]", $tablename, $l_drop_table);
-            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}?", array($tablename));
+            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}$tablename");
             $results = '';
             $results = db_op_result($db, $debug_query,__LINE__,__FILE__);
             cumulative_error($cumulative, $results);
@@ -96,11 +96,11 @@ foreach ($schema_files as $schema_filename)
         $drop_table_names[$i] = str_replace("[table]", $tablename, $l_drop_table);
         if ($perm != 'root' && $perm != 'prot')
         {
-            $debug_query = $db->Execute("DROP TABLE {$db->prefix}?", array($tablename));
+            $debug_query = $db->Execute("DROP TABLE {$db->prefix}$tablename");
         }
         else
         {
-            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}?", array($tablename));
+            $debug_query = $db->Execute("DROP TABLE {$raw_prefix}$tablename");
         }
 
         $results = '';
@@ -255,6 +255,7 @@ $template->assign("l_tablecreate", $l_tablecreate);
 $template->assign("l_tablecreate_failure", $l_tablecreate_failure);
 $template->assign("l_tablecreate_success", $l_tablecreate_success);
 $template->assign("instlang_result", $instlang_result);
+$template->assign("lang_result", $lang_result);
 $template->assign("config_result", $config_result);
 $template->assign("l_tabledrop_failure", $l_tabledrop_failure);
 $template->assign("l_tabledrop_success", $l_tabledrop_success);

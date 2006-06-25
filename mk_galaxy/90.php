@@ -340,7 +340,6 @@ else
     $shiptype_results_array[4] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 }
 
-$stamp = date("Y-m-d H:i:s");
 $debug_query = $db->Execute("INSERT INTO {$db->prefix}news (news_data, user_id, date, news_type) VALUES ('', 1, ?, 'creation')", array($stamp));
 $template->assign("l_news_created_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
@@ -421,5 +420,4 @@ $template->assign("l_universe_success", $l_universe_success);
 $template->assign("adminpass", $adminpass);
 $template->assign("admin_mail", $admin_mail);
 $template->display("$templateset/mk_galaxy/90.tpl");
-       
 ?>
