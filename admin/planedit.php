@@ -146,8 +146,8 @@ $planet = $_POST['planet'];
         {
             // update database
             $_defeated = empty($defeated) ? "N" : "Y";
-            $_base = empty($base) ? "N" : "Y";
-            $_sells = empty($sells) ? "N" : "Y";
+            $base = empty($_base) ? "N" : "Y";
+            $sells = empty($_sells) ? "N" : "Y";
             if ($name == "")
             {
                 $name = "Unnamed";

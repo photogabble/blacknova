@@ -73,7 +73,7 @@ if ($playerinfo['team']>0)
 }
 
 // DB NOT CLEANED!
-$query = "SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id]";
+$query = "SELECT * FROM {$db->prefix}planets WHERE owner=" . $playerinfo['player_id'];
 
 if (!empty($sort))
 {
@@ -100,6 +100,7 @@ else
     $query .= " ORDER BY sector_id ASC";
 }
 
+$query = $db->qstr($query);
 $res = $db->Execute($query);
 
 $i = 0;

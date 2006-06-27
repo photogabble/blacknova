@@ -185,37 +185,33 @@ if ($raw_prefix != $db->prefix)
             $temp_turns = $row['turns_used'];
             if ($temp_turns <= 0)
             {
-            $temp_turns = 1;
-        }
+                $temp_turns = 1;
+            }
 
-        $lastlogin = date($local_date_full_format, $row['last_login']);
-        
+            $lastlogin = date($local_date_full_format, $row['last_login']);
 
-        echo "  <tr bgcolor=\"$color\">\n";
-        echo "    <td>" . number_format($i+$_GET['offset'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
-        echo "    <td>" . number_format($row['score'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
-        $player_insignia = player_insignia_name($db,$row['email']);
-        if ($player_insignia['rank_icon'] == 0)
-        {                 
-            $player_insignia['rank_icon'] = 1;
-        }
+            echo "  <tr bgcolor=\"$color\">\n";
+            echo "    <td>" . number_format($i+$_GET['offset'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
+            echo "    <td>" . number_format($row['score'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
+            $player_insignia = player_insignia_name($db,$row['email']);
+            if ($player_insignia['rank_icon'] == 0)
+            {                 
+                $player_insignia['rank_icon'] = 1;
+            }
 
-        echo "    <td nowrap=\"nowrap\"><img src=\"templates/$templateset/images/rank/" . $player_insignia['rank_icon'] . ".png\" align=\"middle\" alt=\"" . $player_insignia['rank_name'] . "\"></td>";
-        echo "    <td><strong>" . $row['character_name'] . "</strong></td>\n";
-        echo "    <td>" . number_format($rating, 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
-        echo "    <td>" . $row['team_name'] . "</td>\n";
-        echo "    <td>" . $online . "</td>\n";
+            echo "    <td nowrap=\"nowrap\"><img src=\"templates/$templateset/images/rank/" . $player_insignia['rank_icon'] . ".png\" align=\"middle\" alt=\"" . $player_insignia['rank_name'] . "\"></td>";
+            echo "    <td><strong>" . $row['character_name'] . "</strong></td>\n";
+            echo "    <td>" . number_format($rating, 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
+            echo "    <td>" . $row['team_name'] . "</td>\n";
+            echo "    <td>" . $online . "</td>\n";
 
-        if ($row['turns_used'] >= 150)
-        {
-            $efficient = "SELECT ROUND({$db->prefix}players.score/{$db->prefix}players.turns_used) ".
-                         "AS efficiency FROM {$db->prefix}players WHERE player_id = '". $row['player_id']. "'";
-            $res2= $db->Execute($efficient);
-
-            db_op_result($db,$debug_query,__LINE__,__FILE__);
+            if ($row['turns_used'] >= 150)
+            {
+                $res2 = $db->Execute("SELECT ROUND({$db->prefix}players.score/{$db->prefix}players.turns_used) ".
+                                     "AS efficiency FROM {$db->prefix}players WHERE player_id=?", array($row['player_id']));
+                db_op_result($db,$res2,__LINE__,__FILE__);
 
                 $row2 = $res2->fields;
-
                 echo "    <td>" . $row2['efficiency'] . "</td>\n";
             }
             else
@@ -225,8 +221,8 @@ if ($raw_prefix != $db->prefix)
 
             echo "    <td>" . number_format($row['turns_used'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
             echo "    <td>" . $lastlogin . "</td>\n";
-
             echo "  </tr>\n";
+
             if ($color == $color_line1)
             {
                 $color = $color_line2;

@@ -1,7 +1,5 @@
 This file is used to keep track of things that need doing, and all feature requests.
 
-TODO: in includes, postgres7-common.php has not cleaned db entries.
-TODO: admin/ipedit.php, standard_report.php, ranking.php, server_list_client.php has not cleaned db entries.
 TODO: planet_production_change.php, planet_defense_report.php and planet2.php has not cleaned db entries.
 TODO: igb_consolidate2.php and 3.php has a not cleaned db entry.
 

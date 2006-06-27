@@ -314,13 +314,12 @@ elseif ($_POST['command'] == 'unbanip')
         $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ? LIKE ban_mask", array($ip));
     }
 
-    $query_string = "ip_address LIKE '" . $bans[0]['ban_mask'] ."'";
+    $query_string = "ip_address LIKE " . $db->qstr($bans[0]['ban_mask']);
     for ($i = 1; $i < $nbbans ; $i++)
     {
-        $query_string = $query_string . " OR ip_address LIKE '" . $bans[$i]['ban_mask'] . "'";
+        $query_string = $query_string . " OR ip_address LIKE " . $db->qstr($bans[$i]['ban_mask']);
     }
 
-    // DB NOT CLEANED
     $res = $db->Execute("select DISTINCT character_name FROM {$db->prefix}players WHERE $query_string");
     $nbplayers = $res->RecordCount();
 
