@@ -203,7 +203,7 @@ $line_color = $color_line2;
         switch ($info['det_type'])
         {
             case 0:
-                list($sector, $owner, $planet)= split ("\|", $info['detect_data']);
+                list($sector, $owner, $planet)= explode ("\|", $info['detect_data']);
                 $l_spy_datatextF = str_replace("[sector]", "<a href=move.php?move_method=real&engage=1&destination=$sector>$sector</a>", $l_spy_datatext_1);
                 $l_spy_datatextF = str_replace("[player]", "<font color=white><strong>$owner</strong></font>", $l_spy_datatextF);
                 $l_spy_datatextF = str_replace("[planet]", "<font color=white><strong>$planet</strong></font>", $l_spy_datatextF);
@@ -212,7 +212,7 @@ $line_color = $color_line2;
             break;
       
             case 1:
-                list($inf, $sender, $receiver,$type)= split ("\>", $info['detect_data']); // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
+                list($inf, $sender, $receiver,$type)= explode ("\>", $info['detect_data']); // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
                 if ($type == 'alliance')
                 {
                     $l_spy_datatextF = str_replace("[sender]", "<font color=white><strong>$sender</strong></font>", $l_spy_datatext[2]);

@@ -25,51 +25,10 @@ if (!function_exists("file_get_contents"))
     dynamic_loader ($db, "file_get_contents.php");
 }
 
-// Safe mode doesn't allow direct file writing.
-if ($safe_mode)
+$reinstall = ($game_installed && $swordfish != $adminpass);
+
+if ($reinstall)
 {
-    echo "The machine you are running this script on appears to have \"safe_mode\" enabled.\n<br>";
-    echo "This means that the automatic portions of this script won't function properly.\n<br>";
-    echo "Instead of automatically configuring the game, we will generate a file that you can upload via ftp.\n<br><br>";
-}
-
-if ($game_installed && $swordfish != $adminpass)
-{
-    $md5list = file_get_contents("md5sum_list", $use_include_path = 0);
-
-    $md5new = explode("  ", $md5list);
-    $k = 1;
-    for ($i = 0; $i < count($md5new) ; $i++)
-    {
-        $part = $md5new[$i];
-        $md5newer = explode("\n", $md5new[$i]);
-        for ($j = 0; $j < count($md5newer) ; $j++)
-        {
-            $kimble[$k] = $md5newer[$j];
-            $k++;
-        }
-    }
-
-    for ($temp = 1; $temp< $k-1; $temp=$temp+2)  
-    {
-        if (md5_file($kimble[$temp+1]) != $kimble[$temp])
-        {
-            echo "<br><font color=red>The following file DOES NOT match the checksums it shipped with, and may be corrupted!</font>";
-            echo "<br><font color=yellow>You may want to try redownloading it.</font>";
-            echo "<br>Filename: ";
-            echo $kimble[$temp+1];
-            echo "<br>Checksum it shipped with: ";
-            echo $kimble[$temp];
-            echo "<br>Actual md5sum: ";
-            echo md5_file($kimble[$temp+1]);
-            echo "<br><br>";    
-        }
-    }
-
-    echo "It seems that you have already installed the game. If you want to edit your 'db_config.php' in /config/ dir, enter your admin password: ";
-    echo "<form action=\"install.php\" method=\"post\"><input type=password name=swordfish value=\"\">&nbsp;";
-    echo "<input type=submit value=\"Submit\"></form>";
-    echo "Everything looks great! Feel free to run the <a href=\"./make_galaxy.php\">Make Galaxy</a> script now!";
     $showit = 0;
 }
 
@@ -110,22 +69,13 @@ if ($showit == 1)     // Preparing values for the form
     {
         echo "<option value=$value " . ($v[1] == $value ? 'selected' : '') . ">$name</option>";
     }
-
-    echo "</select></td></tr>";
-
-    echo "<tr><td>Database name&nbsp;<a href='#' onclick=\"mytip('1')\">?</a></td><td><input tabindex=2 type=text name=_ADODB_SESSION_DB value=\"$v[2]\"></td></tr>";
-    echo "<tr><td>Database username&nbsp;<a href='#' onclick=\"mytip('2')\">?</a></td><td><input tabindex=3 type=text name=_ADODB_SESSION_USER value=\"$v[3]\"></td></tr>";
-    echo "<tr><td>Database password&nbsp;<a href='#' onclick=\"mytip('2')\">?</a></td><td><input tabindex=4 type=password name=_ADODB_SESSION_PWD value=\"$v[4]\"></td></tr>";
-    echo "<tr><td><strong>Database host</strong>&nbsp;<a href='#' onclick=\"mytip('3')\">?</a></td><td><input tabindex=5 type=text name=_ADODB_SESSION_CONNECT value=\"$v[5]\"></td></tr>";
-    echo "<tr><td><strong>Database port</strong>&nbsp;<a href='#' onclick=\"mytip('3')\">?</a></td><td><input tabindex=6 type=text name=_dbport value=\"$v[6]\"></td></tr>";
-    echo "<tr><td>Database table prefix&nbsp;<a href='#' onclick=\"mytip('5')\">?</a></td><td><input tabindex=8 type=text name=_raw_prefix value=\"$v[8]\"></td></tr>";
-    echo "<tr><td>Admin password&nbsp;<a href='#' onclick=\"mytip('10')\">?</a></td><td><input tabindex=15 type=password name=_adminpass value=\"$v[14]\"></td></tr>";
-    echo "<tr><td>Confirm admin password&nbsp;<a href='#' onclick=\"mytip('11')\">?</a></td><td><input tabindex=16 type=password name=adminpass2 value=\"$v[14]\"></td></tr>";
-    echo "<tr><td><strong>Session crypt key</strong>&nbsp;<a href='#' onclick=\"mytip('14')\">?</a></td><td><input tabindex=21 type=text name=_ADODB_CRYPT_KEY value=\"$v[17]\"></td></tr>";
-    echo "<tr><td><strong>Server type</strong>&nbsp;<a href='#' onclick=\"mytip('18')\">?</a></td><td><input tabindex=22 type=text name=_server_type value=\"$v[18]\"></td></tr>";
-    echo "<tr><td><input type=hidden name=\"step\" value=\"2\"></td></tr>";
-    echo "<tr><td><input type=hidden name=\"swordfish\" value=\"$swordfish\"></td></tr>";
-    echo "<tr><td><input tabindex=22 type=\"submit\" value=\"Submit\" onclick=\"validate()\"></td><td></td></tr>";
-    echo "</table></form><br><br>";
 }
+
+$template->assign("showit", $showit);
+$template->assign("reinstall", $reinstall);
+$template->assign("safe_mode", $safe_mode);
+$template->assign("l_continue", $l_continue);
+$template->assign("step", ($_POST['step']+1));
+$template->display("$templateset/install/20.tpl");
+
 ?>

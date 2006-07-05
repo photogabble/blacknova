@@ -528,12 +528,12 @@ if ($tpspies != -1)
     {
         if ($tpspies == -1)
         {
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE ship_id=? AND owner_id=?", array($shipinfo['ship_id'], $playerinfo['player_id']));
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE ship_id=? AND owner_id=?", array($shipinfo['ship_id'], $playerinfo['player_id']));
             $transfer_spies = $res->RecordCount();
         }
         else
         {
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
             $transfer_spies = $res->RecordCount();
         }
     }
@@ -1060,15 +1060,14 @@ if ($tpspies != -1)
                 $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-?, turns=turns-1, turns_used=turns_used+1 WHERE player_id=?", array($total_cost, $playerinfo['player_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                // DB NOT CLEANED!
-                $query = "UPDATE {$db->prefix}planets SET planet_id=$planet_id ";
+                $query = "UPDATE {$db->prefix}planets SET planet_id=? ";
 
                 // Computer
                 if ($computer_upgrade > $planetinfo['computer'])
                 {
                     $tempvar = 0;
                     $tempvar = $computer_upgrade - $planetinfo['computer'];
-                    $query = $query . ", computer=computer+$tempvar";
+                    $query = $query . ", computer=computer+". $db->qstr($tempvar);
                     BuildOneCol("$l_computer $l_trade_upgraded $computer_upgrade");
                 }
 
@@ -1077,7 +1076,7 @@ if ($tpspies != -1)
                 {
                     $tempvar = 0;
                     $tempvar = $sensors_upgrade - $planetinfo['sensors'];
-                    $query = $query . ", sensors=sensors+$tempvar";
+                    $query = $query . ", sensors=sensors+". $db->qstr($tempvar);
                     BuildOneCol("$l_sensors $l_trade_upgraded $sensors_upgrade");
                 }
 
@@ -1086,7 +1085,7 @@ if ($tpspies != -1)
                 {
                     $tempvar = 0;
                     $tempvar = $beams_upgrade - $planetinfo['beams'];
-                    $query = $query . ", beams=beams+$tempvar";
+                    $query = $query . ", beams=beams+". $db->qstr($tempvar);
                     BuildOneCol("$l_beams $l_trade_upgraded $beams_upgrade");
                 }
 
@@ -1095,7 +1094,7 @@ if ($tpspies != -1)
                 {
                     $tempvar = 0;
                     $tempvar = $torp_launchers_upgrade - $planetinfo['torp_launchers'];
-                    $query = $query . ", torp_launchers=torp_launchers+$tempvar";
+                    $query = $query . ", torp_launchers=torp_launchers+". $db->qstr($tempvar);
                     BuildOneCol("$l_torp_launch $l_trade_upgraded $torp_launchers_upgrade");
                 }
 
@@ -1104,7 +1103,7 @@ if ($tpspies != -1)
                 {
                     $tempvar = 0;
                     $tempvar = $shields_upgrade - $planetinfo['shields'];
-                    $query = $query . ", shields=shields+$tempvar";
+                    $query = $query . ", shields=shields+". $db->qstr($tempvar);
                     BuildOneCol("$l_shields $l_trade_upgraded $shields_upgrade");
                 }
 
@@ -1113,12 +1112,12 @@ if ($tpspies != -1)
                 {
                     $tempvar = 0;
                     $tempvar = $cloak_upgrade - $planetinfo['cloak'];
-                    $query = $query . ", cloak=cloak+$tempvar";
+                    $query = $query . ", cloak=cloak+". $db->qstr($tempvar);
                     BuildOneCol("$l_cloak $l_trade_upgraded $cloak_upgrade");
                 }
 
-                $query = $query . " WHERE planet_id=$planet_id";
-                $debug_query = $db->Execute("$query");
+                $query = $query . " WHERE planet_id=?";
+                $debug_query = $db->Execute($query, $planet_id, $planet_id);
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 echo "</table>";

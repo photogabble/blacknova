@@ -71,9 +71,9 @@ $found = 0;
 // This helps reduce the chance of a session replay attack.
 adodb_session_regenerate_id();
 
-// TODO: Newlang needs to be cleaned. BADLY.
 if (isset($_POST['newlang'])) 
 { 
+    $_POST['newlang'] = preg_replace('/[^A-Za-z]/','',$_POST['newlang']);
     $_SESSION['langdir'] = $_POST['newlang']; 
 }
 
@@ -97,15 +97,15 @@ if ((!isset($_SESSION['langdir'])) || ($_SESSION['langdir'] == ''))
     
     if ($h_a_l) 
     {
-        $plng = split(',', $h_a_l);
+        $plng = explode(',', $h_a_l);
         if (count($plng) > 0) 
         {
             $found=0;
 //            while (list($k,$v) = each($plng)) 
             foreach($plng as $key=>$val);
             {
-                $k = split(';', $v, 1);
-                $k = split('-', $k[0]);
+                $k = explode(';', $v, 1);
+                $k = explode('-', $k[0]);
                 
                 switch ($k[0])
                 {

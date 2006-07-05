@@ -433,7 +433,6 @@ switch ($teamwhat)
                 echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";
                 break;
             }
-// ALL cleaned except for this perverse section!
     case 7: // INVITE player
         if (!isset($invited) || ($invited == '') || !($invited))
         {

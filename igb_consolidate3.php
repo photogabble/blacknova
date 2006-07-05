@@ -107,10 +107,10 @@ if ($dest['owner'] != $playerinfo['player_id'])
     include_once ("./igb_error.php");
 }
 
-$minimum = preg_replace('/[^0-9]/','',$minimum);
-$maximum = preg_replace('/[^0-9]/','',$maximum);
+$minimum = $db->qstr(preg_replace('/[^0-9]/','',$minimum));
+$maximum = $db->qstr(preg_replace('/[^0-9]/','',$maximum));
 
-$query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner=$playerinfo[player_id] AND credits != 0";
+$query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner=? AND credits != 0";
 
 if ($minimum != 0)
 {
@@ -122,10 +122,9 @@ if ($maximum != 0)
     $query .= " AND credits <= $maximum";
 }
 
-$query .= " AND planet_id != $dplanet_id";
+$query .= " AND planet_id != ?";
 
-// DB NOT CLEANED!
-$res = $db->Execute($query);
+$res = $db->Execute($query, $playerinfo['player_id'], $dplanet_id);
 $amount = $res->fields;
 
 $fee = $ibank_paymentfee * $amount['total'];
@@ -140,7 +139,7 @@ if ($tcost > $playerinfo['turns'])
     include_once ("./igb_error.php");
 }
 
-$query = "UPDATE {$db->prefix}planets SET credits=0 WHERE owner=$playerinfo[player_id] AND credits != 0";
+$query = "UPDATE {$db->prefix}planets SET credits=0 WHERE owner=? AND credits != 0";
 
 if ($minimum != 0)
 {
@@ -152,10 +151,9 @@ if ($maximum != 0)
     $query .= " AND credits <= $maximum";
 }
 
-$query .= " AND planet_id != $dplanet_id";
+$query .= " AND planet_id !=?";
 
-// DB NOT CLEANED!
-$debug_query = $db->Execute($query);
+$debug_query = $db->Execute($query, $playerinfo['player_id'], $dplanet_id);
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits + ? WHERE planet_id=?, array($transfer, $dplanet_id));

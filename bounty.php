@@ -79,7 +79,7 @@ switch ($response)
             $color = $color_line1;
             for ($j=0; $j<$num_details; $j++)
             {
-                $someres = $db->execute("SELECT character_name FROM {$db->prefix}players WHERE player_id =?", array($bounty_details[$j]['placed_by']));
+                $someres = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id =?", array($bounty_details[$j]['placed_by']));
                 $details = $someres->fields;
                 echo "<tr bgcolor=\"$color\">";
                 echo "<td>&nbsp;" . number_format($bounty_details[$j]['amount'], 0, $local_number_dec_point, $local_number_thousands_sep) . "&nbsp;</td>";
@@ -322,7 +322,7 @@ switch ($response)
             $color = $color_line1;
             for ($i=0; $i<$num_bounties; $i++)
             {
-                $someres = $db->execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($bounties[$i]['bounty_on']));
+                $someres = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($bounties[$i]['bounty_on']));
                 $details = $someres->fields;
                 echo "<tr bgcolor=\"$color\">";
                 echo "<td><a href=bounty.php?bounty_on=" . $bounties[$i]['bounty_on'] . "&response=1>". $details['character_name'] ."</a></td>";

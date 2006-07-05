@@ -53,19 +53,18 @@ if ($playerinfo['team'] == 0)
     return;
 }
 
-// DB NOT CLEANED!
-$query = "SELECT * FROM {$db->prefix}planets WHERE team=$playerinfo[team]";
+$query = "SELECT * FROM {$db->prefix}planets WHERE team=?";
 
 if (!empty($sort))
 {
     $query .= " ORDER BY";
     if ($sort == "name")
     {
-        $query .= " $sort ASC";
+        $query .= $db->qstr($sort) . " ASC";
     }
     elseif ($sort == "computer" || $sort == "sensors" || $sort == "beams" || $sort == "torp_launchers" || $sort == "shields" || $sort == "cloak" || $sort == "owner" || $sort == "base")
     {
-        $query .= " $sort DESC, sector_id ASC";
+        $query .= $db->qstr($sort) . " DESC, sector_id ASC";
     }
     else
     {
@@ -78,7 +77,7 @@ else
     $query .= " ORDER BY sector_id ASC";
 }
 
-$res = $db->Execute($query);
+$res = $db->Execute($query, $playerinfo['team']);
 echo "<h1>" . $title. "</h1>\n";
 
 echo "<br>";

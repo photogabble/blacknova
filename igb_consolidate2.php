@@ -110,8 +110,8 @@ if ($dest['owner'] != $playerinfo['player_id'])
     include_once ("./igb_error.php");
 }
 
-$minimum = preg_replace('/[^0-9]/','',$minimum);
-$maximum = preg_replace('/[^0-9]/','',$maximum);
+$minimum = $db->qstr(preg_replace('/[^0-9]/','',$minimum));
+$maximum = $db->qstr(preg_replace('/[^0-9]/','',$maximum));
 
 $query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner=? " .
          "AND credits != 0";
@@ -128,7 +128,6 @@ if ($maximum != 0)
 
 $query .= " AND planet_id !=?";
 
-// DB NOT CLEANED!
 $res = $db->Execute($query, array($playerinfo['player_id'], $dplanet_id));
 $amount = $res->fields;
 

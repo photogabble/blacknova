@@ -52,6 +52,7 @@ $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", a
 $ownerinfo = $res->fields;
 
 $gen_failed = TRUE;
+$gen_reason = '';
 
 if ($playerinfo['turns'] < 1)
 {

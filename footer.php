@@ -402,7 +402,7 @@ if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && !$zl)
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH']))
 {
-    $inm = split(',', $_SERVER['HTTP_IF_NONE_MATCH']);
+    $inm = explode(',', $_SERVER['HTTP_IF_NONE_MATCH']);
     foreach ($inm as $i)
     {
         if (trim($i) == $etag)

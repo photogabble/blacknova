@@ -388,7 +388,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
         echo "<td>" . number_format($planetinfo['torps'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>";
         if ($spy_success_factor)
         {
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
             $n = $res->RecordCount();
             echo "<td>$n</td>";
         }
@@ -650,10 +650,10 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         echo"<tr bgcolor=\"$color_line2\"><td>$l_credits</td><td>" . number_format($planetinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td>" . number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td><input type=text name=transfer_credits size=10 maxlength=50></td><td><input type=checkbox name=tpcredits value=-1></td><td><input type=checkbox name=allcredits value=-1></td></tr>";
         if ($spy_success_factor)
         {
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = ? AND " .
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = ? AND " .
                                 "owner_id = ? ", array($planet_id, $playerinfo['player_id']));
             $n_pl = $res->RecordCount();
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE ship_id=? AND " .
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE ship_id=? AND " .
                                 "owner_id=?", array($shipinfo['ship_id'], $playerinfo['player_id']));
             $n_sh = $res->RecordCount();
 
@@ -1398,10 +1398,8 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 $planetowner = $l_planet_noone;
             }  
 
-            // DB NOT CLEANED!
             $debug_query = $db->Execute("SELECT time FROM {$db->prefix}planet_log WHERE " .
-                                        "planet_id=".$planetinfo['planet_id']." AND (action=".PLOG_CAPTURE." OR " .
-                                        "action=".PLOG_GENESIS_CREATE.")");
+                                        "planet_id=? AND (action=? OR action=?)", $planetinfo['planet_id'], PLOG_CAPTURE, PLOG_GENESIS_CREATE);
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $row = $debug_query->fields;
             $lasttime = $db->UnixTimeStamp($row['time']);

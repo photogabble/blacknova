@@ -16,6 +16,7 @@
 //
 // File: install.php
 
+$no_body = 1;
 include_once ("./global_includes.php");
 
 // Dynamic functions

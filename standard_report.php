@@ -72,19 +72,18 @@ if ($playerinfo['team']>0)
          "<br>";
 }
 
-// DB NOT CLEANED!
-$query = "SELECT * FROM {$db->prefix}planets WHERE owner=" . $playerinfo['player_id'];
+$query = "SELECT * FROM {$db->prefix}planets WHERE owner=?";
 
 if (!empty($sort))
 {
     $query .= " ORDER BY";
     if ($sort == "name")
     {
-        $query .= " $sort ASC";
+        $query .= $db->qstr($sort) . " ASC";
     }
     elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "colonists" || $sort == "credits" || $sort == "fighters")
     {
-        $query .= " $sort DESC, sector_id ASC";
+        $query .= $db->qstr(sort) . " DESC, sector_id ASC";
     }
     elseif ($sort == "torp")
     {
@@ -100,7 +99,7 @@ else
     $query .= " ORDER BY sector_id ASC";
 }
 
-$query = $db->qstr($query);
+$query = $db->qstr($query, $playerinfo['player_id']);
 $res = $db->Execute($query);
 
 $i = 0;

@@ -673,14 +673,13 @@ else
             $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-?,turns=turns-1, turns_used=turns_used+1 WHERE player_id=?", array($total_cost, $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            // DB NOT CLEANED!
-            $query = "UPDATE {$db->prefix}ships SET class=$shipinfo[class] ";
+            $query = "UPDATE {$db->prefix}ships SET class=? ";
 
             if ($_POST['hull_upgrade'] > $shipinfo['hull'])
             {
                 $tempvar = 0; 
                 $tempvar = $_POST['hull_upgrade'] - $shipinfo['hull'];
-                $query = $query . ", hull=hull+$tempvar";
+                $query = $query . ", hull=hull+". $db->qstr($tempvar);
                 BuildOneCol("$l_hull $l_trade_upgraded $_POST[hull_upgrade]");
             }
 
@@ -688,7 +687,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['engine_upgrade'] - $shipinfo['engines'];
-                $query = $query . ", engines=engines+$tempvar";
+                $query = $query . ", engines=engines+". $db->qstr($tempvar);
                 BuildOneCol("$l_engines $l_trade_upgraded $_POST[engine_upgrade]");
             }
 
@@ -696,7 +695,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['pengine_upgrade'] - $shipinfo['pengines'];
-                $query = $query . ", pengines=pengines+$tempvar";
+                $query = $query . ", pengines=pengines+". $db->qstr($tempvar);
                 BuildOneCol("$l_pengines $l_trade_upgraded $_POST[pengine_upgrade]");
             }
 
@@ -704,7 +703,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['power_upgrade'] - $shipinfo['power'];
-                $query = $query . ", power=power+$tempvar";
+                $query = $query . ", power=power+". $db->qstr($tempvar);
                 BuildOneCol("$l_power $l_trade_upgraded $_POST[power_upgrade]");
             }
 
@@ -712,7 +711,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['computer_upgrade'] - $shipinfo['computer'];
-                $query = $query . ", computer=computer+$tempvar";
+                $query = $query . ", computer=computer+". $db->qstr($tempvar);
                 BuildOneCol("$l_computer $l_trade_upgraded $_POST[computer_upgrade]");
             }
 
@@ -720,7 +719,7 @@ else
             {
                 $tempvar = 0; 
                 $tempvar = $_POST['sensors_upgrade'] - $shipinfo['sensors'];
-                $query = $query . ", sensors=sensors+$tempvar";
+                $query = $query . ", sensors=sensors+". $db->qstr($tempvar);
                 BuildOneCol("$l_sensors $l_trade_upgraded $_POST[sensors_upgrade]");
             }
 
@@ -728,7 +727,7 @@ else
             {
                 $tempvar = 0; 
                 $tempvar = $_POST['beams_upgrade'] - $shipinfo['beams'];
-                $query = $query . ", beams=beams+$tempvar";
+                $query = $query . ", beams=beams+". $db->qstr($tempvar);
                 BuildOneCol("$l_beams $l_trade_upgraded $_POST[beams_upgrade]");
             }
 
@@ -736,7 +735,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['armor_upgrade'] - $shipinfo['armor'];
-                $query = $query . ", armor=armor+$tempvar";
+                $query = $query . ", armor=armor+". $db->qstr($tempvar);
                 BuildOneCol("$l_armor $l_trade_upgraded $_POST[armor_upgrade]");
             }
 
@@ -744,7 +743,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['cloak_upgrade'] - $shipinfo['cloak'];
-                $query = $query . ", cloak=cloak+$tempvar";
+                $query = $query . ", cloak=cloak+". $db->qstr($tempvar);
                 BuildOneCol("$l_cloak $l_trade_upgraded $_POST[cloak_upgrade]");
             }
 
@@ -752,7 +751,7 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['torp_launchers_upgrade'] - $shipinfo['torp_launchers'];
-                $query = $query . ", torp_launchers=torp_launchers+$tempvar";
+                $query = $query . ", torp_launchers=torp_launchers+". $db->qstr($tempvar);
                 BuildOneCol("$l_torp_launch $l_trade_upgraded $_POST[torp_launchers_upgrade]");
             }
 
@@ -760,55 +759,55 @@ else
             {
                 $tempvar = 0;
                 $tempvar = $_POST['shields_upgrade'] - $shipinfo['shields'];
-                $query = $query . ", shields=shields+$tempvar";
+                $query = $query . ", shields=shields+". $db->qstr($tempvar);
                 BuildOneCol("$l_shields $l_trade_upgraded $_POST[shields_upgrade]");
             }
 
             if ($_POST['fighter_number'])
             {
-                $query = $query . ", fighters=fighters+$_POST[fighter_number]";
+                $query = $query . ", fighters=fighters+" . $db->qstr($_POST['fighter_number']);
                 BuildTwoCol("$l_fighters $l_trade_added:", $_POST['fighter_number'], "left", "right" );
             }
 
             if ($_POST['torpedo_number'])
             {
-                $query = $query . ", torps=torps+$_POST[torpedo_number]";
+                $query = $query . ", torps=torps+" . $db->qstr($_POST['torpedo_number']);
                 BuildTwoCol("$l_torps $l_trade_added:", $_POST['torpedo_number'], "left", "right" );
             }
 
             if ($_POST['armor_number'])
             {
-                $query = $query . ", armor_pts=armor_pts+$_POST[armor_number]";
+                $query = $query . ", armor_pts=armor_pts+". $db->qstr($_POST['armor_number']);
                 BuildTwoCol("$l_armorpts $l_trade_added:", $_POST['armor_number'], "left", "right" );
             }
 
             if ($_POST['colonist_number'])
             {
-                $query = $query . ", colonists=colonists+$_POST[colonist_number]";
+                $query = $query . ", colonists=colonists+". $db->qstr($_POST['colonist_number']);
                 BuildTwoCol("$l_colonists $l_trade_added:", $_POST['colonist_number'], "left", "right" );
             }
 
             if ($_POST['dev_genesis_number'])
             {
-                $query = $query . ", dev_genesis=dev_genesis+$_POST[dev_genesis_number]";
+                $query = $query . ", dev_genesis=dev_genesis+". $db->qstr($_POST['dev_genesis_number']);
                 BuildTwoCol("$l_genesis $l_trade_added:", $_POST['dev_genesis_number'], "left", "right" );
             }
 
             if ($_POST['dev_emerwarp_number'])
             {
-                $query = $query . ", dev_emerwarp=dev_emerwarp+$_POST[dev_emerwarp_number]";
+                $query = $query . ", dev_emerwarp=dev_emerwarp+". $db->qstr($_POST['dev_emerwarp_number']);
                 BuildTwoCol("$l_ewd $l_trade_added:", $_POST['dev_emerwarp_number'] , "left", "right" );
             }
 
             if ($_POST['dev_warpedit_number'])
             {
-                $query = $query . ", dev_warpedit=dev_warpedit+$_POST[dev_warpedit_number]";
+                $query = $query . ", dev_warpedit=dev_warpedit+". $db->qstr($_POST['dev_warpedit_number']);
                 BuildTwoCol("$l_warpedit $l_trade_added:", $_POST['dev_warpedit_number'] , "left", "right" );
             }
 
             if ($_POST['dev_minedeflector_number'])
             {
-                $query = $query . ", dev_minedeflector=dev_minedeflector+$_POST[dev_minedeflector_number]";
+                $query = $query . ", dev_minedeflector=dev_minedeflector+". $db->qstr($_POST['dev_minedeflector_number']);
                 BuildTwoCol("$l_deflect $l_trade_added:", $_POST['dev_minedeflector_number'] , "left", "right" );
             }
 
@@ -830,8 +829,8 @@ else
                 BuildTwoCol("$l_spy $l_trade_added:", $_POST['spy_number'] , "left", "right" );
             }
       
-            $query = $query . " WHERE ship_id=$shipinfo[ship_id]";
-            $debug_query = $db->Execute("$query");
+            $query = $query . " WHERE ship_id=?";
+            $debug_query = $db->Execute($query, $shipinfo['class'], $shipinfo['ship_id']);
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $_POST['hull_upgrade']=0;

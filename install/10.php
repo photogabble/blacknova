@@ -23,7 +23,6 @@ if (!function_exists("file_get_contents"))
     dynamic_loader ($db, "file_get_contents.php");
 }
 
-echo "<h2>Testing file integrity</h2>";
 $md5list = file_get_contents("md5sum_list", $use_include_path = 0);
 
 $listpart = explode("\n", $md5list);
@@ -49,36 +48,11 @@ for ($temp = 1; $temp< $k-1; $temp=$temp+2)
     }
 }
 
-if ($j > 0)
-{
-    echo "<p><font color=red>The following files DO NOT match the checksums they shipped with, and may be corrupted!</font><br>";
-    echo "<font color=yellow>You may want to try redownloading them.</font></p>";
-    echo '<div id="wrap" style="width:500px;">';
-    echo '<div id="left" style="float:left; width:200px;">';
-    for ($x=1; $x <= $j; $x=$x+2)
-    {
-            echo $badlist[$x];
-            echo "<br>";
-    }
-    echo '</div>';
-    echo '<div id="right" style="float:right; width:200px;">';
-    for ($x=2; $x <= $j; $x=$x+2)
-    {
-            echo $badlist[$x];
-            echo "<br>";
-    }
-    echo '</div>';
-    echo '</div>';
-    echo '<div style="clear:both;"><br>';
-    echo "<p><font color=red>Continuing to install with files that do not match their checksums could";
-    echo " cause bugs, errors, or even data loss.</font></p></div>";
-}
-else
-{
-    echo "<font color=lightgreen>";
-    echo "<p>" . count($listpart) ." files tested and confirmed to match the checksums they shipped with.</p>";
-    echo "<p>You are clear to proceed with install.</p></font>";
-}
+$template->assign("badlist", $badlist);
+$template->assign("testedcount",count($listpart));
+$template->assign("errorchk",$j);
+$template->assign("l_continue", $l_continue);
+$template->assign("step", ($_POST['step']+1));
+$template->display("$templateset/install/10.tpl");
 
-echo "<br><br>";
 ?>

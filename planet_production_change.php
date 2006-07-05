@@ -55,8 +55,7 @@ global $l_sector, $l_name, $l_unnamed, $l_ore, $l_organics, $l_goods, $l_energy,
 global $l_pr_noplanet, $l_team, $l_submit, $l_reset, $l_pr_planetstatus, $l_pr_menulink;
 global $planet_detect_success2, $spy_success_factor, $shipinfo;
 
-// DB NOT CLEANED!
-$query = "SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id] AND base='Y'";
+$query = "SELECT * FROM {$db->prefix}planets WHERE owner=? AND base='Y'";
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -71,24 +70,24 @@ if ($playerinfo['team']>0)
          "<br>";
 }
 
+if (!empty($sort)
+{
+    if ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters" || $sort == "torp")
+    {
+        $sort = 'prod_' . $sort;
+    }
+}
+
 if (!empty($sort))
 {
     $query .= " ORDER BY";
     if ($sort == "name")
     {
-        $query .= " $sort ASC";
+        $query .= $db->qstr($sort) . " ASC";
     }
-    elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters")
+    elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters" || $sort == "torp" || $sort == "colonists" || $sort == "credits")
     {
-        $query .= " prod_$sort DESC, sector_id ASC";
-    }
-    elseif ($sort == "colonists" || $sort == "credits")
-    {
-        $query .= " $sort DESC, sector_id ASC";
-    }
-    elseif ($sort == "torp")
-    {
-        $query .= " prod_torp DESC, sector_id ASC";
+        $query .= $db->qstr($sort) . " DESC, sector_id ASC";
     }
     else
     {
@@ -100,7 +99,7 @@ else
     $query .= " ORDER BY sector_id ASC";
 }
 
-$res = $db->Execute($query);
+$res = $db->Execute($query, $playerinfo['player_id']);
 
 $i = 0;
 if ($res)
