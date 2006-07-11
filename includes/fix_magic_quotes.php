@@ -36,7 +36,7 @@ function fix_magic_quotes ($var = NULL, $sybase = NULL)
             $argv = isset($_SERVER['argv']) ? $_SERVER['argv'] : NULL; 
 
             // fix all affected arrays
-            foreach(array('_ENV', '_REQUEST', '_GET', '_POST', '_COOKIE', '_SERVER') as $var)
+            foreach(array('_REQUEST', '_GET', '_POST', '_COOKIE', '_SERVER') as $var)
             {
                 $GLOBALS[$var] = fix_magic_quotes ($GLOBALS[$var], $sybase);
             }
