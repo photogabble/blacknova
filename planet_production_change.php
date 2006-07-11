@@ -70,7 +70,7 @@ if ($playerinfo['team']>0)
          "<br>";
 }
 
-if (!empty($sort)
+if (!empty($sort))
 {
     if ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters" || $sort == "torp")
     {
