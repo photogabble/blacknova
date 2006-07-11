@@ -20,6 +20,12 @@
 
 ini_set('arg_separator.output', '&amp;'); // Ensures that all ampersands are html-compliant, if php appends session id's to the url (instead of via cookie)
 ini_set('url_rewriter.tags', ''); // Ensure that the session id is *not* passed on the url - this is a big security hole for logins - including admin.
+//ini_set('display_errors', false); // Disable the display of errors on production games.
+ini_set('variables_order', 'GPCS'); // Eliminate _ENV from being populated.
+ini_set('gpc_order', 'GPC'); // Make gpc order consistent.
+ini_set('register_argc_argv', false); // Do not populate the argc/argv arrays.
+ini_set('always_populate_raw_post_data', false); // Do not populate the raw post data.
+session_cache_limiter('private'); // Extremely experimental. This will allow clients to cache, but not proxies. May cause cache wonkiness!
 
 fix_magic_quotes(); // See the function in common_functions. This fixes all possible weirdness from magic_quotes_*
 
