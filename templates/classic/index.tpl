@@ -15,7 +15,6 @@
       <strong>{$l_in_canrun}</strong>
       <p>
       {$l_yes}! <acronym title="{$l_project_name}">BNT</acronym> {$l_in_isdevd} <a href="http://sourceforge.net/projects/blacknova" tabindex="19">SourceForge</a>.
-      <br>
       <div class="thinline"></div>
       <p>
       <strong>{$l_in_others}</strong>
@@ -24,13 +23,14 @@
       <a href="http://bnt2.blacknova.net" tabindex="17">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_2ndgm}</a><br>
       <a href="http://play.blacknovatraders.com" tabindex="18">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_devgm}</a><br>
       <p>
+      <a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=14248&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /></a>
     </td>
     <td class="indexpage" valign="top">
       <table cellspacing="0" cellpadding="0">
         <tr>
           <td class="indexpage" colspan="3">
             <!-- begin login -->
-              <form method="post" action="login2.php" onsubmit="encrypted_password.value=sha256_once(document.forms[0].password.value);">
+              <form method="post" action="login2.php" onsubmit="encrypted_password.value=sha256_once(document.forms[0].password.value);password.value='';">
               <table cellspacing="0" cellpadding="0">
                 <tr>
                   <td class="indexpage" align="right"><label for="Email">{$l_email}</label></td>
