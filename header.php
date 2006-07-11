@@ -90,7 +90,7 @@ if (!isset($local_lang))
     $local_lang = "en"; // On index.php, before install, this has to be set manually.
 }
 
-$template->assign("title", $l_header_title);
+$template->assign("header_title", $l_header_title);
 $template->assign("local_lang", $local_lang);
 $template->assign("templateset", $templateset);
 $template->assign("refreshurl", $refreshurl);
