@@ -48,6 +48,7 @@ for ($temp = 1; $temp< $k-1; $temp=$temp+2)
     }
 }
 
+$template->assign("title", $title);
 $template->assign("badlist", $badlist);
 $template->assign("testedcount",count($listpart));
 $template->assign("errorchk",$j);

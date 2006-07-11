@@ -30,14 +30,14 @@ $install_files = getDirFiles("install/");
 if ((!isset($_POST['step'])) || ($_POST['step'] ==''))
 {
     $_POST['step'] = "0";
-    $title = $l_install_title;
-}
-else
-{
-    $title = $l_install_title . " - Phase ". $_POST['step'] . " of " . (count($install_files)-1); // Step 0 isnt counted.
 }
 
-include_once ("./header.php");
+$title = $l_install_title . " - Phase ". ($_POST['step']+1) . " of " . (count($install_files)-1); // Step 0 isn't counted.
+
+if ($_POST['step'] != '3')
+{
+    include_once ("./header.php");
+}
 
 if ((!isset($_POST['swordfish'])) || ($_POST['swordfish'] ==''))
 {

@@ -32,6 +32,7 @@ if ($reinstall)
     $showit = 0;
 }
 
+$output = '';
 if ($showit == 1)     // Preparing values for the form
 {
     $v[1]  = isset($ADODB_SESSION_DRIVER) ? $ADODB_SESSION_DRIVER : 'mysqlt';
@@ -60,17 +61,24 @@ if ($showit == 1)     // Preparing values for the form
 
     $v[18] = isset($server_type) ? $server_type : 'http';
 
-    echo "<script type=\"text/javascript\" src=\"backends/javascript/installtips.js\"></script>";
-    echo "<form action=\"install.php\"  method=\"post\"><table>";
-
-    echo "<tr><td>Database type&nbsp;<a href='#' onclick=\"mytip('0')\">?</a></td>";
-    echo "<td><select tabindex=1 name=_ADODB_SESSION_DRIVER>";
     foreach($dbs as $value => $name)
     {
-        echo "<option value=$value " . ($v[1] == $value ? 'selected' : '') . ">$name</option>";
+        $output.= "<option value=$value " . ($v[1] == $value ? 'selected' : '') . ">$name</option>";
     }
 }
 
+$template->assign("title", $title);
+$template->assign("output", $output);
+$template->assign("v1", $v[1]);
+$template->assign("v2", $v[2]);
+$template->assign("v3", $v[3]);
+$template->assign("v4", $v[4]);
+$template->assign("v5", $v[5]);
+$template->assign("v6", $v[6]);
+$template->assign("v8", $v[8]);
+$template->assign("v14", $v[14]);
+$template->assign("v17", $v[17]);
+$template->assign("v18", $v[18]);
 $template->assign("showit", $showit);
 $template->assign("reinstall", $reinstall);
 $template->assign("safe_mode", $safe_mode);
