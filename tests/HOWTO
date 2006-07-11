@@ -1,0 +1,7 @@
+For testing, build a Simpletest *with the same name* as the include file.
+
+testall.php will automatically pick up the test, add it to the test suite, and run it.
+
+Do not include the file to be tested, as testall will do that for you automatically.
+
+When you've added a new test, simply run testall.php to verify the results.
