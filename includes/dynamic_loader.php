@@ -18,7 +18,7 @@
 
 function dynamic_loader ($db, $mod)
 {
-    if ($db != '') // If database isn't available yet, just load the include.
+    if (is_object($db)) // If database is available, check the db for a mod.
     {
         // Check database for applicable mods
         $debug_query = $db->Execute("SELECT * FROM {$db->prefix}mods where file=?", array($mod));
@@ -33,7 +33,7 @@ function dynamic_loader ($db, $mod)
             $mod_file = 'mods/' . $debug_query->fields['file'];
         }
     }
-    else
+    else // If database isn't available yet, just load the include.
     {
         $mod_file = '';
     }

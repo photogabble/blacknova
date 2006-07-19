@@ -112,7 +112,7 @@ if ($shipinfo['on_planet'] == "Y")
 $res = $db->Execute("SELECT DISTINCT link_dest FROM {$db->prefix}links WHERE link_start=? ORDER BY link_dest ASC", array($shipinfo['sector_id']));
 
 $i = 0;
-if ($res > 0)
+if (is_object($res))
 {
     while (!$res->EOF)
     {
@@ -158,7 +158,7 @@ $defenses = array(array());
 $res = $db->Execute("SELECT * FROM {$db->prefix}sector_defense, {$db->prefix}players WHERE {$db->prefix}sector_defense.sector_id=?
                                                     AND {$db->prefix}players.player_id = {$db->prefix}sector_defense.player_id ", array($shipinfo['sector_id']));
 $i = 0;
-if ($res > 0)
+if (is_object($res))
 {
     while (!$res->EOF)
     {

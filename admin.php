@@ -147,8 +147,8 @@ if (isset($_GET['hidem']))
     $admin_menu = 'perfmon'; // If hidem is set, its part of adodb's perf monitor.
 }
 
-if ($admin_menu == '')
-{
+//if ($admin_menu == '')
+//{
     if (strlen(dirname($_SERVER['PHP_SELF'])) > 1)
     {
         $add_slash_to_url = '/';
@@ -164,7 +164,7 @@ if ($admin_menu == '')
     }
 
     $adminurl = $server_type . "://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']) . $add_slash_to_url . "admin.php";
-}
+//}
 
 $button_main = true;
 

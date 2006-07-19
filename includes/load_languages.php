@@ -19,7 +19,7 @@
 
 function load_languages($db, $raw_prefix, $file)
 {
-    if ($db =='')
+    if (!is_object($db))
     {
         return FALSE; // Database is not installed.
     }

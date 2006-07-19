@@ -49,7 +49,7 @@ function traderoute_delete()
     }
     else
     {
-        $query = $db->Execute("DELETE FROM {$db->prefix}traderoutes WHERE traderoute_id=?", $_GET['traderoute_id']));
+        $query = $db->Execute("DELETE FROM {$db->prefix}traderoutes WHERE traderoute_id=?", $_GET['traderoute_id']);
         echo "$l_tdr_tdrdeleted <a href=traderoute.php>$l_tdr_returnmenu</a>";
         traderoute_die("");
     }

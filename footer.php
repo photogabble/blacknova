@@ -352,7 +352,7 @@ if (basename($_SERVER['PHP_SELF']) == 'make_galaxy.php')
     }
 }
 
-if ($db=='')
+if (!is_object($db))
 {
     $template->assign("dbprefix", '');
 }
