@@ -50,16 +50,16 @@ if (!get_info($db) || $playerinfo['acl'] < 128) // Check player's ACL to ensure 
     attack_check($db);
 //    adminlog($db, "LOG_RAW","Bad login - banned ADMIN LOGIN ATTEMPT from $ip_address");
 
-    $smarty->assign("title", $title);
-    $smarty->assign("l_acc_denied", $l_acc_denied);
-    $smarty->display("$templateset/admin-denied.tpl");
+    $template->assign("title", $title);
+    $template->assign("l_acc_denied", $l_acc_denied);
+    $template->display("$templateset/admin-denied.tpl");
 
     include_once ("./footer.php");
     die();
 }
 
-$debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE '$ip_address' LIKE ban_mask OR '$client_ip_address' " .
-                                "LIKE ban_mask OR '$proxy_address' LIKE ban_mask",1);
+$debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE ? LIKE ban_mask OR ? " .
+                                "LIKE ban_mask OR ? LIKE ban_mask",1,-1,array($ip_address, $client_ip_address, $proxy_address));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 if ($debug_query && !$debug_query->EOF)
@@ -69,9 +69,9 @@ if ($debug_query && !$debug_query->EOF)
         $title = $l_error_occured;
         adminlog($db, "LOG_RAW","Bad login - banned ADMIN LOGIN ATTEMPT from $ip_address");
 
-        $smarty->assign("title", $title);
-        $smarty->assign("l_login_banned", $l_login_banned);
-        $smarty->display("$templateset/admin-banned.tpl");
+        $template->assign("title", $title);
+        $template->assign("l_login_banned", $l_login_banned);
+        $template->display("$templateset/admin-banned.tpl");
 
         include_once ("./footer.php");
         die();
@@ -147,15 +147,24 @@ if (isset($_GET['hidem']))
     $admin_menu = 'perfmon'; // If hidem is set, its part of adodb's perf monitor.
 }
 
-if ($admin_menu == '')
-{
+//if ($admin_menu == '')
+//{
     if (strlen(dirname($_SERVER['PHP_SELF'])) > 1)
     {
         $add_slash_to_url = '/';
     }
 
+    if ($_SERVER['SERVER_PORT'] == '443')
+    {
+        $server_type = 'https';
+    }
+    else
+    {
+        $server_type = 'http';
+    }
+
     $adminurl = $server_type . "://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']) . $add_slash_to_url . "admin.php";
-}
+//}
 
 $button_main = true;
 
@@ -247,15 +256,15 @@ elseif ($admin_menu != '')
 {
     global $l_admin_unknown;
 
-    $smarty->assign("l_admin_unknown", $l_admin_unknown);
-    $smarty->display("$templateset/admin-unknown.tpl");
+    $template->assign("l_admin_unknown", $l_admin_unknown);
+    $template->display("$templateset/admin-unknown.tpl");
 }
 
-$smarty->assign("playerinfo_acl", $playerinfo['acl']);
-$smarty->assign("admin_menu", $admin_menu);
-$smarty->assign("adminurl", $adminurl);
-$smarty->assign("button_main", $button_main);
-$smarty->display("$templateset/admin.tpl");
+$template->assign("playerinfo_acl", $playerinfo['acl']);
+$template->assign("admin_menu", $admin_menu);
+$template->assign("adminurl", $adminurl);
+$template->assign("button_main", $button_main);
+$template->display("$templateset/admin.tpl");
 
 include_once ("./footer.php");
 ?> 
