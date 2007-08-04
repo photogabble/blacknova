@@ -40,18 +40,19 @@ $title = $l_gns_title;
 updatecookie($db);
 include_once ("./header.php");
 
-$result3 = $db->Execute("SELECT planet_id FROM {$db->prefix}planets WHERE sector_id='$shipinfo[sector_id]'");
+$result3 = $db->Execute("SELECT planet_id FROM {$db->prefix}planets WHERE sector_id=?", array($shipinfo['sector_id']));
 $num_planets = $result3->RecordCount();
 
 $res = $db->Execute("SELECT {$db->prefix}universe.zone_id, {$db->prefix}zones.allow_planet, {$db->prefix}zones.team_zone, " .
                     "{$db->prefix}zones.owner FROM {$db->prefix}zones, {$db->prefix}universe WHERE " .
-                    "{$db->prefix}zones.zone_id=$sectorinfo[zone_id] AND {$db->prefix}universe.sector_id = $shipinfo[sector_id]");
+                    "{$db->prefix}zones.zone_id=? AND {$db->prefix}universe.sector_id=?", array($sectorinfo['zone_id'], $shipinfo['sector_id']));
 $query97 = $res->fields;
 
-$res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$query97[owner]");
+$res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($query97['owner']));
 $ownerinfo = $res->fields;
 
 $gen_failed = TRUE;
+$gen_reason = '';
 
 if ($playerinfo['turns'] < 1)
 {
@@ -88,23 +89,22 @@ else
     $query1 = "INSERT INTO {$db->prefix}planets (planet_id, sector_id, name, organics, ore, goods, energy, colonists, " .
               "credits, computer, sensors, beams, torp_launchers, torps, shields, armor, armor_pts, cloak, fighters, owner, ".
               "team, base, sells, defeated, prod_organics, prod_ore, prod_goods, prod_energy, prod_fighters, prod_torp) ".
-              " VALUES('', $shipinfo[sector_id], '" . $planetname . "', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " .
-              "0, 0, 0, 0, 0, $playerinfo[player_id], 0, 'N', 'N', 'N', $default_prod_organics, $default_prod_ore, " .
-              "$default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp)";
-    $debug_query = $db->Execute($query1);
+              " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " .
+              "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $debug_query = $db->Execute($query1, array('', $shipinfo['sector_id'], $planetname, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $playerinfo['player_id'], 0, 'N', 'N', 'N', $default_prod_organics, $default_prod_ore, $default_prod_goods, $default_prod_energy, $default_prod_fighters, $default_prod_torp));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $query2 = "UPDATE {$db->prefix}players SET turns_used=turns_used+1, turns=turns-1 " .
-              "WHERE player_id=$playerinfo[player_id]";
-    $debug_query = $db->Execute($query2);
+              "WHERE player_id=?";
+    $debug_query = $db->Execute($query2, array($playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $query3 = "UPDATE {$db->prefix}ships SET dev_genesis=dev_genesis-1 WHERE ship_id=$shipinfo[ship_id]";
-    $debug_query = $db->Execute($query3);
+    $query3 = "UPDATE {$db->prefix}ships SET dev_genesis=dev_genesis-1 WHERE ship_id=?";
+    $debug_query = $db->Execute($query3, array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $logres = $db->Execute("SELECT MAX(planet_id) AS planet_id FROM {$db->prefix}planets WHERE " .
-                           "owner = $playerinfo[player_id]");
+                           "owner=?", array($playerinfo['player_id']));
 
     // Planet log constants
     planet_log($db, $logres->fields['planet_id'],$playerinfo['player_id'],$playerinfo['player_id'],1);
@@ -115,11 +115,11 @@ else
 //-------------------------------------------------------------------------------------------------
 
 global $l_global_mmenu;
-$smarty->assign("gen_failed", $gen_failed);
-$smarty->assign("gen_reason", $gen_reason);
-$smarty->assign("l_gns_pcreate", $l_gns_pcreate);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/genesis.tpl");
+$template->assign("gen_failed", $gen_failed);
+$template->assign("gen_reason", $gen_reason);
+$template->assign("l_gns_pcreate", $l_gns_pcreate);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/genesis.tpl");
 
 include_once ("./footer.php");
 ?>
