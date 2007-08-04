@@ -61,7 +61,7 @@ load_languages($db, $raw_prefix, 'scheduler');
 $title = $l_scheduler_title;
 
 // Template Lite
-$smarty = new Template_Lite;
+$smarty = new Smarty;
 
 echo "<h1>" . $title. "</h1>\n";
 
