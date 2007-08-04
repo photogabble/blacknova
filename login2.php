@@ -71,9 +71,9 @@ $found = 0;
 // This helps reduce the chance of a session replay attack.
 adodb_session_regenerate_id();
 
-// TODO: Newlang needs to be cleaned. BADLY.
 if (isset($_POST['newlang'])) 
 { 
+    $_POST['newlang'] = preg_replace('/[^A-Za-z]/','',$_POST['newlang']);
     $_SESSION['langdir'] = $_POST['newlang']; 
 }
 
@@ -97,36 +97,36 @@ if ((!isset($_SESSION['langdir'])) || ($_SESSION['langdir'] == ''))
     
     if ($h_a_l) 
     {
-        $plng = split(',', $h_a_l);
+        $plng = explode(',', $h_a_l);
         if (count($plng) > 0) 
         {
             $found=0;
 //            while (list($k,$v) = each($plng)) 
             foreach($plng as $key=>$val);
             {
-                $k = split(';', $v, 1);
-                $k = split('-', $k[0]);
+                $k = explode(';', $v, 1);
+                $k = explode('-', $k[0]);
                 
                 switch ($k[0])
                 {
                     case 'en': 
-                        $_SESSION['langdir'] = 'english';  
+                        $_SESSION['langdir'] = 'english';
                         $found = 1; 
                         break;
                     case 'et': 
-                        $_SESSION['langdir'] = 'estonian'; 
+                        $_SESSION['langdir'] = 'estonian';
                         $found = 1; 
                         break;
                     case 'es': 
-                        $_SESSION['langdir'] = 'spanish';  
+                        $_SESSION['langdir'] = 'spanish';
                         $found = 1; 
                         break;
                     case 'fr': 
-                        $_SESSION['langdir'] = 'french';   
+                        $_SESSION['langdir'] = 'french';
                         $found = 1; 
                         break;
                     case 'ru': 
-                        $_SESSION['langdir'] = 'russian';   
+                        $_SESSION['langdir'] = 'russian';
                         $found = 1; 
                         break;
                     default: 
@@ -151,8 +151,7 @@ $_SESSION['game'] = $raw_prefix . $_POST['gamenum']. "_";
 $_SESSION['sessionid'] = session_id();
 
 // lets get the shipinfo for them.
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id=$playerinfo[player_id] AND " .
-                            "ship_id=$playerinfo[currentship]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id=? AND ship_id=?", array($playerinfo['player_id'], $playerinfo['currentship']));
 global $db;
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $shipinfo = $debug_query->fields;
@@ -161,8 +160,7 @@ if ($shipinfo['destroyed'] == "N")
 {
     // player's ship has not been destroyed
     playerlog($db,$playerinfo['player_id'], "LOG_LOGIN", $_SESSION['ip_address']);
-//    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET ip_address='$_SESSION[ip_address]', sessionid='$_SESSION[sessionid]' WHERE player_id=$playerinfo[player_id]");
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET ip_address='$_SESSION[ip_address]' WHERE player_id=$playerinfo[player_id]");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET ip_address=? WHERE player_id=?", array($_SESSION['ip_address'],$playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     global $l_global_mmenu;
@@ -180,6 +178,15 @@ if ($shipinfo['destroyed'] == "N")
             $server_port = ':' . $_SERVER['SERVER_PORT'];
         }
 
+        if ($_SERVER['SERVER_PORT'] == '443')
+        {
+            $server_type = 'https';
+        }
+        else
+        {
+            $server_type = 'http';
+        }
+
         // No click/refresh - seems smoother.
 
         header("Location: " . $server_type . "://" . $_SERVER['SERVER_NAME'] . $server_port . dirname($_SERVER['PHP_SELF']) . $add_slash_to_url . "main.php");
@@ -191,16 +198,16 @@ else
     if ($shipinfo['dev_escapepod'] == "Y")
     {
         $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET class=1, hull=0, engines=0, pengines=0, power=0, computer=0, " .
-                                    "sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=$start_armor, " .
+                                    "sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=?, " .
                                     "cloak=0, shields=0, sector_id=1, ore=0, organics=0, " . 
-                                    "energy=$start_energy, colonists=0, goods=0, fighters=$start_fighters,on_planet='N', " .
-                                    "dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, dev_escapepod='$start_pod', " .
-                                    "dev_fuelscoop='$start_scoop', dev_minedeflector=0, destroyed='N' WHERE " .
-                                    "player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+                                    "energy=?, colonists=0, goods=0, fighters=?, on_planet='N', " .
+                                    "dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, dev_escapepod=?, " .
+                                    "dev_fuelscoop=?, dev_minedeflector=0, destroyed='N' WHERE " .
+                                    "player_id=? AND ship_id=?", array($start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop, $playerinfo['player_id'], $playerinfo['currentship']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET times_dead=times_dead+1 " .
-                                    "WHERE player_id=$playerinfo[player_id]");
+                                    "WHERE player_id=?", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         if ($spy_success_factor)
@@ -218,23 +225,23 @@ else
         if ($newbie_nice == "YES" || $always_reincarnate || $playerinfo['acl'] >= 255)
         {
             $debug_query = $db->Execute("SELECT hull, engines, power, computer, sensors, armor, shields, beams, torp_launchers, " .
-                                        "cloak FROM {$db->prefix}ships WHERE player_id='$playerinfo[player_id]' AND " .
-                                        "ship_id=$playerinfo[currentship] AND hull<='$newbie_hull' AND " .
-                                        "engines<='$newbie_engines' AND power<='$newbie_power' AND " .
-                                        "computer<='$newbie_computer' AND sensors<='$newbie_sensors' AND " .
-                                        "armor<='$newbie_armor' AND shields<='$newbie_shields' AND " .
-                                        "beams<='$newbie_beams' AND torp_launchers<='$newbie_torp_launchers' AND " .
-                                        "cloak<='$newbie_cloak'");
+                                        "cloak FROM {$db->prefix}ships WHERE player_id=? AND " .
+                                        "ship_id=? AND hull<=? AND " .
+                                        "engines<=? AND power<=? AND " .
+                                        "computer<=? AND sensors<=? AND " .
+                                        "armor<=? AND shields<=? AND " .
+                                        "beams<=? AND torp_launchers<=? AND " .
+                                        "cloak<=?", array($playerinfo['player_id'], $playerinfo['currentship'], $newbie_hull, $newbie_engines, $newbie_power, $newbie_computer, $newbie_sensors, $newbie_armor, $newbie_shields, $newbie_beams, $newbie_torp_launchers, $newbie_cloak));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $num_rows = $debug_query->RecordCount();
 
             if ($num_rows || $always_reincarnate)
             {
-                echo "<br><br>$l_login_newbie<br><br>";              
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET hull=0,engines=0,pengines=0,power=0,computer=0,sensors=0,beams=0,torp_launchers=0,torps=0,armor=0,armor_pts=$start_armor,cloak=0,shields=0,sector_id=1,ore=0,organics=0,energy=$start_energy,colonists=0,goods=0,fighters=$start_fighters,on_planet='N',dev_warpedit=0,dev_genesis=0,dev_emerwarp=0,dev_escapepod='$start_pod',dev_fuelscoop='$start_scoop',dev_minedeflector=0,destroyed='N' WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]");
+                echo "<br><br>$l_login_newbie<br><br>";
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET hull=0,engines=0,pengines=0,power=0,computer=0,sensors=0,beams=0, torp_launchers=0,torps=0,armor=0,armor_pts=$start_armor, cloak=0,shields=0,sector_id=1,ore=0,organics=0,energy=$start_energy, colonists=0,goods=0,fighters=$start_fighters, on_planet='N',dev_warpedit=0,dev_genesis=0,dev_emerwarp=0,dev_escapepod='$start_pod', dev_fuelscoop='$start_scoop', dev_minedeflector=0,destroyed='N' WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]", array($start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop, $playerinfo['player_id'], $playerinfo['currentship']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=1000 WHERE player_id=$playerinfo[player_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=1000 WHERE player_id=?", array($playerinfo['player_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 if ($spy_success_factor)
