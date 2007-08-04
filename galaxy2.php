@@ -168,14 +168,14 @@ else // general case
     $range_top = $location + intval($range / 2);
 }
 
-$result = $db->Execute ("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id BETWEEN $range_bottom AND " .
-                        "$range_top ORDER BY sector_id ASC");
-$result2 = $db->Execute("SELECT distinct source FROM {$db->prefix}movement_log WHERE player_id = $playerinfo[player_id] AND source".
-                        " BETWEEN $range_bottom AND $range_top ORDER BY source ASC");
-$result3 = $db->Execute("SELECT distinct sector_id FROM {$db->prefix}scan_log WHERE player_id = $playerinfo[player_id] AND sector_id".
-                        " BETWEEN $range_bottom AND $range_top ORDER BY sector_id ASC");
-$result4 = $db->Execute("SELECT distinct destination FROM {$db->prefix}movement_log WHERE player_id = $playerinfo[player_id] AND destination".
-                        " BETWEEN $range_bottom AND $range_top ORDER BY destination ASC");
+$result = $db->Execute ("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id BETWEEN ? AND " .
+                        "? ORDER BY sector_id ASC", array($range_bottom, $range_top));
+$result2 = $db->Execute("SELECT distinct source FROM {$db->prefix}movement_log WHERE player_id = ? AND source".
+                        " BETWEEN ? AND ? ORDER BY source ASC", array($playerinfo['player_id'], $range_bottom, $range_top));
+$result3 = $db->Execute("SELECT distinct sector_id FROM {$db->prefix}scan_log WHERE player_id = ? AND sector_id".
+                        " BETWEEN ? AND ? ORDER BY sector_id ASC", array($playerinfo['player_id'], $range_bottom, $range_top));
+$result4 = $db->Execute("SELECT distinct destination FROM {$db->prefix}movement_log WHERE player_id = ? AND destination".
+                        " BETWEEN ? AND ? ORDER BY destination ASC", array($playerinfo['player_id'], $range_bottom, $range_top));
 
 echo "<table border=0 cellpadding=2 cellspacing=1 >\n";
 
