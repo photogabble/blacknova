@@ -98,7 +98,7 @@ if (!isset($engage))
 $num_defenses = 0;
 $total_sector_fighters = 0;
 $total_sector_mines = 0;
-$result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id='$destination' and player_id != '$playerinfo[player_id]' ORDER BY quantity DESC");
+$result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=? and player_id!=? ORDER BY quantity DESC", array($destination, $playerinfo['player_id']));
 
 if ($result3 > 0)
 {
@@ -125,7 +125,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
     // Are the fighter owner and player are on the same team?
     // All sector defenses must be owned by members of the same team.
     $fm_owner = $defenses[0]['player_id'];
-    $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$fm_owner");
+    $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($fm_owner));
     $fighters_owner = $result2->fields;
 
     if ($fighters_owner['team'] != $playerinfo['team'] || $playerinfo['team'] == 0)
@@ -133,7 +133,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
         switch ($_POST['response']) 
         {
             case "fight":
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 echo "<h1>" . $title. "</h1>\n";
@@ -164,13 +164,13 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
 
                 // Todo: If we don't have enough turns for BOTH moves (forth+back) then we echo a "you cant retreat", and force it forward.
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id =?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$turns_back, turns_used=turns_used+$turns_back WHERE player_id=$playerinfo[player_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+? WHERE player_id=?", array($turns_back, $turns_back, $playerinfo['player_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=? WHERE ship_id=?", array($shipinfo['sector_id'], $shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 echo "<h1>" . $title. "</h1>\n";
@@ -182,7 +182,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                 break;
 
             case "pay":
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id =?", $shipinfo['ship_id']);
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $fighterstoll = $total_sector_fighters * $fighter_price * 0.6;
@@ -208,13 +208,13 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                     // undo the move
                     // Todo: what happens if we don't have enough turns for BOTH moves (forth+back)?? Destroy the ship? Order him to wait turns?
    
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id =?", array($shipinfo['ship_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$turns_back, turns_used=turns_used+$turns_back WHERE player_id=$playerinfo[player_id]");
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+? WHERE player_id=?", array($turns_back, $turns_back, $playerinfo['player_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$shipinfo[sector_id] WHERE ship_id=$shipinfo[ship_id]");
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=? WHERE ship_id=?", array($shipinfo['sector_id'], $shipinfo['ship_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
                     $ok = 0;
                 }
@@ -223,7 +223,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                     $tollstring = number_format($fighterstoll, 0, $local_number_dec_point, $local_number_thousands_sep);
                     $l_chf_youpaidsometoll = str_replace("[chf_tollstring]", $tollstring, $l_chf_youpaidsometoll);
                     echo "$l_chf_youpaidsometoll<br>";
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-$fighterstoll WHERE player_id=$playerinfo[player_id]");
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-? WHERE player_id=?", array($fighterstoll, $playerinfo['player_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     distribute_toll($db, $destination,$fighterstoll,$total_sector_fighters);
@@ -233,10 +233,10 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                  break;
 
             case "sneak":
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id = $shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $res = $db->Execute("SELECT sensors FROM {$db->prefix}ships WHERE player_id=$fm_owner");
+                $res = $db->Execute("SELECT sensors FROM {$db->prefix}ships WHERE player_id=?", array($fm_owner));
                 $sensors = $res->fields['sensors'];
 
                 $success = scan_success($sensors, $shipinfo['cloak']);
@@ -281,12 +281,12 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                 }
 
                 $face_string = 'move.php?sector='.$sector.'&destination='.$destination.'&engage='.$engage.'&move_method='.$move_method;
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = '$face_string' WHERE ship_id = $shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ? WHERE ship_id =?", array($face_string, $shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $fighterstoll = $total_sector_fighters * $fighter_price * 0.6;
                 echo "<h1>" . $title. "</h1>\n";
-                echo '<form name="bntform" action="move.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;" accept-charset="utf-8">';
+                echo '<form name="bntform" action="move.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
                 $l_chf_therearetotalfightersindest = str_replace("[chf_total_sector_fighters]", $total_sector_fighters, $l_chf_therearetotalfightersindest);
                 echo "$l_chf_therearetotalfightersindest<br>";
                  
@@ -338,18 +338,18 @@ if ($ok > 0)
     $source_sector = $shipinfo['sector_id'];
     if ($called_from == "move.php")
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$destination WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=? WHERE ship_id=?", array($destination, $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     elseif ($called_from == "rsmove.php")
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+? WHERE player_id=?", array($triptime, $triptime, $playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$destination,energy=energy+$energyscooped WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=?, energy=energy+? WHERE ship_id=?", array($destination, $energyscooped, $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $l_rs_ready = str_replace("[sector]",$destination,$l_rs_ready);
@@ -359,10 +359,10 @@ if ($ok > 0)
     }
     elseif ($called_from == "plasmamove.php" && $plasma_engines)
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?,turns_used=turns_used+? WHERE player_id=?", array($triptime, $triptime, $playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$destination,energy=energy-$plasmacost WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=?,energy=energy-? WHERE ship_id=?", array($destination, $plasmacost, $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $l_plasma_ready = str_replace("[sector]",$destination,$l_plasma_ready);
@@ -374,12 +374,10 @@ if ($ok > 0)
     log_move($db, $playerinfo['player_id'],$shipinfo['ship_id'],$source_sector,$destination,$shipinfo['class'],$shipinfo['cloak']);
 }
 
-// Easter egg comment - She looks like one of those rap guys girlfriends.. I mean her butt, its just so .. BIG!
-
 if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_hullsize))
 {
     $fm_owner = $defenses[0]['player_id'];
-    $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$fm_owner");
+    $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($fm_owner));
     $mine_owner = $result2->fields;
 
     if ($mine_owner['team'] != $playerinfo['team'] || $playerinfo['team'] == 0) // Are the mine owner and player are on the same team?
@@ -411,7 +409,7 @@ if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_h
         {
             $l_chm_youlostminedeflectors = str_replace("[chm_roll]", $roll, $l_chm_youlostminedeflectors);
             echo "$l_chm_youlostminedeflectors<br>";
-            $debug_query = $db->Execute("UPDATE {$db->prefix}ships set dev_minedeflector=dev_minedeflector-$roll WHERE ship_id=$shipinfo[ship_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ships set dev_minedeflector=dev_minedeflector-? WHERE ship_id=?", array($roll, $shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
         else
@@ -437,7 +435,7 @@ if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_h
             {
                 $l_chm_yourshieldshitforminesdmg = str_replace("[chm_mines_left]", $mines_left, $l_chm_yourshieldshitforminesdmg);
                 echo "$l_chm_yourshieldshitforminesdmg<br>";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=energy-$mines_left,dev_minedeflector=0 WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=energy-?, dev_minedeflector=0 WHERE ship_id=?", array($mines_left, $shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 if ($playershields == $mines_left) 
                 {
@@ -452,7 +450,7 @@ if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_h
                 {
                     $l_chm_yourarmorhitforminesdmg = str_replace("[chm_mines_left]", $mines_left,$l_chm_yourarmorhitforminesdmg);
                     echo "$l_chm_yourarmorhitforminesdmg<br>";
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET armor_pts=armor_pts-$mines_left,energy=0,dev_minedeflector=0 WHERE ship_id=$shipinfo[ship_id]");
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET armor_pts=armor_pts-?, energy=0, dev_minedeflector=0 WHERE ship_id=?", array($mines_left, $shipinfo['ship_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
                     if ($shipinfo['armor_pts'] == $mines_left) 
                     {
@@ -487,6 +485,15 @@ if ($ok == 1)
     if ($_SERVER['SERVER_PORT'] != '80')
     {
         $server_port = ':' . $_SERVER['SERVER_PORT'];
+    }
+
+    if ($_SERVER['SERVER_PORT'] == '443')
+    {
+        $server_type = 'https';
+    }
+    else
+    {
+        $server_type = 'http';
     }
 
     // No click/refresh - seems smoother.
