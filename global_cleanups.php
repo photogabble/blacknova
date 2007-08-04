@@ -153,5 +153,5 @@ dynamic_loader ($db, "load_languages.php");
 load_languages($db, $raw_prefix, 'regional');
 
 // Template Lite
-$smarty = new bnt_smarty;
+$template = new bnt_smarty;
 ?>
