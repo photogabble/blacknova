@@ -24,7 +24,7 @@
 <td><font color="#00FF00">{$l_igb_amounttransferred} :</td>
 <td align="right"><font color="#00FF00"> {$transfer} C</td>
 <tr valign="top"><td colspan="2" align="right">
-<form action="igb_consolidate3.php" method="post">
+<form action="igb_consolidate3.php" method="post" accept-charset="utf-8">
 <input type="hidden" name="minimum" value="{$minimum}"><br>
 <input type="hidden" name="maximum" value="{$maximum}"><br>
 <input type="hidden" name="dplanet_id" value="{$dplanet_id}">

@@ -22,7 +22,7 @@
 {$l_total_oneways}<br>
 {$l_galaxy_size_change}<br>
 <br><br>
-<form action="make_galaxy.php" name="make_galaxy" method="post">
+<form action="make_galaxy.php" name="make_galaxy" method="post" accept-charset="utf-8">
 <input type="hidden" name="autorun" value="{$autorun}">
 <input type="hidden" name="step" value="{$step}">
 <input type="hidden" name="new_galaxy_size" value="{$new_galaxy_size}">

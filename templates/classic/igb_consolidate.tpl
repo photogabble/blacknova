@@ -4,7 +4,7 @@
       <table width="520" height="300" border="0">
 
 <tr><td colspan="2" align="center" valign="top"><font color="#00FF00">{$l_igb_planetconsolidate}<br>---------------------------------</td></tr>
-<form action="igb_consolidate2.php" method="post">
+<form action="igb_consolidate2.php" method="post" accept-charset="utf-8">
 <tr valign="top">
 <td colspan="2"><font color="#00FF00">{$l_igb_consolrates} :</td>
 <tr valign="top">

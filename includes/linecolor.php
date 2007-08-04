@@ -14,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/linecolor.php
-
+// File: linecolor.php
 function linecolor()
 {
     global $line_color, $color_line1, $color_line2;

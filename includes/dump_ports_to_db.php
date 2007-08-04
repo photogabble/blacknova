@@ -14,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/dump_ports_to_db.php
-
+// File: dump_ports_to_db.php
 function dump_ports_to_db($insertquery,$s,$flush)
 {
     global $s, $db, $port_table, $cumulative, $ADODB_SESSION_DRIVER;

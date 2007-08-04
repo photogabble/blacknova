@@ -35,7 +35,7 @@ form.shields_costper.value=changeDelta(form.shields_upgrade.value,{$shipinfo_shi
 {$l_ifyouneedmore}<br>
 {/if}
 <a href="bounty.php">{$l_by_placebounty}</a><br>
- <form action="port2.php" method="post">
+ <form action="port2.php" method="post" accept-charset="utf-8">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr bgcolor="{$color_header}">
     <td><strong>{$l_ship_levels}</strong></td>

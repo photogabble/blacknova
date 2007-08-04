@@ -14,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/newplayer.php
-
+// File: newplayer.php
 function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
 {
     global $raw_prefix;
@@ -26,8 +25,13 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
 
     $stamp = date("Y-m-d H:i:s");
 
+    // Add slashes to the funky stuff, so the DB won't choke.
+    $email = $db->qstr($email,get_magic_quotes_gpc());
+    $character = $db->qstr($char,get_magic_quotes_gpc());
+    $ship_name = $db->qstr($ship_name,get_magic_quotes_gpc());
+
     // Get the new player's account id - if it exists yet
-    $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=?", array($email));
+    $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=$email");
     db_op_result($db,$res,__LINE__,__FILE__);
     $account_id = $res->fields['account_id'];
 
@@ -35,15 +39,15 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
     {
         // Create account, since it doesn't exist yet.
         $debug_query = $db->Execute("INSERT INTO {$raw_prefix}users (email, password, c_code, active) VALUES(" .
-                                    "?," .  // email
-                                    "?," .  // password - sha256 hashed.
-                                    "?," .  // c_code
-                                    "'N'" . // active
-                                    ")", array($email, sha256::hash($pass), $c_code));
+                                    "$email," .                    // email
+                                    "'" .sha256::hash($pass). "'," .  // password - sha256 hashed.
+                                    "'$c_code'," .                 // c_code
+                                    "'N'" .                        // active
+                                    ")");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         // Now that we've created the new account, get the new player's account id
-        $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=?", array($email));
+        $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=$email");
         db_op_result($db,$res,__LINE__,__FILE__);
         $account_id = $res->fields['account_id'];
     }
@@ -56,12 +60,12 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "trade_colonists, trade_fighters, ".
                                 "trade_torps, trade_energy, template, account_id, acl) VALUES(" .
                                 "0," .                              // currentship
-                                "?," .                              // character_name
-                                "?," .                              // credits
-                                "?," .                              // turns
+                                "$character," .                        // character_name
+                                "$start_credits," .                 // credits
+                                "$start_turns," .                        // turns
                                 "0," .                              // turns_used
-                                "?," .                              // last_login
-                                "?," .                              // last_update
+                                "'$stamp'," .                       // last_login
+                                "'$stamp'," .                       // last_update
                                 "0," .                              // times_dead
                                 "0," .                              // rating
                                 "0," .                              // score
@@ -72,14 +76,14 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "'N'," .                            // trade_fighters
                                 "'N'," .                            // trade_torps
                                 "'Y'," .                            // trade_energy
-                                "?," .                              // template
-                                "?," .                              // account_id
-                                "?" .                               // ACL
-                                ")", array($char, $start_credits, $start_turns, $stamp, $stamp, $default_template, $account_id, $acl));
+                                "'$default_template'," .            // template
+                                "'$account_id'," .                  // account_id
+                                "'$acl'" .
+                                ")");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Get the new player's id
-    $res = $db->Execute("SELECT player_id FROM {$db->prefix}players WHERE account_id=?", array($account_id));
+    $res = $db->Execute("SELECT player_id FROM {$db->prefix}players WHERE account_id=$account_id");
     db_op_result($db,$res,__LINE__,__FILE__);
     $player_id = $res->fields['player_id'];
 
@@ -88,13 +92,13 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
     for ($y=1; $y<$x; $y++)
     {
         $debug_query = $db->Execute("INSERT INTO {$db->prefix}presets (player_id, preset) VALUES " . 
-                                    "(?, '1')", array($player_id));
+                                    "('$player_id', '1')");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
     // Add presets for player
     $debug_query = $db->Execute("INSERT INTO {$db->prefix}presets (player_id, preset) VALUES " . 
-                                "(?, '1')", array($player_id));
+                                "('$player_id', '1')");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Create player's ship
@@ -109,53 +113,54 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "dev_escapepod, dev_fuelscoop, ".
                                 "dev_minedeflector, planet_id, ".
                                 "cleared_defenses) VALUES(" .
-//                               "''," . // ship_id     -  not needed.
-                                "?," .   // player_id
-                                "'1'," . // class
-                                "?," .   // name
-                                "'N'," . // destroyed
-                                "0," .   // hull
-                                "0," .   // engines
-                                "0," .   // pengines
-                                "0," .   // power
-                                "0," .   // computer
-                                "0," .   // sensors
-                                "0," .   // beams
-                                "0," .   // torp_launchers
-                                "0," .   // torps
-                                "0," .   // shields
-                                "0," .   // armor
-                                "?," .   // armor_pts
-                                "0," .   // cloak
-                                "1," .   // sector_id
-                                "0," .   // ore
-                                "0," .   // organics
-                                "0," .   // goods
-                                "?," .   // energy
-                                "0," .   // colonists
-                                "?," .   // fighters
-                                "'N'," . // on_planet
-                                "0," .   // dev_warpedit
-                                "0," .   // dev_genesis
-                                "0," .   // dev_emerwarp
-                                "?," .   // dev_escapepod
-                                "?," .   // dev_fuelscoop
-                                "0," .   // dev_minedeflector
-                                "0," .   // planet_id
-                                "''" .   // cleared_defenses
-                                ")", array($player_id, $ship_name, $start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop));
+//                                "''," .             // ship_id     -  not needed.
+                                "'$player_id'," .     // player_id
+                                "'1'," .              // class
+                                "$ship_name," .     // name
+                                "'N'," .              // destroyed
+                                "0," .                // hull
+                                "0," .                // engines
+                                "0," .                // pengines
+                                "0," .                // power
+                                "0," .                // computer
+                                "0," .                // sensors
+                                "0," .                // beams
+                                "0," .                // torp_launchers
+                                "0," .                // torps
+                                "0," .                // shields
+                                "0," .                // armor
+                                "$start_armor," .    // armor_pts
+                                "0," .                // cloak
+                                "1," .                // sector_id
+                                "0," .                // ore
+                                "0," .                // organics
+                                "0," .                // goods
+                                "$start_energy," .    // energy
+                                "0," .                // colonists
+                                "$start_fighters," .  // fighters
+                                "'N'," .              // on_planet
+                                "0," .                // dev_warpedit
+                                "0," .                // dev_genesis
+                                "0," .                // dev_emerwarp
+                                "'$start_pod'," .     // dev_escapepod
+                                "'$start_scoop'," .   // dev_fuelscoop
+                                "0," .                // dev_minedeflector
+                                "0," .                // planet_id
+                                "''" .                // cleared_defenses
+                                ")");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     // Get the new ship's id
-    $res = $db->Execute("SELECT ship_id FROM {$db->prefix}ships WHERE player_id=?", array($player_id));
+    $res = $db->Execute("SELECT ship_id FROM {$db->prefix}ships WHERE player_id=$player_id");
     db_op_result($db,$res,__LINE__,__FILE__);
     $ship_id = $res->fields['ship_id'];
 
     // Insert current ship in players table
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET currentship=? WHERE player_id=?", array($ship_id, $player_id));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET currentship=$ship_id WHERE player_id=$player_id");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $zone_name = $char . "&#39;s Territory";
+    $zone_name = $db->qstr($zone_name,get_magic_quotes_gpc());
 
     // Create player's zone
     $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
@@ -163,8 +168,8 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "allow_planetattack, allow_warpedit, ".
                                 "allow_planet, allow_trade, allow_defenses, ".
                                 "max_level) VALUES(" .
-                                "?," .      // zone_name
-                                "?," .      // owner
+                                "$zone_name," .      // zone_name
+                                "$player_id," .      // owner
                                 "'N'," .               // team_zone
                                 "'Y'," .               // allow_attack
                                 "'Y'," .               // allow_planetattack
@@ -173,11 +178,11 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
                                 "'Y'," .               // allow_trade
                                 "'Y'," .               // allow_defenses
                                 "0" .                  // max_level
-                                ")", array($zone_name, $player_id));
+                                ")");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $stamp = date("Y-m-d H:i:s");
-    $debug_query = $db->Execute("INSERT INTO {$db->prefix}ibank_accounts (player_id,balance,loan,loantime) VALUES ('$player_id',0,0,'$stamp')");
+    $stamp = date("Y-m-d H:i:s");     
+    $debug_query = $db->Execute("INSERT INTO {$db->prefix}ibank_accounts (player_id,balance,loan,loantime) VALUES ('$player_id',0,0,'$stamp')");     
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     return $player_id;

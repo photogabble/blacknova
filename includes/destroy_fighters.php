@@ -1,5 +1,4 @@
 <?php
-<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,11 +14,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/destroy_fighters.php
-
+// File: destroy_fighters.php
 function destroy_fighters($db,$sector, $num_fighters) // Might not belong in g_functions
 {
-    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=? and defense_type ='F' order by quantity ASC", array($sector));
+    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id='$sector' and defense_type ='F' order by quantity ASC");
     db_op_result($db,$result3,__LINE__,__FILE__);
 
     // Put the defense information into the array "defenseinfo"
@@ -30,13 +28,13 @@ function destroy_fighters($db,$sector, $num_fighters) // Might not belong in g_f
             $row=$result3->fields;
             if ($row['quantity'] > $num_fighters)
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense set quantity=quantity-? WHERE defense_id=?", array($$num_fighters, row['defense_id']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}sector_defense set quantity=quantity - $num_fighters WHERE defense_id = $row[defense_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 $num_fighters = 0;
             }
             else
             {
-                $debug_query = $db->Execute("DELETE FROM {$db->prefix}sector_defense WHERE defense_id=?", array($row['defense_id']));
+                $debug_query = $db->Execute("DELETE FROM {$db->prefix}sector_defense WHERE defense_id = $row[defense_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 $num_fighters -= $row['quantity'];
             }

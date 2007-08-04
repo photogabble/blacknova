@@ -14,13 +14,13 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/cancel_bounty.php
+// File: cancel_bounty.php
 
 function cancel_bounty($db, $bounty_on)
 {
     dynamic_loader ($db, "playerlog.php");
 
-    $res = $db->Execute("SELECT * FROM {$db->prefix}bounty, {$db->prefix}players WHERE bounty_on=? AND bounty_on = player_id", array($bounty_on));
+    $res = $db->Execute("SELECT * FROM {$db->prefix}bounty, {$db->prefix}players WHERE bounty_on = $bounty_on AND bounty_on = player_id");
     db_op_result($db,$res,__LINE__,__FILE__);
     if ($res)
     {
@@ -29,7 +29,7 @@ function cancel_bounty($db, $bounty_on)
             $bountydetails = $res->fields;
             if ($bountydetails['placed_by'] != 0)
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits = credits + ? WHERE player_id=?", array($bountydetails['character_name'], $bountydetails['placed_by']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits = credits + $bountydetails[amount] WHERE player_id=?", array($bountydetails['placed_by']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 playerlog($db,$bountydetails['placed_by'], "LOG_BOUNTY_CANCELLED","$bountydetails[amount]|$bountydetails[character_name]");
             }

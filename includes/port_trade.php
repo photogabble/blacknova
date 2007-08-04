@@ -14,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/port_trade.php
-
+// File: port_trade.php
 function port_trade($price, $delta, $max, $limit, $factor, $port_type, $origin)
 {
     global $price_array, $portinfo;

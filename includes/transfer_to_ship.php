@@ -21,7 +21,9 @@ function transfer_to_ship($db,$player_id, $planet_id, $how_many = 1)
 {
     global $shipinfo;
 
-    $res = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE owner_id=? AND planet_id=?",1, $how_many, array($player_id, $planet_id));
+    $res = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE " .
+                            "owner_id = $player_id AND planet_id = $planet_id",
+                            $how_many);// AND active = 'N'
                             // The and active = n got dropped?
     $how_many2 = $res->RecordCount();
   
@@ -34,7 +36,7 @@ function transfer_to_ship($db,$player_id, $planet_id, $how_many = 1)
         while (!$res->EOF)
         {
             $spy = $res->fields['spy_id'];
-            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET planet_id=0, ship_id=?, active='N', job_id='0', spy_percent='0.0' WHERE spy_id=?", array($shipinfo['ship_id'], $spy));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET planet_id = 0, ship_id = $shipinfo[ship_id], active = 'N', job_id = '0', spy_percent = '0.0' WHERE spy_id = $spy");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $res->MoveNext();

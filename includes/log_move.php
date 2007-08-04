@@ -14,14 +14,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/log_move.php
+// File: log_move.php
 // Todo: Figure out why we aren't doing an update here instead of delete/insert.
 // Todo: Possibly to eliminate all previous rows, and not just one previous?
 // Todo: Also, recode to support a return that shows success/failure.
 
 function log_move($db, $player_id, $ship_id, $source, $destination, $class, $error)
 {
-    $debug_query = $db->Execute("DELETE FROM {$db->prefix}movement_log WHERE player_id=? and source=? and destination=?", array($player_id, $source, $destination));
+    $debug_query = $db->Execute("DELETE FROM {$db->prefix}movement_log WHERE player_id = $player_id and source = $source and destination = $destination");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $stamp = date("Y-m-d H:i:s");

@@ -14,11 +14,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/traderoute_die.php
-
+// File: traderoute_die.php
 function traderoute_die($error_msg)
 {
-    global $l_footer_until_update, $l_footer_players_on_1, $l_footer_players_on_2, $l_footer_one_player_on, $sched_ticks, $template;
+    global $l_footer_until_update, $l_footer_players_on_1, $l_footer_players_on_2, $l_footer_one_player_on, $sched_ticks;
     if ($error_msg !='')
     {
         echo "<p>$error_msg<p>";

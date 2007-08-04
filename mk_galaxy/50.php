@@ -30,7 +30,7 @@ dynamic_loader ($db, "sector_todb.php");
 $cumulative = 0;
 $sectors_built = 0;
 $debug_query = $db->Execute("UPDATE {$db->prefix}config_values SET value=? WHERE name='sector_max'", array($_POST['sektors']));
-$template->assign("set_sector_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$smarty->assign("set_sector_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 $empty = $_POST['sektors']-$_POST['shp']-$_POST['spp']-$_POST['oep']-$_POST['ogp']-$_POST['gop']-$_POST['enp'];
 if ($empty < 0)
@@ -80,8 +80,8 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "'N'," .               // allow_planet
                             "'Y'," .               // allow_trade
                             "'N'," .               // allow_defenses
-                            "?" .                  // max_level
-                            ")", array($max_avg_combat_tech));
+                            "'$max_avg_combat_tech'" .                  // max_level
+                            ")");
 $zone_results_array[1] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $l_ai_space = str_replace("[ai]", $ai_name, $l_ai_space);
@@ -91,7 +91,7 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "allow_planetattack, allow_warpedit, ".
                             "allow_planet, allow_trade, allow_defenses, ".
                             "max_level) VALUES(" .
-                            "?," .      // zone_name
+                            "'$ai_name Space'," .      // zone_name
                             "'0'," .               // owner
                             "'N'," .               // team_zone
                             "'Y'," .               // allow_attack
@@ -101,7 +101,7 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}zones (zone_name, ".
                             "'Y'," .               // allow_trade
                             "'Y'," .               // allow_defenses
                             "0" .                  // max_level
-                            ")", array($ai_name . 'Space'));
+                            ")");
 $zone_results_array[2] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $zone_names[3] = $l_warzone_space;
@@ -270,7 +270,7 @@ for ($i=4; $i<=$_POST['sektors']; $i++)
     }
 }
 
-$template->assign("sector_build_result", db_output($db,!$cumulative,__LINE__,__FILE__));
+$smarty->assign("sector_build_result", db_output($db,!$cumulative,__LINE__,__FILE__));
 
 $cumulative = 0;
 $total_collisions = 0;
@@ -292,7 +292,7 @@ while (!$collisions_repaired)
         }
         else
         {
-            $debug_query2 = $db->Execute("SELECT sector_id from {$db->prefix}universe where x=? and y=? and z=?", array($coll[$xx]['x'], $coll[$xx]['y'], $coll[$xx]['z']));
+            $debug_query2 = $db->Execute("SELECT sector_id from {$db->prefix}universe where x='" . $coll[$xx]['x'] ."' and y='" . $coll[$xx]['y'] ."' and z='" . $coll[$xx]['z'] . "'");
 //            var_dump($debug_query);
             while (!$debug_query2->EOF)
             {
@@ -319,7 +319,7 @@ while (!$collisions_repaired)
     $collisions_repaired = true;
 }
 
-$template->assign("collision_repair_result", db_output($db,!$cumulative,__LINE__,__FILE__));
+$smarty->assign("collision_repair_result", db_output($db,!$cumulative,__LINE__,__FILE__));
 
 $l_set_sector_max = str_replace("[sektors]", $_POST['sektors'], $l_set_sector_max);
 $l_create_sectors = str_replace("[number]", ($_POST['sektors']-$sectors_built), $l_create_sectors);
@@ -342,37 +342,37 @@ for ($i=0; $i<$num_special_sectors; $i++)
     $l_sector_array[$i] = $temp;
 }
 
-$template->assign("sector_results_array", $sector_results_array);
-$template->assign("zone_results_array", $zone_results_array);
-$template->assign("autorun", $_POST['autorun']);
-$template->assign("title", $title);
-$template->assign("l_sector_array", $l_sector_array);
-$template->assign("l_zone_array", $l_zone_array);
-$template->assign("l_create_sectors", $l_create_sectors);
-$template->assign("l_repair_collisions", $l_repair_collisions);
-$template->assign("l_set_sector_max", $l_set_sector_max);
-$template->assign("sektors", $_POST['sektors']);
-$template->assign("initscommod", $_POST['initscommod']);
-$template->assign("initbcommod", $_POST['initbcommod']);
-$template->assign("empty", $empty);
-$template->assign("nump", $_POST['nump']);
-$template->assign("shp", $_POST['shp']);
-$template->assign("upp", $_POST['upp']);
-$template->assign("spp", $_POST['spp']);
-$template->assign("oep", $_POST['oep']);
-$template->assign("ogp", $_POST['ogp']);
-$template->assign("gop", $_POST['gop']);
-$template->assign("enp", $_POST['enp']);
-$template->assign("initscommod", $_POST['initscommod']);
-$template->assign("initbcommod", $_POST['initbcommod']);
-$template->assign("linksper", $_POST['linksper']);
-$template->assign("twoways", $_POST['twoways']);
-$template->assign("encrypted_password", $_POST['encrypted_password']);
-$template->assign("l_continue", $l_continue);
-$template->assign("step", ($_POST['step']+1));
-$template->assign("admin_charname", $_POST['admin_charname']);
-$template->assign("gamenum", $_POST['gamenum']);
-$template->display("$templateset/mk_galaxy/50.tpl");
+$smarty->assign("sector_results_array", $sector_results_array);
+$smarty->assign("zone_results_array", $zone_results_array);
+$smarty->assign("autorun", $_POST['autorun']);
+$smarty->assign("title", $title);
+$smarty->assign("l_sector_array", $l_sector_array);
+$smarty->assign("l_zone_array", $l_zone_array);
+$smarty->assign("l_create_sectors", $l_create_sectors);
+$smarty->assign("l_repair_collisions", $l_repair_collisions);
+$smarty->assign("l_set_sector_max", $l_set_sector_max);
+$smarty->assign("sektors", $_POST['sektors']);
+$smarty->assign("initscommod", $_POST['initscommod']);
+$smarty->assign("initbcommod", $_POST['initbcommod']);
+$smarty->assign("empty", $empty);
+$smarty->assign("nump", $_POST['nump']);
+$smarty->assign("shp", $_POST['shp']);
+$smarty->assign("upp", $_POST['upp']);
+$smarty->assign("spp", $_POST['spp']);
+$smarty->assign("oep", $_POST['oep']);
+$smarty->assign("ogp", $_POST['ogp']);
+$smarty->assign("gop", $_POST['gop']);
+$smarty->assign("enp", $_POST['enp']);
+$smarty->assign("initscommod", $_POST['initscommod']);
+$smarty->assign("initbcommod", $_POST['initbcommod']);
+$smarty->assign("linksper", $_POST['linksper']);
+$smarty->assign("twoways", $_POST['twoways']);
+$smarty->assign("encrypted_password", $_POST['encrypted_password']);
+$smarty->assign("l_continue", $l_continue);
+$smarty->assign("step", ($_POST['step']+1));
+$smarty->assign("admin_charname", $_POST['admin_charname']);
+$smarty->assign("gamenum", $_POST['gamenum']);
+$smarty->display("$templateset/mk_galaxy/50.tpl");
 
 // dynamic function
 dynamic_loader ($db, "sector_todb.php");

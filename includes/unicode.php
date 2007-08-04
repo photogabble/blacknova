@@ -15,13 +15,13 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // File: includes/unicode.php
-//
+
 // These functions are for future use in game.
 // Begin unicde functions.
 // These ensure that once we complete support for it, the game admin will be able to run a game that accepts multi-byte input safely (like Japanese).
 function utf8_to_unicode($str)
 {
-    $unicode = array();
+    $unicode = array();        
     $values = array();
     $lookingFor = 1;
         

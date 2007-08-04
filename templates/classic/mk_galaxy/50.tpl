@@ -15,7 +15,7 @@
 {$l_create_sectors}{$sector_build_result}
 {$l_repair_collisions}{$collision_repair_result}
 <br>
-<form action="make_galaxy.php" name="make_galaxy" method="post">
+<form action="make_galaxy.php" name="make_galaxy" method="post" accept-charset="utf-8">
 <input type="hidden" name="autorun" value="{$autorun}">
 <input type="hidden" name="step" value="{$step}">
 <input type="hidden" name="nump" value="{$nump}">

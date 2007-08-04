@@ -27,51 +27,53 @@ if ($pos !== false)
 dynamic_loader ($db, "db_output.php");
 dynamic_loader ($db, "newplayer.php");
 
-$stamp = date("Y-m-d H:i:s");
-
 // Commented out by tr0n to avoid the kabal/scheduler bug
 /*
 echo "The AI will play every $sched_turns minutes ";
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 0, 'sched_ai.php', '', ?)", array($sched_turns, $stamp));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_turns, 0, 'sched_ai.php', '', '$stamp')");
 echo db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 */
 
-// v1 Master Server Lists
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(360, 'server_list_client.php', '', ?)", array($stamp));
-$template->assign("l_server_list_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+// Update ticks will occur every $sched_ticks minutes
 
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_igb.php', '', ?)", array($sched_igb, $stamp));
-$template->assign("l_sched_igb_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$stamp = date("Y-m-d H:i:s");
+
+// v1 Master Server Lists
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(360, 'server_list_client.php', '', '$stamp')");
+$smarty->assign("l_server_list_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_igb, 'sched_igb.php', '', '$stamp')");
+$smarty->assign("l_sched_igb_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Planets will generate production every $sched_planets minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_planets.php', '', ?)", array($sched_planets, $stamp));
-$template->assign("l_sched_planets_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_planets, 'sched_planets.php', '', '$stamp')");
+$smarty->assign("l_sched_planets_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Spies will act every $sched_spies minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_spies.php', '', ?)", array($sched_spies, $stamp));
-$template->assign("l_sched_spies_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_spies, 'sched_spies.php', '', '$stamp')");
+$smarty->assign("l_sched_spies_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Ports will regenerate every $sched_ports minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_ports.php', '', ?)", array($sched_ports, $stamp));
-$template->assign("l_sched_ports_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_ports, 'sched_ports.php', '', '$stamp')");
+$smarty->assign("l_sched_ports_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Rankings will be generated every $sched_ranking minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_ranking.php', '', ?)", array($sched_ranking, $stamp));
-$template->assign("l_sched_ranking_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_ranking, 'sched_ranking.php', '', '$stamp')");
+$smarty->assign("l_sched_ranking_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Sector Defenses will degrade every $sched_degrade minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_degrade.php', '', ?)", array($sched_degrade, $stamp));
-$template->assign("l_sched_degrade_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_degrade, 'sched_degrade.php', '', '$stamp')");
+$smarty->assign("l_sched_degrade_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // The planetary apocalypse will occur every $sched_apocalypse minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_apocalypse.php', '', ?)", array($sched_apocalypse, $stamp));
-$template->assign("l_sched_apoc_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_apocalypse, 'sched_apocalypse.php', '', '$stamp')");
+$smarty->assign("l_sched_apoc_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Sched repair is no longer needed - now all tables are innodb, which dont have corruption issues like myisam tables do.
 
 // The database log prune will occur every $sched_prune minutes
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES(?, 'sched_prune.php', '', ?)", array($sched_prune, $stamp));
-$template->assign("l_sched_prune_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}scheduler (timer, sched_file, extra_info, last_run) VALUES($sched_prune, 'sched_prune.php', '', '$stamp')");
+$smarty->assign("l_sched_prune_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 if (!$ship_classes)
 {
@@ -340,16 +342,22 @@ else
     $shiptype_results_array[4] = db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 }
 
-$debug_query = $db->Execute("INSERT INTO {$db->prefix}news (news_data, user_id, date, news_type) VALUES ('', 1, ?, 'creation')", array($stamp));
-$template->assign("l_news_created_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$stamp = date("Y-m-d H:i:s");
+$debug_query = $db->Execute("INSERT INTO {$db->prefix}news (news_data, user_id, date, news_type) VALUES (" .
+                            "'', " .         // news data, not used any more
+                            "1, " .          // user_id
+                            "'$stamp', " .   // date
+                            "'creation' " .  // news_type
+                            ")");
+$smarty->assign("l_news_created_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Allowing new account creation
 $debug_query = $db->Execute("UPDATE {$db->prefix}config_values SET value='0' WHERE name='account_creation_closed'");
-$template->assign("l_allow_newaccounts_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$smarty->assign("l_allow_newaccounts_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Allowing player logins
 $debug_query = $db->Execute("UPDATE {$db->prefix}config_values SET value='0' WHERE name='server_closed'");
-$template->assign("l_allow_logins_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$smarty->assign("l_allow_logins_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Get a random string and push it through the md5 function
 $c_code = md5(mt_rand(0,9999));
@@ -360,44 +368,44 @@ $c_code = substr($c_code, 8, 6);
 // Add Gamemaster account and set active
 newplayer($db,$admin_mail, $_POST['admin_charname'], $adminpass, $c_code, $_POST['admin_charname'] . "&#39;s ship", "255"); // Admin's acl is 255.
 $debug_query = $db->Execute("UPDATE {$raw_prefix}users SET active='Y' WHERE email=?", array($admin_mail));
-$template->assign("l_add_gamemaster_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$smarty->assign("l_add_gamemaster_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
 // Automatically add Gamemaster to the invited list
 $debug_query = $db->Execute("INSERT INTO {$db->prefix}memberlist (email) VALUES ('$admin_mail')");
-$template->assign("l_add_gamemaster_invite_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
+$smarty->assign("l_add_gamemaster_invite_result", db_output($db,db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__));
 
-$template->assign("title", $title);
-$template->assign("l_config_scheduler", $l_config_scheduler);
+$smarty->assign("title", $title);
+$smarty->assign("l_config_scheduler", $l_config_scheduler);
 
 $l_updates_run = str_replace("[time]", $sched_ticks, $l_updates_run);
-$template->assign("l_updates_run", $l_updates_run);
+$smarty->assign("l_updates_run", $l_updates_run);
 
 $l_turns_run = str_replace("[time]", $sched_turns, $l_turns_run);
-$template->assign("l_turns_run", $l_turns_run);
+$smarty->assign("l_turns_run", $l_turns_run);
 
 $l_sched_igb_run = str_replace("[time]", $sched_igb, $l_sched_igb_run);
-$template->assign("l_sched_igb_run", $l_sched_igb_run);
+$smarty->assign("l_sched_igb_run", $l_sched_igb_run);
 
 $l_sched_planets_run = str_replace("[time]", $sched_planets, $l_sched_planets_run);
-$template->assign("l_sched_planets_run", $l_sched_planets_run);
+$smarty->assign("l_sched_planets_run", $l_sched_planets_run);
 
 $l_sched_spies_run = str_replace("[time]", $sched_spies, $l_sched_spies_run);
-$template->assign("l_sched_spies_run", $l_sched_spies_run);
+$smarty->assign("l_sched_spies_run", $l_sched_spies_run);
 
 $l_sched_ports_run = str_replace("[time]", $sched_ports, $l_sched_ports_run);
-$template->assign("l_sched_ports_run", $l_sched_ports_run);
+$smarty->assign("l_sched_ports_run", $l_sched_ports_run);
 
 $l_sched_ranking_run = str_replace("[time]", $sched_ranking, $l_sched_ranking_run);
-$template->assign("l_sched_ranking_run", $l_sched_ranking_run);
+$smarty->assign("l_sched_ranking_run", $l_sched_ranking_run);
 
 $l_sched_degrade_run = str_replace("[time]", $sched_degrade, $l_sched_degrade_run);
-$template->assign("l_sched_degrade_run", $l_sched_degrade_run);
+$smarty->assign("l_sched_degrade_run", $l_sched_degrade_run);
 
 $l_sched_apoc_run = str_replace("[time]", $sched_apocalypse, $l_sched_apoc_run);
-$template->assign("l_sched_apoc_run", $l_sched_apoc_run);
+$smarty->assign("l_sched_apoc_run", $l_sched_apoc_run);
 
 $l_sched_prune_run = str_replace("[time]", $sched_prune, $l_sched_prune_run);
-$template->assign("l_sched_prune_run", $l_sched_prune_run);
+$smarty->assign("l_sched_prune_run", $l_sched_prune_run);
 
 for ($i=0; $i<$shiptypes; $i++)
 {
@@ -406,18 +414,19 @@ for ($i=0; $i<$shiptypes; $i++)
 }
 
 $db->CacheFlush();
-$template->assign("l_shiptype_array", $l_shiptype_array);
-$template->assign("shiptype_results_array", $shiptype_results_array);
-$template->assign("l_config_shiptypes", $l_config_shiptypes);
-$template->assign("l_allow_newaccounts", $l_allow_newaccounts);
-$template->assign("l_allow_logins", $l_allow_logins);
-$template->assign("l_add_gamemaster", $l_add_gamemaster);
-$template->assign("l_add_gamemaster_invite", $l_add_gamemaster_invite);
-$template->assign("l_news_created", $l_news_created);
-$template->assign("l_admin_login", $l_admin_login);
-$template->assign("l_email", $l_email);
-$template->assign("l_universe_success", $l_universe_success);
-$template->assign("adminpass", $adminpass);
-$template->assign("admin_mail", $admin_mail);
-$template->display("$templateset/mk_galaxy/90.tpl");
+$smarty->assign("l_shiptype_array", $l_shiptype_array);
+$smarty->assign("shiptype_results_array", $shiptype_results_array);
+$smarty->assign("l_config_shiptypes", $l_config_shiptypes);
+$smarty->assign("l_allow_newaccounts", $l_allow_newaccounts);
+$smarty->assign("l_allow_logins", $l_allow_logins);
+$smarty->assign("l_add_gamemaster", $l_add_gamemaster);
+$smarty->assign("l_add_gamemaster_invite", $l_add_gamemaster_invite);
+$smarty->assign("l_news_created", $l_news_created);
+$smarty->assign("l_admin_login", $l_admin_login);
+$smarty->assign("l_email", $l_email);
+$smarty->assign("l_universe_success", $l_universe_success);
+$smarty->assign("adminpass", $adminpass);
+$smarty->assign("admin_mail", $admin_mail);
+$smarty->display("$templateset/mk_galaxy/90.tpl");
+       
 ?>

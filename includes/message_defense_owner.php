@@ -14,13 +14,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/message_defense_owner.php
-
+// File: message_defense_owner.php
 function message_defense_owner($db, $sector, $message)
 {
     dynamic_loader ($db, "playerlog.php");
 
-    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=?", array($sector));
+    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id='$sector' ");
     db_op_result($db,$result3,__LINE__,__FILE__);
 
     // Put the defense information into the array "defenseinfo"

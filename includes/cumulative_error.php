@@ -14,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/cumulative_error.php
-
+// File: cumulative_error.php
 function cumulative_error($cumulative, $current_status)
 {
     if ($current_status)

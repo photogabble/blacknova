@@ -14,13 +14,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/distribute_toll.php
-
+// File: distribute_toll.php
 function distribute_toll($db, $destination, $toll, $total_fighters)
 {
     dynamic_loader ($db, "playerlog.php");
 
-    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=? AND defense_type ='F'", array($destination));
+    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id='$destination' AND defense_type ='F' ");
     db_op_result($db,$result3,__LINE__,__FILE__);
 
     // Put the defense information into the array "defenseinfo"
@@ -30,7 +29,7 @@ function distribute_toll($db, $destination, $toll, $total_fighters)
         {
             $row = $result3->fields;
             $toll_amount = ROUND(($row['quantity'] / $total_fighters) * $toll);
-            $debug_query = $db->Execute("UPDATE {$db->prefix}players set credits=credits+? WHERE player_id=?", array($toll_amount, $row['player_id']));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}players set credits=credits + $toll_amount WHERE player_id = $row[player_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             playerlog($db,$row[player_id], "LOG_TOLL_RECV", "$toll_amount|$destination");

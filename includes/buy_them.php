@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/buy_them.php
+// File: buy_them.php
 function buy_them($db,$player_id, $how_many = 1)
 {
     global $shipinfo;

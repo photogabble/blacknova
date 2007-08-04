@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/calc_ship_cleanup_cost.php
+// File: calc_ship_cleanup_cost.php
 function calc_ship_cleanup_cost($level_avg = 0, $type = 1)
 {
     global $level_factor, $upgrade_cost;

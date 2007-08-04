@@ -3,7 +3,7 @@
 <div align="left"><img src="templates/{$templateset}/images/header.png" alt="Blacknova Traders"></div></div>
 
 <h1>{$title}</h1>
-<form action="make_galaxy.php" method="post">
+<form action="make_galaxy.php" name="make_galaxy" method="post" accept-charset="utf-8">
 {$l_mk_adminname}
 <input type="text" name="admin_charname" size="20" maxlength="20" value="Webmaster">
 <br><br>

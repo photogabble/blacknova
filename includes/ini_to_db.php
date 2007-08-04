@@ -14,10 +14,9 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/ini_to_db.php
-//
-// Function for placing values in the db.
+// File: includes/ini_to_db.php
 
+// Function for placing values in the db.
 function ini_to_db ($db, $ini_file, $ini_table, $storelang)
 {
     global $l_store_values, $raw_prefix;

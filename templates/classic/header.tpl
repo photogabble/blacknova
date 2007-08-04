@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="{$style_sheet_file}" type="text/css">
 <!--  <link rel="stylesheet" href="{$style_sheet_file}">-->
   <link rel="icon" href="templates/{$templateset}/images/favicon.ico" type="image/vnd.microsoft.icon">
-  <title>{$header_title}</title>
+  <title>{$title}</title>
  </head>
 {if $no_body == 1}
 <body class="index" id="bntbody">

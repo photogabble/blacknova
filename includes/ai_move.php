@@ -1,3 +1,5 @@
+<?php
+<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -13,8 +15,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/ai_move.php
-<?php
+// File: ai_move.php
 function ai_move()
 {
     // Dynamic functions
@@ -32,7 +33,7 @@ function ai_move()
         $targetlink = 0;
     }
 
-    $linkres = $db->Execute ("SELECT * FROM {$db_prefix}links WHERE link_start=?", array($playerinfo['sector']));
+    $linkres = $db->Execute ("SELECT * FROM {$db_prefix}links WHERE link_start='$playerinfo[sector]'");
   
     if (mt_rand(1,100)<=50)
     {
@@ -42,9 +43,9 @@ function ai_move()
         while (!$targetlink>0 && $limitloop<15)
         {
             //  OBTAIN SECTOR INFORMATION 
-            $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id=?", array($wormto));
+            $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id='$wormto'");
             $sectrow = $sectres->fields;
-            $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
+            $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=$sectrow[zone_id]");
             $zonerow = $zoneres->fields;
             if ($zonerow['allow_attack']== "Y")
             {
@@ -63,9 +64,9 @@ function ai_move()
         {
             $row = $linkres->fields;
             //  OBTAIN SECTOR INFORMATION 
-            $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id=?", array($row['link_dest']));
+            $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id='$row[link_dest]'");
             $sectrow = $sectres->fields;
-            $zoneres = $db->Execute("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
+            $zoneres = $db->Execute("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=$sectrow[zone_id]");
             $zonerow = $zoneres->fields;
             if ($zonerow['allow_attack']== "Y")                        // DEST LINK MUST ALLOW ATTACKING 
             {
@@ -89,9 +90,9 @@ function ai_move()
         while (!$targetlink>0 && $limitloop<15)
         {
             //  OBTAIN SECTOR INFORMATION 
-            $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id=?", array($wormto)));
+            $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id='$wormto'");
             $sectrow = $sectres->fields;
-            $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
+            $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=$sectrow[zone_id]");
             $zonerow = $zoneres->fields;
             if ($zonerow['allow_attack']== "Y")
             {
@@ -108,7 +109,7 @@ function ai_move()
     //  CHECK FOR SECTOR DEFENSE
     if ($targetlink > 0)
     {
-        $resultf = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id=? and defense_type ='F' ORDER BY quantity DESC", array($targetlink));
+        $resultf = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id='$targetlink' and defense_type ='F' ORDER BY quantity DESC");
         $i = 0;
         $total_sector_fighters = 0;
         if ($resultf > 0)
@@ -122,7 +123,7 @@ function ai_move()
             }
         }
 
-        $resultm = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id=? and defense_type ='M'", array($targetlink));
+        $resultm = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id='$targetlink' and defense_type ='M'");
         $i = 0;
         $total_sector_mines = 0;
         if ($resultm > 0)
@@ -159,8 +160,8 @@ function ai_move()
     if ($targetlink > 0)
     {
         $stamp = date("Y-m-d H-i-s");
-        $move_result = $db->Execute("UPDATE {$db_prefix}ships SET last_login=?, turns_used=turns_used+1, turns=turns-1, sector=? WHERE ship_id=?", array($stamp, $targetlink, $playerinfo['ship_id']));
-
+        $query = "UPDATE {$db_prefix}ships SET last_login='$stamp', turns_used=turns_used+1, turns=turns-1, sector=$targetlink WHERE ship_id=$playerinfo[ship_id]";
+        $move_result = $db->Execute ("$query");
         if (!$move_result)
         {
             $error = $db->ErrorMsg();

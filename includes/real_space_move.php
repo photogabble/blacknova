@@ -82,7 +82,7 @@ function real_space_move($destination)
         $l_rs_movetime=str_replace("[triptime]",number_format($triptime, 0, $local_number_dec_point, $local_number_thousands_sep),$l_rs_movetime);
         echo "$l_rs_movetime<br><br>";
         echo "$l_rs_noturns";
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $retval = "BREAK-TURNS";
@@ -93,11 +93,11 @@ function real_space_move($destination)
         // Sector Defense Check
 
         $hostile = 0;
-        $result98 = $db->Execute("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id=? AND player_id !=?", array($destination, $playerinfo['player_id']));
+        $result98 = $db->Execute("SELECT * FROM {$db->prefix}sector_defense WHERE sector_id = $destination AND player_id != $playerinfo[player_id]");
         if (!$result98->EOF)
         {
             $fighters_owner = $result98->fields;
-            $nsresult = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($fighters_owner['player_id']));
+            $nsresult = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$fighters_owner[player_id]");
             $nsfighters = $nsresult->fields;
             if ($nsfighters['team'] != $playerinfo['team'] || $playerinfo['team']==0)
             {
@@ -114,10 +114,10 @@ function real_space_move($destination)
         else
         {
             $stamp = date("Y-m-d H:i:s");
-            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-?, turns_used=turns_used+? WHERE player_id=?", array($triptime, $triptime, $playerinfo['player_id']));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-$triptime,turns_used=turns_used+$triptime WHERE player_id=$playerinfo[player_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=?, energy=energy+? WHERE ship_id=?", array($destination, $energyscooped, $shipinfo['ship_id']));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET sector_id=$destination,energy=energy+$energyscooped WHERE ship_id=$shipinfo[ship_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $l_rs_ready2=str_replace("[sector]",$destination,$l_rs_ready);

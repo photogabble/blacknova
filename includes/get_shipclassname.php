@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/get_shipclassname.php
+// File: get_shipclassname.php
 
 function get_shipclassname($db, $ship_class_id)
 {
@@ -24,8 +24,7 @@ function get_shipclassname($db, $ship_class_id)
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
-    // This was previously cached - consider caching here.
-    $res = $db->SelectLimit("SELECT name FROM {$db->prefix}ship_types WHERE type_id=?",1,-1,array($ship_class_id));
+    $res = $db->CacheSelectLimit("SELECT name FROM {$db->prefix}ship_types WHERE type_id = $ship_class_id",1);
     db_op_result($db,$res,__LINE__,__FILE__);
 
     if ($res)

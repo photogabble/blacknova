@@ -14,13 +14,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/source_list.php
-
+// File: source_list.php
 function source_list($destination, $debug_query, $db, $db->prefix)
 {
     $temp = array();
     $i = 0;
-    $debug_query = $db->Execute("SELECT link_start FROM {$db->prefix}links WHERE link_dest=? order by link_start", array($destination));
+    $debug_query = $db->Execute("SELECT link_start FROM {$db->prefix}links WHERE link_dest=$destination order by link_start");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     while (!$debug_query->EOF)

@@ -1,5 +1,5 @@
 <script type="text/javascript" src="backends/javascript/sha256.js" defer="defer"></script>
-<form action="admin.php" method="post">
+<form action="admin.php" method="post" accept-charset="utf-8">
 <strong>User editor</strong><br>
 {if $number_dropdown > 0}
     <select size="1" name="user">
@@ -209,12 +209,12 @@
         <td>
             <!-- This still looks crappy. I'll think of something better later. :)
             {section name=v loop=$stuff}
-            {$template.section.v.iteration} {$v} => {$stuff[v]}<br>
+            {$smarty.section.v.iteration} {$v} => {$stuff[v]}<br>
             {sectionelse}
             This players owns no planets.
             {/section}
             <p>
-            This player owns {$template.section.v.loop} planets.-->
+            This player owns {$smarty.section.v.loop} planets.-->
         </td>
     </tr>
     <tr>

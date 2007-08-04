@@ -1,4 +1,5 @@
 <?php
+<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -14,16 +15,16 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/auth.php
+// File: auth.php
 //
-// This file handles the authentication for TKI. It expects two
+// This file handles the authentication for BNT. It expects two
 // variables: the email account, and the password. It checks them against
 // the db, and then checks the ip address of the user logging in against
 // a list of banned ip's.
 //
 // It then returns with "success", "insecure-success", "baduser", "badpass", "loginclosed", "notactive" or "banned".
 //
-// This file depends upon having the db functions from TKI,
+// This file depends upon having the db functions from BNT,
 // which will also soon be part of JOMPT as well.
 //
 // It expects three tables - $db->prefix.players, $raw_prefix.users, $db->prefix.ip_log and $db->prefix.ip_bans.
@@ -76,11 +77,11 @@ function authcheck($charname='', $password='')
     // Allows A-Z, a-z, 0-9, whitespace, minus/dash, equals, backslash, explanation point, ampersand, asterix, and underscore.
 //    $charname = preg_replace ('/[^A-Za-z0-9\s\-\=\\\'\!\&\*\_\@\.]/','',$charname);
 
-    $debug_query2 = $db->SelectLimit("SELECT * FROM {$raw_prefix}users WHERE email=?",1,-1,array($charname));
+    $debug_query2 = $db->SelectLimit("SELECT * FROM {$raw_prefix}users WHERE email='$charname'",1);
     db_op_result($db, $debug_query2,__LINE__,__FILE__);
     $accountinfo = $debug_query2->fields;
 
-    $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE account_id=?",1,-1, array($accountinfo['account_id']));
+    $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE account_id='$accountinfo[account_id]'",1);
     db_op_result($db, $debug_query,__LINE__,__FILE__);
     echo $db->ErrorMsg();
     $playerinfo = $debug_query->fields;
@@ -109,8 +110,8 @@ function authcheck($charname='', $password='')
     $client_ip_address = getenv("HTTP_CLIENT_IP"); // Get http's IP address for user
 
     // If player's current OR previous ip address is in ban list, he's banned.
-    $debug_query = $db->SelectLimit("SELECT ban_reason FROM {$db->prefix}ip_bans WHERE ? LIKE ban_mask OR ? " .
-                                    "LIKE ban_mask OR ? LIKE ban_mask",1,-1,array($ip_address, $client_ip_address, $proxy_address));
+    $debug_query = $db->SelectLimit("SELECT ban_reason FROM {$db->prefix}ip_bans WHERE '$ip_address' LIKE ban_mask OR '$client_ip_address' " .
+                                    "LIKE ban_mask OR '$proxy_address' LIKE ban_mask",1);
     db_op_result($db, $debug_query,__LINE__,__FILE__);
 
     if ($debug_query && !$debug_query->EOF)

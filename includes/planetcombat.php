@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/planetcombat.php
+// File: planet_combat.php
 
 include_once ("./global_includes.php");
 //dynamic_loader ($db, "direct_test.php");
@@ -230,7 +230,7 @@ function planetcombat()
     </tr>";
 
     $attacker_number = 1;
-    $result99a = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE planet_id=? AND on_planet='Y'", array($planetinfo['planet_id']));
+    $result99a = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE planet_id=$planetinfo[planet_id] AND on_planet='Y'");
     while (!$result99a->EOF)
     {
         $attacker = $result99a->fields;
@@ -489,7 +489,7 @@ function planetcombat()
 
     echo "</table></div>\n";
     // Send each docked ship in sequence to attack agressor
-    $result4 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE planet_id=? AND on_planet='Y'", array($planetinfo['planet_id']));
+    $result4 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE planet_id=$planetinfo[planet_id] AND on_planet='Y'");
     $shipsonplanet = $result4->RecordCount();
     if ($shipsonplanet > 0)
     {
@@ -592,14 +592,14 @@ function planetcombat()
         $l_cmb_energyused = str_replace("[cmb_energy_lost]", $energy_lost, $l_cmb_energyused);
         $l_cmb_energyused = str_replace("[cmb_playerinfo_ship_energy]", $initial_energy, $l_cmb_energyused);
         echo "$l_cmb_energyused<br></div>";
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET energy=?, fighters=fighters-?, torps=torps-?, armor_pts=armor_pts-? WHERE ship_id=?", array($energy, $fighters_lost, $attackertorps, $armor_lost, $shipinfo['ship_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET energy=$energy,fighters=fighters-$fighters_lost, torps=torps-$attackertorps,armor_pts=armor_pts-$armor_lost WHERE ship_id=$shipinfo[ship_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET rating=rating-? WHERE player_id=?", array($rating_change, $playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET rating=rating-$rating_change WHERE player_id=$playerinfo[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
-    $result4 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE planet_id=? AND on_planet='Y'", array($planetinfo['planet_id']));
+    $result4 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE planet_id=$planetinfo[planet_id] AND on_planet='Y'");
     $shipsonplanet = $result4->RecordCount();
 
     if ($planetshields < 1 && $planetfighters < 1 && $attackerarmor > 0 && $shipsonplanet == 0)
@@ -627,7 +627,7 @@ function planetcombat()
                    spy_planet_destroyed($db,$planetinfo['planet_id']);
                 }
                 
-                $db->Execute("DELETE FROM {$db->prefix}planets WHERE planet_id=?", array($planetinfo['planet_id']));
+                $db->Execute("DELETE FROM {$db->prefix}planets WHERE planet_id=$planetinfo[planet_id]");
                 playerlog($db,$ownerinfo['player_id'], "LOG_PLANET_DEFEATED_D", "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
                 adminlog($db, "LOG_ADMIN_PLANETDEL", "$playerinfo[character_name]|$ownerinfo[character_name]|$shipinfo[sector_id]");
                 gen_score($db,$ownerinfo['player_id']);
@@ -642,8 +642,8 @@ function planetcombat()
                 echo "</font></div><br><br>";
                 playerlog($db,$ownerinfo['player_id'], "LOG_PLANET_DEFEATED", "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
                 gen_score($db,$ownerinfo['player_id']);
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET fighters=0, torps=torps-?, base='N', " .
-                                            "defeated='Y' WHERE planet_id=?", array($planettorps, $planetinfo['planet_id']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET fighters=0, torps=torps-$planettorps, base='N', " .
+                                            "defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 if ($spy_success_factor)
@@ -662,8 +662,8 @@ function planetcombat()
             echo "</font></div><br><br>";
             playerlog($db,$ownerinfo['player_id'], "LOG_PLANET_DEFEATED", "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
             gen_score($db,$ownerinfo['player_id']);
-            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET fighters=0, torps=torps-?, base='N', " .
-                                        "defeated='Y' WHERE planet_id=?", array($planettorps, $planetinfo['planet_id']));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET fighters=0, torps=torps-$planettorps, base='N', " .
+                                        "defeated='Y' WHERE planet_id=$planetinfo[planet_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             if ($spy_success_factor)
@@ -701,9 +701,10 @@ function planetcombat()
         playerlog($db,$ownerinfo['player_id'], "LOG_PLANET_NOT_DEFEATED", "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]|$free_ore|$free_organics|$free_goods|$ship_salvage_rate|$numbered_salvage");
         gen_score($db,$ownerinfo['player_id']);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET energy=?, fighters=fighters-?, " .
-                                    "torps=torps-?, ore=ore+?, goods=goods+?, " .
-                                    "organics=organics+?, credits=credits+? WHERE planet_id=?", array($energy, $fighters_lost, $planettorps, $free_ore, $free_goods, $free_organics, $ship_salvage, $planetinfo['planet_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET energy=$energy, fighters=fighters-$fighters_lost, " .
+                                    "torps=torps-$planettorps, ore=ore+$free_ore, goods=goods+$free_goods, " .
+                                    "organics=organics+$free_organics, credits=credits+$ship_salvage WHERE " .
+                                    "planet_id=$planetinfo[planet_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 //      This seems to be the right code to run here, but for some reason the players goods get updated before hand, I dunno where.
@@ -722,7 +723,7 @@ function planetcombat()
     }
 
     $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 " .
-                                "WHERE player_id=?", array($playerinfo['player_id']));
+                                "WHERE player_id=$playerinfo[player_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 ?>

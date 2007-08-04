@@ -10,7 +10,7 @@
         <tr valign="top">
           <td><font color="#00FF00">{$l_igb_selwithdrawamount} :</font></td>
           <td align="right">
-            <form action="igb_withdraw2.php" method="post">
+            <form action="igb_withdraw2.php" method="post" accept-charset="utf-8">
               <input class="term" type="text" size="15" maxlength="50" name="amount" value="0"><br><br>
               <input class="term" type="submit" value="{$l_igb_withdraw}">
             </form>

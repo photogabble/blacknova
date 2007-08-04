@@ -94,14 +94,14 @@ $debug_query = $db->Execute("INSERT INTO {$db->prefix}links (link_start, link_de
 $current_status = db_op_result($db,$debug_query,__LINE__,__FILE__);
 cumulative_error($cumulative, $current_status);
 
-$template->assign("autorun", $_POST['autorun']);
-$template->assign("title", $title);
-$template->assign("gen_links_result", db_output($db,!$cumulative,__LINE__,__FILE__));
-$template->assign("l_gen_links", $l_gen_links);
-$template->assign("encrypted_password", $_POST['encrypted_password']);
-$template->assign("l_continue", $l_continue);
-$template->assign("step", ($_POST['step']+1));
-$template->assign("admin_charname", $_POST['admin_charname']);
-$template->assign("gamenum", $_POST['gamenum']);
-$template->display("$templateset/mk_galaxy/80.tpl");
+$smarty->assign("autorun", $_POST['autorun']);
+$smarty->assign("title", $title);
+$smarty->assign("gen_links_result", db_output($db,!$cumulative,__LINE__,__FILE__));
+$smarty->assign("l_gen_links", $l_gen_links);
+$smarty->assign("encrypted_password", $_POST['encrypted_password']);
+$smarty->assign("l_continue", $l_continue);
+$smarty->assign("step", ($_POST['step']+1));
+$smarty->assign("admin_charname", $_POST['admin_charname']);
+$smarty->assign("gamenum", $_POST['gamenum']);
+$smarty->display("$templateset/mk_galaxy/80.tpl");
 ?>

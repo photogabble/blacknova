@@ -146,18 +146,18 @@ foreach ($schema_files as $schema_filename)
         {
             $alter = substr($schema_filename, strpos($schema_filename,"-")+1);
             $alter = substr($alter, 0, -4);
-            $results = $db->Execute("ALTER TABLE {$raw_prefix}? TYPE=INNODB", array($alter));
+            $results = $db->Execute("ALTER TABLE {$raw_prefix}" . $alter . " TYPE=INNODB");
         }
         else
         {
             $alter = $schema_filename;
             $alter = substr($alter, 0, -4);
-            $results = $db->Execute("ALTER TABLE {$db->prefix}? TYPE=INNODB", array($alter));
+            $results = $db->Execute("ALTER TABLE {$db->prefix}" . $alter . " TYPE=INNODB");
         }
     }
 }
 
-$template->assign("final_drop_result", $cumulative);
+$smarty->assign("final_drop_result", $cumulative);
 
 // Even though this is already done in global_cleanups, you have to do it again here
 adodb_perf::table("{$db->prefix}adodb_logsql");
@@ -189,31 +189,31 @@ global $default_prod_fighters;
 global $default_prod_torp;
 
 $set_ore_prodrate = str_replace("[type]", $l_ore, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_ore SET DEFAULT ?", array($default_prod_ore));
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_ore SET DEFAULT '$default_prod_ore'");
 $ore_prodrate_results = db_output($db, db_op_result($db, $debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_organics_prodrate = str_replace("[type]", $l_organics, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_organics SET DEFAULT ?", array($default_prod_organics));
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_organics SET DEFAULT '$default_prod_organics'");
 $organics_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_goods_prodrate = str_replace("[type]", $l_goods, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_goods SET DEFAULT ?", array($default_prod_goods));
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_goods SET DEFAULT '$default_prod_goods'");
 $goods_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_energy_prodrate = str_replace("[type]", $l_energy, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_energy SET DEFAULT ?", array($default_prod_energy));
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_energy SET DEFAULT '$default_prod_energy'");
 $energy_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_fighters_prodrate = str_replace("[type]", $l_fighters, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_fighters SET DEFAULT ?", array($default_prod_fighters));
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_fighters SET DEFAULT '$default_prod_fighters'");
 $fighters_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 $set_torps_prodrate = str_replace("[type]", $l_torps, $l_set_prodrate);
-$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_torp SET DEFAULT ?", array($default_prod_torp));
+$debug_query = $db->Execute("ALTER TABLE {$db->prefix}planets ALTER COLUMN prod_torp SET DEFAULT '$default_prod_torp'");
 $torps_prodrate_results = db_output($db, db_op_result($db,$debug_query,__LINE__,__FILE__),__LINE__,__FILE__);
 
 // Finished
-$template->assign("tablecreate_result", $cumulative);
+$smarty->assign("tablecreate_result", $cumulative);
 
 $debug_query = '';
 
@@ -237,43 +237,42 @@ dynamic_loader ($db, "load_languages.php");
 // Load language variables
 load_languages($db, $raw_prefix, 'make_galaxy');
 
-$template->assign("ore_prodrate_results", $ore_prodrate_results);
-$template->assign("organics_prodrate_results", $organics_prodrate_results);
-$template->assign("goods_prodrate_results", $goods_prodrate_results);
-$template->assign("energy_prodrate_results", $energy_prodrate_results);
-$template->assign("fighters_prodrate_results", $fighters_prodrate_results);
-$template->assign("torps_prodrate_results", $torps_prodrate_results);
-$template->assign("set_ore_prodrate", $set_ore_prodrate);
-$template->assign("set_organics_prodrate", $set_organics_prodrate);
-$template->assign("set_goods_prodrate", $set_goods_prodrate);
-$template->assign("set_energy_prodrate", $set_energy_prodrate);
-$template->assign("set_fighters_prodrate", $set_fighters_prodrate);
-$template->assign("set_torps_prodrate", $set_torps_prodrate);
-$template->assign("create_table_names", $create_table_names);
-$template->assign("create_table_results", $create_table_results);
-$template->assign("l_tablecreate", $l_tablecreate);
-$template->assign("l_tablecreate_failure", $l_tablecreate_failure);
-$template->assign("l_tablecreate_success", $l_tablecreate_success);
-$template->assign("instlang_result", $instlang_result);
-$template->assign("lang_result", $lang_result);
-$template->assign("config_result", $config_result);
-$template->assign("l_tabledrop_failure", $l_tabledrop_failure);
-$template->assign("l_tabledrop_success", $l_tabledrop_success);
-$template->assign("l_drop_all_tables", $l_drop_all_tables);
-$template->assign("drop_table_names", $drop_table_names);
-$template->assign("drop_table_results", $drop_table_results);
-$template->assign("autorun", $_POST['autorun']);
-$template->assign("title", $title);
-$template->assign("l_store_languages", $l_store_languages);
-$template->assign("l_store_configs", $l_store_configs);
-$template->assign("l_store_values", $l_store_values);
-$template->assign("l_store_complete", $l_store_complete);
-$template->assign("encrypted_password", $_POST['encrypted_password']);
-$template->assign("cumulative", $cumulative);
-$template->assign("l_continue", $l_continue);
-$template->assign("l_reset", $l_reset);
-$template->assign("step", ($_POST['step']+1));
-$template->assign("admin_charname", $_POST['admin_charname']);
-$template->assign("gamenum", $_POST['gamenum']);
-$template->display("$templateset/mk_galaxy/20.tpl");
+$smarty->assign("ore_prodrate_results", $ore_prodrate_results);
+$smarty->assign("organics_prodrate_results", $organics_prodrate_results);
+$smarty->assign("goods_prodrate_results", $goods_prodrate_results);
+$smarty->assign("energy_prodrate_results", $energy_prodrate_results);
+$smarty->assign("fighters_prodrate_results", $fighters_prodrate_results);
+$smarty->assign("torps_prodrate_results", $torps_prodrate_results);
+$smarty->assign("set_ore_prodrate", $set_ore_prodrate);
+$smarty->assign("set_organics_prodrate", $set_organics_prodrate);
+$smarty->assign("set_goods_prodrate", $set_goods_prodrate);
+$smarty->assign("set_energy_prodrate", $set_energy_prodrate);
+$smarty->assign("set_fighters_prodrate", $set_fighters_prodrate);
+$smarty->assign("set_torps_prodrate", $set_torps_prodrate);
+$smarty->assign("create_table_names", $create_table_names);
+$smarty->assign("create_table_results", $create_table_results);
+$smarty->assign("l_tablecreate", $l_tablecreate);
+$smarty->assign("l_tablecreate_failure", $l_tablecreate_failure);
+$smarty->assign("l_tablecreate_success", $l_tablecreate_success);
+$smarty->assign("instlang_result", $instlang_result);
+$smarty->assign("config_result", $config_result);
+$smarty->assign("l_tabledrop_failure", $l_tabledrop_failure);
+$smarty->assign("l_tabledrop_success", $l_tabledrop_success);
+$smarty->assign("l_drop_all_tables", $l_drop_all_tables);
+$smarty->assign("drop_table_names", $drop_table_names);
+$smarty->assign("drop_table_results", $drop_table_results);
+$smarty->assign("autorun", $_POST['autorun']);
+$smarty->assign("title", $title);
+$smarty->assign("l_store_languages", $l_store_languages);
+$smarty->assign("l_store_configs", $l_store_configs);
+$smarty->assign("l_store_values", $l_store_values);
+$smarty->assign("l_store_complete", $l_store_complete);
+$smarty->assign("encrypted_password", $_POST['encrypted_password']);
+$smarty->assign("cumulative", $cumulative);
+$smarty->assign("l_continue", $l_continue);
+$smarty->assign("l_reset", $l_reset);
+$smarty->assign("step", ($_POST['step']+1));
+$smarty->assign("admin_charname", $_POST['admin_charname']);
+$smarty->assign("gamenum", $_POST['gamenum']);
+$smarty->display("$templateset/mk_galaxy/20.tpl");
 ?>

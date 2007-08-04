@@ -1,4 +1,3 @@
-BUG: Install - file checksum test only tests root directory
 BUG: Install, download db_config.php doesnt work right anymore
 BUG: Scheduler runs should be independent of each other - an error in one shouldnt stop the others from running
 BUG: Scheduler runs should be logged for the admin

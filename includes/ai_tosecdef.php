@@ -1,3 +1,4 @@
+<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -13,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/ai_tosecdef.php
-<?php
+// File: ai_tosecdef.php
 function ai_tosecdef()
 {
     // Dynamic functions
@@ -33,7 +33,7 @@ function ai_tosecdef()
     if ($targetlink>0)
     {
         // echo "The target link for $playerinfo[character_name] is $targetlink<br>";
-        $resultf = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id=? and defense_type ='F' ORDER BY quantity DESC", array($targetlink));
+        $resultf = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id='$targetlink' and defense_type ='F' ORDER BY quantity DESC");
         $i = 0;
         $total_sector_fighters = 0;
         if ($resultf > 0)
@@ -47,7 +47,7 @@ function ai_tosecdef()
             }
         }
 
-        $resultm = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id=? and defense_type ='M'",array($targetlink));
+        $resultm = $db->Execute ("SELECT * FROM {$db_prefix}sector_defense WHERE sector_id='$targetlink' and defense_type ='M'");
         $i = 0;
         $total_sector_mines = 0;
         if ($resultm > 0)
@@ -190,7 +190,7 @@ function ai_tosecdef()
             $armor_lost= $playerinfo['armor_pts']-$playerarmor;
             $fighters_lost= $playerinfo['ship_fighters']-$playerfighters;
             $energy = $playerinfo['ship_energy'];
-            $update1 = $db->Execute ("UPDATE {$db_prefix}ships SET ship_energy=?, ship_fighters=ship_fighters-?, armor_pts=armor_pts-?, torps=torps-? WHERE ship_id=?", array($energy, $fighters_lost, $armor_lost, $playertorpnum, $playerinfo['ship_id']));
+            $update1 = $db->Execute ("UPDATE {$db_prefix}ships SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, armor_pts=armor_pts-$armor_lost, torps=torps-$playertorpnum WHERE ship_id=$playerinfo[ship_id]");
 
             //  CHECK TO SEE IF AI IS DEAD 
             if ($playerarmor < 1)
@@ -221,7 +221,7 @@ function ai_tosecdef()
             if ($playerminedeflect >= $roll)
             {
                 $playerminedeflect = $playerminedeflect - $roll;
-                $update2 = $db->Execute("UPDATE {$db_prefix}ships set dev_minedeflector=? WHERE ship_id=?", array($playerminedeflect, $playerinfo['ship_id']));
+                $update2 = $db->Execute("UPDATE {$db_prefix}ships set dev_minedeflector=$playerminedeflect WHERE ship_id=$playerinfo[ship_id]");
             }
             else
             {
@@ -234,7 +234,7 @@ function ai_tosecdef()
                 //  SHIELDS VS MINES 
                 if ($playershields >= $mines_left)
                 {
-                    $update2 = $db->Execute("UPDATE {$db_prefix}ships set ship_energy=ship_energy-? WHERE ship_id=?", array($mines_left, $playerinfo['ship_id']));
+                    $update2 = $db->Execute("UPDATE {$db_prefix}ships set ship_energy=ship_energy-$mines_left WHERE ship_id=$playerinfo[ship_id]");
                 }
                 else
                 {
@@ -243,7 +243,7 @@ function ai_tosecdef()
                     //  armor VS MINES 
                     if ($playerarmor >= $mines_left)
                     {
-                        $update2 = $db->Execute("UPDATE {$db_prefix}ships set armor_pts=armor_pts-?,ship_energy=0 WHERE ship_id=?", array($mines_left, $playerinfo['ship_id']));
+                        $update2 = $db->Execute("UPDATE {$db_prefix}ships set armor_pts=armor_pts-$mines_left,ship_energy=0 WHERE ship_id=$playerinfo[ship_id]");
                     }
                     else
                     {

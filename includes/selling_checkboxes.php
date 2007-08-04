@@ -14,12 +14,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/selling_checkboxes.php
+// File: selling_checkboxes.php
 
 function selling_checkboxes($planet, $i)
 {
     if ($planet[$i]['sells'] != 'Y')
-    {
+    (
         return "<input type=checkbox name=\"sells[]\" value=\"" . $planet[$i]['planet_id'] . "\">";
     }
     elseif ($planet[$i]['sells'] == 'Y')

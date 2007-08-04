@@ -1,4 +1,4 @@
-<form action="igb_transfer3.php" method="post">
+<form action="igb_transfer3.php" method="post" accept-charset="utf-8">
   <table width="600" height="350" border="0">
     <tr>
       <td align="center" background="templates/{$templateset}/images/igbscreen.png">

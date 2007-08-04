@@ -1,6 +1,6 @@
 <script type="text/javascript" src="backends/javascript/hide_show.js"></script>
 
-<form action="admin.php" method="post">
+<form action="admin.php" method="post" accept-charset="utf-8">
 <div class="tab-container" id="container1">
   <ul class="tabs">
     <li><a href="#" onClick="return showPane('main', this)" id="main1">Main</a></li>

@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/planetbombing.php
+// File: planet_sofa.php
 
 include_once ("./global_includes.php");
 dynamic_loader ($db, "direct_test.php");
@@ -171,14 +171,14 @@ function planetbombing()
 
     echo "<br><br>\n";
     $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 " .
-                                "WHERE player_id=?", array($playerinfo['player_id']));
+                                "WHERE player_id=$playerinfo[player_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET fighters=fighters-? WHERE ship_id=?", array($attackerfighters, $shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET fighters=fighters-$attackerfighters WHERE ship_id=$shipinfo[ship_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET energy=energy-?, fighters=fighters-?, " .
-                                "torps=torps-? WHERE planet_id=?", array($beamsused, $planetfighterslost, $planettorps, $planetinfo['planet_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET energy=energy-$beamsused,fighters=fighters-$planetfighterslost, " .
+                                "torps=torps-$planettorps WHERE planet_id=$planetinfo[planet_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 //    $debug_query = $db->Execute("UNLOCK TABLES");

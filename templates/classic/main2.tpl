@@ -309,7 +309,7 @@
 
 <div class="mnu">
   <div class="center">
-    <form method="post" action="move.php" style="margin: 0; padding: 2; white-space:nowrap">
+    <form method="post" action="move.php" accept-charset="utf-8" style="margin: 0; padding: 2; white-space:nowrap">
 {section name=index start=1 loop=$presetinfo}
       <div class="nostyle"><a class="mnu" href="move.php?move_method=real&amp;engage=1&amp;destination={$presetinfo[index]}">=&gt;&nbsp;{$presetinfo[index]}</a>&nbsp;<a class="dis2" href="preset.php">[{$l_set}]</a></div>
 {/section}
@@ -352,7 +352,7 @@
   </div>
   <div class="mnu">
     <div class="center">
-      <form method="post" action="move.php" style="margin: 0; padding: 2; white-space:nowrap">
+      <form method="post" action="move.php" accept-charset="utf-8" style="margin: 0; padding: 2; white-space:nowrap">
       <p class="forms">
       <input type="hidden" name="move_method" value="navcomp">
       <input type="text" name="destination" maxlength="7" size="3" class="rsform">
@@ -372,7 +372,7 @@
 </div>
 
 <div class="mnu">
-  <form method="post" action="move.php" style="margin: 0; padding: 2; white-space:nowrap">
+  <form method="post" action="move.php" accept-charset="utf-8" style="margin: 0; padding: 2; white-space:nowrap">
       <p class="forms">
       <input type="hidden" name="move_method" value="plasma">
       <input type="text" name="destination" class="rsform" maxlength="7" size="3">&nbsp;

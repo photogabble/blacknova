@@ -1,5 +1,4 @@
 <?php
-<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,12 +14,11 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: inclues/direct_test.php
-
+// File: direct_test.php
 function direct_test($file, $phpself)
 {
-    echo "direct test";
-    die();
+echo "direct test";
+die();
     // Soon, we can template this!
     global $langdir, $l_error_occured, $l_cannot_access, $raw_prefix;
     $phpfile = substr($file, (strrpos($file, "/") +1));

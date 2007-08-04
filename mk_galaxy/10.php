@@ -68,22 +68,22 @@ else
     $newgame = 1;
 }
 
-$template->assign('game_instances',$game_instances);
-$template->assign('newgame',$newgame);
-$template->assign("game_drop_down", $game_drop_down);
-$template->assign("l_mk_adminname", $l_mk_adminname);
-$template->assign("l_autorun", $l_autorun);
-$template->assign("configsets", $configsets);
-$template->assign("l_configset_which", $l_configset_which);
-$template->assign("l_welcome_warning",$l_welcome_warning);
-$template->assign("autorun", TRUE);
-$template->assign("title", $title);
-$template->assign("encrypted_password", $_POST['encrypted_password']);
-$template->assign("cumulative", $cumulative);
-$template->assign("l_continue", $l_continue);
-$template->assign("l_reset", $l_reset);
-$template->assign("l_persist", $l_persist);
-$template->assign("step", ($_POST['step']+1));
-$template->display("$templateset/mk_galaxy/10.tpl");
+$smarty->assign('game_instances',$game_instances);
+$smarty->assign('newgame',$newgame);
+$smarty->assign("game_drop_down", $game_drop_down);
+$smarty->assign("l_mk_adminname", $l_mk_adminname);
+$smarty->assign("l_autorun", $l_autorun);
+$smarty->assign("configsets", $configsets);
+$smarty->assign("l_configset_which", $l_configset_which);
+$smarty->assign("l_welcome_warning",$l_welcome_warning);
+$smarty->assign("autorun", TRUE);
+$smarty->assign("title", $title);
+$smarty->assign("encrypted_password", $_POST['encrypted_password']);
+$smarty->assign("cumulative", $cumulative);
+$smarty->assign("l_continue", $l_continue);
+$smarty->assign("l_reset", $l_reset);
+$smarty->assign("l_persist", $l_persist);
+$smarty->assign("step", ($_POST['step']+1));
+$smarty->display("$templateset/mk_galaxy/10.tpl");
 
 ?>

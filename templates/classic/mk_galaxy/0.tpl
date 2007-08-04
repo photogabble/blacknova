@@ -14,7 +14,7 @@
 <br>
 <font color="yellow">{$l_welcome_nosupport}</font>
 <br><br>
-<form method="post" action="make_galaxy.php" onsubmit="encrypted_password.value=sha256_once(document.forms[0].password.value);password.value='';">
+<form method="post" action="make_galaxy.php" accept-charset="utf-8" onsubmit="encrypted_password.value=sha256_once(document.forms[0].password.value);password.value='';">
 
 {if $badpass}
 <font color="red">{$l_readmin_password}</font><br><br>

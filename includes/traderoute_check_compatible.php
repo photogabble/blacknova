@@ -26,7 +26,7 @@ function traderoute_check_compatible($type1, $type2, $move, $circuit, $src, $des
     // Check warp links compatibility
     if ($move == 'warp')
     {
-        $query = $db->Execute("SELECT link_id FROM {$db->prefix}links WHERE link_start=? AND link_dest=?", array($src['sector_id'], $dest['sector_id']));
+        $query = $db->Execute("SELECT link_id FROM {$db->prefix}links WHERE link_start=$src[sector_id] AND link_dest=$dest[sector_id]");
         if ($query->EOF)
         {
             $l_tdr_nowlink1 = str_replace("[tdr_src_sector_id]", $src['sector_id'], $l_tdr_nowlink1);
@@ -36,7 +36,7 @@ function traderoute_check_compatible($type1, $type2, $move, $circuit, $src, $des
 
         if ($circuit == '2')
         {
-            $query = $db->Execute("SELECT link_id FROM {$db->prefix}links WHERE link_start=? AND link_dest=?", array($dest['sector_id'], $src['sector_id']));
+            $query = $db->Execute("SELECT link_id FROM {$db->prefix}links WHERE link_start=$dest[sector_id] AND link_dest=$src[sector_id]");
             if ($query->EOF)
             {
                 $l_tdr_nowlink2 = str_replace("[tdr_src_sector_id]", $src['sector_id'], $l_tdr_nowlink2);

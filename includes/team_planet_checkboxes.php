@@ -14,8 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/team_planet_checkboxes.php
-
+// File: team_planet_checkboxes.php
 function team_planet_checkboxes($planet, $i)
 {
     if ($planet[$i]['team'] <= 0)

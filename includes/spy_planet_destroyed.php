@@ -14,13 +14,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/spy_planet_destroyed.php
-
+// File: spy_planet_destroyed.php
 function spy_planet_destroyed($db,$planet_id)
 {
     dynamic_loader ($db, "playerlog.php");
 
-    $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}planets.name, {$db->prefix}planets.sector_id FROM {$db->prefix}spies INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id = {$db->prefix}planets.planet_id WHERE {$db->prefix}spies.planet_id=?", array($planet_id));
+    $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}planets.name, {$db->prefix}planets.sector_id FROM {$db->prefix}spies INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id = {$db->prefix}planets.planet_id WHERE {$db->prefix}spies.planet_id = '$planet_id' ");
     while (!$res->EOF)
     {
         $owners = $res->fields;
@@ -28,6 +27,6 @@ function spy_planet_destroyed($db,$planet_id)
         $res->MoveNext();
     }
   
-    $db->Execute("DELETE FROM {$db->prefix}spies WHERE planet_id=?", array($planet_id));
+    $db->Execute("DELETE FROM {$db->prefix}spies WHERE planet_id = '$planet_id' ");
 }
 ?>

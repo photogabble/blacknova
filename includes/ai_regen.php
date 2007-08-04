@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: includes/ai_regen.php
+// File:  ai_regen.php
 //
 // Description: The function handling AI regeneration.
 
@@ -104,8 +104,9 @@ function ai_regen()
     } 
 
     //  Update AI Record
-    $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, armor_pts=?, ship_fighters=?, torps=?, credits=? " .
-                  "WHERE ship_id=?", array($playerinfo['ship_energy'], $playerinfo['armor_pts'], $playerinfo['ship_fighters'], $playerinfo['torps'], $playerinfo['credits'], $playerinfo['ship_id']));
+    $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$playerinfo[ship_energy], armor_pts=$playerinfo[armor_pts], " .
+                  "ship_fighters=$playerinfo[ship_fighters], torps=$playerinfo[torps], credits=$playerinfo[credits] " .
+                  "WHERE ship_id=$playerinfo[ship_id]");
     if (!$gene=='' || !$gena=='' || !$genf=='' || !$gent=='')
     {
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal $gene $gena $genf $gent and has been updated."); 

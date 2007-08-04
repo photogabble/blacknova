@@ -43,14 +43,14 @@ while ($_POST['nump'] >0)
         $planetary_sector = $db->SelectLimit("SELECT {$db->prefix}universe.sector_id, {$db->prefix}universe.star_size, ".
                                              "{$db->prefix}universe.zone_id, {$db->prefix}zones.allow_planet ".
                                              "FROM {$db->prefix}universe, {$db->prefix}zones ".
-                                             "WHERE {$db->prefix}universe.sector_id=? AND ".
+                                             "WHERE {$db->prefix}universe.sector_id=$random_sector AND ".
                                              "{$db->prefix}zones.allow_planet='Y' AND {$db->prefix}universe.zone_id!='2' AND ".
-                                             "{$db->prefix}universe.star_size!='0'",1,-1,array($random_sector));
+                                             "{$db->prefix}universe.star_size!='0'",1);
         db_op_result($db,$planetary_sector,__LINE__,__FILE__);
 
         if (!$planetary_sector->EOF)
         {
-            $debug_query = $db->Execute("SELECT * from {$db->prefix}planets where sector_id=?", array($random_sector));
+            $debug_query = $db->Execute("SELECT * from {$db->prefix}planets where sector_id=$random_sector");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $num_planets_in_sector = $debug_query->RecordCount();
@@ -122,17 +122,17 @@ while ($_POST['nump'] >0)
 
 $l_creating_planets = str_replace("[nump]", $total_planets, $l_creating_planets);
 $l_creating_planets = $l_creating_planets . db_output($db,!$cumulative,__LINE__,__FILE__);
-$template->assign("autorun", $_POST['autorun']);
-$template->assign("title", $title);
-$template->assign("l_creating_planets", $l_creating_planets);
-$template->assign("linksper", $_POST['linksper']);
-$template->assign("twoways", $_POST['twoways']);
-$template->assign("encrypted_password", $_POST['encrypted_password']);
-$template->assign("sektors", $_POST['sektors']);
-$template->assign("l_continue", $l_continue);
-$template->assign("step", ($_POST['step']+1));
-$template->assign("admin_charname", $_POST['admin_charname']);
-$template->assign("gamenum", $_POST['gamenum']);
-$template->display("$templateset/mk_galaxy/70.tpl");
+$smarty->assign("autorun", $_POST['autorun']);
+$smarty->assign("title", $title);
+$smarty->assign("l_creating_planets", $l_creating_planets);
+$smarty->assign("linksper", $_POST['linksper']);
+$smarty->assign("twoways", $_POST['twoways']);
+$smarty->assign("encrypted_password", $_POST['encrypted_password']);
+$smarty->assign("sektors", $_POST['sektors']);
+$smarty->assign("l_continue", $l_continue);
+$smarty->assign("step", ($_POST['step']+1));
+$smarty->assign("admin_charname", $_POST['admin_charname']);
+$smarty->assign("gamenum", $_POST['gamenum']);
+$smarty->display("$templateset/mk_galaxy/70.tpl");
 
 ?>

@@ -1,6 +1,6 @@
 <script src="backends/javascript/simpleajax.js" type="text/javascript"></script>
 
-<form action="chat.php" method="post">
+<form action="chat.php" method="post" accept-charset="utf-8">
 <table class="chat" cellpadding="0" cellspacing="0" border="1">
   <tbody>
     <tr>
