@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: admin/logview.php
+// File: logview.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/logview.php"));
 if ($pos !== false)
@@ -35,12 +35,12 @@ if ($pos !== false)
 // Include the sha256 backend
 include_once ("./backends/sha256/shaclass.php");
 
-echo "<form action=log.php method=post>" .
+echo "<form action=\"log.php\" method=\"post\" accept-charset=\"utf-8\">" .
      "<input type=hidden name=sha256swordfish value=".sha256::hash($adminpass).">" .
      "<input type=hidden name=player value=0>" .
      "<input type=submit value=\"View admin log\">" .
      "</form>" .
-     "<form action=log.php method=post>" .
+     "<form action=\"log.php\" method=\"post\" accept-charset=\"utf-8\">" .
      "<input type=hidden name=sha256swordfish value=".sha256::hash($adminpass).">" .
      "<select name=player>";
 

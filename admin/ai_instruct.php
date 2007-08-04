@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // 
-// File: admin/ai_instruct.php
+// File: ai_instruct.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_instruct.php"));
 if ($pos !== false)
@@ -31,6 +31,6 @@ if ($pos !== false)
     die();
 }
 
-$template->assign("ai_name", $ai_name);
-$template->display("$templateset/ai_instruct.tpl");
+$smarty->assign("ai_name", $ai_name);
+$smarty->display("$templateset/ai_instruct.tpl");
 ?>

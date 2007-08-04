@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: admin/iplog.php
+// File: iplog.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/iplog.php"));
 if ($pos !== false)
@@ -85,7 +85,7 @@ if (!($offset > 0))
 }
 
 echo $log_count . " Records total.\n<br><br>";
-echo "<form action=admin.php method=post>";
+echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
 echo "<input type=hidden value=$offset name=offset>";
 echo "<input type=hidden value=iplog name=menu>";
 echo "<input type=submit value=\"&lt&lt\" name=left><input type=submit value=\"&gt&gt\" name=right><br>";

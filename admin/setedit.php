@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: admin/setedit.php
+// File: setedit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/setedit.php"));
 if ($pos !== false)
@@ -51,11 +51,11 @@ if(!isset($_POST['save']))
         $debug_query->MoveNext();
     }
 
-    $template->assign('db_config_name', $db_config_name);
-    $template->assign('db_config_category', $db_config_category);
-    $template->assign('db_config_value', $db_config_value);
-    $template->assign('db_config_description', $db_config_description);
-    $template->display("$templateset/admin/setedit.tpl");
+    $smarty->assign('db_config_name', $db_config_name);
+    $smarty->assign('db_config_category', $db_config_category);
+    $smarty->assign('db_config_value', $db_config_value);
+    $smarty->assign('db_config_description', $db_config_description);
+    $smarty->display("$templateset/admin/setedit.tpl");
 }
 else
 {

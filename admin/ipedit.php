@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: admin/ipedit.php
+// File: ipedit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/ipedit.php"));
 if ($pos !== false)
@@ -36,7 +36,7 @@ echo "<b>IP Bans editor</b><p>";
 $bans=array();
 if (empty($_POST['command']))
 {
-    echo "<form action=admin.php method=post>";
+    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
     echo "<input type=hidden name=command value=showips>";
     echo "<input type=hidden name=menu value=ipedit>";
     echo "<input type=submit value=\"Show player's ips\">";
@@ -87,7 +87,7 @@ if (empty($_POST['command']))
                  "<td align=center><font size=2 color=white>";
 
             $res2 = $db->Execute("select character_name, player_id, email FROM {$db->prefix}players WHERE " .
-                                "ip_address LIKE ?", array($ban['ban_mask']));
+                                "ip_address LIKE '$ban[ban_mask]'");
             unset($players);
             while (!$res2->EOF)
             {
@@ -122,7 +122,7 @@ if (empty($_POST['command']))
 
             echo "<td align=center><font size=2 color=white>" . $ban['ban_reason'] ."</td>";
             echo "<td align=center nowrap valign=center><font size=2 color=white>" .
-                 "<form action=admin.php method=post>" .
+                 "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
                  "<input type=hidden name=command value=unbanip>" .
                  "<input type=hidden name=menu value=ipedit>" .
                  "<input type=hidden name=ban value=$ban>" .
@@ -170,7 +170,7 @@ elseif ($_POST['command'] == 'showips')
         echo "<td align=center><font size=2 color=white><a href=http://www.geektools.com/cgi-bin/proxy.cgi?query=$ip&targetnic=auto target=_blank class=mnu>$ip</a></td>" .
              "<td align=center><font size=2 color=white>";
 
-        $res = $db->Execute("select {$db->prefix}players.character_name, {$db->prefix}players.player_id, {$raw_prefix}users.email FROM {$raw_prefix}users LEFT JOIN {$db->prefix}players ON {$raw_prefix}users.account_id={$db->prefix}players.player_id WHERE {$db->prefix}players.ip_address=?", array($ip));
+        $res = $db->Execute("select {$db->prefix}players.character_name, {$db->prefix}players.player_id, {$raw_prefix}users.email FROM {$raw_prefix}users LEFT JOIN {$db->prefix}players ON {$raw_prefix}users.account_id={$db->prefix}players.player_id WHERE {$db->prefix}players.ip_address ='$ip'");
 
         unset($players);
         while (!$res->EOF)
@@ -193,13 +193,13 @@ elseif ($_POST['command'] == 'showips')
         }
 
         echo "<td align=center nowrap valign=center><font size=2 color=white>" .
-             "<form action=admin.php method=post>" .
+             "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
              "<input type=hidden name=command value=banip>" .
              "<input type=hidden name=menu value=ipedit>" .
              "<input type=hidden name=ip value=$ip>" .
              "<input type=submit value=Ban>" .
              "</form>" .
-             "<form action=admin.php method=post>" .
+             "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
              "<input type=hidden name=command value=unbanip>" .
              "<input type=hidden name=menu value=ipedit>" .
              "<input type=hidden name=ip value=$ip>" .
@@ -208,7 +208,7 @@ elseif ($_POST['command'] == 'showips')
     }
 
     echo "</table><p>" .
-         "<form action=admin.php method=post>" .
+         "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
          "<input type=hidden name=menu value=ipedit>" .
          "<input type=submit value=\"Return to IP bans menu\">" .
          "</form>";
@@ -222,7 +222,7 @@ elseif ($_POST['command'] == 'banip')
 
     echo "<table border=0>" .
          "<tr><td align=right>" .
-         "<form action=admin.php method=post>" .
+         "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
          "<input type=hidden name=menu value=ipedit>" .
          "<input type=hidden name=command value=banip2>" .
          "<input type=hidden name=ip value=$ip>" .
@@ -240,7 +240,7 @@ elseif ($_POST['command'] == 'banip')
          "</table>" .
          "</form>";
 
-    echo "<form action=admin.php method=post>" .
+    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
          "<input type=hidden name=menu value=ipedit>" .
          "<input type=submit value=\"Return to IP bans menu\">" .
          "</form>";
@@ -279,7 +279,7 @@ elseif ($_POST['command'] == 'banip2')
         $res->MoveNext();
     }
 
-    echo "<form action=admin.php method=post>" .
+    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
          "<input type=hidden name=menu value=ipedit>" .
          "<input type=submit value=\"Return to IP bans menu\">" .
          "</form>";
@@ -290,11 +290,11 @@ elseif ($_POST['command'] == 'unbanip')
 
     if (!empty($ban))
     {
-        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE ban_mask=?", array($ban));
+        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE ban_mask='$ban'");
     }
     else
     {
-        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE ? LIKE ban_mask", array($ip));
+        $res = $db->Execute("select * FROM {$db->prefix}ip_bans WHERE '$ip' LIKE ban_mask");
     }
 
     $nbbans = $res->RecordCount();
@@ -307,17 +307,17 @@ elseif ($_POST['command'] == 'unbanip')
 
     if (!empty($ban))
     {
-        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ban_mask=?", array($ban));
+        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ban_mask='$ban'");
     }
     else
     {
-        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE ? LIKE ban_mask", array($ip));
+        $db->Execute("DELETE FROM {$db->prefix}ip_bans WHERE '$ip' LIKE ban_mask");
     }
 
-    $query_string = "ip_address LIKE " . $db->qstr($bans[0]['ban_mask']);
+    $query_string = "ip_address LIKE '" . $bans[0]['ban_mask'] ."'";
     for ($i = 1; $i < $nbbans ; $i++)
     {
-        $query_string = $query_string . " OR ip_address LIKE " . $db->qstr($bans[$i]['ban_mask']);
+        $query_string = $query_string . " OR ip_address LIKE '" . $bans[$i]['ban_mask'] . "'";
     }
 
     $res = $db->Execute("select DISTINCT character_name FROM {$db->prefix}players WHERE $query_string");
@@ -348,7 +348,7 @@ elseif ($_POST['command'] == 'unbanip')
         }
     }
 
-    echo "<form action=admin.php method=post>" .
+    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">" .
          "<input type=hidden name=menu value=ipedit>" .
          "<input type=submit value=\"Return to IP bans menu\">" .
          "</form>";

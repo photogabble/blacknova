@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: admin/planedit.php
+// File: planedit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/planedit.php"));
 if ($pos !== false)
@@ -33,7 +33,7 @@ if ($pos !== false)
 }
 
 echo "<h3>Planet editor</h3>";
-echo "<form action=admin.php method=post>";
+echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
 if (empty($_POST['planet']))
 {
     echo "<select size=15 name=planet>";
@@ -65,7 +65,7 @@ else
 $planet = $_POST['planet'];
     if (empty($_POST['operation']))
     {
-        $res = $db->Execute("select * FROM {$db->prefix}planets WHERE planet_id=?", array($planet));
+        $res = $db->Execute("select * FROM {$db->prefix}planets WHERE planet_id=$planet");
         $row = $res->fields;
 
         echo "<table border=1 cellspacing=2 cellpadding=2>";
@@ -138,7 +138,7 @@ $planet = $_POST['planet'];
         $_delete = empty($delete) ? "N" : "Y";
         if ($_delete == "Y")
         {
-            $debug_query = $db->Execute("DELETE from {$db->prefix}planets where planet_id=?", array($planet));
+            $debug_query = $db->Execute("DELETE from {$db->prefix}planets where planet_id=$planet");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "<input type=submit value=\"Return to Planet editor\">";
         }
@@ -146,8 +146,8 @@ $planet = $_POST['planet'];
         {
             // update database
             $_defeated = empty($defeated) ? "N" : "Y";
-            $base = empty($_base) ? "N" : "Y";
-            $sells = empty($_sells) ? "N" : "Y";
+            $_base = empty($base) ? "N" : "Y";
+            $sells = empty($sells) ? "N" : "Y";
             if ($name == "")
             {
                 $name = "Unnamed";
