@@ -43,11 +43,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -66,7 +66,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -101,7 +101,7 @@ global $db;
 
 if ($_POST['splanet_id'] != $_POST['dplanet_id'])
 {
-    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=$_POST[splanet_id]");
+    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($_POST['splanet_id']));
     if (!$res || $res->EOF)
     {
         $backlink = "igb_transfer.php";
@@ -116,7 +116,7 @@ if ($_POST['splanet_id'] != $_POST['dplanet_id'])
         $source[name] = $l_igb_unnamed;
     }
 
-    $res = $db->Execute("SELECT name, credits, owner, sector_id, base FROM {$db->prefix}planets WHERE planet_id=$_POST[dplanet_id]");
+    $res = $db->Execute("SELECT name, credits, owner, sector_id, base FROM {$db->prefix}planets WHERE planet_id=?", array($_POST[dplanet_id]));
     if (!$res || $res->EOF)
     {
         $backlink = "igb_transfer.php";
@@ -180,7 +180,7 @@ if ($_POST['splanet_id'] != $_POST['dplanet_id'])
 }
 else // Ship transfer
 {
-    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$_POST[player_id]");
+    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($_POST['player_id']));
 
     if ($playerinfo['player_id'] == $_POST['player_id'])
     {
@@ -219,7 +219,7 @@ else // Ship transfer
     {
         $curtime = time();
         $curtime -= $igb_trate * 60;
-        $res = $db->Execute("SELECT UNIX_TIMESTAMP(transfer_time) as time FROM {$db->prefix}ibank_transfers WHERE UNIX_TIMESTAMP(transfer_time) > $curtime AND source_id=$playerinfo[player_id] AND dest_id=$target[player_id]");
+        $res = $db->Execute("SELECT UNIX_TIMESTAMP(transfer_time) as time FROM {$db->prefix}ibank_transfers WHERE UNIX_TIMESTAMP(transfer_time) > ? AND source_id=? AND dest_id=?", array($curtime, $playerinfo['player_id'], $target['player_id']));
         if (!$res->EOF)
         {
             $time = $res->fields;

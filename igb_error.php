@@ -20,13 +20,13 @@ include_once ("./global_includes.php");
 
 global $l_igb_igberrreport, $l_igb_back, $l_igb_logout;
 
-$smarty->assign("title", $l_igb_igberrreport);
-$smarty->assign("backlink", $backlink);
-$smarty->assign("igb_errmsg", $igb_errmsg);
-$smarty->assign("l_igb_back", $l_igb_back);
-$smarty->assign("l_igb_logout", $l_igb_logout);
-$smarty->assign("templateset", $templateset);
-$smarty->display("$templateset/igb_error.tpl");
+$template->assign("title", $l_igb_igberrreport);
+$template->assign("backlink", $backlink);
+$template->assign("igb_errmsg", $igb_errmsg);
+$template->assign("l_igb_back", $l_igb_back);
+$template->assign("l_igb_logout", $l_igb_logout);
+$template->assign("templateset", $templateset);
+$template->display("$templateset/igb_error.tpl");
 
 include_once ("footer.php");
 die();

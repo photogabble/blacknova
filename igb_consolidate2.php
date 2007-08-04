@@ -41,11 +41,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -64,7 +64,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -88,7 +88,7 @@ global $l_igb_currentpl, $l_igb_in, $l_igb_transferamount, $l_igb_plaffected;
 global $l_igb_transferfee, $l_igb_turncost, $l_igb_amounttransferred;
 global $l_igb_consolidate;
 
-$res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=$dplanet_id");
+$res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($dplanet_id));
 if (!$res || $res->EOF)
 {
     $backlink = "igb_transfer.php";
@@ -110,10 +110,10 @@ if ($dest['owner'] != $playerinfo['player_id'])
     include_once ("./igb_error.php");
 }
 
-$minimum = preg_replace('/[^0-9]/','',$minimum);
-$maximum = preg_replace('/[^0-9]/','',$maximum);
+$minimum = $db->qstr(preg_replace('/[^0-9]/','',$minimum));
+$maximum = $db->qstr(preg_replace('/[^0-9]/','',$maximum));
 
-$query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner=$playerinfo[player_id] " .
+$query = "SELECT SUM(credits) as total, COUNT(*) as count from {$db->prefix}planets WHERE owner=? " .
          "AND credits != 0";
 
 if ($minimum != 0)
@@ -126,9 +126,9 @@ if ($maximum != 0)
     $query .= " AND credits <= $maximum";
 }
 
-$query .= " AND planet_id != $dplanet_id";
+$query .= " AND planet_id !=?";
 
-$res = $db->Execute($query);
+$res = $db->Execute($query, array($playerinfo['player_id'], $dplanet_id));
 $amount = $res->fields;
 
 $fee = $ibank_paymentfee * $amount['total'];
@@ -136,29 +136,29 @@ $fee = $ibank_paymentfee * $amount['total'];
 $tcost = ceil($amount['count'] / $igb_tconsolidate);
 $transfer = $amount['total'] - $fee;
 
-$smarty->assign("l_igb_planetconsolidate", $l_igb_planetconsolidate);
-$smarty->assign("l_igb_currentpl", $l_igb_currentpl);
-$smarty->assign("dest_name", $dest['name']);
-$smarty->assign("l_igb_in", $l_igb_in);
-$smarty->assign("dest_sector_id", $dest['sector_id']);
-$smarty->assign("dest_credits", number_format($dest['credits']), 0, $local_number_dec_point, $local_number_thousands_sep);
-$smarty->assign("l_igb_transferamount", $l_igb_transferamount);
-$smarty->assign("total", number_format($amount['total']), 0, $local_number_dec_point, $local_number_thousands_sep);
-$smarty->assign("l_igb_transferfee", $l_igb_transferfee);
-$smarty->assign("fee", number_format($fee), 0, $local_number_dec_point, $local_number_thousands_sep);
-$smarty->assign("l_igb_plaffected", $l_igb_plaffected);
-$smarty->assign("count", number_format($amount['count']), 0, $local_number_dec_point, $local_number_thousands_sep);
-$smarty->assign("l_igb_turncost", $l_igb_turncost);
-$smarty->assign("tcost", number_format($tcost), 0, $local_number_dec_point, $local_number_thousands_sep);
-$smarty->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
-$smarty->assign("transfer", number_format($transfer), 0, $local_number_dec_point, $local_number_thousands_sep);
-$smarty->assign("minimum", $minimum);
-$smarty->assign("maximum", $maximum);
-$smarty->assign("dplanet_id", $dplanet_id);
-$smarty->assign("l_igb_consolidate", $l_igb_consolidate);
-$smarty->assign("l_igb_back", $l_igb_back);
-$smarty->assign("l_igb_logout", $l_igb_logout);
-$smarty->display("$templateset/igb_consolidate2.tpl");
+$template->assign("l_igb_planetconsolidate", $l_igb_planetconsolidate);
+$template->assign("l_igb_currentpl", $l_igb_currentpl);
+$template->assign("dest_name", $dest['name']);
+$template->assign("l_igb_in", $l_igb_in);
+$template->assign("dest_sector_id", $dest['sector_id']);
+$template->assign("dest_credits", number_format($dest['credits']), 0, $local_number_dec_point, $local_number_thousands_sep);
+$template->assign("l_igb_transferamount", $l_igb_transferamount);
+$template->assign("total", number_format($amount['total']), 0, $local_number_dec_point, $local_number_thousands_sep);
+$template->assign("l_igb_transferfee", $l_igb_transferfee);
+$template->assign("fee", number_format($fee), 0, $local_number_dec_point, $local_number_thousands_sep);
+$template->assign("l_igb_plaffected", $l_igb_plaffected);
+$template->assign("count", number_format($amount['count']), 0, $local_number_dec_point, $local_number_thousands_sep);
+$template->assign("l_igb_turncost", $l_igb_turncost);
+$template->assign("tcost", number_format($tcost), 0, $local_number_dec_point, $local_number_thousands_sep);
+$template->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
+$template->assign("transfer", number_format($transfer), 0, $local_number_dec_point, $local_number_thousands_sep);
+$template->assign("minimum", $minimum);
+$template->assign("maximum", $maximum);
+$template->assign("dplanet_id", $dplanet_id);
+$template->assign("l_igb_consolidate", $l_igb_consolidate);
+$template->assign("l_igb_back", $l_igb_back);
+$template->assign("l_igb_logout", $l_igb_logout);
+$template->display("$templateset/igb_consolidate2.tpl");
 
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";

@@ -42,11 +42,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -65,7 +65,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -110,25 +110,25 @@ if ($amount > $account['balance'])
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance-$amount WHERE " .
-                            "player_id=$playerinfo[player_id]");
+$debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance-? WHERE " .
+                            "player_id=?", array($amount, $playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-$debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits+$amount WHERE " .
-                            "player_id=$playerinfo[player_id]");
+$debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits+? WHERE " .
+                            "player_id=?", array($amount, $playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-$smarty->assign("amount", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep));
-$smarty->assign("l_igb_logout", $l_igb_logout);
-$smarty->assign("l_igb_back", $l_igb_back);
-$smarty->assign("igbinfo_balance", $igbinfo['balance']);
-$smarty->assign("playerinfo_credits", $playerinfo['credits']);
-$smarty->assign("l_igb_igbaccount", $l_igb_igbaccount);
-$smarty->assign("l_igb_account", $l_igb_igbaccount);
-$smarty->assign("l_igb_accounts", $l_igb_accounts);
-$smarty->assign("l_igb_creditstoyourship", $l_igb_creditstoyourship);
-$smarty->assign("l_igb_operationsuccessful", $l_igb_operationsuccessful);
-$smarty->display("$templateset/igb_withdraw2.tpl");
+$template->assign("amount", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep));
+$template->assign("l_igb_logout", $l_igb_logout);
+$template->assign("l_igb_back", $l_igb_back);
+$template->assign("igbinfo_balance", $igbinfo['balance']);
+$template->assign("playerinfo_credits", $playerinfo['credits']);
+$template->assign("l_igb_igbaccount", $l_igb_igbaccount);
+$template->assign("l_igb_account", $l_igb_igbaccount);
+$template->assign("l_igb_accounts", $l_igb_accounts);
+$template->assign("l_igb_creditstoyourship", $l_igb_creditstoyourship);
+$template->assign("l_igb_operationsuccessful", $l_igb_operationsuccessful);
+$template->display("$templateset/igb_withdraw2.tpl");
 
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";

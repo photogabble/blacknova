@@ -41,11 +41,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -64,7 +64,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -83,14 +83,14 @@ global $account;
 global $l_igb_withdrawfunds, $l_igb_fundsavailable, $l_igb_selwithdrawamount;
 global $l_igb_withdraw, $l_igb_back, $l_igb_logout;
 
-$smarty->assign("account_balance", number_format($account['balance'], 0, $local_number_dec_point, $local_number_thousands_sep));
-$smarty->assign("l_igb_selwithdrawamount", $l_igb_selwithdrawamount);
-$smarty->assign("l_igb_withdraw", $l_igb_withdraw);
-$smarty->assign("l_igb_withdrawfunds", $l_igb_withdrawfunds);
-$smarty->assign("l_igb_fundsavailable", $l_igb_fundsavailable);
-$smarty->assign("l_igb_logout", $l_igb_logout);
-$smarty->assign("l_igb_back", $l_igb_back);
-$smarty->display("$templateset/igb_withdraw.tpl");
+$template->assign("account_balance", number_format($account['balance'], 0, $local_number_dec_point, $local_number_thousands_sep));
+$template->assign("l_igb_selwithdrawamount", $l_igb_selwithdrawamount);
+$template->assign("l_igb_withdraw", $l_igb_withdraw);
+$template->assign("l_igb_withdrawfunds", $l_igb_withdrawfunds);
+$template->assign("l_igb_fundsavailable", $l_igb_fundsavailable);
+$template->assign("l_igb_logout", $l_igb_logout);
+$template->assign("l_igb_back", $l_igb_back);
+$template->display("$templateset/igb_withdraw.tpl");
 
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";
