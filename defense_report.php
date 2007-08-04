@@ -42,7 +42,7 @@ $title = $l_sdf_title;
 include_once ("./header.php");
 updatecookie($db);
 
-$query = "SELECT * FROM {$db->prefix}sector_defense WHERE player_id=$playerinfo[player_id]";
+$query = "SELECT * FROM {$db->prefix}sector_defense WHERE player_id=?";
 
 if (!empty($sort))
 {
@@ -65,7 +65,7 @@ if (!empty($sort))
    }
 }
 
-$res = $db->Execute($query);
+$res = $db->Execute($query, array($playerinfo['player_id']));
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -79,8 +79,6 @@ if ($res)
         $res->MoveNext();
     }
 }
-
-// Easter egg comment - I saw a werewolf drinking a Pina Colada at Trader Vics - and his hair was PERFECT!
 
 $num_sectors = $i;
 if ($num_sectors < 1)
