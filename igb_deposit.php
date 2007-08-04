@@ -41,11 +41,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -64,19 +64,19 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
 
-$template->assign("playerinfo_credits", number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep));
-$template->assign("l_igb_depositfunds", $l_igb_depositfunds);
-$template->assign("l_igb_fundsavailable", $l_igb_fundsavailable);
-$template->assign("l_igb_seldepositamount", $l_igb_seldepositamount);
-$template->assign("l_igb_deposit", $l_igb_deposit);
-$template->assign("l_igb_back", $l_igb_back);
-$template->assign("l_igb_logout", $l_igb_logout);
-$template->display("$templateset/igb_deposit.tpl");
+$smarty->assign("playerinfo_credits", number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep));
+$smarty->assign("l_igb_depositfunds", $l_igb_depositfunds);
+$smarty->assign("l_igb_fundsavailable", $l_igb_fundsavailable);
+$smarty->assign("l_igb_seldepositamount", $l_igb_seldepositamount);
+$smarty->assign("l_igb_deposit", $l_igb_deposit);
+$smarty->assign("l_igb_back", $l_igb_back);
+$smarty->assign("l_igb_logout", $l_igb_logout);
+$smarty->display("$templateset/igb_deposit.tpl");
 
 include_once ("./footer.php");
 ?>

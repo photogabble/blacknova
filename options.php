@@ -58,29 +58,29 @@ for ($i=0; $i<$maxval; $i++)
 }
 
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->assign("l_opt_chpass", $l_opt_chpass);
-$template->assign("l_opt_curpass", $l_opt_curpass);
-$template->assign("l_opt_newpass", $l_opt_newpass);
-$template->assign("l_opt_newpagain", $l_opt_newpagain);
-$template->assign("l_opt_usenew", $l_opt_usenew);
-$template->assign("l_opt_lang", $l_opt_lang);
-$template->assign("l_opt_userint", $l_opt_userint);
-$template->assign("l_opt_select", $l_opt_select);
-$template->assign("lang_drop_down", $lang_drop_down);
-$template->assign("color_header", $color_header);
-$template->assign("color_line1", $color_line1);
-$template->assign("color_line2", $color_line2);
-$template->assign("l_opt_enabled", $l_opt_enabled);
-$template->assign("l_opt_save", $l_opt_save);
-$template->assign("ship_name", $shipinfo['name']);
-$template->assign("allow_shoutbox", $allow_shoutbox);
-$template->assign("sb_footer", $playerinfo['sb_footer']);
-$template->assign("sb_backwards", $playerinfo['sb_backwards']);
-$template->assign("sb_lines", $playerinfo['sb_lines']);
-$template->assign("use_gravatar", $playerinfo['use_gravatar']);
-$template->display("$templateset/options.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->assign("l_opt_chpass", $l_opt_chpass);
+$smarty->assign("l_opt_curpass", $l_opt_curpass);
+$smarty->assign("l_opt_newpass", $l_opt_newpass);
+$smarty->assign("l_opt_newpagain", $l_opt_newpagain);
+$smarty->assign("l_opt_usenew", $l_opt_usenew);
+$smarty->assign("l_opt_lang", $l_opt_lang);
+$smarty->assign("l_opt_userint", $l_opt_userint);
+$smarty->assign("l_opt_select", $l_opt_select);
+$smarty->assign("lang_drop_down", $lang_drop_down);
+$smarty->assign("color_header", $color_header);
+$smarty->assign("color_line1", $color_line1);
+$smarty->assign("color_line2", $color_line2);
+$smarty->assign("l_opt_enabled", $l_opt_enabled);
+$smarty->assign("l_opt_save", $l_opt_save);
+$smarty->assign("ship_name", $shipinfo['name']);
+$smarty->assign("allow_shoutbox", $allow_shoutbox);
+$smarty->assign("sb_footer", $playerinfo['sb_footer']);
+$smarty->assign("sb_backwards", $playerinfo['sb_backwards']);
+$smarty->assign("sb_lines", $playerinfo['sb_lines']);
+$smarty->assign("use_gravatar", $playerinfo['use_gravatar']);
+$smarty->display("$templateset/options.tpl");
 
 include_once ("./footer.php");
 ?>

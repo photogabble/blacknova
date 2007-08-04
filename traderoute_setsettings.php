@@ -30,10 +30,10 @@ empty($_POST['colonists']) ? $colonists = 'N' : $colonists = 'Y';
 empty($_POST['fighters']) ? $fighters = 'N' : $fighters = 'Y';
 empty($_POST['torps']) ? $torps = 'N' : $torps = 'Y';
 
-$debug_query = $db->Execute("UPDATE {$db->prefix}players SET trade_colonists=?, trade_fighters=?, trade_torps=?, trade_energy=? WHERE player_id=?", array($colonists, $fighters, $torps, $_POST['energy'], $playerinfo['player_id']));
+$debug_query = $db->Execute("UPDATE {$db->prefix}players SET trade_colonists='$colonists', trade_fighters='$fighters', trade_torps='$torps', trade_energy='$_POST[energy]' WHERE player_id=$playerinfo[player_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-$template->assign("l_tdr_returnmenu", $l_tdr_returnmenu);
-$template->assign("l_tdr_globalsetsaved", $l_tdr_globalsetsaved);
-$template->display("$templateset/traderoute_setsettings.tpl");
+$smarty->assign("l_tdr_returnmenu", $l_tdr_returnmenu);
+$smarty->assign("l_tdr_globalsetsaved", $l_tdr_globalsetsaved);
+$smarty->display("$templateset/traderoute_setsettings.tpl");
 ?>

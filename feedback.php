@@ -58,6 +58,7 @@ if (!isset($subject))
 $empty_content = FALSE;
 $mail_result = FALSE;
 
+// Easter egg comment - Take your fast car and keep on driving.
 if (empty($_POST['content']))
 {
     $empty_content = TRUE;
@@ -101,23 +102,23 @@ else
 
 global $l_global_mmenu;
 
-$template->assign("l_feedback_mno_sent", $l_feedback_mno_sent);
-$template->assign("l_feedback_msent", $l_feedback_msent);
-$template->assign("l_feedback_info", $l_feedback_info);
-$template->assign("l_reset", $l_reset);
-$template->assign("l_feedback_feedback", $l_feedback_feedback);
-$template->assign("accountinfo_email", $accountinfo['email']);
-$template->assign("playerinfo_character_name", $playerinfo['character_name']);
-$template->assign("l_submit", $l_submit);
-$template->assign("l_feedback_message", $l_feedback_message);
-$template->assign("l_feedback_topi", $l_feedback_topi);
-$template->assign("l_feedback_from", $l_feedback_from);
-$template->assign("l_feedback_to", $l_feedback_to);
-$template->assign("empty_content", $empty_content);
-$template->assign("mail_result", $mail_result);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->assign("title", $title);
-$template->display("$templateset/feedback.tpl");
+$smarty->assign("l_feedback_mno_sent", $l_feedback_mno_sent);
+$smarty->assign("l_feedback_msent", $l_feedback_msent);
+$smarty->assign("l_feedback_info", $l_feedback_info);
+$smarty->assign("l_reset", $l_reset);
+$smarty->assign("l_feedback_feedback", $l_feedback_feedback);
+$smarty->assign("accountinfo_email", $accountinfo['email']);
+$smarty->assign("playerinfo_character_name", $playerinfo['character_name']);
+$smarty->assign("l_submit", $l_submit);
+$smarty->assign("l_feedback_message", $l_feedback_message);
+$smarty->assign("l_feedback_topi", $l_feedback_topi);
+$smarty->assign("l_feedback_from", $l_feedback_from);
+$smarty->assign("l_feedback_to", $l_feedback_to);
+$smarty->assign("empty_content", $empty_content);
+$smarty->assign("mail_result", $mail_result);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->assign("title", $title);
+$smarty->display("$templateset/feedback.tpl");
 
 include_once ("./footer.php");
 

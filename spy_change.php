@@ -144,7 +144,7 @@ $line_color = $color_line2;
 
 // Changing your spy settings on enemy planet
 
-$res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id=? AND spy_id=?", array($playerinfo['player_id'], $spy_id));
+$res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id = '$playerinfo[player_id]' AND spy_id = '$spy_id'");
 $spy = $res->fields;
   
 if ($res->RecordCount())
@@ -161,21 +161,15 @@ if ($res->RecordCount())
 
         if ($spy['move_type'] == 'none')
         {
-            $set_1 = 'checked';
-            $set_2 = '';
-            $set_3 = '';
+            $set_1 = 'checked';   $set_2 = '';   $set_3 = '';
         }
         elseif ($spy['move_type'] == 'toship')
         {
-            $set_1 = '';
-            $set_2 = 'checked';
-            $set_3 = '';
+            $set_1 = '';   $set_2 = 'checked';   $set_3 = '';
         }
         else
         {
-            $set_1 = '';
-            $set_2 = '';
-            $set_3 = 'checked';
+            $set_1 = '';   $set_2 = '';   $set_3 = 'checked';
         }
 
         if ($spy['planet_id'] == '0')
@@ -185,7 +179,7 @@ if ($res->RecordCount())
 
         $l_spy_changetitle = str_replace("[spyid]", $spy_id, $l_spy_changetitle);
         echo "<strong>$l_spy_changetitle</strong><br>";
-        echo '<form name="bntform" action="spy_change.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+        echo '<form name="bntform" action="spy_change.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
         echo "<input type=hidden name=doit value=1>";
         echo "<input type=hidden name=spy_id value=$spy_id>";
         echo "<input type=hidden name=planet_id value=$planet_id>";
@@ -253,16 +247,16 @@ if ($res->RecordCount())
 
         if ($dismiss)
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type=?, job_id='0', spy_percent='0.0', " .
-                                        "try_sabot=?, try_inter=?, try_birth=?, " .
-                                        "try_steal=?, try_torps=?, try_fits=?, " .
-                                        "try_capture=? WHERE spy_id=?", array($mode, $try_sabot, $try_inter, $try_birth, $try_steal, $try_torps, $try_fits, $try_capture, $spy_id));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type='$mode', job_id='0', spy_percent='0.0', " .
+                                        "try_sabot='$try_sabot', try_inter='$try_inter', try_birth='$try_birth', " .
+                                        "try_steal='$try_steal', try_torps='$try_torps', try_fits='$try_fits', " .
+                                        "try_capture='$try_capture' WHERE spy_id=$spy_id ");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "$l_spy_changed2<br>";
         }
         else
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type=?, try_sabot=?, try_inter=?, try_birth=?, try_steal=?, try_torps=?, try_fits=?, try_capture=? WHERE spy_id=?", array($mode, $try_sabot, $try_inter, $try_birth, $try_steal, $try_torps, $try_fits, $try_capture, $spy_id));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET move_type='$mode', try_sabot='$try_sabot', try_inter='$try_inter', try_birth='$try_birth', try_steal='$try_steal', try_torps='$try_torps', try_fits='$try_fits', try_capture='$try_capture' WHERE spy_id=$spy_id ");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "$l_spy_changed1<br>";
         }
@@ -283,9 +277,9 @@ else
 }
 
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->display("$templateset/spy.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

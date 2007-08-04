@@ -49,7 +49,7 @@ include_once ("./header.php");
 
 echo "<h1>" . $title. "</h1>\n";
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE owner=?", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE owner=$playerinfo[player_id]");
 $num_traderoutes = $result->RecordCount();
 
 $i = 0;
@@ -108,7 +108,7 @@ if ($shipinfo['colonists'] < 0 || $shipinfo['ore'] < 0 || $shipinfo['organics'] 
         $freeholds = 0;
     }
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET ore=?, organics=?, goods=?, energy=?, colonists=? WHERE ship_id=?", array($shipinfo['ore'], $shipinfo['organics'], $shipinfo['goods'], $shipinfo['energy'], $shipinfo['colonists'], $shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET ore=$shipinfo[ore], organics=$shipinfo[organics], goods=$shipinfo[goods], energy=$shipinfo[energy], colonists=$shipinfo[colonists] WHERE ship_id=$shipinfo[ship_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 
@@ -162,7 +162,7 @@ elseif (isset($_GET['engage'])) // Performs trade route
     dynamic_loader ($db, "traderoute_engage.php");
     for ($i = $tr_repeat; $i > 0 ; $i--)
     {
-        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE player_id=? AND ship_id=?",1,-1,array($playerinfo['player_id'], $playerinfo['currentship']));
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]",1);
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $shipinfo = $debug_query->fields;
         traderoute_engage($i);
@@ -233,7 +233,7 @@ else
             }
             else
             {
-                $result = $db->Execute("SELECT name, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($traderoutes[$i]['source_id']));
+                $result = $db->Execute("SELECT name, sector_id FROM {$db->prefix}planets WHERE planet_id=" . $traderoutes[$i]['source_id']);
                 if ($result)
                 {
                     $planet1 = $result->fields;
@@ -248,7 +248,7 @@ else
             echo "<td align=center>";
             if ($traderoutes[$i]['source_type'] == 'P')
             {
-                $result = $db->Execute("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id=?", array($traderoutes[$i]['source_id']));
+                $result = $db->Execute("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id=" . $traderoutes[$i]['source_id']);
                 $port1 = $result->fields;
                 echo "&nbsp;" . t_port($db, $port1['port_type']) . "</td>";
             }
@@ -271,7 +271,7 @@ else
             }
             else
             {
-                $result = $db->Execute("SELECT name, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($traderoutes[$i]['dest_id']));
+                $result = $db->Execute("SELECT name, sector_id FROM {$db->prefix}planets WHERE planet_id=" . $traderoutes[$i]['dest_id']);
 
                 if ($result)
                 {
@@ -287,7 +287,7 @@ else
             echo "<td align=center>";
             if ($traderoutes[$i]['dest_type'] == 'P')
             {
-                $result = $db->Execute("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id=?", array($traderoutes[$i]['dest_id']));
+                $result = $db->Execute("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id=" . $traderoutes[$i]['dest_id']);
                 $port2 = $result->fields;
                 echo "&nbsp;" . t_port($db, $port2['port_type']) . "</td>";
             }

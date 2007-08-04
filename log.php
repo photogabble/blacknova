@@ -100,7 +100,7 @@ if ($sha256swordfish == $sha256adminpass) // Check if called by admin script
     }
     else
     {
-        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($player));
+        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=$player");
         $targetname = $res->fields;
         $playerinfo['character_name'] = $targetname['character_name'];
     }
@@ -129,7 +129,7 @@ if (empty($startdate))
     $startdate = date("Y-m-d");
 }
 
-$res = $db->Execute("SELECT * FROM {$db->prefix}logs WHERE player_id=? AND log_time LIKE ? ORDER BY log_time DESC, type DESC", array($playerinfo['player_id'], $startdate . '%'));
+$res = $db->Execute("SELECT * FROM {$db->prefix}logs WHERE player_id=$playerinfo[player_id] AND log_time LIKE '$startdate%' ORDER BY log_time DESC, type DESC");
 while (!$res->EOF)
 {
     $logs[] = $res->fields;
@@ -254,7 +254,7 @@ echo "&nbsp;&nbsp;&nbsp;";
 if ($sha256swordfish == $sha256adminpass)
 {
     echo "<tr><td><td>" .
-         '<form name="bntform" action="admin.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">' .
+         '<form name="bntform" action="admin.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">' .
          "<input type=hidden name=sha256swordfish value=\"$sha256swordfish\">" .
          "<input type=hidden name=menu value=logview>" .
          "<input type=submit name=submit_button value=\"Return to Admin\"></td></tr>";

@@ -56,7 +56,7 @@ $today = date($local_date_short_format, $today);
 
 $news_array = array();
 // Select news for date range
-$res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date like ? order by news_id", array($_GET['startdate'].'%'));
+$res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date like '$_GET[startdate]%' order by news_id");
 
 // Check to see if there was any news to be shown
 if ($res->EOF && $res)
@@ -75,25 +75,25 @@ else
     }
 }
 
-$template->assign("l_news_prev", $l_news_prev);
-$template->assign("l_news_next", $l_news_next);
-$template->assign("nextday", $nextday);
-$template->assign("previousday", $previousday);
-$template->assign("today", $today);
-$template->assign("l_news_for", $l_news_for);
-$template->assign("l_news_info1", $l_news_info1);
-$template->assign("l_news_info2", $l_news_info2);
-$template->assign("l_news_info3", $l_news_info3);
-$template->assign("l_news_info4", $l_news_info4);
-$template->assign("l_news_info5", $l_news_info5);
-$template->assign("templateset", $templateset);
-$template->assign("l_news_none", $l_news_none);
-$template->assign("l_news_flash", $l_news_flash);
-$template->assign("news_array", $news_array);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->assign("l_global_mlogin", $l_global_mlogin);
-$template->assign("session_email", empty($_SESSION['email']));
-$template->display("$templateset/news.tpl");
+$smarty->assign("l_news_prev", $l_news_prev);
+$smarty->assign("l_news_next", $l_news_next);
+$smarty->assign("nextday", $nextday);
+$smarty->assign("previousday", $previousday);
+$smarty->assign("today", $today);
+$smarty->assign("l_news_for", $l_news_for);
+$smarty->assign("l_news_info1", $l_news_info1);
+$smarty->assign("l_news_info2", $l_news_info2);
+$smarty->assign("l_news_info3", $l_news_info3);
+$smarty->assign("l_news_info4", $l_news_info4);
+$smarty->assign("l_news_info5", $l_news_info5);
+$smarty->assign("templateset", $templateset);
+$smarty->assign("l_news_none", $l_news_none);
+$smarty->assign("l_news_flash", $l_news_flash);
+$smarty->assign("news_array", $news_array);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->assign("l_global_mlogin", $l_global_mlogin);
+$smarty->assign("session_email", empty($_SESSION['email']));
+$smarty->display("$templateset/news.tpl");
 
 include_once ("./footer.php");
 ?>

@@ -128,7 +128,7 @@ $debug_query = $db->Execute("SELECT {$db->prefix}players.*, {$db->prefix}teams.t
                             "{$db->prefix}teams.creator, {$db->prefix}teams.team_id FROM {$db->prefix}players " .
                             "LEFT JOIN {$db->prefix}teams ON {$db->prefix}players.team = {$db->prefix}teams.team_id " .
                             "LEFT JOIN {$raw_prefix}users ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
-                            "WHERE {$raw_prefix}users.email=? ", array($_SESSION['email']));
+                            "WHERE {$raw_prefix}users.email='$_SESSION[email]' ");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $thisplayer_info = $debug_query->fields;
 
@@ -140,7 +140,7 @@ if ($thisplayer_info['team_invite'] != "")
                                 "{$db->prefix}teams.team_name, {$db->prefix}teams.team_id FROM {$db->prefix}players " .
                                 "LEFT JOIN {$db->prefix}teams ON {$db->prefix}players.team_invite = {$db->prefix}teams.team_id " .
                                 "LEFT JOIN {$raw_prefix}users ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
-                                "WHERE {$raw_prefix}users.email=? ", array($_SESSION['email']));
+                                "WHERE {$raw_prefix}users.email='$_SESSION[email]'");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $invite_info = $debug_query->fields;
 }
@@ -149,12 +149,12 @@ if ($thisplayer_info['team_invite'] != "")
 $whichteam = preg_replace('/[^0-9]/','',$whichteam);
 if ($whichteam)
 {
-    $result_team = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($whichteam));
+    $result_team = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$whichteam");
     $team = $result_team->fields;
 }
 else
 {
-    $result_team = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($thisplayer_info['team']));
+    $result_team = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$thisplayer_info[team]");
     $team = $result_team->fields;
 }
 
@@ -173,18 +173,18 @@ switch ($teamwhat)
         {
             if ($team['number_of_members'] == 1)
             {
-                $debug_query = $db->Execute("DELETE FROM {$db->prefix}teams WHERE team_id=?", array($whichteam));
+                $debug_query = $db->Execute("DELETE FROM {$db->prefix}teams WHERE team_id=$whichteam");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team='0' WHERE " .
-                                            "player_id=?", array($thisplayer_info['player_id']));
+                                            "player_id='$thisplayer_info[player_id]'");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team_invite=0 WHERE " .
-                                            "team_invite=?", array($whichteam));
+                                            "team_invite=$whichteam");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $res = $db->Execute("SELECT DISTINCT sector_id FROM {$db->prefix}planets WHERE owner=? AND base='Y'", array($thisplayer_info['player_id']));
+                $res = $db->Execute("SELECT DISTINCT sector_id FROM {$db->prefix}planets WHERE owner=$thisplayer_info[player_id] AND base='Y'");
                 $i = 0;
                 if ($res)
                 {
@@ -197,7 +197,7 @@ switch ($teamwhat)
                     }
                 }
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=0 WHERE owner=?", array($thisplayer_info['player_id']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=0 WHERE owner=$thisplayer_info[player_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 if (!empty($sectors))
@@ -220,10 +220,10 @@ switch ($teamwhat)
                 if ($team['creator'] == $thisplayer_info['player_id'])
                 {
                     echo "$l_team_youarecoord <strong>$team[team_name]</strong>. $l_team_relinq<br><br>";
-                    echo "<form action='teams.php' method=post>";
+                    echo "<form action=\"teams.php\" method=\"post\" accept-charset=\"utf-8\">";
                     echo "<table><input type=hidden name=teamwhat value=$teamwhat><input type=hidden name=confirmleave value=2><input type=hidden name=whichteam value=$whichteam>";
                     echo "<tr><td>$l_team_newc</td><td><select name=newcreator>";
-                    $res = $db->Execute("SELECT character_name,player_id FROM {$db->prefix}players WHERE team=? ORDER BY character_name ASC", array($whichteam));
+                    $res = $db->Execute("SELECT character_name,player_id FROM {$db->prefix}players WHERE team=$whichteam ORDER BY character_name ASC");
                     while (!$res->EOF)
                     {
                         $row = $res->fields;
@@ -242,15 +242,15 @@ switch ($teamwhat)
                 else
                 {
                     $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team='0' WHERE " .
-                                                "player_id=?", array($thisplayer_info['player_id']));
+                                                "player_id='$thisplayer_info[player_id]'");
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET number_of_members=number_of_members-1 WHERE " .
-                                                "team_id=?", array($whichteam));
+                                                "team_id=$whichteam");
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     $res = $db->Execute("SELECT DISTINCT sector_id FROM {$db->prefix}planets WHERE " .
-                                        "owner=? AND base='Y' AND team!=0", array($thisplayer_info['player_id']));
+                                        "owner=$thisplayer_info[player_id] AND base='Y' AND team!=0");
                     $i = 0;
                     while (!$res->EOF)
                     {
@@ -259,7 +259,7 @@ switch ($teamwhat)
                         $res->MoveNext();
                     }
 
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=0 WHERE owner=?", array($thisplayer_info['player_id']));
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=0 WHERE owner=$thisplayer_info[player_id]");
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     if (!empty($sectors))
@@ -280,23 +280,23 @@ switch ($teamwhat)
         }
         elseif ($confirmleave == 2)
         { // owner of a team is leaving and set a new owner
-            $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($newcreator));
+            $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=$newcreator");
             $newcreatorname = $res->fields;
             echo "$l_team_youveleft <strong>$team[team_name]</strong> $l_team_relto $newcreatorname[character_name].<br><br>";
             $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team='0' WHERE " .
-                                        "player_id=?", array($thisplayer_info['player_id']));
+                                        "player_id='$thisplayer_info[player_id]'");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 // TODO: What is that $creator and do we need this query?
-//            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team=? WHERE " .
-//                                        "team=?", array($newcreator, $creator));
+//            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team=$newcreator WHERE " .
+//                                        "team=$creator");
 //            db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET number_of_members=number_of_members-1,creator=? " .
-                                        "WHERE team_id=?", array($newcreator, $whichteam));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET number_of_members=number_of_members-1,creator=$newcreator " .
+                                        "WHERE team_id=$whichteam");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $res = $db->Execute("SELECT DISTINCT sector_id FROM {$db->prefix}planets WHERE owner=? AND base='Y' AND team!=0", array($thisplayer_info['player_id']));
+            $res = $db->Execute("SELECT DISTINCT sector_id FROM {$db->prefix}planets WHERE owner=$thisplayer_info[player_id] AND base='Y' AND team!=0");
             $i = 0;
             while (!$res->EOF)
             {
@@ -305,7 +305,7 @@ switch ($teamwhat)
                 $res->MoveNext();
             }
 
-            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=0 WHERE owner=?", array($thisplayer_info['player_id']));
+            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=0 WHERE owner=$thisplayer_info[player_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             if (!empty($sectors))
             {
@@ -330,12 +330,12 @@ switch ($teamwhat)
         {
             if ($thisplayer_info['team_invite'] == $whichteam)
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team=?, team_invite=0 " .
-                                            "WHERE player_id=?", array($whichteam, $thisplayer_info['player_id']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team=$whichteam,team_invite=0 " .
+                                            "WHERE player_id=$thisplayer_info[player_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET number_of_members=number_of_members+1 WHERE " .
-                                            "team_id=?", array($whichteam));
+                                            "team_id=$whichteam");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 echo "$l_team_welcome <strong>$team[team_name]</strong>.<br><br>";
@@ -348,7 +348,7 @@ switch ($teamwhat)
             }
         }
 
-        echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";
+        echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";        
         break;
     case 4:
         echo "Not implemented yet. Please file a Feature Request at sourceforge.<br><br>";
@@ -357,8 +357,8 @@ switch ($teamwhat)
     case 5: // Eject member
         if ($thisplayer_info['team'] == $team['team_id'])
         {
-            $who = preg_replace('/[^0-9]/','',$who);
-            $result = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($who));
+            $who = preg_replace('/[^0-9]/','',$who);   
+            $result = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$who");
             $whotoexpel = $result->fields;
             if (!isset($confirmed))
             {
@@ -366,10 +366,10 @@ switch ($teamwhat)
             }
             else
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team='0' WHERE owner=?", array($who));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team='0' WHERE owner='$who'");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team='0' WHERE player_id=?", array($who));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team='0' WHERE player_id='$who'");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 playerlog($db,$who, "LOG_TEAM_KICK", "$team[team_name]");
@@ -391,7 +391,7 @@ switch ($teamwhat)
             {
                 if ($thisplayer_info['team'] == 0)
                 {
-                    echo "<form action=\"teams.php\" method=post>";
+                    echo "<form action=\"teams.php\" method=\"post\" accept-charset=\"utf-8\">";
                     echo "$l_team_entername: ";
                     echo "<input type=hidden name=teamwhat value=$teamwhat>";
                     echo "<input type=text name=teamname size=20 maxlength=20><br>";
@@ -420,10 +420,10 @@ switch ($teamwhat)
                                             "VALUES (?,?,?,?,?,?,?,?,?,?,?)", array('', $zonename, $thisplayer_info['player_id'], 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 0));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team=? WHERE player_id=?", array($thisplayer_info['player_id'], $thisplayer_info['player_id']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team='$thisplayer_info[player_id]' WHERE player_id='$thisplayer_info[player_id]'");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("SELECT team_name FROM {$db->prefix}teams WHERE team_id=?", array($thisplayer_info['player_id']));
+                $debug_query = $db->Execute("SELECT team_name FROM {$db->prefix}teams WHERE team_id=$thisplayer_info[player_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 $teamname = $debug_query->fields['team_name'];
 
@@ -433,14 +433,15 @@ switch ($teamwhat)
                 echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";
                 break;
             }
+// ALL cleaned except for this perverse section!
     case 7: // INVITE player
         if (!isset($invited) || ($invited == '') || !($invited))
         {
-            echo "\n<form action='teams.php' method=post>";
+            echo "\n<form action=\"teams.php\" method=\"post\" accept-charset=\"utf-8\">";
             echo "\n<input type=hidden name=teamwhat value=$teamwhat><input type=hidden name=invited value=1><input type=hidden name=whichteam value=$whichteam>";
             echo "\n<table><tr><td>$l_team_selectp:</td><td><select name=who>";
-            $res = $db->Execute("SELECT character_name,player_id FROM {$db->prefix}players WHERE team!=? " .
-                                "ORDER BY character_name ASC", array($whichteam));
+            $res = $db->Execute("SELECT character_name,player_id FROM {$db->prefix}players WHERE team != '$whichteam' " .
+                                "ORDER BY character_name ASC");
             while (!$res->EOF)
             {
                 $row = $res->fields;
@@ -463,7 +464,7 @@ switch ($teamwhat)
         {
             if ($thisplayer_info['team'] == $whichteam)
             {
-                $res = $db->Execute("SELECT character_name,team_invite FROM {$db->prefix}players WHERE player_id=?", array($who));
+                $res = $db->Execute("SELECT character_name,team_invite FROM {$db->prefix}players WHERE player_id=$who");
                 $newpl = $res->fields;
                 if ($newpl['team_invite']) 
                 {
@@ -472,8 +473,8 @@ switch ($teamwhat)
                 }
                 else 
                 {
-                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team_invite=? " .
-                                                "WHERE player_id=?", array($whichteam, $who));
+                    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team_invite=$whichteam " .
+                                                "WHERE player_id=$who");
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     echo $l_team_plinvted1 . "<br>" . $l_team_plinvted2;
@@ -493,7 +494,7 @@ switch ($teamwhat)
     case 8: // REFUSE invitation
         echo "$l_team_refuse <strong>$invite_info[team_name]</strong>.<br><br>";
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team_invite=0 WHERE " .
-                                    "player_id=?", array($thisplayer_info['player_id']));
+                                    "player_id=$thisplayer_info[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         playerlog($db,$team[creator], "LOG_TEAM_REJECT", "$thisplayer_info[character_name]|$invite_info[team_name]");
@@ -504,7 +505,7 @@ switch ($teamwhat)
         {
             if ($swordfish != $adminpass)
             {
-                echo "<form action=\"teams.php\" method=post>";
+                echo "<form action=\"teams.php\" method=\"post\" accept-charset=\"utf-8\">";
                 echo "$l_team_testing<br><br>";
                 echo "$l_team_pw: <input type=password name=swordfish size=20 maxlength=20><br><br>";
                 echo "<input type=hidden name=teamwhat value=$teamwhat>";
@@ -522,7 +523,7 @@ switch ($teamwhat)
         {
             if (!isset($update) || ($update == ''))
             {
-                echo "<form action=\"teams.php\" method=post>";
+                echo "<form action=\"teams.php\" method=\"post\" accept-charset=\"utf-8\">";
                 echo "$l_team_edname: <br>";
                 echo "<input type=hidden name=swordfish value='$swordfish'>";
                 echo "<input type=hidden name=teamwhat value=$teamwhat>";
@@ -539,13 +540,13 @@ switch ($teamwhat)
             {
                 $teamname = htmlspecialchars($teamname,ENT_QUOTES,"UTF-8");
                 $teamdesc = htmlspecialchars($teamdesc,ENT_QUOTES,"UTF-8");
-                $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET team_name=?, description=? " . 
-                                            "WHERE team_id=?", array($teamname, $teamdesc, $whichteam));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET team_name='$teamname', description='$teamdesc' " . 
+                                            "WHERE team_id=$whichteam");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 echo "$l_team <strong>$teamname</strong> $l_team_hasbeenr<br><br>";
 
                 // Adding a log entry to all members of the renamed team
-                $result_team_name = $db->Execute("SELECT player_id FROM {$db->prefix}players WHERE team=? AND player_id!=?", array($whichteam, $thisplayer_info['player_id']));
+                $result_team_name = $db->Execute("SELECT player_id FROM {$db->prefix}players WHERE team=$whichteam AND player_id!=$thisplayer_info[player_id]");
                 playerlog($db,$thisplayer_info['player_id'], "LOG_TEAM_RENAME", "$teamname");
                 while (!$result_team_name->EOF)
                 {
@@ -574,18 +575,18 @@ switch ($teamwhat)
             if ($thisplayer_info['team'] < 0)
             {
                 $thisplayer_info[team] = -$thisplayer_info[team];
-                $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($thisplayer_info['team']));
+                $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$thisplayer_info[team]");
                 $whichteam = $result->fields;
                 echo "<strong>" . $l_team_urejected1 . "</strong>" . $l_team_urejected2 . "<strong>" . $whichteam[team_name] . "</strong><br><br>";
 
                 echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";
                 break;
             }
-            $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($thisplayer_info['team']));
+            $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$thisplayer_info[team]");
             $whichteam = $result->fields;
             if ($thisplayer_info['team_invite'])
             {
-                $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($thisplayer_info['team_invite']));
+                $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$thisplayer_info[team_invite]");
                 $whichinvitingteam = $result->fields;
             }
 

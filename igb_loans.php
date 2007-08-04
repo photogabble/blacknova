@@ -43,11 +43,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -66,7 +66,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -91,11 +91,11 @@ global $db;
 echo "\n";
 if ($account['loan'] != 0)
 {
-    echo '\n<form name="bntform" action="igb_repay.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '\n<form name="bntform" action="igb_repay.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
 }
 else
 {
-    echo '\n<form name="bntform" action="igb_borrow.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '\n<form name="bntform" action="igb_borrow.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
 }
 
 echo "\n  <table width=\"600\" height=\"350\" border=\"0\">";
@@ -110,7 +110,7 @@ if ($account['loan'] != 0)
 {
     $curtime = time();
     $res = $db->Execute("SELECT UNIX_TIMESTAMP(loantime) as time FROM {$db->prefix}ibank_accounts WHERE " .
-                        "player_id=?", array($playerinfo['player_id']));
+                        "player_id=$playerinfo[player_id]");
     if (!$res->EOF)
     {
         $time = $res->fields;

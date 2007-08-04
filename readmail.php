@@ -1,19 +1,9 @@
 <?php
-// Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
+// This program is free software; you can redistribute it and/or modify it   
+// under the terms of the GNU General Public License as published by the     
+// Free Software Foundation; either version 2 of the License, or (at your    
+// option) any later version.                                                
+// 
 // File: readmail.php
 
 include_once ("./global_includes.php"); 
@@ -51,17 +41,17 @@ else
 
 if ($command == "delete")
 {
-    $db->Execute("DELETE FROM {$db->prefix}messages WHERE message_id=? AND recp_id=?", array($_GET['message_id'], $playerinfo['player_id']));
+    $db->Execute("DELETE FROM {$db->prefix}messages WHERE message_id='".$_GET['message_id']."' AND recp_id='".$playerinfo['player_id']."'");
 }
 else if ($command == "delete_all")
 {
-    $db->Execute("DELETE FROM {$db->prefix}messages WHERE recp_id=?", array($playerinfo['player_id']));
+    $db->Execute("DELETE FROM {$db->prefix}messages WHERE recp_id='".$playerinfo['player_id']."'");
 }
 
 $cur_D = date("Y-m-d");
 $cur_T = date("H:i:s");
 
-$res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? ORDER BY sent DESC", array($playerinfo['player_id']));
+$res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id='".$playerinfo['player_id']."' ORDER BY sent DESC");
 ?>
 <div align="center">
   <table border="0" cellspacing="0" width="70%" bgcolor="silver" cellpadding="0">
@@ -107,9 +97,9 @@ $res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? ORDER B
   while (!$res->EOF)
   {
    $msg = $res->fields;
-   $result = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id=?", array($msg['sender_id']));
+   $result = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id='".$msg['sender_id']."'");
    $sendership = $result->fields;
-   $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($msg['sender_id']));
+   $result2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id='".$msg['sender_id']."'");
    $sender = $result2->fields;
 ?>
             <tr>

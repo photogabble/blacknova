@@ -52,56 +52,56 @@ if (!isset($pay))
 
 if ($shipinfo['ore'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set ore=0 WHERE ship_id=?", array($shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set ore=0 WHERE ship_id=$shipinfo[ship_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['ore'] = 0;
 }
 
 if ($shipinfo['organics'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set organics=0 WHERE ship_id=?", array($shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set organics=0 WHERE ship_id=$shipinfo[ship_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['organics'] = 0;
 }
 
 if ($shipinfo['energy'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=0 WHERE ship_id=?", array($shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=0 WHERE ship_id=$shipinfo[ship_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['energy'] = 0;
 }
 
 if ($shipinfo['goods'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set goods=0 WHERE ship_id=?", array($shipinfo['ship_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ships set goods=0 WHERE ship_id=$shipinfo[ship_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $shipinfo['goods'] = 0;
 }
 
 if ($portinfo['port_ore'] < 0 )
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_ore=0 WHERE sector_id=?", array($shipinfo['sector_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_ore=0 WHERE sector_id=$shipinfo[sector_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_ore'] = 0;
 }
 
 if ($portinfo['port_goods']<0)
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}uports set port_goods=0 WHERE sector_id=?", array($shipinfo['sector_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}uports set port_goods=0 WHERE sector_id=$shipinfo[sector_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_goods'] = 0;
 }
 
 if ($portinfo['port_organics']<0)
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_organics=0 WHERE sector_id=?", array($shipinfo['sector_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_organics=0 WHERE sector_id=$shipinfo[sector_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_organics'] = 0;
 }
 
 if ($portinfo['port_energy']<0)
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_energy=0 WHERE sector_id=?", array($shipinfo['sector_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ports set port_energy=0 WHERE sector_id=$shipinfo[sector_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $portinfo['port_energy'] = 0;
 }
@@ -130,7 +130,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
 {
     if ($zoneinfo[team_zone] == 'N')
     {
-        $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
+        $res = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$zoneinfo[owner]");
         $ownerinfo = $res->fields;
 
         if ($playerinfo[player_id] != $zoneinfo[owner] && $playerinfo[team] == 0 || $playerinfo[team] != $ownerinfo[team])
@@ -276,7 +276,7 @@ if ($portinfo['port_type'] != "none" && $portinfo['port_type'] != "upgrades" && 
 
 //    echo "<script type=\"text/javascript\" defer=\"defer\" src=\"backends/javascript/clean.js\"></script>";
 
-    echo '<form name="bntform" action="port2.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="port2.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
     echo "<table width=\"100%\" border=0 cellspacing=0 cellpadding=0>";
     echo "<tr bgcolor=\"$color_header\"><td><strong>$l_commodity</strong></td><td><strong>$l_buying/$l_selling</strong></td><td><strong>$l_amount</strong></td><td><strong>$l_price</strong></td><td><strong>$l_buy/$l_sell</strong></td><td><strong>$l_cargo</strong></td></tr>";
     echo "<tr bgcolor=\"$color_line1\"><td>$l_ore</td><td>$sb_ore</td><td>" . number_format($portinfo['port_ore'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td>$ore_price</td><td><input type=text name=trade_ore SIZE=10 MAXLENGTH=20 value=$amount_ore></td><td>" . number_format($shipinfo['ore'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td></tr>";

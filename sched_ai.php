@@ -76,7 +76,7 @@ while(!$res->EOF && $res)
             $ai_count0++;
             //  FIND A TARGET 
             //  IN MY SECTOR, NOT MYSELF, NOT ON A PLANET 
-            $reso0 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and planet_id=0 and ship_id > 1", array($playerinfo['sector'], $playerinfo['email']));
+            $reso0 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and planet_id=0 and ship_id > 1");
             if (!$reso0->EOF)
             {
                 $rowo0 = $reso0->fields;
@@ -126,7 +126,7 @@ while(!$res->EOF && $res)
 
             //  FIND A TARGET 
             //  IN MY SECTOR, NOT MYSELF 
-            $reso1 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($targetlink, $playerinfo['email']));
+            $reso1 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
             if (!$reso1->EOF)
             {
                 $rowo1 = $reso1->fields;
@@ -187,7 +187,7 @@ while(!$res->EOF && $res)
 
             //  FIND A TARGET 
             //  IN MY SECTOR, NOT MYSELF 
-            $reso2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($targetlink, $playerinfo['email']));
+            $reso2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$targetlink and email!='$playerinfo[email]' and ship_id > 1");
             if (!$reso2->EOF)
             {
                 $rowo2=$reso2->fields;
@@ -236,8 +236,8 @@ while(!$res->EOF && $res)
         {
             $ai_count3++;
 
-            // Lets see if we go hunting this round before we do anything else
-            $hunt = mt_rand(0,3); // 25% chance of hunting *
+            //  LET SEE IF WE GO HUNTING THIS ROUND BEFORE WE DO ANYTHING ELSE 
+            $hunt = mt_rand(0,3);                               // 25% CHANCE OF HUNTING *
 
             // Uncomment below for Debugging
             //$hunt=0;
@@ -263,7 +263,7 @@ while(!$res->EOF && $res)
 
                 //  FIND A TARGET 
                 //  IN MY SECTOR, NOT MYSELF 
-                $reso3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($playerinfo['sector'], $playerinfo['email']));
+                $reso3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=$playerinfo[sector] and email!='$playerinfo[email]' and ship_id > 1");
                 if (!$reso3->EOF)
                 {
                     $rowo3=$reso3->fields;
@@ -339,7 +339,7 @@ if ($needed_ai_ >= 0)
             echo "<br>Lowering AI average too big !<br>"; } // New code to limit AI size, stops undeafetable AI's being created - GunSlinger
         }
 
-        $fur_cloak = round($furlevel/2); // Making cloak half the size of the AI player level so users see more of them.  I know this affects other calcs, but not against players - rjordan
+        $fur_cloak = round($furlevel/2);  // Making cloak half the size of the AI player level so users see more of them.  I know this affects other calcs, but not against players - rjordan
         $fpf = $furlevel * 1000000;
         echo "creating level $furlevel " . $ai_name . ".<br>";
 
@@ -351,7 +351,7 @@ if ($needed_ai_ >= 0)
         $sy2roll = mt_rand(0,19);
         $sy3roll = mt_rand(0,19);
         $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
-        $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name=?", array($character));
+        $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name='$character'");
         $namecheck = $resultnm->fields;
         $nametry = 1;
 
@@ -362,7 +362,7 @@ if ($needed_ai_ >= 0)
             $sy2roll = mt_rand(0,19);
             $sy3roll = mt_rand(0,19);
             $character = $Sylable1[$sy1roll] . $Sylable2[$sy2roll] . $Sylable3[$sy3roll];
-            $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name=?", array($character));
+            $resultnm = $db->Execute ("SELECT character_name FROM {$db->prefix}players WHERE character_name='$character'");
             $namecheck = $resultnm->fields;
             $nametry++;
         }
@@ -406,7 +406,7 @@ if ($needed_ai_ >= 0)
 
         // Create emailname from character
         $emailname = str_replace(" ","_",$character) . "@aiplayer";
-        $result = $db->Execute ("SELECT email, character_name, ship_name FROM {$db->prefix}players WHERE email=? OR character_name=? OR ship_name=?", array($emailname, $character, $shipname));
+        $result = $db->Execute ("SELECT email, character_name, ship_name FROM {$db->prefix}players WHERE email='$emailname' OR character_name='$character' OR ship_name='$shipname'");
         if ($result>0)
         {
             while (!$result->EOF)
@@ -466,10 +466,11 @@ if ($needed_ai_ >= 0)
 
             $ai_c_code = md5(mt_mt_rand(0,9999));
             // Add AI player record to accounts table
-            $resultaccount = $db->Execute("INSERT INTO {$raw_prefix}users (email, password, c_code, active) VALUES(?,?,?,?)", array($emailname, $makepass, $ai_c_code, 'Y'));
+            $resultaccount = $db->Execute("INSERT INTO {$raw_prefix}users (email, password, c_code, active) VALUES(" .
+                                          "'$emailname','$makepass', '$ai_c_code', 'Y')");
 
             // Get the new player's account id
-            $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email=?", array($emailname));
+            $res = $db->Execute("SELECT account_id FROM {$raw_prefix}users WHERE email='$emailname'");
             db_op_result($db,$res,__LINE__,__FILE__);
             $account_id = $res->fields['account_id'];
 
@@ -594,7 +595,7 @@ if ($needed_ai_ >= 0)
                     {
                         echo "sector is $sector<br>";
                         $maxp = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id = '$sector'");
-                        $num_res = $maxp->RecordCount(); 
+                        $num_res = $maxp->numRows(); 
                         if ($num_res >= $max_star_size)
                         {
                             echo "There are too many planets in sector $sector. <br>";

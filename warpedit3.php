@@ -65,7 +65,7 @@ if ($shipinfo['dev_warpedit'] < 1)
 }
 
 $res = $db->Execute("SELECT allow_warpedit,{$db->prefix}universe.zone_id FROM {$db->prefix}zones,{$db->prefix}universe WHERE " .
-                    "sector_id=? AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id", array($shipinfo['sector_id']));
+                    "sector_id=$shipinfo[sector_id] AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id");
 $query97 = $res->fields;
 if ($query97['allow_warpedit'] == 'N')
 {
@@ -80,7 +80,7 @@ $target_sector = preg_replace('/[^0-9]/','',$_POST['target_sector']);
 echo "<h1>" . $title. "</h1>\n";
 
 $res = $db->Execute("SELECT allow_warpedit,{$db->prefix}universe.zone_id FROM {$db->prefix}zones,{$db->prefix}universe WHERE " .
-                    "sector_id=? AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id", array($target_sector));
+                    "sector_id=$target_sector AND {$db->prefix}universe.zone_id={$db->prefix}zones.zone_id");
 $query97 = $res->fields;
 if ($query97['allow_warpedit'] == 'N' && $bothway)
 {
@@ -92,7 +92,7 @@ if ($query97['allow_warpedit'] == 'N' && $bothway)
     die();
 }
 
-$result2 = $db->Execute("SELECT * FROM {$db->prefix}universe WHERE sector_id=?", array($target_sector));
+$result2 = $db->Execute("SELECT * FROM {$db->prefix}universe WHERE sector_id=$target_sector");
 $row = $result2->fields;
 if (!$row)
 {
@@ -103,7 +103,7 @@ if (!$row)
     die();
 }
 
-$result3 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=?", array($shipinfo['sector_id']));
+$result3 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=$shipinfo[sector_id]");
 if ($result3 > 0)
 {
     while (!$result3->EOF)
@@ -124,15 +124,15 @@ if ($result3 > 0)
     }
     else
     {
-        $debug_query = $db->Execute("DELETE FROM {$db->prefix}links WHERE link_start=? AND " .
-                                    "link_dest=?", array($shipinfo['sector_id'], $target_sector));
+        $debug_query = $db->Execute("DELETE FROM {$db->prefix}links WHERE link_start=$shipinfo[sector_id] AND " .
+                                    "link_dest=$target_sector");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET dev_warpedit=dev_warpedit - 1 WHERE ship_id=?", array($shipinfo['ship_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET dev_warpedit=dev_warpedit - 1 WHERE ship_id=$shipinfo[ship_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1" .
-                                    " WHERE player_id=?", array($playerinfo['player_id']));
+                                    " WHERE player_id=$playerinfo[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         if (!$bothway)
@@ -141,8 +141,8 @@ if ($result3 > 0)
         }
         else
         {
-            $debug_query = $db->Execute("DELETE FROM {$db->prefix}links WHERE link_start=? AND " .
-                                        "link_dest=?", array($target_sector, $shipinfo['sector_id']));
+            $debug_query = $db->Execute("DELETE FROM {$db->prefix}links WHERE link_start=$target_sector AND " .
+                                        "link_dest=$shipinfo[sector_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             echo "$l_warp_removedtwo $target_sector.<br><br>";
         }

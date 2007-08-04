@@ -154,18 +154,18 @@ if ($playerinfo['turns'] < 1)
     die();
 }
   
-$res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
+$res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
 $planetinfo = $res->fields;
 if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
 {
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once ("./footer.php");    
     die();
 }
   
-$res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id =? AND spy_id=?  AND active = 'Y' AND planet_id=?", array($playerinfo['player_id'], $spy_id, $planetinfo['planet_id']));
+$res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id = $playerinfo[player_id] AND spy_id = $spy_id  AND active = 'Y' AND planet_id = $planetinfo[planet_id]");
 if ($res->RecordCount())
 {
     if (empty($doit))
@@ -212,10 +212,10 @@ if ($res->RecordCount())
     }
     else
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET planet_id='0', job_id='0', spy_percent='0.0', ship_id=?, active='N', try_sabot='Y', try_inter='Y', try_birth='Y', try_steal='Y', try_torps='Y', try_fits='Y', try_capture='Y' WHERE spy_id=? ", array($shipinfo['ship_id'], $spy_id));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET planet_id='0', job_id='0', spy_percent='0.0', ship_id='$shipinfo[ship_id]', active='N', try_sabot='Y', try_inter='Y', try_birth='Y', try_steal='Y', try_torps='Y', try_fits='Y', try_capture='Y' WHERE spy_id=$spy_id ");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+1, turns=turns-1 WHERE player_id=?", array($playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+1, turns=turns-1 WHERE player_id=$playerinfo[player_id] ");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         echo "$l_spy_backonship<br>";
@@ -228,9 +228,9 @@ else
 
 echo "<a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu";
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->display("$templateset/spy.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

@@ -36,12 +36,12 @@ checkdead($db);
 $title = $l_help;
 updatecookie($db);
 
-$template->assign("title", $title);
-$template->assign("l_project_name", $l_project_name);
-$template->assign("allow_fullscan", $allow_fullscan);
-$template->assign("allow_navcomp", $allow_navcomp);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->display("$templateset/help.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_project_name", $l_project_name);
+$smarty->assign("allow_fullscan", $allow_fullscan);
+$smarty->assign("allow_navcomp", $allow_navcomp);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->display("$templateset/help.tpl");
 include_once ("./footer.php");
 
 ?> 

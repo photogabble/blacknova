@@ -72,18 +72,18 @@ if ($playerinfo['team']>0)
          "<br>";
 }
 
-$query = "SELECT * FROM {$db->prefix}planets WHERE owner=?";
+$query = "SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id]";
 
 if (!empty($sort))
 {
     $query .= " ORDER BY";
     if ($sort == "name")
     {
-        $query .= $db->qstr($sort) . " ASC";
+        $query .= " $sort ASC";
     }
     elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "colonists" || $sort == "credits" || $sort == "fighters")
     {
-        $query .= $db->qstr(sort) . " DESC, sector_id ASC";
+        $query .= " $sort DESC, sector_id ASC";
     }
     elseif ($sort == "torp")
     {
@@ -99,7 +99,6 @@ else
     $query .= " ORDER BY sector_id ASC";
 }
 
-$query = $db->qstr($query, $playerinfo['player_id']);
 $res = $db->Execute($query);
 
 $i = 0;
@@ -126,7 +125,7 @@ if ($num_planets < 1)
 else
 {
     echo "<br>";
-    echo '<form name="bntform" action="planet_report_ce.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="planet_report_ce.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
 
     // ------ next block of echo's creates the header of the table
     echo "$l_pr_clicktosort<br><br>";
@@ -261,8 +260,7 @@ else
     echo "}";
     echo "</script> .";
     echo "<br> <input type=checkbox onClick=\"checkAll(this,'TPCreds')\"> Select All <br>. "; 
-    echo "<input type=\"submit\" name=\"submit_button\" value=\"$l_pr_collectcreds\">";
-    echo "<input type=\"reset\" value=\"$l_reset\">";
+    echo '<input type="submit" name="submit_button" value="$l_pr_collectcreds">  <input type="reset" value="$l_reset">';
     echo "</form>";
 }
 

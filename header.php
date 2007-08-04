@@ -90,17 +90,17 @@ if (!isset($local_lang))
     $local_lang = "en"; // On index.php, before install, this has to be set manually.
 }
 
-$template->assign("header_title", $l_header_title);
-$template->assign("local_lang", $local_lang);
-$template->assign("templateset", $templateset);
-$template->assign("refreshurl", $refreshurl);
-$template->assign("indexpage", $indexpage);
-$template->assign("header_bg_color", "#000");
-$template->assign("header_text_color", "#CCC");
-$template->assign("header_link_color", "#00FF00");
-$template->assign("header_alink_color", "#F00");
-$template->assign("header_vlink_color", "#00FF00");
-$template->assign("no_body", $no_body);
-$template->assign("style_sheet_file", $style_sheet_file);
-$template->display("$templateset/header.tpl");
+$smarty->assign("title", $l_header_title);
+$smarty->assign("local_lang", $local_lang);
+$smarty->assign("templateset", $templateset);
+$smarty->assign("refreshurl", $refreshurl);
+$smarty->assign("indexpage", $indexpage);
+$smarty->assign("header_bg_color", "#000");
+$smarty->assign("header_text_color", "#CCC");
+$smarty->assign("header_link_color", "#00FF00");
+$smarty->assign("header_alink_color", "#F00");
+$smarty->assign("header_vlink_color", "#00FF00");
+$smarty->assign("no_body", $no_body);
+$smarty->assign("style_sheet_file", $style_sheet_file);
+$smarty->display("$templateset/header.tpl");
 ?>

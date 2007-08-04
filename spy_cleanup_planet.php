@@ -154,7 +154,7 @@ $spy_cleanup_planet_credits[2] = spy_cleanup_planet_credits2;
 $spy_cleanup_planet_credits[3] = spy_cleanup_planet_credits3;
 
 echo "<strong>$l_spy_cleanupplanettitle</strong><br>";
-$res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
+$res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id='$planet_id' ");
 $planetinfo = $res->fields;
 
 if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
@@ -162,7 +162,7 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once ("./footer.php");    
     die();
 }
 
@@ -171,7 +171,7 @@ if ($playerinfo['player_id'] != $planetinfo['owner'])
     echo "$l_spy_notyourplanet<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once ("./footer.php");    
     die();
 }
   
@@ -223,7 +223,7 @@ else
   
 if (empty($doit))
 { 
-    echo '<form name="bntform" action="spy.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="spy.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
     echo "<input type=hidden name=command value=cleanup_planet>";
     echo "<input type=hidden name=planet_id value=$planet_id>";
     echo "<input type=hidden name=doit value=1>";
@@ -256,17 +256,17 @@ else
     {  
         $found = 0;
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET " .
-                                    "turns_used=turns_used+?, " .
-                                    "turns=turns-? WHERE " .
-                                    "player_id=? ", array($spy_cleanup_planet_turns[$type], $spy_cleanup_planet_turns[$type],$playerinfo['player_id']));
+                                    "turns_used=turns_used+$spy_cleanup_planet_turns[$type], " .
+                                    "turns=turns-$spy_cleanup_planet_turns[$type] WHERE " .
+                                    "player_id=$playerinfo[player_id] ");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-? " .
-                                    "WHERE planet_id=?", array($spy_cleanup_planet_credits[$type], $planet_id));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-$spy_cleanup_planet_credits[$type] " .
+                                    "WHERE planet_id=$planet_id ");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $res = $db->Execute("SELECT MAX(sensors) AS maxsensors FROM {$db->prefix}ships WHERE planet_id=? " .
-                            "AND on_planet='Y'", array($planet_id));
+        $res = $db->Execute("SELECT MAX(sensors) AS maxsensors FROM {$db->prefix}ships WHERE planet_id=$planet_id " .
+                            "AND on_planet='Y'");
         if (!$res->EOF)
         {
             if ($shipinfo['sensors'] < $res->fields['maxsensors'])
@@ -275,7 +275,7 @@ else
             }
         }
 
-        $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}players.character_name, {$db->prefix}planets.sector_id, {$db->prefix}planets.sensors, {$db->prefix}planets.base, {$db->prefix}planets.name, {$db->prefix}ships.cloak FROM {$db->prefix}ships INNER JOIN {$db->prefix}players ON {$db->prefix}ships.player_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}spies ON {$db->prefix}spies.owner_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id = {$db->prefix}planets.planet_id WHERE {$db->prefix}planets.planet_id=? AND {$db->prefix}spies.active='Y' AND {$db->prefix}spies.ship_id='0' ", array($planet_id));
+        $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}players.character_name, {$db->prefix}planets.sector_id, {$db->prefix}planets.sensors, {$db->prefix}planets.base, {$db->prefix}planets.name, {$db->prefix}ships.cloak FROM {$db->prefix}ships INNER JOIN {$db->prefix}players ON {$db->prefix}ships.player_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}spies ON {$db->prefix}spies.owner_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id = {$db->prefix}planets.planet_id WHERE {$db->prefix}planets.planet_id='$planet_id' AND {$db->prefix}spies.active='Y' AND {$db->prefix}spies.ship_id='0' ");
         while (!$res->EOF)
         {
             $info = $res->fields;
@@ -339,7 +339,7 @@ else
                     $info['name'] = $l_unnamed;
                 }
 
-                $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=?", array($info['spy_id']));
+                $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=$info[spy_id]");
                 playerlog($db,$info['owner_id'], "LOG_SPY_KILLED_SPYOWNER", "$info[spy_id]|$info[name]|$info[sector_id]");
             }
 
@@ -359,9 +359,9 @@ else
 
 echo "<br><a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu<br>";
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->display("$templateset/spy.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

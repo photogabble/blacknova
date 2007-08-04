@@ -43,7 +43,7 @@ for ($j = 0; $j<$multiplier; $j++)
     while (!$res->EOF)
     {
         $row = $res->fields;
-        $res3 = $db->SelectLimit("SELECT team FROM {$db->prefix}players WHERE player_id=?",1,-1,array($row['player_id']));
+        $res3 = $db->SelectLimit("SELECT team FROM {$db->prefix}players WHERE player_id = $row[player_id]",1);
         $sched_playerinfo = $res3->fields;
 
         $res2 = $db->Execute("SELECT energy, planet_id FROM {$db->prefix}planets WHERE ". 

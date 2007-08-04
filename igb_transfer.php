@@ -1,19 +1,9 @@
 <?php
-// Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
+// This program is free software; you can redistribute it and/or modify it   
+// under the terms of the GNU General Public License as published by the     
+// Free Software Foundation; either version 2 of the License, or (at your    
+// option) any later version.                                                
+// 
 // File: igb_transfer.php
 
 include_once ("./global_includes.php");
@@ -42,11 +32,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -65,7 +55,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -93,14 +83,14 @@ while (!$res->EOF)
     $res->MoveNext();
 }
 
-$res = $db->Execute("SELECT name, planet_id, sector_id FROM {$db->prefix}planets WHERE owner=? ORDER BY sector_id ASC", array($playerinfo['player_id']));
+$res = $db->Execute("SELECT name, planet_id, sector_id FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id] ORDER BY sector_id ASC");
 while (!$res->EOF)
 {
     $planets[] = $res->fields;
     $res->MoveNext();
 }
 
-echo "\n<form action=\"igb_transfer2.php\" method=\"post\">";
+echo "\n<form action=\"igb_transfer2.php\" method=\"post\" accept-charset=\"utf-8\">";
 echo "\n<table width=\"600\" height=\"350\" border=\"0\">";
 echo "\n  <tr>";
 echo "\n    <td align=\"center\" background=\"templates/{$templateset}/images/igbscreen.png\">";

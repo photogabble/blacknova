@@ -114,7 +114,7 @@ if ($location == 0)
 }
 else
 {
-    echo "<form name=\"form_prev\" action=\"galaxy2.php\" method=\"post\">".
+    echo "<form name=\"form_prev\" action=\"galaxy2.php\" method=\"post\" accept-charset=\"utf-8\">".
          "<input name=\"lastinput\" type=\"hidden\" value=\"".($location-$range)."\">".
          "<input name=\"last\" type=\"submit\" value=\"$l_last_range\">".
          "</form>";
@@ -127,7 +127,7 @@ if ($location == $sector_max)
 }
 else
 {
-    echo "<form name=\"form_next\" action=\"galaxy2.php\" method=\"post\">".
+    echo "<form name=\"form_next\" action=\"galaxy2.php\" method=\"post\" accept-charset=\"utf-8\">".
          "<input name=\"nextinput\" type=\"hidden\" value=\"".($location+$range)."\">".
          "<input name=\"next\" type=\"submit\" value=\"$l_next_range\">".
          "</form>";
@@ -137,7 +137,7 @@ echo "</td></tr></table>";
 
 echo "<div style=\"text-align:center;\">$l_view_this_sector";
 
-echo "<form name=\"form_textbox\" action=\"galaxy2.php\" method=\"post\">".
+echo "<form name=\"form_textbox\" action=\"galaxy2.php\" method=\"post\" accept-charset=\"utf-8\">".
      "<input name=\"location\" type=\"text\" size=\"5\" maxlength=\"5\">".
      "<input name=\"view\" type=\"submit\" value=\"View\">".
      "</form>";
@@ -168,14 +168,14 @@ else // general case
     $range_top = $location + intval($range / 2);
 }
 
-$result = $db->Execute ("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id BETWEEN ? AND ? " .
-                        " ORDER BY sector_id ASC", array($range_bottom, $range_top));
-$result2 = $db->Execute("SELECT distinct source FROM {$db->prefix}movement_log WHERE player_id=? AND source".
-                        " BETWEEN ? AND ? ORDER BY source ASC", array($playerinfo['player_id'], $range_bottom, $range_top));
-$result3 = $db->Execute("SELECT distinct sector_id FROM {$db->prefix}scan_log WHERE player_id=? AND sector_id".
-                        " BETWEEN ? AND ? ORDER BY sector_id ASC", array( $playerinfo['player_id'], $range_bottom, $range_top));
-$result4 = $db->Execute("SELECT distinct destination FROM {$db->prefix}movement_log WHERE player_id =? AND destination".
-                        " BETWEEN ? AND ? ORDER BY destination ASC", array($playerinfo['player_id'], $range_bottom, $range_top));
+$result = $db->Execute ("SELECT sector_id, port_type FROM {$db->prefix}ports WHERE sector_id BETWEEN $range_bottom AND " .
+                        "$range_top ORDER BY sector_id ASC");
+$result2 = $db->Execute("SELECT distinct source FROM {$db->prefix}movement_log WHERE player_id = $playerinfo[player_id] AND source".
+                        " BETWEEN $range_bottom AND $range_top ORDER BY source ASC");
+$result3 = $db->Execute("SELECT distinct sector_id FROM {$db->prefix}scan_log WHERE player_id = $playerinfo[player_id] AND sector_id".
+                        " BETWEEN $range_bottom AND $range_top ORDER BY sector_id ASC");
+$result4 = $db->Execute("SELECT distinct destination FROM {$db->prefix}movement_log WHERE player_id = $playerinfo[player_id] AND destination".
+                        " BETWEEN $range_bottom AND $range_top ORDER BY destination ASC");
 
 echo "<table border=0 cellpadding=2 cellspacing=1 >\n";
 
@@ -195,7 +195,7 @@ if (!$result4->EOF)
 }
 
 $ind = 0;
-$sectorcount = $result->RecordCount();
+$sectorcount = $result->RecordCount();    
 while (!$result->EOF)
 {
     $row   = $result->fields;
@@ -252,6 +252,8 @@ while (!$result->EOF)
 }
     
 echo "</table>\n";
+
+// Easter egg comment - We get to say wikki-wikki-wikki again
 
 echo "<table border=0><tr>";
 echo "<td><img src=\"templates/$templateset/images/" . $tile['shipyard'] . "\" alt='shipyard' /> - $l_shipyard_title</td>\n";

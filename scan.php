@@ -54,15 +54,15 @@ else
     $player_id = $_GET['player_id'];
 }
 
-$debug_query = $db->Execute ("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($player_id));
+$debug_query = $db->Execute ("SELECT * FROM {$db->prefix}players WHERE player_id='$player_id'");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $targetinfo = $debug_query->fields;
 
-$debug_query = $db->Execute ("SELECT * FROM {$raw_prefix}users WHERE account_id=?", array($targetinfo['account_id']));
+$debug_query = $db->Execute ("SELECT * FROM {$raw_prefix}users WHERE account_id='$targetinfo[account_id]'");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $targetaccountinfo = $debug_query->fields;
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE ship_id=?", array($targetinfo['currentship']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE ship_id='$targetinfo[currentship]'");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $targetshipinfo = $debug_query->fields;
 
@@ -116,7 +116,7 @@ else
             // cramble results by scan error factor.
             // Get total bounty on this player, if any
             $btyamount = 0;
-            $debug_query = $db->Execute("SELECT SUM(amount) AS btytotal FROM {$db->prefix}bounty WHERE bounty_on=?", array($targetinfo['player_id']));
+            $debug_query = $db->Execute("SELECT SUM(amount) AS btytotal FROM {$db->prefix}bounty WHERE bounty_on = $targetinfo[player_id]");
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             if ($debug_query)
@@ -129,7 +129,7 @@ else
                     echo $l_scan_bounty . "<br>";
                     $btyamount = 0;
                     // Check for Federation bounty
-                    $hasfedbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM {$db->prefix}bounty WHERE bounty_on=? AND placed_by = 0", array($targetinfo['player_id']));
+                    $hasfedbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM {$db->prefix}bounty WHERE bounty_on = $targetinfo[player_id] AND placed_by = 0");
                     db_op_result($db,$hasfedbounty,__LINE__,__FILE__);
                     if ($hasfedbounty)
                     {
@@ -484,7 +484,7 @@ else
             echo "</table><br>";
             playerlog($db,$targetinfo['player_id'], "LOG_SHIP_SCAN", "$playerinfo[character_name]");
         }
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1,turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1,turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 }

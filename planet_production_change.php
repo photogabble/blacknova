@@ -55,7 +55,7 @@ global $l_sector, $l_name, $l_unnamed, $l_ore, $l_organics, $l_goods, $l_energy,
 global $l_pr_noplanet, $l_team, $l_submit, $l_reset, $l_pr_planetstatus, $l_pr_menulink;
 global $planet_detect_success2, $spy_success_factor, $shipinfo;
 
-$query = "SELECT * FROM {$db->prefix}planets WHERE owner=? AND base='Y'";
+$query = "SELECT * FROM {$db->prefix}planets WHERE owner=$playerinfo[player_id] AND base='Y'";
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -72,22 +72,22 @@ if ($playerinfo['team']>0)
 
 if (!empty($sort))
 {
-    if ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters" || $sort == "torp")
-    {
-        $sort = 'prod_' . $sort;
-    }
-}
-
-if (!empty($sort))
-{
     $query .= " ORDER BY";
     if ($sort == "name")
     {
-        $query .= $db->qstr($sort) . " ASC";
+        $query .= " $sort ASC";
     }
-    elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters" || $sort == "torp" || $sort == "colonists" || $sort == "credits")
+    elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "fighters")
     {
-        $query .= $db->qstr($sort) . " DESC, sector_id ASC";
+        $query .= " prod_$sort DESC, sector_id ASC";
+    }
+    elseif ($sort == "colonists" || $sort == "credits")
+    {
+        $query .= " $sort DESC, sector_id ASC";
+    }
+    elseif ($sort == "torp")
+    {
+        $query .= " prod_torp DESC, sector_id ASC";
     }
     else
     {
@@ -99,7 +99,7 @@ else
     $query .= " ORDER BY sector_id ASC";
 }
 
-$res = $db->Execute($query, $playerinfo['player_id']);
+$res = $db->Execute($query);
 
 $i = 0;
 if ($res)
@@ -124,7 +124,7 @@ if ($num_planets < 1)
 }
 else
 {
-    echo '<form name="bntform" action="planet_report_ce.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="planet_report_ce.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
     // ------ next block of echo's creates the header of the table
     echo "$l_pr_clicktosort<br><br>";
     echo "<table width=\"100%\" border=0 cellspacing=0 cellpadding=2>";

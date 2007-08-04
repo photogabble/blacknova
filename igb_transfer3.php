@@ -44,11 +44,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -67,7 +67,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -109,7 +109,7 @@ if ($amount < 0)
 if (isset($_POST['player_id'])) // Ship transfer
 {
     // Need to check again to prevent cheating by manual posts
-    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($_POST['player_id']));
+    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$_POST[player_id]");
 
     if ($playerinfo['player_id'] == $_POST[player_id])
     {
@@ -149,8 +149,8 @@ if (isset($_POST['player_id'])) // Ship transfer
         $curtime = time();
         $curtime -= $igb_trate * 60;
         $res = $db->Execute("SELECT UNIX_TIMESTAMP(transfer_time) as time FROM {$db->prefix}ibank_transfers WHERE " .
-                            "UNIX_TIMESTAMP(transfer_time) > ? AND source_id=? AND " .
-                            "dest_id=?", array($curtime, $playerinfo['player_id'],$target['player_id']));
+                            "UNIX_TIMESTAMP(transfer_time) > $curtime AND source_id=$playerinfo[player_id] AND " .
+                            "dest_id=$target[player_id]");
         if (!$res->EOF)
         {
             $time = $res->fields;
@@ -203,29 +203,29 @@ if (isset($_POST['player_id'])) // Ship transfer
     $amount2 = $amount * $ibank_paymentfee;
     $transfer = $amount - $amount2;
 
-    $template->assign("formatted_trans_to", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("formatted_trans_amt", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("formatted_trans_fee", number_format($amount2, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("formatted_amt_transd", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("formatted_acc_balance", number_format($account['balance'], 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("l_igb_transfersuccessful", $l_igb_transfersuccessful);
-    $template->assign("l_igb_creditsto", $l_igb_creditsto);
-    $template->assign("target_character_name", $target['character_name']);
-    $template->assign("l_igb_transferamount", $l_igb_transferamount);
-    $template->assign("l_igb_transferfee", $l_igb_transferfee);
-    $template->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
-    $template->assign("l_igb_igbaccount", $l_igb_igbaccount);
-    $template->assign("l_igb_back", $l_igb_back);
-    $template->assign("l_igb_logout", $l_igb_logout);
-    $template->assign("templateset", $templateset);
-    $template->display("$templateset/igb_transfer3_ship.tpl");
+    $smarty->assign("formatted_trans_to", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("formatted_trans_amt", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("formatted_trans_fee", number_format($amount2, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("formatted_amt_transd", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("formatted_acc_balance", number_format($account['balance'], 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("l_igb_transfersuccessful", $l_igb_transfersuccessful);
+    $smarty->assign("l_igb_creditsto", $l_igb_creditsto);
+    $smarty->assign("target_character_name", $target['character_name']);
+    $smarty->assign("l_igb_transferamount", $l_igb_transferamount);
+    $smarty->assign("l_igb_transferfee", $l_igb_transferfee);
+    $smarty->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
+    $smarty->assign("l_igb_igbaccount", $l_igb_igbaccount);
+    $smarty->assign("l_igb_back", $l_igb_back);
+    $smarty->assign("l_igb_logout", $l_igb_logout);
+    $smarty->assign("templateset", $templateset);
+    $smarty->display("$templateset/igb_transfer3_ship.tpl");
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance-? WHERE " .
-                                "player_id=?", array($amount, $playerinfo['player_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance-$amount WHERE " .
+                                "player_id=$playerinfo[player_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance+? WHERE " .
-                                "player_id=?", array($transfer, $target['player_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance+$transfer WHERE " .
+                                "player_id=$target[player_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $stamp = date("Y-m-d H:i:s");
@@ -246,7 +246,7 @@ else
         include_once ("./igb_error.php");
     }
 
-    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($_POST['splanet_id']));
+    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=$_POST[splanet_id]");
     if (!$res || $res->EOF)
     {
         $backlink = "igb_transfer.php";
@@ -261,7 +261,7 @@ else
         $source[name] = $l_igb_unnamed;
     }
 
-    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($_POST['dplanet_id']));
+    $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=$_POST[dplanet_id]");
     if (!$res || $res->EOF)
     {
         $backlink = "igb_transfer.php";
@@ -296,37 +296,37 @@ else
     $transfer = $amount - $amount2;
     $dest['credits'] += $transfer;
 
-    $template->assign("templateset",templateset);
-    $template->assign("l_igb_transfersuccessful",$l_igb_transfersuccessful);
-    $template->assign("l_igb_ctransferredfrom",$l_igb_ctransferredfrom);
-    $template->assign("source_name",$source['name']);
-    $template->assign("l_igb_to",$l_igb_to);
-    $template->assign("dest_name",$dest['name']);
-    $template->assign("formatted_trans_to", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("l_igb_transferamount", $l_igb_transferamount);
-    $template->assign("formatted_trans_amt", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep)); 
-    $template->assign("l_igb_transferfee", $l_igb_transferfee);
-    $template->assign("formatted_trans_fee", number_format($amount2, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
-    $template->assign("formatted_amt_transd", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("l_igb_srcplanet", $l_igb_srcplanet);
-    $template->assign("source_name", $source['name']);
-    $template->assign("source_sector_id", $source['sector_id']);
-    $template->assign("formatted_src_creds", number_format($source['credits'], 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("l_igb_destplanet", $l_igb_destplanet);
-    $template->assign("dest_name", $dest['name']);
-    $template->assign("l_igb_in", $l_igb_in);
-    $template->assign("dest_sector_id", $dest['sector_id']);
-    $template->assign("formatted_dest_creds", number_format($dest['credits'], 0, $local_number_dec_point, $local_number_thousands_sep));
-    $template->assign("l_igb_back", $l_igb_back);
-    $template->assign("l_igb_logout", $l_igb_logout);
-    $template->assign("templateset", $templateset);
-    $template->display("$templateset/igb_transfer3_notship.tpl");
+    $smarty->assign("templateset",templateset);
+    $smarty->assign("l_igb_transfersuccessful",$l_igb_transfersuccessful);
+    $smarty->assign("l_igb_ctransferredfrom",$l_igb_ctransferredfrom);
+    $smarty->assign("source_name",$source['name']);
+    $smarty->assign("l_igb_to",$l_igb_to);
+    $smarty->assign("dest_name",$dest['name']);
+    $smarty->assign("formatted_trans_to", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("l_igb_transferamount", $l_igb_transferamount);
+    $smarty->assign("formatted_trans_amt", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep)); 
+    $smarty->assign("l_igb_transferfee", $l_igb_transferfee);
+    $smarty->assign("formatted_trans_fee", number_format($amount2, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
+    $smarty->assign("formatted_amt_transd", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("l_igb_srcplanet", $l_igb_srcplanet);
+    $smarty->assign("source_name", $source['name']);
+    $smarty->assign("source_sector_id", $source['sector_id']);
+    $smarty->assign("formatted_src_creds", number_format($source['credits'], 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("l_igb_destplanet", $l_igb_destplanet);
+    $smarty->assign("dest_name", $dest['name']);
+    $smarty->assign("l_igb_in", $l_igb_in);
+    $smarty->assign("dest_sector_id", $dest['sector_id']);
+    $smarty->assign("formatted_dest_creds", number_format($dest['credits'], 0, $local_number_dec_point, $local_number_thousands_sep));
+    $smarty->assign("l_igb_back", $l_igb_back);
+    $smarty->assign("l_igb_logout", $l_igb_logout);
+    $smarty->assign("templateset", $templateset);
+    $smarty->display("$templateset/igb_transfer3_notship.tpl");
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-? WHERE planet_id=?", array($amount, $splanet_id));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-$amount WHERE planet_id=$splanet_id");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits+? WHERE planet_id=?", array($transfer,$dplanet_id));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits+$transfer WHERE planet_id=$dplanet_id");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 

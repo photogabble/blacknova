@@ -68,7 +68,7 @@ if ($zoneinfo['allow_warpedit'] == 'N')
 
 if ($zoneinfo['allow_warpedit'] == 'L')
 {
-    $result5 = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
+    $result5 = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id='$zoneinfo[owner]'");
     $zoneteam = $result5->fields;
 
     if ($zoneinfo[owner] != $playerinfo[player_id])
@@ -84,7 +84,7 @@ if ($zoneinfo['allow_warpedit'] == 'L')
     }
 }
 
-$result2 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=? ORDER BY link_dest ASC", array($shipinfo['sector_id']));
+$result2 = $db->Execute("SELECT * FROM {$db->prefix}links WHERE link_start=$shipinfo[sector_id] ORDER BY link_dest ASC");
 if ($result2 < 1)
 {
     echo "$l_warp_nolink<br><br>";
@@ -101,7 +101,7 @@ else
     echo "<br><br>";
 }
 
-echo "<form action=\"warpedit2.php\" method=\"post\">";
+echo "<form action=\"warpedit2.php\" method=\"post\" accept-charset=\"utf-8\">";
 echo "<table>";
 echo "<tr><td>$l_warp_query</td><td><input type=\"text\" name=\"target_sector\" size=\"6\" maxlength=\"6\" value=\"\"></td></tr>";
 echo "<tr><td>$l_warp_oneway?</td><td><input type=\"checkbox\" name=\"oneway\" value=\"oneway\"></td></tr>";
@@ -109,7 +109,7 @@ echo "</table>";
 echo "<input type=\"submit\" value=\"$l_submit\"><input type=\"reset\" value=\"$l_reset\">";
 echo "</form>";
 echo "<br><br>$l_warp_dest<br><br>";
-echo "<form action=\"warpedit3.php\" method=\"post\">";
+echo "<form action=\"warpedit3.php\" method=\"post\" accept-charset=\"utf-8\">";
 echo "<table>";
 echo "<tr><td>$l_warp_destquery</td><td><input type=\"text\" name=\"target_sector\" size=\"6\" maxlength=\"6\" value=\"\"></td></tr>";
 echo "<tr><td>$l_warp_bothway?</td><td><input type=\"checkbox\" name=\"bothway\" value=\"bothway\"></td></tr>";

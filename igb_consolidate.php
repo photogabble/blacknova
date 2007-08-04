@@ -41,11 +41,11 @@ if (!$allow_ibank)
     include_once ("./igb_error.php");
 }
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=$playerinfo[player_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $planetinfo = $debug_query->RecordCount();
 
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=?", array($playerinfo['team']));
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND team=$playerinfo[team]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $teamplanetinfo = $debug_query->RecordCount();
 
@@ -64,7 +64,7 @@ else
 
 updatecookie($db);
 
-$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=?", array($playerinfo['player_id']));
+$result = $db->Execute("SELECT * FROM {$db->prefix}ibank_accounts WHERE player_id=$playerinfo[player_id]");
 $account = $result->fields;
 
 //echo "<body bgcolor=\"#666\" text=\"#FFFFFF\" link=\"#00FF00\" vlink=\"#00FF00\" alink=\"#FF0000\">";
@@ -94,16 +94,16 @@ $l_igb_transferrate3 = str_replace("[nbplanets]", $igb_tconsolidate, $l_igb_tran
 
 $destplanetcreds  = $dest['credits'];
 
-$template->assign("l_igb_consolidate", $l_igb_consolidate);
-$template->assign("l_igb_consolrates", $l_igb_consolrates);
-$template->assign("l_igb_minimum", $l_igb_minimum);
-$template->assign("l_igb_maximum", $l_igb_maximum);
-$template->assign("l_igb_compute", $l_igb_compute);
-$template->assign("dplanet_id", $dplanet_id);
-$template->assign("l_igb_transferrate3", $l_igb_transferrate3);
-$template->assign("l_igb_back", $l_igb_back);
-$template->assign("l_igb_logout", $l_igb_logout);
-$template->display("$templateset/igb_consolidate.tpl");
+$smarty->assign("l_igb_consolidate", $l_igb_consolidate);
+$smarty->assign("l_igb_consolrates", $l_igb_consolrates);
+$smarty->assign("l_igb_minimum", $l_igb_minimum);
+$smarty->assign("l_igb_maximum", $l_igb_maximum);
+$smarty->assign("l_igb_compute", $l_igb_compute);
+$smarty->assign("dplanet_id", $dplanet_id);
+$smarty->assign("l_igb_transferrate3", $l_igb_transferrate3);
+$smarty->assign("l_igb_back", $l_igb_back);
+$smarty->assign("l_igb_logout", $l_igb_logout);
+$smarty->display("$templateset/igb_consolidate.tpl");
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";
 

@@ -60,8 +60,8 @@ load_languages($db, $raw_prefix, 'scheduler');
 
 $title = $l_scheduler_title;
 
-// Templates
-$template = new bnt_smarty;
+// Template Lite
+$smarty = new Template_Lite;
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -77,7 +77,7 @@ $stoptime = $BenchmarkTimer->stop();
 $elapsed = $BenchmarkTimer->elapsed();
 $elapsed = substr($elapsed,0,5);
 
-$game_query = $db->Execute("SELECT gamenumber FROM {$raw_prefix}instances ORDER BY gamenumber ASC");
+$game_query = $db->Execute("SELECT gamenumber FROM {$db->prefix}instances ORDER BY gamenumber ASC");
 db_op_result($db,$game_query,__LINE__,__FILE__);
 while (!$game_query->EOF)
 {

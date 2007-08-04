@@ -169,25 +169,25 @@ if ($db->prefix != $raw_prefix)
     $ibanksettings[2]['value'] = ($ibank_loaninterest * 100) . "%";
 
     // Smarty assignments
-    $template->assign("l_global_mlogin", $l_global_mlogin);
-    $template->assign("l_global_mmenu", $l_global_mmenu);
-    $template->assign("l_s_gameoptions", $l_s_gameoptions);
-    $template->assign("l_s_gamesettings", $l_s_gamesettings);
-    $template->assign("l_s_gameschedsettings", $l_s_gameschedsettings);
-    $template->assign("l_s_spysettings", $l_s_spysettings);
-    $template->assign("l_s_ibanksettings", $l_s_ibanksettings);
-    $template->assign("spy_success_factor", $spy_success_factor);
-    $template->assign("allow_ibank", $allow_ibank);
-    $template->assign("gamestatus", $gamestatus);
-    $template->assign("gameoptions", $gameoptions);
-    $template->assign("gamesettings", $gamesettings);
-    $template->assign("schedsettings", $schedsettings);
-    $template->assign("spysettings", $spysettings);
-    $template->assign("ibanksettings", $ibanksettings);
-    $template->assign("color_line1", $color_line1);
-    $template->assign("color_line2", $color_line2);
-    $template->assign("templateset", $templateset);
-    $template->assign("session_email", empty($_SESSION['email']));
+    $smarty->assign("l_global_mlogin", $l_global_mlogin);
+    $smarty->assign("l_global_mmenu", $l_global_mmenu);
+    $smarty->assign("l_s_gameoptions", $l_s_gameoptions);
+    $smarty->assign("l_s_gamesettings", $l_s_gamesettings);
+    $smarty->assign("l_s_gameschedsettings", $l_s_gameschedsettings);
+    $smarty->assign("l_s_spysettings", $l_s_spysettings);
+    $smarty->assign("l_s_ibanksettings", $l_s_ibanksettings);
+    $smarty->assign("spy_success_factor", $spy_success_factor);
+    $smarty->assign("allow_ibank", $allow_ibank);
+    $smarty->assign("gamestatus", $gamestatus);
+    $smarty->assign("gameoptions", $gameoptions);
+    $smarty->assign("gamesettings", $gamesettings);
+    $smarty->assign("schedsettings", $schedsettings);
+    $smarty->assign("spysettings", $spysettings);
+    $smarty->assign("ibanksettings", $ibanksettings);
+    $smarty->assign("color_line1", $color_line1);
+    $smarty->assign("color_line2", $color_line2);
+    $smarty->assign("templateset", $templateset);
+    $smarty->assign("session_email", empty($_SESSION['email']));
 }
 
 $i = 0;
@@ -201,12 +201,12 @@ while (!$debug_query->EOF)
     $debug_query->MoveNext();
 }
 
-$template->assign("title", $title);
-$template->assign('game_instances' , $game_instances);
-$template->assign("l_submit", $l_submit);
-$template->assign("dbprefix", $db->prefix);
-$template->assign("raw_prefix", $raw_prefix);
-$template->display("$templateset/settings.tpl");
+$smarty->assign("title", $title);
+$smarty->assign('game_instances' , $game_instances);
+$smarty->assign("l_submit", $l_submit);
+$smarty->assign("dbprefix", $db->prefix);
+$smarty->assign("raw_prefix", $raw_prefix);
+$smarty->display("$templateset/settings.tpl");
 
 include_once ("./footer.php");
 ?>

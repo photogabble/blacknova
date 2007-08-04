@@ -45,28 +45,28 @@ if (!isset($_GET['ship_id']))
 
 $debug_query = $db->Execute("SELECT {$db->prefix}ships.player_id, name, character_name, sector_id FROM {$db->prefix}ships " .
                             "LEFT JOIN {$db->prefix}players ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id " .
-                            "WHERE ship_id=?", array($_GET['ship_id']));
+                            "WHERE ship_id=$_GET[ship_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $otherplayer = $debug_query->fields;
 
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->assign("player_id", $otherplayer['player_id']);
-$template->assign("ship_id", $_GET['ship_id']);
-$template->assign("l_planet_att_link", $l_planet_att_link);
-$template->assign("l_planet_scn_link", $l_planet_scn_link);
-$template->assign("l_ship_perform", $l_ship_perform);
-$template->assign("l_ship_owned", $l_ship_owned);
-$template->assign("l_send_msg", $l_send_msg);
-$template->assign("l_ship_youc", $l_ship_youc);
-$template->assign("l_ship_the", $l_ship_the);
-$template->assign("l_ship_nolonger", $l_ship_nolonger);
-$template->assign("otherplayer_character_name", $otherplayer['character_name']);
-$template->assign("otherplayer_name", $otherplayer['name']);
-$template->assign("otherplayer_sector_id", $otherplayer['sector_id']);
-$template->assign("shipinfo_sector_id", $shipinfo['sector_id']);
-$template->display("$templateset/ship.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->assign("player_id", $otherplayer['player_id']);
+$smarty->assign("ship_id", $_GET['ship_id']);
+$smarty->assign("l_planet_att_link", $l_planet_att_link);
+$smarty->assign("l_planet_scn_link", $l_planet_scn_link);
+$smarty->assign("l_ship_perform", $l_ship_perform);
+$smarty->assign("l_ship_owned", $l_ship_owned);
+$smarty->assign("l_send_msg", $l_send_msg);
+$smarty->assign("l_ship_youc", $l_ship_youc);
+$smarty->assign("l_ship_the", $l_ship_the);
+$smarty->assign("l_ship_nolonger", $l_ship_nolonger);
+$smarty->assign("otherplayer_character_name", $otherplayer['character_name']);
+$smarty->assign("otherplayer_name", $otherplayer['name']);
+$smarty->assign("otherplayer_sector_id", $otherplayer['sector_id']);
+$smarty->assign("shipinfo_sector_id", $shipinfo['sector_id']);
+$smarty->display("$templateset/ship.tpl");
 include_once ("./footer.php");
 ?>

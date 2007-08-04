@@ -68,7 +68,7 @@ else
 // DB sanity check for source
 if ($ptype1 == 'port')
 {
-    $query = $db->Execute("SELECT * FROM {$db->prefix}ports WHERE sector_id=?", array($_POST['port_id1']));
+    $query = $db->Execute("SELECT * FROM {$db->prefix}ports WHERE sector_id=$_POST[port_id1]");
     if (!$query || $query->EOF)
     {
         $l_tdr_errnotvalidport = str_replace("[tdr_port_id]", $_POST['port_id1'], $l_tdr_errnotvalidport);
@@ -83,12 +83,12 @@ if ($ptype1 == 'port')
     }
 
     // ensure that they have been in the sector for the first port, but only if its a valid port type.
-    $res1 = $db->Execute("SELECT * from {$db->prefix}movement_log WHERE player_id=? AND " .
-                         "source=?", array($playerinfo['player_id'], $_POST['port_id1']));
+    $res1 = $db->Execute("SELECT * from {$db->prefix}movement_log WHERE player_id = $playerinfo[player_id] AND " .
+                         "source = $_POST[port_id1]");
     if (!$res1 || $res1->EOF)
     {
-        $res11 = $db->Execute("SELECT * from {$db->prefix}scan_log WHERE player_id=? AND " .
-                              "sector_id=?", array($playerinfo['player_id'], $_POST['port_id1']));
+        $res11 = $db->Execute("SELECT * from {$db->prefix}scan_log WHERE player_id = $playerinfo[player_id] AND " .
+                              "sector_id = $_POST[port_id1]");
         if (!$res11 || $res11->EOF)
         {
             traderoute_die($l_tdr_explorefirst);
@@ -97,7 +97,7 @@ if ($ptype1 == 'port')
 }
 else
 {
-    $query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id1));
+    $query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id1");
     if (!$query || $query->EOF)
     {
         traderoute_die($l_tdr_errnosrc);
@@ -119,21 +119,21 @@ else
 
 if ($ptype2 == 'port')
 {
-    $query = $db->Execute("SELECT * FROM {$db->prefix}ports WHERE sector_id=?", array($_POST['port_id2']));
+    $query = $db->Execute("SELECT * FROM {$db->prefix}ports WHERE sector_id=$_POST[port_id2]");
     $destination = $query->fields;
 }
 else
 {
-    $query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id2));
+    $query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id2");
     $destination = $query->fields;
 }
 
 // Destination Check for combat levels
-$debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=?", array($destination['sector_id']));
+$debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=$destination[sector_id]");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $dest_zone = $debug_query->fields['zone_id'];
 
-$debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=?", array($dest_zone));
+$debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=$dest_zone");
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $dest_max_level = $debug_query->fields['max_level'];
 
@@ -146,7 +146,7 @@ if ($combat_levels > $dest_max_level && $dest_max_level > 0)
 // DB sanity check for dest
 if ($ptype2 == 'port')
 {
-    $query = $db->Execute("SELECT * FROM {$db->prefix}ports WHERE sector_id=?", array($_POST['port_id2']));
+    $query = $db->Execute("SELECT * FROM {$db->prefix}ports WHERE sector_id=$_POST[port_id2]");
     if (!$query || $query->EOF)
     {
         $l_tdr_errnotvaliddestport = str_replace("[tdr_port_id]", $_POST['port_id2'], $l_tdr_errnotvaliddestport);
@@ -167,10 +167,10 @@ if ($ptype2 == 'port')
     }
 
     // ensure that they have been in the sector for the second port, but only if its a valid port type.
-    $res1 = $db->Execute("SELECT * from {$db->prefix}movement_log WHERE player_id=? AND source=?", array($playerinfo['player_id'], $_POST['port_id2']));
+    $res1 = $db->Execute("SELECT * from {$db->prefix}movement_log WHERE player_id = $playerinfo[player_id] AND source = $_POST[port_id2]");
     if (!$res1 || $res1->EOF)
     {
-        $res11 = $db->Execute("SELECT * from {$db->prefix}scan_log WHERE player_id=? AND sector_id=?", array($playerinfo['player_id'], $_POST['port_id2']));
+        $res11 = $db->Execute("SELECT * from {$db->prefix}scan_log WHERE player_id = $playerinfo[player_id] AND sector_id = $_POST[port_id2]");
         if (!$res11 || $res11->EOF)
         {
             traderoute_die($l_tdr_explorefirst);
@@ -179,7 +179,7 @@ if ($ptype2 == 'port')
 }
 else
 {
-    $query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id2));
+    $query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id2");
     if (!$query || $query->EOF)
     {
         traderoute_die($l_tdr_errnodestplanet);
@@ -267,15 +267,15 @@ if (empty($_POST['editing']))
 }
 else
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}traderoutes SET source_id=?, dest_id=?, source_type=?, dest_type=?, move_type=?, owner=?, circuit=? WHERE traderoute_id=?", array($src_id, $dest_id, $src_type, $dest_type, $mtype, $playerinfo['player_id'], $_POST['circuit_type'], $_POST['editing']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}traderoutes SET source_id=$src_id, dest_id=$dest_id, source_type='$src_type', dest_type='$dest_type', move_type='$mtype', owner=$playerinfo[player_id], circuit='$_POST[circuit_type]' WHERE traderoute_id=$_POST[editing]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 
-$template->assign("empty_editing", empty($_POST['editing']));
-$template->assign("l_tdr_newtdrcreated", $l_tdr_newtdrcreated);
-$template->assign("l_tdr_tdrmodified", $l_tdr_tdrmodified);
-$template->assign("l_tdr_returnmenu", $l_tdr_returnmenu);
-$template->display("$templateset/traderoute_create.tpl");
+$smarty->assign("empty_editing", empty($_POST['editing']));
+$smarty->assign("l_tdr_newtdrcreated", $l_tdr_newtdrcreated);
+$smarty->assign("l_tdr_tdrmodified", $l_tdr_tdrmodified);
+$smarty->assign("l_tdr_returnmenu", $l_tdr_returnmenu);
+$smarty->display("$templateset/traderoute_create.tpl");
 
 traderoute_die("");
 ?>

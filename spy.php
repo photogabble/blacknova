@@ -210,7 +210,7 @@ $line_color = $color_line2;
         $by33 = "{$db->prefix}planets.name asc, {$db->prefix}planets.sector_id asc, spy_id asc";
     }
 
-    $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE {$db->prefix}spies.owner_id=? ", array($playerinfo['player_id']));
+    $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE {$db->prefix}spies.owner_id=$playerinfo[player_id] ");
     if ($res->RecordCount())
     {
         ////1
@@ -225,7 +225,7 @@ $line_color = $color_line2;
             echo "<td><strong><a href=\"spy.php?by1=character_name&by2=$by2&by3=$by3\">$l_spy_shipowner</a></strong></td>";
             echo "<td><strong><a href=\"spy.php?by1=ship_name&by2=$by2&by3=$by3\">$l_spy_shipname</a></strong></td>";
             echo "<td><strong><a href=\"spy.php?by1=ship_type&by2=$by2&by3=$by3\">$l_spy_shiptype</a></strong></td>";
-            echo "<td><font color=white><strong>$l_spy_shiplocation</strong></font></td>"; // Do not create a link here!
+            echo "<td><font color=white><strong>$l_spy_shiplocation</strong></font></td>";         // Do not create a link here!
             echo "<td><strong><a href=\"spy.php?by1=move_type&by2=$by2&by3=$by3\">$l_spy_move</a></strong></td>";
             echo "</tr>";
 
@@ -257,7 +257,7 @@ $line_color = $color_line2;
 
         ////2
         $line_color = $color_line2;
-        $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}planets.name, {$db->prefix}planets.sector_id, {$db->prefix}players.character_name FROM {$db->prefix}spies INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id={$db->prefix}planets.planet_id LEFT JOIN {$db->prefix}players ON {$db->prefix}players.player_id={$db->prefix}planets.owner WHERE {$db->prefix}spies.owner_id=? AND {$db->prefix}spies.owner_id!={$db->prefix}planets.owner ORDER BY ?", array($playerinfo['player_id'], $by22));
+        $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}planets.name, {$db->prefix}planets.sector_id, {$db->prefix}players.character_name FROM {$db->prefix}spies INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id={$db->prefix}planets.planet_id LEFT JOIN {$db->prefix}players ON {$db->prefix}players.player_id={$db->prefix}planets.owner WHERE {$db->prefix}spies.owner_id=$playerinfo[player_id] AND {$db->prefix}spies.owner_id!={$db->prefix}planets.owner ORDER BY $by22 ");
         if ($res->RecordCount())
         {
             echo "<table border=1 cellspacing=1 cellpadding=2 width=\"100%\">";
@@ -324,7 +324,7 @@ $line_color = $color_line2;
 
         ////3
         $line_color = $color_line2;
-        $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}planets.name, {$db->prefix}planets.sector_id FROM {$db->prefix}spies INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id={$db->prefix}planets.planet_id WHERE {$db->prefix}spies.active='N' AND {$db->prefix}planets.owner=? AND {$db->prefix}spies.owner_id=? ORDER BY ? ", array($playerinfo['player_id'], $playerinfo['player_id'], $by33));
+        $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}planets.name, {$db->prefix}planets.sector_id FROM {$db->prefix}spies INNER JOIN {$db->prefix}planets ON {$db->prefix}spies.planet_id={$db->prefix}planets.planet_id WHERE {$db->prefix}spies.active='N' AND {$db->prefix}planets.owner=$playerinfo[player_id] AND {$db->prefix}spies.owner_id=$playerinfo[player_id] ORDER BY $by33 ");
         if ($res->RecordCount())
         {
             echo "<table border=1 cellspacing=1 cellpadding=2 width=\"100%\">";
@@ -357,7 +357,7 @@ $line_color = $color_line2;
 
         ////4
         $line_color = $color_line2;
-        $res = $db->Execute("SELECT spy_id FROM {$db->prefix}spies WHERE active='N' AND owner_id=? AND ship_id=? AND planet_id='0' ORDER BY spy_id asc ", array($playerinfo['player_id'], $shipinfo['ship_id']));
+        $res = $db->Execute("SELECT spy_id FROM {$db->prefix}spies WHERE active='N' AND owner_id=$playerinfo[player_id] AND ship_id=$shipinfo[ship_id] AND planet_id='0' ORDER BY spy_id asc ");
         if ($res->RecordCount())
         {
             echo "<table border=1 cellspacing=1 cellpadding=2 width=\"100%\">";
@@ -387,9 +387,9 @@ $line_color = $color_line2;
     }
 
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->display("$templateset/spy.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

@@ -45,8 +45,8 @@ while (!$debug_query->EOF && $debug_query !='')
     $igb_results = $debug_query;
 }
 
-$template->assign("multiplier", $multiplier);
-$template->assign("igb_results", $igb_results);
-$template->display("$templateset/sched_igb.tpl");
+$smarty->assign("multiplier", $multiplier);
+$smarty->assign("igb_results", $igb_results);
+$smarty->display("$templateset/sched_igb.tpl");
 $multiplier = 0;
 ?>

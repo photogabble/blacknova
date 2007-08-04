@@ -53,11 +53,11 @@ if (($_POST['newpass1'] == $_POST['newpass2']) && ($accountinfo['password'] == s
     adodb_session_regenerate_id();
 
     // Get the player's account id
-    $res = $db->Execute("SELECT account_id from {$db->prefix}players WHERE player_id=?", array($playerinfo['player_id']));
+    $res = $db->Execute("SELECT account_id from {$db->prefix}players WHERE player_id=$playerinfo[player_id]");
     db_op_result($db,$res,__LINE__,__FILE__);
     $account_id = $res->fields['account_id'];
 
-    $debug_query = $db->Execute("UPDATE {$raw_prefix}users SET password=? WHERE account_id=?", array($_POST['crypted_password'], $account_id));
+    $debug_query = $db->Execute("UPDATE {$raw_prefix}users SET password='$_POST[crypted_password]' WHERE account_id=$account_id");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $_SESSION['password'] = $_POST['crypted_password'];
@@ -68,14 +68,14 @@ if ($_POST['ship_name'] != $shipinfo['name'])
     $ship_name = htmlspecialchars(trim($_POST['ship_name']),ENT_QUOTES,"UTF-8");
     if ($ship_name != '')
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET name=? WHERE ship_id=?", array($ship_name, $shipinfo['ship_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET name='$ship_name' WHERE ship_id=$shipinfo[ship_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 }
 
 if ($_POST['use_gravatar'] != $playerinfo['use_gravatar'])
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET use_gravatar=? WHERE player_id=?", array($_POST['use_gravatar'], $playerinfo['player_id']));
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET use_gravatar='$_POST[use_gravatar]' WHERE player_id=$playerinfo[player_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 
@@ -92,7 +92,7 @@ if ($allow_shoutbox)
 
     if ($sb_lines != $playerinfo['sb_lines'])
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET sb_lines=? WHERE player_id=?", array($sb_lines, $playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET sb_lines='$sb_lines' WHERE player_id=$playerinfo[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
@@ -107,7 +107,7 @@ if ($allow_shoutbox)
 
     if ($sb_footer != $playerinfo['sb_footer'])
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET sb_footer=? WHERE player_id=?", array($sb_footer, $playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET sb_footer='$sb_footer' WHERE player_id=$playerinfo[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
@@ -122,7 +122,7 @@ if ($allow_shoutbox)
 
     if ($sb_footer != $playerinfo['sb_backwards'])
     {
-        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET sb_backwards=? WHERE player_id=?", array($sb_backwards, $playerinfo['player_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET sb_backwards='$sb_backwards' WHERE player_id=$playerinfo[player_id]");
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 }
@@ -141,21 +141,21 @@ for ($i=0; $i<$maxval; $i++)
 //-------------------------------------------------------------------------------------------------
 
 global $l_global_mmenu;
-$template->assign("title", $title);
-$template->assign("l_global_mmenu", $l_global_mmenu);
-$template->assign("password", $accountinfo['password']);
-$template->assign("newpass1", $_POST['newpass1']);
-$template->assign("newpass2", $_POST['newpass2']);
-$template->assign("l_opt2_passunchanged", $l_opt2_passunchanged);
-$template->assign("l_opt2_newpassnomatch", $l_opt2_newpassnomatch);
-$template->assign("accountinfo_password", $accountinfo['password']);
-$template->assign("oldpass", sha256::hash($_POST['oldpass']));
-$template->assign("l_opt2_srcpassfalse", $l_opt2_srcpassfalse);
-$template->assign("debug_query", $debug_query);
-$template->assign("l_opt2_passchanged", $l_opt2_passchanged);
-$template->assign("l_opt2_passchangeerr", $l_opt2_passchangeerr);
-$template->assign("l_opt2_chlang", $l_opt2_chlang);
-$template->display("$templateset/option2.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_global_mmenu", $l_global_mmenu);
+$smarty->assign("password", $accountinfo['password']);
+$smarty->assign("newpass1", $_POST['newpass1']);
+$smarty->assign("newpass2", $_POST['newpass2']);
+$smarty->assign("l_opt2_passunchanged", $l_opt2_passunchanged);
+$smarty->assign("l_opt2_newpassnomatch", $l_opt2_newpassnomatch);
+$smarty->assign("accountinfo_password", $accountinfo['password']);
+$smarty->assign("oldpass", sha256::hash($_POST['oldpass']));
+$smarty->assign("l_opt2_srcpassfalse", $l_opt2_srcpassfalse);
+$smarty->assign("debug_query", $debug_query);
+$smarty->assign("l_opt2_passchanged", $l_opt2_passchanged);
+$smarty->assign("l_opt2_passchangeerr", $l_opt2_passchangeerr);
+$smarty->assign("l_opt2_chlang", $l_opt2_chlang);
+$smarty->display("$templateset/option2.tpl");
 
 include_once ("./footer.php");
 ?>

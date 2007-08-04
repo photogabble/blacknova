@@ -92,7 +92,7 @@ if (empty($content))
                         "{$db->prefix}players WHERE acl != '0' ORDER BY character_name ASC");
 
     $res2 = $db->Execute("SELECT team_name FROM {$db->prefix}teams ORDER BY team_name ASC");
-    echo '<form name="bntform" action="mailto.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="mailto.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
     echo "<table>";
     echo "<tr><td>$l_sendm_to:</td><td><select name=\"to\">";
 
@@ -143,7 +143,7 @@ if ($to != '')
 if (strpos($to, $l_sendm_ally) === false)
 {
     $timestamp = date("Y-m-d H:i:s");
-    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE character_name=?", array($to));
+    $res = $db->Execute("SELECT * FROM {$db->prefix}players WHERE character_name='$to'");
     $target_info = $res->fields;
     $content = htmlspecialchars($content,ENT_QUOTES,"UTF-8");
     $subject = htmlspecialchars($subject,ENT_QUOTES,"UTF-8");
@@ -157,9 +157,9 @@ else
     $to = str_replace ($l_sendm_ally, "", $to);
     $to = trim($to);
 
-    $res = $db->Execute("SELECT team_id FROM {$db->prefix}teams WHERE team_name=?", array($to));
+    $res = $db->Execute("SELECT team_id FROM {$db->prefix}teams WHERE team_name='$to'");
     $row = $res->fields;
-    $res2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE team=?", array($row['team_id']));
+    $res2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE team='$row[team_id]'");
 
     // New lines to prevent SQL injection. Bad stuff.
     $content = htmlspecialchars($content,ENT_QUOTES,"UTF-8");

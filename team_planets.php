@@ -52,17 +52,17 @@ if ($playerinfo['team'] == 0)
     return;
 }
 
-$query = "SELECT * FROM {$db->prefix}planets WHERE team=?";
+$query = "SELECT * FROM {$db->prefix}planets WHERE team=$playerinfo[team]";
 if (!empty($sort))
 {
     $query .= " ORDER BY";
     if ($sort == "name")
     {
-        $query .= $db->qstr($sort) . " ASC";
+        $query .= " $sort ASC";
     }
     elseif ($sort == "organics" || $sort == "ore" || $sort == "goods" || $sort == "energy" || $sort == "colonists" || $sort == "credits" || $sort == "fighters")
     {
-        $query .= $db->qstr($sort) . " DESC";
+        $query .= " $sort DESC";
     }
     elseif ($sort == "torp")
     {
@@ -74,7 +74,7 @@ if (!empty($sort))
     }
 }
 
-$res = $db->Execute($query, $playerinfo['team']);
+$res = $db->Execute($query);
 echo "<h1>" . $title. "</h1>\n";
 
 echo "<br>";
@@ -159,7 +159,7 @@ else
         }
 
         $owner = $planet[$i]['owner'];
-        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($owner));
+        $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=$owner");
         $player = $res->fields['character_name'];
 
         echo "<tr bgcolor=\"$color\">";

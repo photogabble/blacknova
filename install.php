@@ -16,7 +16,6 @@
 //
 // File: install.php
 
-$no_body = 1;
 include_once ("./global_includes.php");
 
 // Dynamic functions
@@ -30,14 +29,14 @@ $install_files = getDirFiles("install/");
 if ((!isset($_POST['step'])) || ($_POST['step'] ==''))
 {
     $_POST['step'] = "0";
+    $title = $l_install_title;
 }
-
-$title = $l_install_title . " - Phase ". ($_POST['step']+1) . " of " . (count($install_files)-1); // Step 0 isn't counted.
-
-if ($_POST['step'] != '3')
+else
 {
-    include_once ("./header.php");
+    $title = $l_install_title . " - Phase ". $_POST['step'] . " of " . (count($install_files)-1); // Step 0 isnt counted.
 }
+
+include_once ("./header.php");
 
 if ((!isset($_POST['swordfish'])) || ($_POST['swordfish'] ==''))
 {

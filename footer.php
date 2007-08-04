@@ -68,7 +68,7 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
     global $session_time_out;
     $session_kill = time() - $session_time_out;
     $session_stamp = date("Y-m-d H:i:s", time()+$session_time_out);
-    $debug_query = $db->Execute("SELECT character_name from {$db->prefix}players WHERE last_login < ?", array($session_stamp));
+    $debug_query = $db->Execute("SELECT character_name from {$db->prefix}players WHERE last_login < '$session_stamp'");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     if ($debug_query) // Returns false if db isnt setup yet.
@@ -103,7 +103,7 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
         $players_online = "  " . $l_footer_players_on_1 . " " . $online . " " . $l_footer_players_on_2;
     }
 
-    $res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date LIKE ? ORDER BY news_id", array($startdate . '%')); // Matches based on y-m-d.
+    $res = $db->Execute("SELECT * FROM {$db->prefix}news WHERE date LIKE '$startdate%' ORDER BY news_id"); // Matches based on y-m-d.
     if ($res)
     {
         if ($adminnews != '')
@@ -158,13 +158,14 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
             }
         }
 
-        $template->assign("url_array", $url_array);
-        $template->assign("news_array", $news_array);
-        $template->assign("l_main_noscript", $l_main_noscript);
+        $smarty->assign("url_array", $url_array);
+        $smarty->assign("news_array", $news_array);
+        $smarty->assign("l_main_noscript", $l_main_noscript);
     }
 }
 
 // Functions end
+// Easter egg comment - This aint no joke, damnit I aint playin!
 
 if (is_object($db) && ($raw_prefix != $db->prefix))
 {
@@ -294,14 +295,14 @@ if (is_object($db))
     }
 }
 
-$template->assign("seconds_until_update", $mySEC);
+$smarty->assign("seconds_until_update", $mySEC);
 
 if (isset($langdir))
 {
     global $l_footer_until_update, $l_footer_bad_updates, $l_footer_view_source;
-    $template->assign("l_footer_until_update", $l_footer_until_update);
-    $template->assign("l_footer_bad_updates", $l_footer_bad_updates);
-    $template->assign("l_footer_view_source", $l_footer_view_source);
+    $smarty->assign("l_footer_until_update", $l_footer_until_update);
+    $smarty->assign("l_footer_bad_updates", $l_footer_bad_updates);
+    $smarty->assign("l_footer_view_source", $l_footer_view_source);
 }
 
 // Take the buffer contents, md5 it, and that is our etag - which lets caches check against 'has file changed'.
@@ -312,20 +313,20 @@ if (ob_get_length())
     header("ETag: " . $etag);
 }
 
-$template->assign("scheduler_ticks", $sched_ticks);
-$template->assign("sched_type", $sched_type);
-$template->assign("sourcefile", basename($_SERVER['PHP_SELF']));
+$smarty->assign("scheduler_ticks", $sched_ticks);
+$smarty->assign("sched_type", $sched_type);
+$smarty->assign("sourcefile", basename($_SERVER['PHP_SELF']));
 if (!isset($view_source))
 {
     $view_source = FALSE;
 }
 
-$template->assign("view_source", $view_source);
+$smarty->assign("view_source", $view_source);
 
 global $BenchmarkTimer;
 if (is_object($BenchmarkTimer))
 {
-    $stoptime = $BenchmarkTimer->stop();
+    $stoptime = $BenchmarkTimer->stop();          
     $elapsed = $BenchmarkTimer->elapsed();
     $elapsed = substr($elapsed,0,5);
 }
@@ -333,7 +334,7 @@ else
 {
     $elapsed = 999;
 }
-$template->assign("gen_time", $elapsed);
+$smarty->assign("gen_time", $elapsed);
 
 if (basename($_SERVER['PHP_SELF']) == 'make_galaxy.php')
 {
@@ -348,21 +349,21 @@ if (basename($_SERVER['PHP_SELF']) == 'make_galaxy.php')
             $_SESSION['total_elapsed'] = $_SESSION['total_elapsed'] + $elapsed;
         }
 
-        $template->assign("total_elapsed", $_SESSION['total_elapsed']);
+        $smarty->assign("total_elapsed", $_SESSION['total_elapsed']);
     }
 }
 
-if (!is_object($db))
+if ($db=='')
 {
-    $template->assign("dbprefix", '');
+    $smarty->assign("dbprefix", '');
 }
 else
 {
-    $template->assign("dbprefix", $db->prefix);
+    $smarty->assign("dbprefix", $db->prefix);
 }
 
-$template->assign("raw_prefix", $raw_prefix);
-$template->display("$templateset/footer.tpl");
+$smarty->assign("raw_prefix", $raw_prefix);
+$smarty->display("$templateset/footer.tpl");
 
 $size='';
 if (is_object($db) && ($raw_prefix != $db->prefix))
@@ -402,7 +403,7 @@ if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && !$zl)
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH']))
 {
-    $inm = explode(',', $_SERVER['HTTP_IF_NONE_MATCH']);
+    $inm = split(',', $_SERVER['HTTP_IF_NONE_MATCH']);
     foreach ($inm as $i)
     {
         if (trim($i) == $etag)

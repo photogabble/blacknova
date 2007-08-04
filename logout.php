@@ -47,16 +47,18 @@ setcookie("PHPSESSID","",0,"/");
 
 session_destroy();
 
+// Easter egg comment - Ah, man, this is too funky for me. I'm goin' home. Hey, Mergatroid, let's go!
+
 $current_score = number_format(gen_score($db,$playerinfo['player_id']),0,$local_number_dec_point, $local_number_thousands_sep);
 
 $l_logout_text = str_replace("[name]",$playerinfo['character_name'],$l_logout_text);
 $l_logout_text = $l_logout_text . "<br><br><a href=\"index.php\">" . $l_global_mlogin . "</a>";
 
-$template->assign("title", $title);
-$template->assign("l_logout_score", $l_logout_score);
-$template->assign("current_score", $current_score);
-$template->assign("l_logout_text", $l_logout_text);
-$template->display("$templateset/logout.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_logout_score", $l_logout_score);
+$smarty->assign("current_score", $current_score);
+$smarty->assign("l_logout_text", $l_logout_text);
+$smarty->display("$templateset/logout.tpl");
 
 include_once ("./footer.php");
 ?>

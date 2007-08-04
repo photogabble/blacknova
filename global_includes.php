@@ -43,9 +43,9 @@ include_once ("./backends/adodb/session/adodb-cryptsession.php");
 include_once ("./includes/db_op_result.php");
 
 // Smarty provides templating
-include_once ("./backends/smarty/libs/Smarty.class.php");
-include_once ("./includes/smarty.php");
-//include_once ("./backends/smarty/src/class.template.php");
+//include_once ("./backends/smarty/libs/Smarty.class.php");
+//include_once ("./includes/smarty.php");
+include_once ("./backends/smarty/src/class.template.php");
 
 // Because these files declare variables (in the global scope), they can't
 // be called from inside a function.

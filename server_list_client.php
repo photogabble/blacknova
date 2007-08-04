@@ -80,14 +80,14 @@ $gm_all = "gm_speed=" . $gm_speed .
 $res = $db->Execute("SELECT COUNT({$db->prefix}ships.ship_id) AS x FROM {$db->prefix}ships, {$db->prefix}players LEFT JOIN {$raw_prefix}users " . 
                     "ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
                     "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND {$db->prefix}ships.destroyed='N' " .
-                    "AND {$raw_prefix}users.email NOT LIKE '%@aiplayer' AND {$db->prefix}players.turns_used > 0");
+                    "AND {$raw_prefix}users.email NOT LIKE '%@kabal' AND {$db->prefix}players.turns_used > 0");
 $row = $res->fields;
 $dyn_players = $row['x'];
     
 $res = $db->Execute("SELECT score, character_name FROM {$db->prefix}ships, {$db->prefix}players LEFT JOIN {$raw_prefix}users " .
                     "ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
                     "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND {$db->prefix}ships.destroyed='N' AND " .
-                    "{$raw_prefix}users.email NOT LIKE '%@aiplayer' ORDER BY score DESC");
+                    "{$raw_prefix}users.email NOT LIKE '%@kabal' ORDER BY score DESC");
 $row = $res->fields;
 $dyn_top_score = $row['score'];
 $dyn_top_player = $row['character_name'];
@@ -95,22 +95,22 @@ $dyn_top_player = $row['character_name'];
 $res = $db->Execute("SELECT COUNT({$db->prefix}ships.ship_id) AS x FROM {$db->prefix}ships,{$db->prefix}players LEFT JOIN {$raw_prefix}users " .
                     "ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
                     "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND {$db->prefix}ships.destroyed='N' AND " .
-                    "{$raw_prefix}users.email LIKE '%@aiplayer'");
+                    "{$raw_prefix}users.email LIKE '%@kabal'");
 $row = $res->fields;
-$dyn_aiplayer = $row['x'];
+$dyn_kabal = $row['x'];
 
 $res = $db->Execute("SELECT AVG(hull) AS a1 , AVG(engines) AS a2 , AVG(power) AS a3 , AVG(computer) AS a4 , " .
                     "AVG(sensors) AS a5 , AVG(beams) AS a6 , AVG(torp_launchers) AS a7 , AVG(shields) AS a8 , " .
                     "AVG(armour) AS a9 , AVG(cloak) AS a10 FROM {$db->prefix}ships,{$db->prefix}players LEFT JOIN {$raw_prefix}users " .
                     "ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
-                    "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND destroyed='N' AND email LIKE '%@aiplayer'");
+                    "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND destroyed='N' AND email LIKE '%@kabal'");
 $row = $res->fields;
-$dyn_aiplayer_lvl = $row['a1'] + $row['a2'] + $row['a3'] + $row['a4'] + $row['a5'] + $row['a6'] + $row['a7'] + $row['a8'] + $row['a9'] + $row['a10'];
-$dyn_aiplayer_lvl = $dyn_aiplayer_lvl / 10;
+$dyn_kabal_lvl = $row['a1'] + $row['a2'] + $row['a3'] + $row['a4'] + $row['a5'] + $row['a6'] + $row['a7'] + $row['a8'] + $row['a9'] + $row['a10'];
+$dyn_kabal_lvl = $dyn_kabal_lvl / 10;
     
 $dyn_all = "&dyn_players=" . $dyn_players .
-           "&dyn_aiplayer=" . $dyn_aiplayer .
-           "&dyn_aiplayer_lvl=" . $dyn_aiplayer_lvl .
+           "&dyn_kabal=" . $dyn_kabal .
+           "&dyn_kabal_lvl=" . $dyn_kabal_lvl .
            "&dyn_top_score=" . $dyn_top_score .
            "&dyn_top_player=" . rawurlencode($dyn_top_player) .
            "&dyn_key=" . rawurlencode($server_list_key);

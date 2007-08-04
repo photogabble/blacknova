@@ -60,9 +60,9 @@ foreach($_POST as $element=>$value)
     $_POST[$element] = preg_replace('/[^0-9]/','',$value);
 }
 
-$template->assign("title", $title);
-$template->assign("l_pr_menulink", $l_pr_menulink);
-$template->display("$templateset/planet_report_ce.tpl");
+$smarty->assign("title", $title);
+$smarty->assign("l_pr_menulink", $l_pr_menulink);
+$smarty->display("$templateset/planet_report_ce.tpl");
 
 if (isset($_POST['TPCreds']))
 {
