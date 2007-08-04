@@ -7,4 +7,3 @@ RewriteEngine On
 RewriteCond %{HTTP_REFERER} !^http://(www\.)?24\.26\.150\.127/ [NC]
 RewriteCond %{HTTP_REFERER} !^$
 RewriteRule \.(jpe?g|gif|bmp|png)$ - [F]
-ServerSignature Off
