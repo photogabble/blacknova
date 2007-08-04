@@ -21,4 +21,3 @@ function num_level($item_level, $level_factor, $level_magnitude)
     return round(pow($level_factor, $item_level) * $level_magnitude);
 }
 ?>
-
