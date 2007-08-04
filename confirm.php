@@ -35,8 +35,8 @@ $ip_address = getenv("REMOTE_ADDR"); // Get IP address for user
 $proxy_address = getenv("HTTP_X_FORWARDED_FOR"); // Get Proxy IP address for user
 $client_ip_address = getenv("HTTP_CLIENT_IP"); // Get http's IP address for user
 
-$debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE '$ip_address' LIKE ban_mask OR '$client_ip_address' " .
-                                "LIKE ban_mask OR '$proxy_address' LIKE ban_mask",1);
+$debug_query = $db->SelectLimit("SELECT ban_reason FROM {$raw_prefix}ip_bans WHERE ? LIKE ban_mask OR ? " .
+                                "LIKE ban_mask OR ? LIKE ban_mask",1,-1,array($ip_address, $client_ip_address, $proxy_address));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 if ($debug_query && !$debug_query->EOF)
@@ -82,19 +82,17 @@ if (!isset($_POST['submit']))
     $_POST['submit'] = '';
 }
 
-$smarty->assign("email", $email);
-$smarty->assign("title", $title);
-$smarty->assign("code", $c_code);
-$smarty->assign("submit", $_POST['submit']);
-$smarty->display("$templateset/confirm.tpl");
-
-// Easter egg comment - Its.. YOUR.. TURN.. NOW. Now you suck, suck it hard! Go down baby, you suck, lick it hard and move your tongue around.
+$template->assign("email", $email);
+$template->assign("title", $title);
+$template->assign("code", $c_code);
+$template->assign("submit", $_POST['submit']);
+$template->display("$templateset/confirm.tpl");
 
 // If they have clicked submit, check everything.
 if ($_POST['submit'] == 'submit')
 {
     $confirm = '';
-    $debug_query = $db->SelectLimit("SELECT * FROM {$raw_prefix}users WHERE email='$email' and c_code='$c_code'",1);
+    $debug_query = $db->SelectLimit("SELECT * FROM {$raw_prefix}users WHERE email=? and c_code=?",1,-1,array($email, $c_code));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $account_id = $debug_query->fields['account_id'];
 
@@ -123,7 +121,7 @@ if ($_POST['submit'] == 'submit')
             echo "Thank you for activating your account. <br><br>You may now";
             echo " <a href=\"index.php\">login</a>.";
 
-            $debug_query = $db->SelectLimit("UPDATE {$raw_prefix}users SET active='Y' WHERE account_id='$account_id'");
+            $debug_query = $db->SelectLimit("UPDATE {$raw_prefix}users SET active='Y' WHERE account_id=?", array($account_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
     }
