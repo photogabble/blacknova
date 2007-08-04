@@ -1,0 +1,18 @@
+User-agent: Fasterfox
+Disallow: /
+
+User-agent: *
+Disallow: /admin/
+Disallow: /backends/
+Disallow: /config/
+Disallow: /CVS/
+Disallow: /docs/
+Disallow: /extras/
+Disallow: /includes/
+Disallow: /install/
+Disallow: /languages/
+Disallow: /membench/
+Disallow: /mk_galaxy/
+Disallow: /mods/
+Disallow: /schema/
+Disallow: /templates/
