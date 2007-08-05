@@ -14,7 +14,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: db_output.php
+// File: inclues/db_output.php
+
 function db_output($db,$status,$served_line,$served_page)
 {
     global $langdir, $raw_prefix;

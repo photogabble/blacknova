@@ -4,7 +4,7 @@
 <h1>{$title}</h1>
 {$l_creating_planets}
 <br><br>
-<form action="make_galaxy.php" name="make_galaxy" method="post" accept-charset="utf-8">
+<form action="make_galaxy.php" name="make_galaxy" method="post">
 <input type="hidden" name="step" value="{$step}">
 <input type="hidden" name="autorun" value="{$autorun}">
 <input type="hidden" name="linksper" value="{$linksper}">

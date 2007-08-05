@@ -14,7 +14,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: log_parse.php
+// File: inclues/log_parse.php
+
 function log_parse($entry, $l_log_pod, $l_log_nopod, $space_plague_kills)
 {
     $texttemp = "l_log_text_" . $entry['type'];

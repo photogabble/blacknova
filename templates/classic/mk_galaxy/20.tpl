@@ -37,7 +37,7 @@
 {$set_torps_prodrate}{$torps_prodrate_results}
 <strong>{$l_store_complete}</strong>
 <br><br>
-<form action="make_galaxy.php" name="make_galaxy" method="post" accept-charset="utf-8">
+<form action="make_galaxy.php" name="make_galaxy" method="post">
 <input type="submit" value="{$l_continue}">
 <input type="hidden" name="gamenum" value="{$gamenum}">
 <input type="hidden" name="admin_charname" value="{$admin_charname}">

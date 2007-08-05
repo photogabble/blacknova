@@ -1,6 +1,6 @@
 <h1>{$title}</h1>
 
-<form name="bntform" action="zoneedit.php?command=change" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">
+<form name="bntform" action="zoneedit.php?command=change" method="post" onsubmit="document.bntform.submit_button.disabled=true;">
      <table border="0"><tr>
      <td align="right"><font style="font-size: 0.8em;"><strong>
 {$l_ze_name} : &nbsp;</strong></font></td>

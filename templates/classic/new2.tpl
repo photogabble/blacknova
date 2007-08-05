@@ -3,7 +3,7 @@
 {else}
 <h1>{$title}</h1>
 
-<form action="new3.php" method="post" accept-charset="utf-8">
+<form action="new3.php" method="post">
   <div style="text-align:center;">
       <input type="hidden" name="email" size="20" maxlength="40" value="{$email}">
       <input type="hidden" name="shipname" size="20" maxlength="20" value="{$shipname}">

@@ -14,8 +14,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: change_planet_production.php
-//
+// File: inclues/change_planet_production.php
+
+function change_planet_production($prodpercentarray)
+{
 //  NOTES on what this function does and how
 //  Declares some global variables so they are accessable
 //    $db, and default production values from the global_includes file
@@ -42,8 +44,6 @@
 //    This would save us from having to run through the database a second time checking our work.
 //
 
-function change_planet_production($prodpercentarray)
-{
     global $db;
     global $default_prod_ore, $default_prod_organics, $default_prod_goods, $default_prod_energy, $default_prod_fighters;
     global $default_prod_torp;
@@ -179,8 +179,8 @@ function change_planet_production($prodpercentarray)
         }
     }
 
-echo "<br><br>";
-global $l_global_mmenu;
-echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
+    echo "<br><br>";
+    global $l_global_mmenu;
+    echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 }
 ?>

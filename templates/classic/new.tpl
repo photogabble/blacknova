@@ -6,7 +6,7 @@
 {else}
 <h1>{$title}</h1>
 
-<form action="new3.php" method="post" accept-charset="utf-8">
+<form action="new3.php" method="post">
   <div style="text-align:center;">
   <table border="0" cellspacing="0" cellpadding="4">
     <tr>

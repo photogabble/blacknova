@@ -14,109 +14,76 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: install/1.php
+// File: install/20.php
 
-    if ($_POST['_ADODB_SESSION_DB'] == '')
-    {
-        echo "<strong>Database name cannot be empty! <a href=\"install.php\">Try again</a>.</strong>";
-    }
-    elseif ($_POST['_adminpass'] == '')
-    {
-        echo "<strong>Admin password cannot be empty! <a href=\"install.php\">Try again</a>.</strong>";
-    }
-    elseif ($_POST['_adminpass'] != $_POST['adminpass2'])
-    {
-        echo "<strong>Admin passwords don't match! <a href=\"install.php\">Try again</a>.</strong>";
-    }
-    elseif ($_POST['_ADODB_CRYPT_KEY'] == '')
-    {
-        echo "<strong>Session crypt key cannot be empty! <a href=\"install.php\">Try again</a>.</strong>";
-    }
-    elseif ($_POST['_server_type'] == '')
-    {
-        echo "<strong>Server type cannot be empty! <a href=\"install.php\">Try again</a>.</strong>";
-    }
-    else
-    {
-        clearstatcache();
-        $old_time = @filemtime('config/db_config.php');
-        // Writing the config file directly
-        $fs = @fopen('config/db_config.php', 'w+');
+$safe_mode = @ini_get("safe_mode");
 
-        $data = '';
-        $data .= "<?php\n";
-        $data .= "// Automatically created configuration file. Do not change!\n\n";
-        $data .= '$pos' . " = strpos(";
-        $data .= '$_SERVER[\'PHP_SELF\']';
-        $data .= ', "/db_config.php");';
-        $data .= "\nif (" . '$pos' . ' !== false)';
-        $data .= "\n{";
-        $data .= "\n    echo \"You can not access this file directly!\";";
-        $data .= "\n    die();";
-        $data .= "\n}\n\n";
-        foreach($_POST as $key => $value)
-        {
-            if (substr($key, 0, 1) == '_' )
-            {
-                $key = substr($key, 1);
-                $data .= "\$$key = \"$value\";\n";
-            }
-        }
-        $data .= "\n";
-        $data .= "?>\n";
-        @fwrite($fs, $data);
-        @fclose($fs);
-
-        clearstatcache();
-        $new_time = filemtime('config/db_config.php');
-        if ($old_time == $new_time)   // The file is not changed automatically -- error
-        {
-            $rawdata = rawurlencode($data);
-            docheck($old_time);
-        }
-        else
-        {
-            docheck(0);
-        }
-    }
-
-// If the file config/db_config.php does not allow writing, admin gets the download form
-function docheck($time_error)
+// Used for file integrity check
+if (!function_exists("file_get_contents"))
 {
-    global $rawdata;
+    // Dynamic functions
+    dynamic_loader ($db, "file_get_contents.php");
+}
 
-    include ("./config/db_config.php");   // Checking just created config file
+$reinstall = ($game_installed && $swordfish != $adminpass);
 
-    $game_installed = isset($ADODB_CRYPT_KEY);
-    if ($game_installed && !$time_error)
+if ($reinstall)
+{
+    $showit = 0;
+}
+
+$output = '';
+if ($showit == 1)     // Preparing values for the form
+{
+    $v[1]  = isset($ADODB_SESSION_DRIVER) ? $ADODB_SESSION_DRIVER : 'mysqlt';
+    $v[2]  = isset($ADODB_SESSION_DB) ? $ADODB_SESSION_DB : '';
+    $v[3]  = isset($ADODB_SESSION_USER) ? $ADODB_SESSION_USER : '';
+    $v[4]  = isset($ADODB_SESSION_PWD) ? $ADODB_SESSION_PWD : '';
+    $v[5]  = isset($ADODB_SESSION_CONNECT) ? $ADODB_SESSION_CONNECT : 'localhost';
+    $v[6]  = isset($dbport) ? $dbport : '3306';
+    $v[8]  = isset($raw_prefix) ? $raw_prefix : 'bnt_';
+    $v[14] = isset($adminpass) ? $adminpass : '';
+
+    if (isset($ADODB_CRYPT_KEY))
     {
-        echo "<font color=lime>Local settings successfully saved.</font><br><br>";
-        echo "Please change the permissions on your db_config.php right away!<br>";
-        echo "Set it to '0404', or user = R, group = ---, other = R--<br>";
-        echo "<font color=\"red\">If you do not, you risk having your server compromised!!</font><br>";
-        echo "make_galaxy.php will not run until you change that permission.<br><br>";
-        echo "Everything looks great! Feel free to run the <a href=\"./make_galaxy.php\">Create Universe</a> script now!";
-        echo "<br><br>If you have already run the make galaxy script, <a href=\"index.php\">Login now</a>.<br><br>";
+        $v[17] = $ADODB_CRYPT_KEY;
     }
     else
     {
-        echo "<script type=\"text/javascript\" defer=\"defer\">";
-        echo "function enablebutton()";
-        echo "{";
-        echo "    document.forms[1].secondbutton.disabled=false;";
-        echo "}";
-        echo "</script>";
+        $mykey='';
+        mt_srand((double)microtime()*1000000);
+        for ($i=0; $i<16; $i++)
+        {
+            $mykey .= chr(mt_rand(97,122));
+        }
+        $v[17] = $mykey;
+    }
 
-        echo "<font color=red><strong>ERROR:</strong><br>Local settings are <strong>NOT</strong> successfully saved.</font>";
+    $v[18] = isset($server_type) ? $server_type : 'http';
 
-        echo "<br><br><form action=\"install.php\" method=\"post\" accept-charset=\"utf-8\"><input type=\"hidden\" name=\"rawdata\" value=\"$rawdata\">";
-        echo "<input type=hidden name=\"step\" value=\"3\"><input type=submit value=\"Download\" onclick=\"enablebutton()\"> ";
-        echo "the file 'db_config.php' and upload it manually to <strong>/config</strong> subdir (overwrite the current one).</form>";
-
-        echo "<form action=\"install.php\" method=\"post\" accept-charset=\"utf-8\"><strong>AFTER</strong> that click <input type=\"hidden\" name=\"rawdata\" value=\"$rawdata\">";
-        echo "<input type=\"hidden\" name=\"step\" value=\"4\"><input type=\"hidden\" name=\"_adminpass\" value=\"$_POST[_adminpass]\">";
-        echo "<input type=\"hidden\" name=\"time_error\" value=\"$time_error\"><input type=\"submit\" name=\"secondbutton\" value=\"here.\" disabled=\"disabl$
+    foreach($dbs as $value => $name)
+    {
+        $output.= "<option value=$value " . ($v[1] == $value ? 'selected' : '') . ">$name</option>";
     }
 }
-?>
 
+$template->assign("title", $title);
+$template->assign("output", $output);
+$template->assign("v1", $v[1]);
+$template->assign("v2", $v[2]);
+$template->assign("v3", $v[3]);
+$template->assign("v4", $v[4]);
+$template->assign("v5", $v[5]);
+$template->assign("v6", $v[6]);
+$template->assign("v8", $v[8]);
+$template->assign("v14", $v[14]);
+$template->assign("v17", $v[17]);
+$template->assign("v18", $v[18]);
+$template->assign("showit", $showit);
+$template->assign("reinstall", $reinstall);
+$template->assign("safe_mode", $safe_mode);
+$template->assign("l_continue", $l_continue);
+$template->assign("step", ($_POST['step']+1));
+$template->display("$templateset/install/20.tpl");
+
+?>

@@ -19,14 +19,13 @@
 
 function load_languages($db, $raw_prefix, $file)
 {
-    if ($db =='')
+    if (!is_object($db))
     {
         return FALSE; // Database is not installed.
     }
 
     // Pull in language strings from the database
-    $debug_query = $db->Execute("SELECT name,value FROM {$raw_prefix}languages " .
-                                "where category='$file'");
+    $debug_query = $db->Execute("SELECT name,value FROM {$raw_prefix}languages where category=?", array($file));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     while ($debug_query && !$debug_query->EOF)

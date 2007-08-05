@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: set_langdir.php
+// File: includes/set_langdir.php
 
 function set_langdir($db, $badfile)
 {

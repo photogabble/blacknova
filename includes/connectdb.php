@@ -16,22 +16,27 @@
 //
 // File: includes/connectdb.php
 
-function connectdb($adodb_session_db, $adodb_session_driver, $adodb_session_user, $adodb_session_pwd, $adodb_session_connect, $dbport)
+function connectdb($adodb_session_db, $adodb_session_driver, $adodb_session_user, $adodb_session_pwd, $adodb_session_connect, $dbport, $raw_prefix)
 {
     if (!empty($dbport))
     {
-        $adodb_session_connect.= ":$dbport";
+        $adodb_session_connect.= ':'. $dbport;
     }
 
     $db = ADONewConnection("$adodb_session_driver");
-    $result = $db->Connect("$adodb_session_connect", "$adodb_session_user", "$adodb_session_pwd", "$adodb_session_db");
+    $result = $db->Connect($adodb_session_connect, $adodb_session_user, $adodb_session_pwd, $adodb_session_db);
 
     if (!$result)
     {
-        return FALSE;
+        //    $title = $l_error_occured;
+        die ("Unable to connect to the database: ");
+        //    include_once ("./footer.php");
     }
     else
     {
+        $db->debug = 0;
+        $db->autoRollback = true; // Shouldnt this be false?!
+        $db->prefix = $raw_prefix;
         return $db;
     }
 }

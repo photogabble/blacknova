@@ -14,14 +14,15 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: col_count_news.php
+// File: inclues/col_count_news.php
+
 function col_count_news($db, $player_id)
 {
     // Dynamic functions
     dynamic_loader ($db, "get_player.php");
 
-    $debug_query = $db->Execute("SELECT sum(colonists) as amount FROM {$db->prefix}planets WHERE owner='$player_id'" .
-                                " order by amount ASC");
+    $debug_query = $db->Execute("SELECT sum(colonists) as amount FROM {$db->prefix}planets WHERE owner=?" .
+                                " order by amount ASC", array($player_id));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $row = $debug_query->fields;
@@ -33,7 +34,7 @@ function col_count_news($db, $player_id)
         if ($colonist_count >= $rounded)
         {
             $news_type = 'col' . $rounded;
-            $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id='$player_id' and news_type='$news_type'");
+            $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id=? and news_type=?", array($player_id, $news_type));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             if ($debug_query->EOF)
@@ -52,7 +53,7 @@ function col_count_news($db, $player_id)
         if ($colonist_count >= $rounded)
         {
             $news_type = 'col' . $rounded;
-            $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id='$player_id' and news_type='$news_type'");
+            $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id=? and news_type=?", array($player_id, $news_type));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             if ($debug_query->EOF)
@@ -71,7 +72,7 @@ function col_count_news($db, $player_id)
         if ($colonist_count >= $rounded)
         {
             $news_type = 'col' . $rounded;
-            $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id='$player_id' and news_type='$news_type'");
+            $debug_query = $db->Execute("SELECT * FROM {$db->prefix}news WHERE user_id=? and news_type=?", array($player_id, $news_type));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             if ($debug_query->EOF)

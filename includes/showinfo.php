@@ -66,11 +66,12 @@ function showinfo($db,$whichteam,$isowner)
     echo "<td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.power&amp;direction=desc\">Power</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.computer&amp;direction=desc\">Computer</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.sensors&amp;direction=desc\">Sensors</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.armor&amp;direction=desc\">armor</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.shields&amp;direction=desc\">Shields</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.beams&amp;direction=desc\">Beams</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.torp_launchers&amp;direction=desc\">Torps</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=s.cloak&amp;direction=desc\">Cloak</a></strong></font></h3></td><td align='center'><h3><font color=white><strong><a href=\"team_report.php?orderby=p.score&amp;direction=desc\">Score</a></strong></font></h3>";
     echo "</tr><tr bgcolor=\"$color_line2\">";
 
-    $result  = $db->Execute("SELECT * FROM {$db->prefix}players as p, {$db->prefix}ships as s WHERE p.team=$whichteam and s.player_id=p.player_id AND s.ship_id=p.currentship order by ".$orderby." ".$direction);
+    $result  = $db->Execute("SELECT * FROM {$db->prefix}players as p, {$db->prefix}ships as s WHERE p.team=? and s.player_id=p.player_id AND s.ship_id=p.currentship order by ? ?", array($whichteam, $orderby, $direction));
     while (!$result->EOF)
     {
         $member = $result->fields;
-        $debug_query = $db->CacheSelectLimit("SELECT * FROM {$db->prefix}ship_types WHERE type_id=$member[class]",1);
+        // Consider caching here.
+        $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ship_types WHERE type_id=?",1,-1, array($member['class']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $classstuff = $debug_query->fields;
 

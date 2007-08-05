@@ -24,23 +24,23 @@ if ($pos !== false)
 }
 
 // Template Lite
-$smarty = new Template_Lite;
+$template = new bnt_smarty;
 
 $l_welcome_make = str_replace("[project]", $l_project_name, $l_welcome_make);
-$smarty->assign("l_welcome_make",$l_welcome_make);
-$smarty->assign("l_welcome_assist",$l_welcome_assist);
-$smarty->assign("l_welcome_defaults",$l_welcome_defaults);
-$smarty->assign("l_welcome_limits",$l_welcome_limits);
-$smarty->assign("l_welcome_safe",$l_welcome_safe);
-$smarty->assign("l_welcome_badidea",$l_welcome_badidea);
-$smarty->assign("l_welcome_nosupport",$l_welcome_nosupport);
-$smarty->assign("l_admin_password",$l_admin_password);
-$smarty->assign("l_readmin_password",$l_readmin_password);
-$smarty->assign("templateset", $templateset);
-$smarty->assign("title", $title);
-$smarty->assign("l_submit", $l_submit);
-$smarty->assign("l_reset", $l_reset);
-$smarty->assign("badpass", $badpass);
-$smarty->display("$templateset/mk_galaxy/0.tpl");
+$template->assign("l_welcome_make",$l_welcome_make);
+$template->assign("l_welcome_assist",$l_welcome_assist);
+$template->assign("l_welcome_defaults",$l_welcome_defaults);
+$template->assign("l_welcome_limits",$l_welcome_limits);
+$template->assign("l_welcome_safe",$l_welcome_safe);
+$template->assign("l_welcome_badidea",$l_welcome_badidea);
+$template->assign("l_welcome_nosupport",$l_welcome_nosupport);
+$template->assign("l_admin_password",$l_admin_password);
+$template->assign("l_readmin_password",$l_readmin_password);
+$template->assign("templateset", $templateset);
+$template->assign("title", $title);
+$template->assign("l_submit", $l_submit);
+$template->assign("l_reset", $l_reset);
+$template->assign("badpass", $badpass);
+$template->display("$templateset/mk_galaxy/0.tpl");
 $filezero = 1;
 ?>

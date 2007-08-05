@@ -112,8 +112,7 @@ for ($i=0; ($i<$special_ports-1); $i++)
 $s = 0;
 
 // This is cute - we tell it to get an array of empty sectors (they all are) other than the unique sectors, and randomize it.
-$query = "SELECT sector_id FROM {$db->prefix}universe WHERE sector_id>3 ORDER BY " . $db->random;
-$empty_sectors = $db->Execute($query);
+$empty_sectors = $db->Execute("SELECT sector_id FROM {$db->prefix}universe WHERE sector_id>3 ORDER BY ?", array($db->random));
 db_op_result($db,$empty_sectors,__LINE__,__FILE__);
 
 unset($insertquery); // Cleanup - this keeps memory usage low!
@@ -366,25 +365,25 @@ if (isset($insertquery))
 $all_ports_results_array[7] = db_output($db,!$cumulative,__LINE__,__FILE__);
 
 // build a form for the next stage
-$smarty->assign("special_ports_results_array", $special_ports_results_array);
-$smarty->assign("l_special_ports_array", $l_special_ports_array);
-$smarty->assign("l_all_ports_array", $l_all_ports_array);
-$smarty->assign("all_ports_results_array", $all_ports_results_array);
-$smarty->assign("autorun", $_POST['autorun']);
-$smarty->assign("title", $title);
-$smarty->assign("l_create_sectors", $l_create_sectors);
-$smarty->assign("l_repair_collisions", $l_repair_collisions);
-$smarty->assign("l_set_sector_max", $l_set_sector_max);
-$smarty->assign("sektors", $_POST['sektors']);
-$smarty->assign("nump", $_POST['nump']);
-$smarty->assign("linksper", $_POST['linksper']);
-$smarty->assign("twoways", $_POST['twoways']);
-$smarty->assign("encrypted_password", $_POST['encrypted_password']);
-$smarty->assign("l_continue", $l_continue);
-$smarty->assign("step", ($_POST['step']+1));
-$smarty->assign("admin_charname", $_POST['admin_charname']);
-$smarty->assign("gamenum", $_POST['gamenum']);
-$smarty->display("$templateset/mk_galaxy/60.tpl");
+$template->assign("special_ports_results_array", $special_ports_results_array);
+$template->assign("l_special_ports_array", $l_special_ports_array);
+$template->assign("l_all_ports_array", $l_all_ports_array);
+$template->assign("all_ports_results_array", $all_ports_results_array);
+$template->assign("autorun", $_POST['autorun']);
+$template->assign("title", $title);
+$template->assign("l_create_sectors", $l_create_sectors);
+$template->assign("l_repair_collisions", $l_repair_collisions);
+$template->assign("l_set_sector_max", $l_set_sector_max);
+$template->assign("sektors", $_POST['sektors']);
+$template->assign("nump", $_POST['nump']);
+$template->assign("linksper", $_POST['linksper']);
+$template->assign("twoways", $_POST['twoways']);
+$template->assign("encrypted_password", $_POST['encrypted_password']);
+$template->assign("l_continue", $l_continue);
+$template->assign("step", ($_POST['step']+1));
+$template->assign("admin_charname", $_POST['admin_charname']);
+$template->assign("gamenum", $_POST['gamenum']);
+$template->display("$templateset/mk_galaxy/60.tpl");
 
 // Dynamic functions
 dynamic_loader ($db, "dump_ports_to_db.php");

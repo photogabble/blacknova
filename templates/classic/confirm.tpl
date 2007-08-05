@@ -4,7 +4,7 @@
 
 <h1>{$title}</h1>
 
-<form method="post" action="confirm.php" accept-charset="utf-8">
+<form method="post" action="confirm.php">
 {if $submit!="submit"}
 <table>
   <tr>

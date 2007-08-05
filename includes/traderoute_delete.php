@@ -28,7 +28,7 @@ function traderoute_delete()
     global $l_tdr_returnmenu, $l_tdr_tdrdoesntexist, $l_tdr_notowntdr, $l_tdr_tdrdeleted;
     global $db;
 
-    $query = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE traderoute_id=$_GET[traderoute_id]");
+    $query = $db->Execute("SELECT * FROM {$db->prefix}traderoutes WHERE traderoute_id=?", array($_GET['traderoute_id']));
     if (!$query || $query->EOF)
     {
         traderoute_die($l_tdr_tdrdoesntexist);
@@ -49,7 +49,7 @@ function traderoute_delete()
     }
     else
     {
-        $query = $db->Execute("DELETE FROM {$db->prefix}traderoutes WHERE traderoute_id=$_GET[traderoute_id]");
+        $query = $db->Execute("DELETE FROM {$db->prefix}traderoutes WHERE traderoute_id=?", $_GET['traderoute_id']);
         echo "$l_tdr_tdrdeleted <a href=traderoute.php>$l_tdr_returnmenu</a>";
         traderoute_die("");
     }

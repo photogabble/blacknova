@@ -15,8 +15,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // File: includes/phpmailer.php
-
+//
 // Include the phpmailer backend
+
 include_once ("./backends/phpmailer/class.phpmailer.php");
 
 class bnt_mailer extends phpmailer // This handles mail for the game.

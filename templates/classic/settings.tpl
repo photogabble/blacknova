@@ -112,7 +112,7 @@
 {/if}
 
 {else}
-<form action="settings.php" method="post" accept-charset="utf-8">
+<form action="settings.php" method="post">
 <select name=gamenum>
 {html_options options=$game_instances}
 </select>

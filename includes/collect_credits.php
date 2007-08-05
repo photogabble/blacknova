@@ -1,4 +1,5 @@
 <?php
+<?php
 // Copyright (C) 2001 Ron Harwood and L. Patrick Smallwood
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -14,7 +15,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: collect_credits.php
+// File: inclues/collect_credits.php
+
 function collect_credits($planetarray)
 {
     global $db, $l_pr_notenoughturns, $l_pr_planetstatus;
@@ -28,7 +30,7 @@ function collect_credits($planetarray)
     {
         for ($i = 0; $i < $max; $i++)
         {
-            $res = $db->SelectLimit("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planetarray[$i]",1);
+            $res = $db->SelectLimit("SELECT * FROM {$db->prefix}planets WHERE planet_id=?",1,-1, array($planetarray[$i]));
             $s_p_pair[$i]= array($res->fields['sector_id'], $planetarray[$i]);
         }
     }

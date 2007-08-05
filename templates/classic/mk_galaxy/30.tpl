@@ -3,7 +3,7 @@
 <div style="background-image: url( templates/{$templateset}/images/header-stretch.png ); background-repeat: repeat-x;">
 <div align="left"><img src="templates/{$templateset}/images/header.png" alt="Blacknova Traders"></div></div>
 <h1>{$title}</h1>
-<form action="make_galaxy.php" name="make_galaxy" method="post" accept-charset="utf-8">
+<form action="make_galaxy.php" name="make_galaxy" method="post">
 <table>
     <tr>
         <td><strong><u>{$l_planet_setup}</u></strong></td>

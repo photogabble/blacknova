@@ -1,7 +1,7 @@
 <h1>{$title}</h1>
 
 {if $empty_content}
-<form name="bntform" action="feedback.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">
+<form name="bntform" action="feedback.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">
 <table>
   <tr>
     <td>{$l_feedback_to}</td>

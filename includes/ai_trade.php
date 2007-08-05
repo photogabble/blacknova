@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: ai_trade.php
+// File: includes/ai_trade.php
 //
 // Description: The function handling AI trading routines.
 
@@ -36,16 +36,16 @@ function ai_trade()
     $goods_price = 15;
 
     //  Obtain sector information
-    $sectres = $db->Execute ("SELECT * FROM {$db->prefix}universe WHERE sector_id='$playerinfo[sector]'");
+    $sectres = $db->Execute ("SELECT * FROM {$db->prefix}universe WHERE sector_id=?", array($playerinfo['sector']));
     $sectorinfo = $sectres->fields;
 
     //  Obtain port information
-    $portres = $db->Execute ("SELECT * FROM {$db->prefix}ports WHERE sector_id='$playerinfo[sector]'");
+    $portres = $db->Execute ("SELECT * FROM {$db->prefix}ports WHERE sector_id=?", array($playerinfo['sector']));
     $portinfo = $sectres->fields;
 
     // Obtain zone information
     $zoneres = $db->Execute ("SELECT zone_id,allow_attack,allow_trade FROM {$db->prefix}zones WHERE " .
-                             "zone_id='$sectorinfo[zone_id]'");
+                             "zone_id=?", array($sectorinfo['zone_id']));
     $zonerow = $zoneres->fields;
 
     //  Make sure we can trade here
@@ -147,12 +147,12 @@ function ai_trade()
         $newore = $playerinfo['ship_ore']+$amount_ore;
         $neworganics = max(0,$playerinfo['ship_organics']-$amount_organics);
         $newgoods = max(0,$playerinfo['ship_goods']-$amount_goods);
-        $trade_result = $db->Execute("UPDATE {$db->prefix}ships SET rating=rating+1, credits=$newcredits, " .
-                                     "ship_ore=$newore, ship_organics=$neworganics, ship_goods=$newgoods WHERE " .
-                                     "ship_id=$playerinfo[ship_id]");
-        $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore-$amount_ore, " .
-                                      "port_organics=port_organics+$amount_organics, port_goods=port_goods+$amount_goods " .
-                                      "WHERE sector_id=$sectorinfo[sector_id]");
+        $trade_result = $db->Execute("UPDATE {$db->prefix}ships SET rating=rating+1, credits=?, " .
+                                     "ship_ore=?, ship_organics=?, ship_goods=? WHERE " .
+                                     "ship_id=?", array($newcredits, $newore, $neworganics, $newgoods, $playerinfo['ship_id']));
+        $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore-?, " .
+                                      "port_organics=port_organics+?, port_goods=port_goods+? " .
+                                      "WHERE sector_id=?", array($amount_ore, $amount_organics, $amount_goods, $sectorinfo['sector_id']));
     }
 
     if ($portinfo['port_type']== "organics") //  Port organics
@@ -181,12 +181,12 @@ function ai_trade()
         $newore = max(0,$playerinfo['ship_ore']-$amount_ore);
         $neworganics = $playerinfo['ship_organics']+$amount_organics;
         $newgoods = max(0,$playerinfo['ship_goods']-$amount_goods);
-        $trade_result = $db->Execute("UPDATE {$db->prefix}ships SET rating=rating+1, credits=$newcredits, " .
-                                     "ship_ore=$newore, ship_organics=$neworganics, ship_goods=$newgoods WHERE " .
-                                     "ship_id=$playerinfo[ship_id]");
-        $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore+$amount_ore, " .
-                                      "port_organics=port_organics-$amount_organics, " .
-                                      "port_goods=port_goods+$amount_goods WHERE sector_id=$sectorinfo[sector_id]");
+        $trade_result = $db->Execute("UPDATE {$db->prefix}ships SET rating=rating+1, credits=?, " .
+                                     "ship_ore=?, ship_organics=?, ship_goods=? WHERE " .
+                                     "ship_id=?", array($newcredits, $newore, $neworganics, $newgoods, $playerinfo['ship_id']));
+        $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore+?, " .
+                                      "port_organics=port_organics-?, " .
+                                      "port_goods=port_goods+? WHERE sector_id=?", array($amount_ore, $amount_organics, $amount_goods, $sectorinfo['sector_id']));
         // playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal Trade Results: Sold $amount_goods Goods Sold $amount_ore Ore Bought $amount_organics Organics Cost $total_cost"); 
     }
 
@@ -216,12 +216,12 @@ function ai_trade()
         $newore = max(0,$playerinfo['ship_ore']-$amount_ore);
         $neworganics = max(0,$playerinfo['ship_organics']-$amount_organics);
         $newgoods = $playerinfo['ship_goods']+$amount_goods;
-        $trade_result = $db->Execute("UPDATE {$db->prefix}ships SET rating=rating+1, credits=$newcredits, " .
-                                     "ship_ore=$newore, ship_organics=$neworganics, ship_goods=$newgoods WHERE " .
-                                     "ship_id=$playerinfo[ship_id]");
-        $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore+$amount_ore, " .
-                                      "port_organics=port_organics+$amount_organics, " .
-                                      "port_goods=port_goods-$amount_goods WHERE sector_id=$sectorinfo[sector_id]");
+        $trade_result = $db->Execute("UPDATE {$db->prefix}ships SET rating=rating+1, credits=?, " .
+                                     "ship_ore=?, ship_organics=?, ship_goods=? WHERE " .
+                                     "ship_id=?", array($newcredits, $newore, $neworganics, $newgoods, $playerinfo['ship_id']));
+        $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore+?, " .
+                                      "port_organics=port_organics+?, " .
+                                      "port_goods=port_goods-? WHERE sector_id=?", array($amount_ore, $amount_organics, $amount_goods, $sectorinfo['sector_id']));
         // playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal Trade Results: Sold $amount_ore Ore Sold $amount_organics Organics Bought $amount_goods Goods Cost $total_cost"); 
     }
 }

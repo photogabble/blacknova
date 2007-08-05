@@ -40,11 +40,11 @@ Select a function from the list below:<br><br>
 
 {if $button_main}
 <br>
-<form name="bntforma" action="admin.php" method="post" accept-charset="utf-8" onsubmit="document.bntforma.submit_button.disabled=true;">
+<form name="bntforma" action="admin.php" method="post" onsubmit="document.bntforma.submit_button.disabled=true;">
   <input name="submit_button" type="submit" value="Return to admin menu">
 </form>
 
-<form name="bntformb" action="main.php" method="post" accept-charset="utf-8" onsubmit="document.bntformb.submit_button.disabled=true;">
+<form name="bntformb" action="main.php" method="post" onsubmit="document.bntformb.submit_button.disabled=true;">
   <input name="submit_button" type="submit" value="Return to main menu">
 </form>
 {/if}

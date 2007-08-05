@@ -14,8 +14,9 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: playerlog.php
-function playerlog($db, $player_id, $log_type, $data = '')
+// File: includes/playerlog.php
+
+function playerlog($db,$player_id, $log_type, $data = '')
 {
     // write log_entry to the player's log - identified by player's id.
     if (!empty($log_type))

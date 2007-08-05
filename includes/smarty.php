@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: smarty.php
+// File: includes/smarty.php
 // Todo: Add support for variable scratch dir settings.
 // Todo: Add commenting for each setting.
 

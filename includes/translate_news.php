@@ -15,7 +15,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // File: includes/translate_news.php
+//
 // All functions assume $day is a valid formatted time
+
 function translate_news($entry)
 {
     global $l_news_p_headline, $l_news_p_text_small, $l_news_p_text_big, $l_news_p_text_huge; // planet stuff.

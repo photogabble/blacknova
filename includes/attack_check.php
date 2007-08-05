@@ -20,9 +20,7 @@ function attack_check($db, $ip_address, $attack_repeats)
 {
     $now = date("Y-m-d");
     $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}logs WHERE log_data " .
-                                    "like '%bad login%' and log_time like '%". 
-                                    $now . "%' and log_data like '%" . $ip_address . 
-                                    "%'", $attack_repeats+1);
+                                    "like '%bad login%' and log_time like ? and log_data like ?", $attack_repeats+1, -1, array('%'.$now.'%', '%'.$ip_address.'%'));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $count = $debug_query->Recordcount();

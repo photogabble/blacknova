@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: ai_toship.php
+// File: includes/ai_toship.php
 //
 // Description: The function handling AI to ship.
 
@@ -48,7 +48,7 @@ function ai_toship($ship_id)
     // Get target details
     // We try to avoid locks, so this is commented out for now.
     //  $db->Execute("LOCK TABLES {$db->prefix}ships WRITE, {$db->prefix}universe WRITE, {$db->prefix}zones READ, {$db->prefix}planets READ, {$db->prefix}news WRITE, {$db->prefix}logs WRITE, {$db->prefix}bounty WRITE");
-    $resultt = $db->Execute ("SELECT * FROM {$db->prefix}ships WHERE ship_id='$ship_id'");
+    $resultt = $db->Execute ("SELECT * FROM {$db->prefix}ships WHERE ship_id=?", array($ship_id));
     $targetinfo = $resultt->fields;
 
     //  VERIFY NOT ATTACKING ANOTHER AI player
@@ -61,9 +61,9 @@ function ai_toship($ship_id)
     }
 
     //  VERIFY SECTOR ALLOWS ATTACK 
-    $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db->prefix}universe WHERE sector_id=$targetinfo[sector]");
+    $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db->prefix}universe WHERE sector_id=?", array($targetinfo['sector']));
     $sectrow = $sectres->fields;
-    $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db->prefix}zones WHERE zone_id=$sectrow[zone_id]");
+    $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db->prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
     $zonerow = $zoneres->fields;
 
     if ($zonerow['allow_attack']== "N")                        // DEST LINK MUST ALLOW ATTACKING 
@@ -85,7 +85,7 @@ function ai_toship($ship_id)
     
     // Check to see if there is Federation bounty on the player. If there is, AINAME can attack regardless.
     $btyamount = 0;
-    $hasbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM {$db->prefix}bounty WHERE bounty_on = $targetinfo[ship_id] AND placed_by = 0");
+    $hasbounty = $db->Execute("SELECT SUM(amount) AS btytotal FROM {$db->prefix}bounty WHERE bounty_on=? AND placed_by = 0", array($targetinfo['ship_id']));
     if ($hasbounty)
     {
         $resx = $hasbounty->fields;
@@ -94,7 +94,7 @@ function ai_toship($ship_id)
     if ($btyamount <= 0) 
     {
         $bounty = ROUND($playerbountyscore * $bounty_maxvalue);
-        $insert = $db->Execute("INSERT INTO {$db->prefix}bounty (bounty_on,placed_by,amount) values ($playerinfo[ship_id], 0 ,$bounty)");      
+        $insert = $db->Execute("INSERT INTO {$db->prefix}bounty (bounty_on,placed_by,amount) values (?, 0,?)", array($playerinfo['ship_id'], $bounty));
         playerlog($db,$playerinfo['ship_id'], "LOG_BOUNTY_FEDBOUNTY","$bounty");
     }
 
@@ -103,7 +103,7 @@ function ai_toship($ship_id)
     {
         playerlog($db,$targetinfo['ship_id'], "LOG_ATTACK_EWD", "AINAME $playerinfo[character_name]");
         $dest_sector=mt_rand(0,$sector_max);
-        $result_warp = $db->Execute ("UPDATE {$db->prefix}ships SET sector=$dest_sector, dev_emerwarp=dev_emerwarp-1 WHERE ship_id=$targetinfo[ship_id]");
+        $result_warp = $db->Execute ("UPDATE {$db->prefix}ships SET sector=?, dev_emerwarp=dev_emerwarp-1 WHERE ship_id=?", array($dest_sector, $targetinfo['ship_id']));
         //  $db->Execute("UNLOCK TABLES");
         return;
     }
@@ -414,7 +414,7 @@ function ai_toship($ship_id)
         if ($targetinfo['dev_escapepod'] == "Y") //  TARGET HAD ESCAPE POD
         {
             $rating=round($targetinfo['rating']/2);
-            $db->Execute("UPDATE {$db->prefix}ships SET hull=0, engines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=100, cloak=0, shields=0, sector=0, ship_ore=0, ship_organics=0, ship_energy=1000, ship_colonists=0, ship_goods=0, ship_fighters=100, ship_damage='', on_planet='N', planet_id=0, dev_warpedit=0, dev_genesis=0, dev_beacon=0, dev_emerwarp=0, dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, ship_destroyed='N', rating='$rating',dev_lssd='N' WHERE ship_id=$targetinfo[ship_id]");
+            $db->Execute("UPDATE {$db->prefix}ships SET hull=0, engines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=100, cloak=0, shields=0, sector=0, ship_ore=0, ship_organics=0, ship_energy=1000, ship_colonists=0, ship_goods=0, ship_fighters=100, ship_damage='', on_planet='N', planet_id=0, dev_warpedit=0, dev_genesis=0, dev_beacon=0, dev_emerwarp=0, dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, ship_destroyed='N', rating=?, dev_lssd='N' WHERE ship_id=?", array($rating, $targetinfo['ship_id']));
             playerlog($db,$targetinfo['ship_id'], "LOG_ATTACK_LOSE", "AINAME $playerinfo[character_name]|Y"); 
         }
         else    //  TARGET HAD NO POD 
@@ -482,11 +482,11 @@ function ai_toship($ship_id)
             $ship_salvage_rate = mt_rand(10,20);
             $ship_salvage= $ship_value*$ship_salvage_rate/100;
             playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Attack successful, $targetinfo[character_name] was defeated and salvaged for $ship_salvage credits."); 
-            $db->Execute ("UPDATE {$db->prefix}ships SET ship_ore=ship_ore+$salv_ore, ship_organics=ship_organics+$salv_organics, ship_goods=ship_goods+$salv_goods, credits=credits+$ship_salvage WHERE ship_id=$playerinfo[ship_id]");
+            $db->Execute ("UPDATE {$db->prefix}ships SET ship_ore=ship_ore+?, ship_organics=ship_organics+?, ship_goods=ship_goods+?, credits=credits+? WHERE ship_id=?", array($salv_ore, $salv_organics, $salv_goods, $ship_salvage, $playerinfo['ship_id']));
             $armor_lost = $playerinfo['armor_pts'] - $attackerarmor;
             $fighters_lost = $playerinfo['ship_fighters'] - $attackerfighters;
             $energy = $playerinfo['ship_energy'];
-            $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, torps=torps-$attackertorps,armor_pts=armor_pts-$armor_lost, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
+            $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, ship_fighters=ship_fighters-?, torps=torps-?, armor_pts=armor_pts-?, rating=rating-? WHERE ship_id=?", array($energy, $fighters_lost, $attackertorps, $armor_lost, $rating_change, $playerinfo['ship_id']));
         }
     }
 
@@ -503,8 +503,8 @@ function ai_toship($ship_id)
         $target_energy = $targetinfo['ship_energy'];
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Attack failed, $targetinfo[character_name] survived."); 
         playerlog($db,$targetinfo['ship_id'], "LOG_ATTACK_WIN", "AINAME $playerinfo[character_name]|$target_armor_lost|$target_fighters_lost");
-        $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, torps=torps-$attackertorps,armor_pts=armor_pts-$armor_lost, rating=rating-$rating_change WHERE ship_id=$playerinfo[ship_id]");
-        $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$target_energy,ship_fighters=ship_fighters-$target_fighters_lost, armor_pts=armor_pts-$target_armor_lost, torps=torps-$targettorpnum, rating=$target_rating_change WHERE ship_id=$targetinfo[ship_id]");
+        $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, ship_fighters=ship_fighters-?, torps=torps-?, armor_pts=armor_pts-?, rating=rating-? WHERE ship_id=?", array($energy, $fighters_lost, $attackertorps, $armor_lost, $rating_change, $playerinfo['ship_id']));
+        $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, ship_fighters=ship_fighters-?, armor_pts=armor_pts-?, torps=torps-?, rating=? WHERE ship_id=?", array($target_energy, $target_fighters_lost, $target_armor_lost, $targettorpnum, $target_rating_change, $targetinfo['ship_id']));
     }
 
     //  ATTACKER SHIP DESTROYED   
@@ -574,11 +574,11 @@ function ai_toship($ship_id)
             $ship_salvage= $ship_value*$ship_salvage_rate/100;
             playerlog($db,$targetinfo['ship_id'], "LOG_ATTACK_WIN", "AINAME $playerinfo[character_name]|$armor_lost|$fighters_lost");
             playerlog($db,$targetinfo['ship_id'], "LOG_RAW", "You destroyed the AINAME ship and salvaged $salv_ore units of ore, $salv_organics units of organics, $salv_goods units of goods, and salvaged $ship_salvage_rate% of the ship for $ship_salvage credits.");
-            $db->Execute ("UPDATE {$db->prefix}ships SET ship_ore=ship_ore+$salv_ore, ship_organics=ship_organics+$salv_organics, ship_goods=ship_goods+$salv_goods, credits=credits+$ship_salvage WHERE ship_id=$targetinfo[ship_id]");
+            $db->Execute ("UPDATE {$db->prefix}ships SET ship_ore=ship_ore+?, ship_organics=ship_organics+?, ship_goods=ship_goods+?, credits=credits+? WHERE ship_id=?", array($salv_ore, $salv_organics, $salv_goods, $ship_salvage, $targetinfo['ship_id']));
             $armor_lost = $targetinfo['armor_pts'] - $targetarmor;
             $fighters_lost = $targetinfo['ship_fighters'] - $targetfighters;
             $energy = $targetinfo['ship_energy'];
-            $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$energy,ship_fighters=ship_fighters-$fighters_lost, torps=torps-$targettorpnum,armor_pts=armor_pts-$armor_lost, rating=rating-$rating_change WHERE ship_id=$targetinfo[ship_id]");
+            $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, ship_fighters=ship_fighters-?, torps=torps-?, armor_pts=armor_pts-?, rating=rating-? WHERE ship_id=?", array($energy, $fighters_lost, $targettorpnum, $armor_lost, $rating_change, $targetinfo['ship_id']));
         }
     }
 

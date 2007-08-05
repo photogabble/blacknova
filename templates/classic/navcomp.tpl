@@ -4,7 +4,7 @@
 $l_nav_nocomp<br><br>
 {else}
     {if $state == 0}
-        <form action="navcomp.php" method="post" accept-charset="utf-8">
+        <form action="navcomp.php" method=post>
         {$l_nav_query} <input name=destination>
         <input type=submit value={$l_submit}><br>
         <input name=state value=1 type=hidden>

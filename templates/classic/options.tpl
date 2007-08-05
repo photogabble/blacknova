@@ -2,7 +2,7 @@
 
 <h1>{$title}</h1>
 
-<form action="option2.php" method="post" accept-charset="utf-8">
+<form action="option2.php" method="post">
   <table border="0" cellspacing="0" cellpadding="2">
     <tr bgcolor="{$color_header}">
       <td colspan="2"><strong>{$l_opt_chpass}</strong></td>

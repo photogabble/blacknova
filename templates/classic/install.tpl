@@ -1,6 +1,6 @@
 <div style="text-align:center;">
 <h1>{$title}</h1>
-<form action="install.php" method="post" accept-charset="utf-8">
+<form action="install.php" method="post">
 <br><br>
 
 <table cellpadding="4">

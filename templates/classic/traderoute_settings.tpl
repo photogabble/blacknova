@@ -1,6 +1,6 @@
 <p><strong>{$l_tdr_globalset}</strong></p>
 <p><strong>{$l_tdr_tdrsportsrc} :</strong></p>
-<form action="traderoute.php?command=setsettings" method="post" accept-charset="utf-8">
+<form action="traderoute.php?command=setsettings" method="post">
 <table border="0"><tr>
 <td> - {$l_tdr_colonists} :</td>
 <td>

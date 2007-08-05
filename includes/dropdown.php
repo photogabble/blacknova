@@ -14,7 +14,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: dropdown.php
+// File: inclues/dropdown.php
+
 function dropdown($element_name,$current_value, $max_value, $onchange)
 {
     // Create dropdowns when called

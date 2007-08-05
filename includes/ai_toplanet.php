@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: ai_toplanet.php
+// File: includes/ai_toplanet.php
 //
 // Description: The function handling AI to planet routines
 
@@ -53,11 +53,11 @@ function ai_toplanet($planet_id, $charactername)
     //               "{$db->prefix}news WRITE, {$db->prefix}logs WRITE");
 
     //  LOOKUP PLANET DETAILS
-    $resultp = $db->Execute ("SELECT * FROM {$db->prefix}planets WHERE planet_id='$planet_id'");
+    $resultp = $db->Execute ("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
     $planetinfo= $resultp->fields;
 
     //  LOOKUP OWNER DETAILS
-    $resulto = $db->Execute ("SELECT * FROM {$db->prefix}ships WHERE ship_id='$planetinfo[owner]'");
+    $resulto = $db->Execute ("SELECT * FROM {$db->prefix}ships WHERE ship_id=?", array($planetinfo['owner']));
     $ownerinfo= $resulto->fields;
 
     // Checking if flag AI
@@ -306,10 +306,10 @@ function ai_toplanet($planet_id, $charactername)
         playerlog($db,$planetinfo['owner'], "LOG_PLANET_NOT_DEFEATED", "$planetinfo[name]|$playerinfo[sector]|kabal $playerinfo[character_name]|$free_ore|$free_organics|$free_goods|$ship_salvage_rate|$ship_salvage");
 
         //  UPDATE PLANET 
-        $db->Execute("UPDATE {$db->prefix}planets SET energy=$planetinfo[energy],fighters=fighters-$fighters_lost, " .
-                     "torps=torps-$targettorps, ore=ore+$free_ore, goods=goods+$free_goods, " .
-                     "organics=organics+$free_organics, credits=credits+$ship_salvage " .
-                     "WHERE planet_id=$planetinfo[planet_id]");
+        $db->Execute("UPDATE {$db->prefix}planets SET energy=?, fighters=fighters-?, " .
+                     "torps=torps-?, ore=ore+?, goods=goods+?, " .
+                     "organics=organics+?, credits=credits+? " .
+                     "WHERE planet_id=?", array($planetinfo['energy'], $fighters_lost, $targettorps, $free_ore, $free_goods, $free_organics, $ship_salvage, $planetinfo['planet_id']));
     } 
 //  MUST HAVE MADE IT PAST PLANET DEFENSES 
     else
@@ -320,22 +320,22 @@ function ai_toplanet($planet_id, $charactername)
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Made it past defenses on planet $planetinfo[name]");
 
         //  UPDATE ATTACKER 
-        $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=$playerinfo[ship_energy], " .
-                      "ship_fighters=ship_fighters-$fighters_lost, torps=torps-$attackertorps, " .
-                      "armor_pts=armor_pts-$armor_lost WHERE ship_id=$playerinfo[ship_id]");
+        $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, " .
+                      "ship_fighters=ship_fighters-?, torps=torps-?, " .
+                      "armor_pts=armor_pts-? WHERE ship_id=?", array($playerinfo['ship_energy'], $fighters_lost, $attackertorps, $armor_lost, $playerinfo['ship_id']));
         $playerinfo['ship_fighters'] = $attackerfighters;
         $playerinfo['torps'] = $attackertorps;
         $playerinfo['armor_pts'] = $attackerarmor;
 
         //  UPDATE PLANET 
-        $db->Execute ("UPDATE {$db->prefix}planets SET energy=$planetinfo[energy], fighters=$targetfighters, " .
-                      "torps=torps-$targettorps WHERE planet_id=$planetinfo[planet_id]");
+        $db->Execute ("UPDATE {$db->prefix}planets SET energy=?, fighters=?, " .
+                      "torps=torps-? WHERE planet_id=$planetinfo[planet_id]", array($planetinfo['energy'], $targetfighters, $targettorps, $planetinfo['planet_id']));
         $planetinfo['fighters'] = $targetfighters;
         $planetinfo['torps'] = $targettorps;
 
         //  NOW WE MUST ATTACK ALL SHIPS ON THE PLANET ONE BY ONE 
         $resultps = $db->Execute("SELECT ship_id,ship_name FROM {$db->prefix}ships WHERE " .
-                                 "planet_id=$planetinfo[planet_id] AND on_planet='Y'");
+                                 "planet_id=? AND on_planet='Y'", array($planetinfo['planet_id']));
         $shipsonplanet = $resultps->RecordCount();
         if ($shipsonplanet > 0)
         {
@@ -350,7 +350,7 @@ function ai_toplanet($planet_id, $charactername)
         }
 
         $resultps = $db->Execute("SELECT ship_id,ship_name FROM {$db->prefix}ships WHERE " .
-                                 "planet_id=$planetinfo[planet_id] AND on_planet='Y'");
+                                 "planet_id=? AND on_planet='Y'", array($planetinfo['planet_id']));
         $shipsonplanet = $resultps->RecordCount();
         if ($shipsonplanet == 0 && $ai_isdead < 1)
         {
@@ -361,8 +361,8 @@ function ai_toplanet($planet_id, $charactername)
 
             //  UPDATE PLANET 
             $db->Execute("UPDATE {$db->prefix}planets SET fighters=0, torps=0, base='N', owner=0, corp=0 WHERE " .
-                         "planet_id=$planetinfo[planet_id]"); 
-            calc_ownership($db,$planetinfo['sector_id']);
+                         "planet_id=?", array($planetinfo['planet_id'])); 
+            calc_ownership($db, $planetinfo['sector_id']);
         }
         else
         {

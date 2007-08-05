@@ -1,4 +1,4 @@
-<form action="admin.php" method="post" accept-charset="utf-8">
+<form action="admin.php" method="post">
     <input type="hidden" name="menu" value="an">
     <table border="0" cellspacing="0" cellpadding="3">
         <tr>
