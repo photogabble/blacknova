@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: globmsg.php
+// File: admin/globmsg.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/globmsg.php"));
 if ($pos !== false)
@@ -45,7 +45,7 @@ if (empty($content))
     echo "    </tr>\n"; 
     echo "  </table>\n"; 
     echo "</div>\n"; 
-    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">"; 
+    echo "<form action=admin.php method=post>"; 
     echo "<input type=\"radio\" name=\"messagetype\" value=\"email\" checked>Email &nbsp;&nbsp;&nbsp;<input type=\"radio\" name=\"messagetype\" value=\"message\">Internal Message<br><br>"; 
     echo "<table>"; 
     echo "  <tr>"; 
@@ -69,13 +69,13 @@ if (empty($content))
     echo "  </tr>"; 
     echo "</table>"; 
     echo "<input type=hidden name=\"menu\" value=\"globmsg\">"; 
-    echo "</form>";     
+    echo "</form>";
 }
 else
 { 
     $res = $db->Execute("select * from {$db_prefix}players LEFT JOIN {$db_prefix}ships " .
                         "ON {$db_prefix}players.player_id = {$db_prefix}ships.player_id " .
-                        "WHERE email != '$admin_mail' AND email NOT LIKE '%@aiplayer' ORDER BY character_name ASC"); 
+                        "WHERE email!=? AND email NOT LIKE '%@aiplayer' ORDER BY character_name ASC", array($admin_mail)); 
     $row = $res->fields; 
 
     if ($messagetype=='email')
@@ -92,7 +92,7 @@ else
     elseif ($messagetype=='message')
     {
         $timestamp = date("Y-m-d H:i:s");
-        $r2 = $db->Execute("select player_id FROM {$db_prefix}players  WHERE email = '$admin_mail'");
+        $r2 = $db->Execute("select player_id FROM {$db_prefix}players WHERE email=?", array($admin_mail));
         $admin_id = $r2->fields["player_id"];
     }
 

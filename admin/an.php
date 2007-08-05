@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: an.php
+// File: admin/an.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/an.php"));
 if ($pos !== false)
@@ -39,13 +39,11 @@ if(!empty($_POST['command']))
 
 if ($command == "del")
 {
-    $xsql = "SELECT MAX(an_id) as x FROM {$db->prefix}alerts";
-    $debug_query = $db->Execute($xsql);
+    $debug_query = $db->Execute("SELECT MAX(an_id) as x FROM {$db->prefix}alerts");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $row = $debug_query->fields;
 
-    $xsql = "DELETE FROM {$db->prefix}alerts WHERE an_id = $row[x]";
-    $debug_query = $db->Execute($xsql);
+    $debug_query = $db->Execute("DELETE FROM {$db->prefix}alerts WHERE an_id=?", array($row['x']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 }
 
@@ -60,7 +58,7 @@ $debug_query = $db->Execute("select * FROM {$db->prefix}alerts ORDER BY an_id DE
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 $row = $debug_query->fields;
 
-$smarty->assign("title", $title);
-$smarty->assign("an_text", $row['an_text']);
-$smarty->display("$templateset/admin/an.tpl");
+$template->assign("title", $title);
+$template->assign("an_text", $row['an_text']);
+$template->display("$templateset/admin/an.tpl");
 ?>

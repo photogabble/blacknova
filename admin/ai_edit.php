@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: ai_edit.php
+// File: admin/ai_edit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_edit.php"));
 if ($pos !== false)
@@ -33,7 +33,7 @@ if ($pos !== false)
 }
 
 echo "<span style=\"font-size: 12pt; color: #0F0 \">" . $ai_name . " Editor</span><br>";
-echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+echo "<form action=admin.php method=post>";
 if (empty($user1))
 {
     echo "<SELECT SIZE=20 NAME=user1>";
@@ -74,7 +74,7 @@ else
 {
     if (empty($operation))
     {
-        $res = $db->Execute("SELECT * FROM {$db_prefix}players JOIN {$db_prefix}ai LEFT JOIN {$db_prefix}ships ON {$db_prefix}players.player_id = {$db_prefix}ships.player_id WHERE email=ai_id AND email='$user1'");
+        $res = $db->Execute("SELECT * FROM {$db_prefix}players JOIN {$db_prefix}ai LEFT JOIN {$db_prefix}ships ON {$db_prefix}players.player_id = {$db_prefix}ships.player_id WHERE email=ai_id AND email=?", array($user1));
         $row = $res->fields;
         echo "<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
         echo "<TR><TD>" . $ai_name . " name</TD><TD><INPUT TYPE=TEXT NAME=character_name VALUE=\"$row[character_name]\"></TD></TR>";
@@ -183,7 +183,7 @@ else
         echo "<HR>";
         echo "<span style=\"font-size: 12pt; color: #0F0;\">Log Data For This " . $ai_player . "</span><br>";
 
-        $logres = $db->Execute("SELECT * FROM {$db_prefix}logs WHERE player_id=$row[player_id] ORDER BY time DESC, type DESC");   
+        $logres = $db->Execute("SELECT * FROM {$db_prefix}logs WHERE player_id=? ORDER BY time DESC, type DESC", array($row['player_id']));
         while (!$logres->EOF)
         {
             $logrow = $logres->fields;
@@ -215,7 +215,7 @@ else
         $_active = empty($active) ? "N" : "Y";
         $res = $db->Execute("SELECT ship_id FROM {$db_prefix}players LEFT JOIN {$db_prefix}ships ". 
                             "ON {$db_prefix}players.player_id={$db_prefix}ships.player_id WHERE " .
-                            "email='$user1'");
+                            "email=?", array($user1));
         $ship_id = $res->fields['ship_id'];
 
         $result = $db->Execute("UPDATE {$db_prefix}players SET character_name=?, credits=?, turns=? WHERE email=?", array($character_name, $credits, $turns, $user1));

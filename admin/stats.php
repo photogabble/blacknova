@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: stats.php
+// File: admin/stats.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/stats.php"));
 if ($pos !== false)
@@ -55,9 +55,9 @@ else
 
 $res->Close(); # optional
 
-$smarty->assign('templateset', $templateset);
-$smarty->assign('browsers', $browsers);
+$template->assign('templateset', $templateset);
+$template->assign('browsers', $browsers);
 
-$smarty->display("$templateset/admin/stats.tpl");
+$template->display("$templateset/admin/stats.tpl");
 
 ?>

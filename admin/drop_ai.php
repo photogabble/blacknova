@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: drop_ai.php
+// File: admin/drop_ai.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/drop_ai.php"));
 if ($pos !== false)
@@ -34,7 +34,7 @@ if ($pos !== false)
 
 echo "<h1>Drop and Re-Install " . $ai_name . " Database</h1>";
 echo "<h3>This will DELETE All " . $ai_name . " records from the <i>ships</i> TABLE then DROP and reset the <i>" . $ai_name . "</i> TABLE</h3>";
-echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+echo "<form action=admin.php method=post>";
 if (empty($operation))
 {
     echo "<br>";
@@ -51,7 +51,7 @@ elseif ($operation == "drop_ai")
     while (!$res->EOF)
     {
         $ship_id = $res->fields['ship_id'];
-        $debug_query = $db->Execute("DELETE FROM {$db_prefix}ships WHERE ship_id=$ship_id");
+        $debug_query = $db->Execute("DELETE FROM {$db_prefix}ships WHERE ship_id=?", array($ship_id));
         db_op_result($debug_query,__LINE__,__FILE__);
         $res->MoveNext();
     }

@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: memberlist.php
+// File: admin/memberlist.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/memberlist.php"));
 if ($pos !== false)
@@ -42,12 +42,11 @@ if ($_POST['delete'] == 'delete')
     {
         echo "Deleting $_POST[email] from the Invitation list ";
         $silent=0;
-        $query = "DELETE FROM {$db->prefix}memberlist where email='$_POST[email]'";
-        $debug_query = $db->Execute($query);
+        $debug_query = $db->Execute("DELETE FROM {$db->prefix}memberlist where email=?", array($_POST['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
-    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+    echo "<form action='admin.php' method='post'>";
     echo "<input type=hidden name=menu value='memberlist'>";
     echo "<br><br><input type=submit value='Return to memberlist'>";
 }
@@ -57,18 +56,17 @@ elseif ($_POST['action'] == 'save')
     if ($_POST['member_id'] == '')
     {
         $silent=0;
-        $query = "INSERT INTO {$db->prefix}memberlist (email) VALUES (?)",array($_POST['email']));
-        $debug_query = $db->Execute($query);
+        $debug_query = $db->Execute("INSERT INTO {$db->prefix}memberlist (email) VALUES (?)",array($_POST['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     else
     {
         $silent=0;
-        $debug_query = $db->Execute("UPDATE {$db->prefix}memberlist SET email=? where member_id=?", array($_POST['email'],$_POST['member_id']));
+        $debug_query = $db->Execute("UPDATE {$db->prefix}memberlist SET email=? where member_id=?", array($_POST['email'], $_POST['member_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
-    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+    echo "<form action='admin.php' method='post'>";
     echo "<input type=hidden name=menu value='memberlist'>";
     echo "<br><br><input type=submit value='Return to memberlist'>";
 }
@@ -78,14 +76,14 @@ elseif (($_POST['edit'] == 'edit') || ($_POST['add'] == 'add'))
     $member_id = '';
     if ($_POST['email'] != '' && $_POST['edit'] == 'edit')
     {
-        $debug_query = $db->SelectLimit("SELECT member_id from {$db->prefix}memberlist where email='$_POST[email]'",1);
+        $debug_query = $db->SelectLimit("SELECT member_id from {$db->prefix}memberlist where email=?",1,-1,array($_POST['email']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $member_id = $debug_query->fields['member_id'];
         $email = $_POST['email'];
     }
 
     echo "<h3>Invitation List Editor</h3>";
-    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+    echo "<form action='admin.php' method='post'>";
     echo "<input type=text size=60 name=email value='$email'>";
     echo "<input type=hidden name=menu value='memberlist'>";
     echo "<input type=hidden name=member_id value='$member_id'>";
@@ -96,7 +94,7 @@ elseif (($_POST['edit'] == 'edit') || ($_POST['add'] == 'add'))
 else
 {
     echo "<h3>Invitation List Editor</h3>";
-    echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+    echo "<form action=admin.php method=post>";
     $debug_query = $db->Execute("SELECT email from {$db->prefix}memberlist");
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     echo "<select size=15 name=email>";

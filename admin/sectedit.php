@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: sectedit.php
+// File: admin/sectedit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/sectedit.php"));
 if ($pos !== false)
@@ -33,7 +33,7 @@ if ($pos !== false)
 }
 
 echo "<h2>Sector editor</h2>";
-echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+echo "<form action=admin.php method=post>";
 if (empty($_POST['sector']))
 {
     echo "<select size=20 name=sector>";
@@ -55,7 +55,7 @@ else
     $sector = $_POST['sector'];
     if (empty($_POST['operation']))
     {
-        $res = $db->Execute("select * FROM {$db->prefix}universe WHERE sector_id=$sector");
+        $res = $db->Execute("select * FROM {$db->prefix}universe WHERE sector_id=?", array($sector));
         $row = $res->fields;
         echo "<table border=1 cellspacing=2 cellpadding=2>";
         echo "<tr><td><tt>          Sector ID  </tt></td><td><font color=#6F0>$sector</font></td>";

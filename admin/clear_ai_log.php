@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: clearklog.php
+// File: admin/clearklog.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/clearklog.php"));
 if ($pos !== false)
@@ -34,7 +34,7 @@ if ($pos !== false)
 
 echo "<h1>Clear All " . $ai_name . "Logs</h1>";
 echo "<h3>This will DELETE all " . $ai_name . "log files</h3>";
-echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+echo "<form action=\"admin.php\" method=\"post\">";
 if (empty($operation))
 {
     echo "<br>";
@@ -49,7 +49,7 @@ elseif ($operation == "clear_ai_log")
     while (!$res->EOF)
     {
         $row = $res->fields;
-        $debug_query = $db->Execute("DELETE FROM {$db_prefix}logs WHERE player_id=$row[player_id]");
+        $debug_query = $db->Execute("DELETE FROM {$db_prefix}logs WHERE player_id=?", array($row['player_id']));
         db_op_result($debug_query,__LINE__,__FILE__);
         echo "Log for player_id $row[player_id] cleared.<br>";
         $res->MoveNext();

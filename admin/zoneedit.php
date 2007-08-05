@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: zoneedit.php
+// File: admin/zoneedit.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/zoneedit.php"));
 if ($pos !== false)
@@ -34,7 +34,7 @@ if ($pos !== false)
 
 echo "<b>Zone editor</b>";
 echo "<br>";
-echo "<form action=\"admin.php\" method=\"post\" accept-charset=\"utf-8\">";
+echo "<form action=admin.php method=post>";
 if (empty($_POST['zone']))
 {
     echo "<select size=20 name=zone>";
@@ -55,7 +55,7 @@ else
     $zone = $_POST['zone'];
     if ($_POST['operation'] == "editzone")
     {
-        $res = $db->Execute("select * FROM {$db->prefix}zones WHERE zone_id=$zone");
+        $res = $db->Execute("select * FROM {$db->prefix}zones WHERE zone_id=?", array($zone));
         $row = $res->fields;
         echo "<table border=0 cellspacing=0 cellpadding=5>";
         echo "<tr><td>Zone ID</td><td>$row[zone_id]</td></tr>";

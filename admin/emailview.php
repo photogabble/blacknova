@@ -14,7 +14,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// File: emailview.php
+// File: admin/emailview.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/emailview.php"));
 if ($pos !== false)
@@ -40,7 +40,7 @@ echo "      <td width=\"50%\" nowrap><b>Email Log Viewer</b></td>\n";
 echo "    </tr>\n";
 echo "  </table>\n";
 echo "</div>\n";
-echo "<form action=\"$selfpath\" method=\"post\" accept-charset=\"utf-8\">";
+echo "<form action=$selfpath method=post>";
 echo "<div align=\"center\">\n";
 echo '<div style="text-align:center;">\n';
 echo "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"1\" width=\"100%\">\n";
