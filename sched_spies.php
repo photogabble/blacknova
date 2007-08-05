@@ -61,7 +61,7 @@ if ($spy_success_factor)
     $blowup_torp_trigger =  ($blowup_torp / 2);
     $blowup_fits_trigger =  ($blowup_fits / 2);
     $capture_trigger     =  ($capture / 2);
-    $kill_trigger        =  (50 / $spy_kill_factor);  // Don't write '$kill / 2' -- may cause a bug
+    $kill_trigger        =  (50 / $spy_kill_factor); // Don't write '$kill / 2' -- may cause a bug
 
     $lower = -$kill + 100 / $spy_kill_factor;
     $i = 0;
@@ -99,7 +99,7 @@ if ($spy_success_factor)
                         $r1 = $db->Execute("SELECT SUM(spy_percent) as s_total FROM {$db->prefix}spies WHERE active='Y' AND planet_id=$spy[planet_id] AND job_id='1' ");
                         $total = $r1->fields['s_total'];
                         $total = (($colonist_production_rate - $total) * 30000);
-                        $new_percet = spyrand(($total * 0.1), ($total * 0.3), 1.3);    //10%...30%
+                        $new_percet = spyrand(($total * 0.1), ($total * 0.3), 1.3); //10%...30%
                         $new_percet /= 30000.0;
                         if ($new_percet)
                         {
@@ -121,7 +121,7 @@ if ($spy_success_factor)
                         $r1 = $db->Execute("SELECT SUM(spy_percent) as i_total FROM {$db->prefix}spies WHERE active='Y' AND planet_id=$spy[planet_id] AND job_id='2' ");
                         $total = $r1->fields['i_total'];
                         $total = (($interest_rate - $total - 1) * 30000);
-                        $new_percet = spyrand(($total * 0.15), ($total * 0.35), 1.3);    //15%...35%
+                        $new_percet = spyrand(($total * 0.15), ($total * 0.35), 1.3); //15%...35%
                         $new_percet /= 30000.0;
                         if ($new_percet)
                         {
@@ -142,7 +142,7 @@ if ($spy_success_factor)
                         $r1 = $db->Execute("SELECT SUM(spy_percent) as b_total FROM {$db->prefix}spies WHERE active='Y' AND planet_id=$spy[planet_id] AND job_id='3' ");
                         $total = $r1->fields['b_total'];
                         $total = (($colonist_reproduction_rate - $total) * 500000);
-                        $new_percet = spyrand(($total * 0.1), ($total * 0.3), 1.3);    //10%...30%
+                        $new_percet = spyrand(($total * 0.1), ($total * 0.3), 1.3); //10%...30%
                         $new_percet /= 500000.0;
                         if ($new_percet)
                         {
@@ -162,7 +162,7 @@ if ($spy_success_factor)
                     {
                         if ($spy['credits'] > 0)
                         {
-                            $roll = spyrand(2400, 9000, 2.5);    //8%...30%
+                            $roll = spyrand(2400, 9000, 2.5); //8%...30%
                             $sum = ($spy['credits'] * $roll / 30000);
                             $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET credits=credits-$sum WHERE planet_id=$spy[planet_id] ");
                             db_op_result($db,$debug_query,__LINE__,__FILE__);
@@ -193,7 +193,7 @@ if ($spy_success_factor)
                     {
                         if ($spy['torps'] > 0)
                         {
-                            $roll = spyrand(2100, 7500, 3);    //7%...25%
+                            $roll = spyrand(2100, 7500, 3); //7%...25%
                             $blow = ($spy['torps'] * $roll / 30000);
                             $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET torps=torps-$blow WHERE planet_id=$spy[planet_id] ");
                             db_op_result($db,$debug_query,__LINE__,__FILE__);
@@ -212,7 +212,7 @@ if ($spy_success_factor)
                     {
                         if ($spy['fighters'] > 0)
                         {
-                            $roll = spyrand(2400, 9000, 4);    //8%...30%
+                            $roll = spyrand(2400, 9000, 4); //8%...30%
                             $blow = ($spy['fighters'] * $roll / 30000);
                             $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET fighters=fighters-$blow WHERE planet_id=$spy[planet_id] ");
                             db_op_result($db,$debug_query,__LINE__,__FILE__);

@@ -48,6 +48,6 @@ db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $multiplier = 0;
 
-$smarty->assign("turns_results1", $turns_results1);
-$smarty->display("$templateset/sched_prune.tpl");
+$template->assign("turns_results1", $turns_results1);
+$template->display("$templateset/sched_prune.tpl");
 ?>

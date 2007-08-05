@@ -53,9 +53,9 @@ while (!$debug_query->EOF && $debug_query !='')
 //$debug_query = $db->Execute("DELETE from {$db_prefix}sessions WHERE expiry > '$session_kill'");
 //db_op_result($debug_query,__LINE__,__FILE__);
 
-$smarty->assign("max_turns", $max_turns);
-$smarty->assign("multiplier", $multiplier);
-$smarty->assign("turns_results1", $turns_results1);
-$smarty->display("$templateset/sched_turns.tpl");
+$template->assign("max_turns", $max_turns);
+$template->assign("multiplier", $multiplier);
+$template->assign("turns_results1", $turns_results1);
+$template->display("$templateset/sched_turns.tpl");
 $multiplier = 0;
 ?>

@@ -55,6 +55,6 @@ while (!$debug_query->EOF && $debug_query !='')
 }
 
 $multiplier = 0; // No use to run this again
-$smarty->assign("cleanup_results", $cleanup_results);
-$smarty->display("$templateset/sched_ranking.tpl");
+$template->assign("cleanup_results", $cleanup_results);
+$template->display("$templateset/sched_ranking.tpl");
 ?>
