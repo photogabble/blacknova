@@ -41,7 +41,7 @@ $title = $l_mail_title;
 echo "<h1>" . $title. "</h1>\n";
 
 global $game_name;
-$result = $db->Execute ("SELECT c_code, email, password FROM {$raw_prefix}users WHERE character_name='$_GET[character_name]'");
+$result = $db->Execute ("SELECT c_code, email, password FROM {$raw_prefix}users WHERE character_name=?", array($_GET['character_name']));
 if (!$result->EOF)
 {
     $mailplayer_info = $result->fields;
