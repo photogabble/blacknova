@@ -19,7 +19,7 @@
 $no_body = 1;
 include_once ("./global_includes.php");
 
-//$smarty->assign("title", $title);
-$smarty->display("$templateset/newplayer.tpl");
+//$template->assign("title", $title);
+$template->display("$templateset/newplayer.tpl");
 include_once ("./footer.php");
 ?>

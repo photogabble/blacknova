@@ -145,21 +145,21 @@ if ($allow_navcomp)
     }
 
     global $l_global_mmenu;
-    $smarty->assign("l_global_mmenu", $l_global_mmenu);
-    $smarty->assign("l_nav_nocomp", $l_nav_nocomp);
-    $smarty->assign("allow_navcomp", $allow_navcomp);
-    $smarty->assign("l_submit", $l_submit);
-    $smarty->assign("state", $_POST['state']);
-    $smarty->assign("search_results", $search_results);
-    $smarty->assign("start_sector", $links[0]);
-    $smarty->assign("found", $found);
-    $smarty->assign("search_depth", $search_depth);
-    $smarty->assign("l_nav_pathfnd", $l_nav_pathfnd);
-    $smarty->assign("l_nav_answ1", $l_nav_answ1);
-    $smarty->assign("l_nav_answ2", $l_nav_answ2);
-    $smarty->assign("l_nav_proper", $l_nav_proper);
-    $smarty->assign("l_nav_query", $l_nav_query);
-    $smarty->display("$templateset/navcomp.tpl");
+    $template->assign("l_global_mmenu", $l_global_mmenu);
+    $template->assign("l_nav_nocomp", $l_nav_nocomp);
+    $template->assign("allow_navcomp", $allow_navcomp);
+    $template->assign("l_submit", $l_submit);
+    $template->assign("state", $_POST['state']);
+    $template->assign("search_results", $search_results);
+    $template->assign("start_sector", $links[0]);
+    $template->assign("found", $found);
+    $template->assign("search_depth", $search_depth);
+    $template->assign("l_nav_pathfnd", $l_nav_pathfnd);
+    $template->assign("l_nav_answ1", $l_nav_answ1);
+    $template->assign("l_nav_answ2", $l_nav_answ2);
+    $template->assign("l_nav_proper", $l_nav_proper);
+    $template->assign("l_nav_query", $l_nav_query);
+    $template->display("$templateset/navcomp.tpl");
 }
 
 include_once ("./footer.php");

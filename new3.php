@@ -77,7 +77,7 @@ $password = htmlspecialchars($_POST['password'],ENT_QUOTES,"UTF-8");
 if ($invitation_only && !$flag)
 {
    global $l_not_invited;
-   $debug_query = $db->Execute("SELECT email FROM {$db->prefix}memberlist WHERE email='" . strtolower($email). "'");
+   $debug_query = $db->Execute("SELECT email FROM {$db->prefix}memberlist WHERE email=?", array(strtolower($email)));
    db_op_result($db,$debug_query,__LINE__,__FILE__);
    if ($debug_query)
    {
@@ -197,13 +197,13 @@ if ($flag == 0)
     $l_newmsg_c_code = str_replace("[c_code]",$c_code,$l_newmsg_c_code);
 
     // Give the variables to Smarty, and then retreive the templated newplayer email
-    $smarty->assign("l_newmsg_greetings", $l_newmsg_greetings);
-    $smarty->assign("l_newmsg_whosent", $l_newmsg_whosent);
-    $smarty->assign("l_newmsg_c_code", $l_newmsg_c_code);
-    $smarty->assign("l_newmsg_confirm", $l_newmsg_confirm);
-    $smarty->assign("l_newmsg_thanks", $l_newmsg_thanks);
-    $smarty->assign("l_newmsg_gamename", $l_newmsg_gamename);
-    $msg = $smarty->fetch("$templateset/newplayer_email.tpl");
+    $template->assign("l_newmsg_greetings", $l_newmsg_greetings);
+    $template->assign("l_newmsg_whosent", $l_newmsg_whosent);
+    $template->assign("l_newmsg_c_code", $l_newmsg_c_code);
+    $template->assign("l_newmsg_confirm", $l_newmsg_confirm);
+    $template->assign("l_newmsg_thanks", $l_newmsg_thanks);
+    $template->assign("l_newmsg_gamename", $l_newmsg_gamename);
+    $msg = $template->fetch("$templateset/newplayer_email.tpl");
 
     $text_msg = str_replace("<br>", "\n", $msg);
     $text_msg = str_replace("<a href=\"", "", $text_msg);
@@ -242,18 +242,18 @@ if ($flag == 0)
     $mail_msg->ClearAddresses();
 } 
 
-$smarty->assign("display_password", $display_password);
-$smarty->assign("l_new_pwis", $l_new_pwis);
-$smarty->assign("l_new_charis", $l_new_charis);
-$smarty->assign("password", $password);
-$smarty->assign("character", $character);
-$smarty->assign("email", $email);
-$smarty->assign("l_new_login", $l_new_login);
-$smarty->assign("l_new_forgotpw", $l_new_forgotpw);
-$smarty->assign("l_clickme", $l_clickme);
-$smarty->assign("flag", $flag);
-$smarty->assign("l_new_err", $l_new_err);
-$smarty->display("$templateset/new3.tpl");
+$template->assign("display_password", $display_password);
+$template->assign("l_new_pwis", $l_new_pwis);
+$template->assign("l_new_charis", $l_new_charis);
+$template->assign("password", $password);
+$template->assign("character", $character);
+$template->assign("email", $email);
+$template->assign("l_new_login", $l_new_login);
+$template->assign("l_new_forgotpw", $l_new_forgotpw);
+$template->assign("l_clickme", $l_clickme);
+$template->assign("flag", $flag);
+$template->assign("l_new_err", $l_new_err);
+$template->display("$templateset/new3.tpl");
 
 include_once ("./footer.php");
 ?>

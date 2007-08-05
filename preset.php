@@ -42,7 +42,7 @@ echo "<h1>" . $title. "</h1>\n";
 $i = 0;
 
 // Pull the presets for the player from the db.
-$debug_query = $db->Execute("SELECT * FROM {$db->prefix}presets WHERE player_id=$playerinfo[player_id]");
+$debug_query = $db->Execute("SELECT * FROM {$db->prefix}presets WHERE player_id=?", array($playerinfo['player_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 while (!$debug_query->EOF)
 {
@@ -53,7 +53,7 @@ while (!$debug_query->EOF)
 
 if (!isset($_POST['change']))
 {
-    echo '<form name="bntform" action="preset.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="preset.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
     $x = $preset_limit + 1;
     for ($y=1; $y<$x; $y++)
     {
@@ -79,8 +79,8 @@ else
         }
         elseif ($_POST[$index] != $presetinfo[$y]['preset'])
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}presets SET preset=$_POST[$index] WHERE player_id=$playerinfo[player_id] AND ". 
-                                        "preset_id=" . $presetinfo[$y]['preset_id']);
+            $debug_query = $db->Execute("UPDATE {$db->prefix}presets SET preset=? WHERE player_id=? AND ". 
+                                        "preset_id=?", array($_POST[$index], $playerinfo['player_id'], $presetinfo[$y]['preset_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $output = str_replace("[number]", $y, $l_pre_set);

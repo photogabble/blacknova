@@ -93,7 +93,7 @@ dynamic_loader ($db, "base_string.php");
 
 //-------------------------------------------------------------------------------------------------
 
-$result3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+$result3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
 if ($result3)
 {
     $planetinfo = $result3->fields;
@@ -127,7 +127,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
     {
         if ($shipinfo['on_planet'] == 'Y')
         {
-            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE ship_id=$shipinfo[ship_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE ship_id=?", array($shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
 
@@ -162,10 +162,10 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
             spy_detect_planet($db,$shipinfo['ship_id'], $planetinfo['planet_id'],$planet_detect_success1);
         }
 
-        $result3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=$planetinfo[owner]");
+        $result3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE player_id=?", array($planetinfo['owner']));
         $ownerinfo = $result3->fields;
 
-        $res = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id=$planetinfo[owner] AND ship_id=$ownerinfo[currentship]");
+        $res = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE player_id=? AND ship_id=?", array($planetinfo['owner'], $ownerinfo['currentship']));
         $ownershipinfo = $res->fields;
     }
 
@@ -202,18 +202,18 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
                         spy_planet_destroyed($db,$planet_id);
                     }
 
-                    $debug_query = $db->Execute("DELETE FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+                    $debug_query = $db->Execute("DELETE FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+1, " .
-                                                "turns=turns-1 WHERE player_id=$playerinfo[player_id]");
+                                                "turns=turns-1 WHERE player_id=?", array($playerinfo['player_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET dev_genesis=dev_genesis-1 " .
-                                                "WHERE ship_id=$shipinfo[ship_id]");
+                                                "WHERE ship_id=?", array($shipinfo['ship_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                    $debug_query=$db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE planet_id=$planet_id");
+                    $debug_query=$db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE planet_id=?", array($planet_id));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                     calc_ownership($db,$shipinfo['sector_id']);
@@ -348,7 +348,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
 
         // change production rates
         echo "<br>\n\n";
-        echo "<form action=\"planet.php\" method=\"post\" accept-charset=\"utf-8\">";
+        echo "<form action=\"planet.php\" method=post>";
         echo "<input type=hidden name=planet_id value=$planet_id>";
         echo "<input type=hidden name=command value=productions><br>";
         if (!$ship_based_combat)
@@ -388,7 +388,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
         echo "<td>" . number_format($planetinfo['torps'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>";
         if ($spy_success_factor)
         {
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = '$planet_id' AND owner_id = '$playerinfo[player_id]' ");
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
             $n = $res->RecordCount();
             echo "<td>$n</td>";
         }
@@ -425,7 +425,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
             echo "$l_planet_not_selling.<br>";
         }
 
-        $debug_query = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$planetinfo[owner]");
+        $debug_query = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($planetinfo['owner']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $sameteam = $debug_query->fields['team'];
 
@@ -469,8 +469,8 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
                 $by = "spy_id asc";
             }
 
-            $r = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE active = 'Y' AND planet_id = $planet_id AND " .
-                              "owner_id = $playerinfo[player_id] ORDER BY $by");
+            $r = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE active = 'Y' AND planet_id=? AND " .
+                              "owner_id = ? ORDER BY ?", array($planet_id, $playerinfo['player_id'], $by));
             if ($numspies = $r->RecordCount())
             {            
                 echo "<br><table border=1 cellspacing=1 cellpadding=2 width=\"100%\">";
@@ -581,20 +581,20 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         {
             // set planet to not sell
             echo "$l_planet_nownosell<br>";
-            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET sells='N' WHERE planet_id=$planet_id");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET sells='N' WHERE planet_id=?", array($planet_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
         else
         {
             echo "$l_planet_nowsell<br>";
-            $debug_query = $db->Execute ("UPDATE {$db->prefix}planets SET sells='Y' WHERE planet_id=$planet_id");
+            $debug_query = $db->Execute ("UPDATE {$db->prefix}planets SET sells='Y' WHERE planet_id=?", array($planet_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
     }
     elseif ($command == "name")
     {
         // name menu
-        echo "<form action=\"planet.php" method=\"post\" accept-charset=\"utf-8\">";
+        echo "<form action=\"planet.php\" method=\"post\">";
         echo "$l_planet_iname:  ";
         echo "<input type=hidden name=command value=cname>";
         echo "<input type=hidden name=planet_id value=$planet_id>";
@@ -606,7 +606,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
     {
         // name2 menu
         $new_name = trim(strip_tags($_POST['new_name']));
-        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET name='$_POST[new_name]' WHERE planet_id=$planet_id");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET name=? WHERE planet_id=?", array($_POST['new_name'], $planet_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $new_name = stripslashes($new_name);
         echo "$l_planet_cname $new_name.";
@@ -615,7 +615,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
     {
         // land menu
         echo "$l_planet_landed<br><br>";
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='Y', planet_id=$planet_id WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='Y', planet_id=? WHERE ship_id=?", array($planet_id, $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     elseif ($command == "leave")
@@ -623,8 +623,8 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         // leave menu
         echo "$l_planet_left<br><br>";
         $destination = $sectorinfo['sector_id'];
-        include ("./check_defenses.php");   //          Need to edit check_defenses a bit more, but it will cause def check when leaving planet.
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE ship_id=$shipinfo[ship_id]");
+        include ("./check_defenses.php"); //          Need to edit check_defenses a bit more, but it will cause def check when leaving planet.
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     elseif ($command == "transfer")
@@ -637,7 +637,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         $l_planet_cinfo = str_replace("[energy]",number_format($free_power, 0, $local_number_dec_point, $local_number_thousands_sep),$l_planet_cinfo);
         echo "$l_planet_cinfo<br><br>";
 
-        echo "<form action=\"planet2.php" method=\"post\" accept-charset=\"utf-8\">";
+        echo "<form action='planet2.php' method=post>";
         echo "<table width=\"100%\" border=0 cellspacing=0 cellpadding=0>";
         echo"<tr bgcolor=\"$color_header\"><td><strong>$l_commodity</strong></td><td><strong>$l_planet</strong></td><td><strong>$l_ship</strong></td><td><strong>$l_planet_transfer_link</strong></td><td><strong>$l_planet_toplanet</strong></td><td><strong>$l_all?</strong></td></tr>";
         echo"<tr bgcolor=\"$color_line1\"><td>$l_ore</td><td>" . number_format($planetinfo['ore'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td>" . number_format($shipinfo['ore'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td><input type=text name=transfer_ore size=10 maxlength=50></td><td><input type=checkbox name=tpore value=-1></td><td><input type=checkbox name=allore value=-1></td></tr>";
@@ -650,11 +650,11 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         echo"<tr bgcolor=\"$color_line2\"><td>$l_credits</td><td>" . number_format($planetinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td>" . number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td><input type=text name=transfer_credits size=10 maxlength=50></td><td><input type=checkbox name=tpcredits value=-1></td><td><input type=checkbox name=allcredits value=-1></td></tr>";
         if ($spy_success_factor)
         {
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = '$planet_id' AND " .
-                                "owner_id = '$playerinfo[player_id]' ");
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id = ? AND " .
+                                "owner_id = ? ", array($planet_id, $playerinfo['player_id']));
             $n_pl = $res->RecordCount();
-            $res = $db->execute("SELECT * FROM {$db->prefix}spies WHERE ship_id = '$shipinfo[ship_id]' AND " .
-                                "owner_id = '$playerinfo[player_id]' ");
+            $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE ship_id=? AND " .
+                                "owner_id=?", array($shipinfo['ship_id'], $playerinfo['player_id']));
             $n_sh = $res->RecordCount();
 
             echo"<tr bgcolor=\"$color_line1\"><td>$l_spy</td><td>" . number_format($n_pl, 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td>" . number_format($n_sh, 0, $local_number_dec_point, $local_number_thousands_sep) . "</td><td><input type=text name=transfer_spies size=10 maxlength=50></td><td><input type=checkbox name=tpspies value=-1></td><td><input type=checkbox name=allspies value=-1></td></tr>";
@@ -682,9 +682,9 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             echo " {\n";
             echo "  if (val != 0)\n";
             echo "  {\n";
-            echo "  document.forms[0].elements[name].value = val;\n";              
-            echo "  }\n";              
-            echo " }\n";     
+            echo "  document.forms[0].elements[name].value = val;\n";
+            echo "  }\n";
+            echo " }\n";
             echo "}\n";
 
             // changeDelta function //
@@ -769,7 +769,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 echo "$l_ifyouneedmore<br>";
             }
 
-            echo "<form action=\"planet2.php?planetupgrade=yes\" method=\"post\" accept-charset=\"utf-8\">";
+            echo "<form action='planet2.php?planetupgrade=yes' method=post>";
             echo "<input type=hidden value=$planet_id name=planet_id>";
             echo "<table width=\"100%\" border=0 cellspacing=0 cellpadding=0>";
             echo"<tr bgcolor=\"$color_header\"><td><strong>" . $l_planetary_defense_levels . "</strong></td><td><strong>$l_cost</strong></td><td><strong>$l_current_level</strong></td><td><strong>$l_upgrade</strong></td></tr>";
@@ -846,19 +846,19 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 }
 
                 // Create The Base
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET base='Y', ore=$planetinfo[ore]-$base_ore, " .
-                                            "organics=$planetinfo[organics]-$base_organics, " .
-                                            "goods=$planetinfo[goods]-$base_goods, credits=$planetinfo[credits]-$base_credits " .
-                                            "WHERE planet_id=$planet_id");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET base='Y', ore=?-?, " .
+                                            "organics=?-?, " .
+                                            "goods=?-?, credits=?-? " .
+                                            "WHERE planet_id=?", array($planetinfo['ore'], $base_ore, $planetinfo['organics'], $base_organics, $planetinfo['goods'], $base_goods, $planetinfo['credits'], $base_credits, $planet_id));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 // Update User Turns
                 $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, " .
-                                            "turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+                                            "turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 // Refresh Plant Info
-                $result3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+                $result3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
                 $planetinfo = $result3->fields;
 
                 // Notify User Of Base Results
@@ -899,9 +899,9 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             }
             else
             {
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET prod_ore=$pore, prod_organics=$porganics, " .
-                                            "prod_goods=$pgoods, prod_energy=$penergy, prod_fighters=$pfighters, " .
-                                            "prod_torp=$ptorp WHERE planet_id=$planet_id");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET prod_ore=?, prod_organics=?, " .
+                                            "prod_goods=?, prod_energy=?, prod_fighters=?, " .
+                                            "prod_torp=? WHERE planet_id=?", array($pore, $porganics, $pgoods, $penergy, $pfighters, $ptorp, $planet_id));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 echo "$l_planet_p_changed<br><br>";
             }
@@ -914,8 +914,8 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 change_planet_ownership($db, $planet_id, 0, $playerinfo['player_id']);
             }
 
-            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=null, owner=$playerinfo[player_id], " .
-                                        "base='N', defeated='N' WHERE planet_id=$planet_id");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=null, owner=?, " .
+                                        "base='N', defeated='N' WHERE planet_id=?", array($playerinfo['player_id'], $planet_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             planetcount_news($db, $playerinfo['player_id']); // Tells us if he got a neat number of planets from the capture!
@@ -946,7 +946,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 $organics_price = ($organics_price + $organics_delta / 4);
                 $goods_price = ($goods_price + $goods_delta / 4);
                 $energy_price = ($energy_price + $energy_delta / 4);
-                echo "<form action=\"planet3.php\" method=\"post\" accept-charset=\"utf-8\">";
+                echo "<form action='planet3.php' method=post>";
                 echo "<table>";
                 echo "<tr><td>$l_commodity</td><td>$l_avail</td><td>$l_price</td><td>$l_buy</td><td>$l_cargo</td></tr>";
                 echo "<tr><td>$l_ore</td><td>$planetinfo[ore]</td><td>$ore_price</td><td><input type=text name=trade_ore size=10 maxlength=50 value=0></td><td>$shipinfo[ore]</td></tr>";
@@ -964,7 +964,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         }
         elseif ($command == "attac")
         {
-            $debug_query = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$planetinfo[owner]");
+            $debug_query = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($planetinfo['owner']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $sameteam = $debug_query->fields['team'];
 
@@ -1001,7 +1001,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         }
         elseif ($command == "attack")
         {
-            $debug_query = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=$planetinfo[owner]");
+            $debug_query = $db->Execute("SELECT team FROM {$db->prefix}players WHERE player_id=?", array($playerinfo['owner']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $sameteam = $debug_query->fields['team'];
 
@@ -1331,7 +1331,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
 
                 $res = $db->Execute("SELECT {$db->prefix}ships.*, {$db->prefix}players.character_name FROM {$db->prefix}ships " .
                                     "LEFT JOIN {$db->prefix}players ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id " .
-                                    "WHERE on_planet = 'Y' and planet_id = $planet_id");
+                                    "WHERE on_planet = 'Y' and planet_id=?", array($planet_id));
                 while (!$res->EOF)
                 {
                     $row = $res->fields;
@@ -1358,7 +1358,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             }
 
             $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, " .
-                                        "turns_used=turns_used+1 WHERE player_id=$playerinfo[player_id]");
+                                        "turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
         elseif ($command == "capture" &&  ($planetinfo['owner'] == 0 || $planetinfo['defeated'] == 'Y'))
@@ -1369,8 +1369,8 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 change_planet_ownership($db, $planet_id, 0, $playerinfo['player_id']);
             }
 
-            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=null, owner=$playerinfo[player_id], base='N', " .
-                                        "defeated='N' WHERE planet_id=$planet_id");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET team=null, owner=?, base='N', " .
+                                        "defeated='N' WHERE planet_id=?", array($playerinfo['player_id'], $planet_id));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             planetcount_news($db, $playerinfo['player_id']);
@@ -1388,7 +1388,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
 
             if ($planetinfo['owner'] != 0)
             {
-                $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=$planetinfo[owner]");
+                $res = $db->Execute("SELECT character_name FROM {$db->prefix}players WHERE player_id=?", array($planetinfo['owner']));
                 $query = $res->fields;
                 $planetowner = $query['character_name'];
                 playerlog($db,$planetinfo['owner'], "LOG_PLANET_YOUR_CAPTURED","$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
@@ -1399,8 +1399,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             }  
 
             $debug_query = $db->Execute("SELECT time FROM {$db->prefix}planet_log WHERE " .
-                                        "planet_id=".$planetinfo['planet_id']." AND (action=".PLOG_CAPTURE." OR " .
-                                        "action=".PLOG_GENESIS_CREATE.")");
+                                        "planet_id=? AND (action=? OR action=?)", $planetinfo['planet_id'], PLOG_CAPTURE, PLOG_GENESIS_CREATE);
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $row = $debug_query->fields;
             $lasttime = $db->UnixTimeStamp($row['time']);
@@ -1422,7 +1421,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         elseif ($command == "capture")
         {
             echo $l_planet_notdef . "<br>";
-            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET defeated='N' WHERE planet_id=$planetinfo[planet_id]");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET defeated='N' WHERE planet_id=?", array($planetinfo['planet_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
         else
@@ -1443,7 +1442,7 @@ if ($command != "")
 
 if ($allow_ibank && $planetinfo['base'] == "Y")
 {
-    echo "$l_ifyouneedplan <a href=\"igb_login.php">$l_igb_term</a>.<br><br>";
+    echo "$l_ifyouneedplan <a href=\"igb_login.php\">$l_igb_term</a>.<br><br>";
 }
 
 echo "<a href =\"bounty.php\">$l_by_placebounty</a><p>";

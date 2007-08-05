@@ -60,7 +60,7 @@ if (!isset($whichteam))
 $result = $db->Execute("SELECT {$db->prefix}players.*, {$db->prefix}teams.team_name, {$db->prefix}teams.description, " .
                        "{$db->prefix}teams.creator, {$db->prefix}teams.team_id FROM {$db->prefix}players LEFT JOIN {$db->prefix}teams " .
                        "ON {$db->prefix}players.team = {$db->prefix}teams.team_id LEFT JOIN {$raw_prefix}users ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id " .
-                       "WHERE {$raw_prefix}users.email='$_SESSION[email]'");
+                       "WHERE {$raw_prefix}users.email=?", array($_SESSION['email']));
 $playerinfo = $result->fields;
 
 // Get Team Info
@@ -68,13 +68,13 @@ $playerinfo = $result->fields;
 $whichteam = preg_replace('/[^0-9]/','',$whichteam);
 if ($whichteam)
 {
-    $debug_query   = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$whichteam");
+    $debug_query   = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($whichteam));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $team          = $debug_query->fields;
 }
 else
 {
-    $result_team   = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$playerinfo[team]");
+    $result_team   = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($playerinfo['team']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $team          = $debug_query->fields;
 }
@@ -84,7 +84,7 @@ dynamic_loader ($db, "showinfo.php");
 
 if ($playerinfo['team'] != 0)
 {
-    $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=$playerinfo[team]");
+    $result = $db->Execute("SELECT * FROM {$db->prefix}teams WHERE team_id=?", array($playerinfo['team']));
 //    $whichteam = $result->fields;
     $team = $result->fields;
     $isowner = ($playerinfo['player_id'] == $team['creator']);
@@ -93,13 +93,13 @@ if ($playerinfo['team'] != 0)
 
 global $l_global_mmenu;
 
-$smarty->assign("title", $title);
-$smarty->assign("playerinfo_team", $playerinfo['team']);
-$smarty->assign("l_team_notmember", $l_team_notmember);
-$smarty->assign("l_clickme", $l_clickme);
-$smarty->assign("l_team_menu", $l_team_menu);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/team_report.tpl");
+$template->assign("title", $title);
+$template->assign("playerinfo_team", $playerinfo['team']);
+$template->assign("l_team_notmember", $l_team_notmember);
+$template->assign("l_clickme", $l_clickme);
+$template->assign("l_team_menu", $l_team_menu);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/team_report.tpl");
 
 include_once ("./footer.php");
 ?>

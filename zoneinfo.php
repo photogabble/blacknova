@@ -69,13 +69,13 @@ else
 {
     if ($zoneinfo['team_zone'] == 'N')
     {
-        $result = $db->Execute("SELECT player_id, character_name FROM {$db->prefix}players WHERE player_id=$zoneinfo[owner]");
+        $result = $db->Execute("SELECT player_id, character_name FROM {$db->prefix}players WHERE player_id=?", array($zoneinfo['owner']));
         $ownerinfo = $result->fields;
         $ownername = $ownerinfo['character_name'];
     }
     else
     {
-        $result = $db->Execute("SELECT team_name, creator, team_id FROM {$db->prefix}teams WHERE team_id=$zoneinfo[owner]");
+        $result = $db->Execute("SELECT team_name, creator, team_id FROM {$db->prefix}teams WHERE team_id=?", array($zoneinfo['owner']));
         $ownerinfo = $result->fields;
         $ownername = $ownerinfo['team_name'];
     }
@@ -160,31 +160,31 @@ else
     $editable = FALSE;
 }
 
-$smarty->assign("attack", $attack);
-$smarty->assign("title", $title);
-$smarty->assign("l_zi_control", $l_zi_control);
-$smarty->assign("l_clickme", $l_clickme);
-$smarty->assign("l_zi_tochange", $l_zi_tochange);
-$smarty->assign("editable", $editable);
-$smarty->assign("zoneinfo_zonename", $zoneinfo['zone_name']);
-$smarty->assign("l_zi_owner", $l_zi_owner);
-$smarty->assign("ownername", $ownername);
-$smarty->assign("color_line1", $color_line1);
-$smarty->assign("color_line2", $color_line2);
-$smarty->assign("l_att_att", $l_att_att);
-$smarty->assign("l_md_title", $l_md_title);
-$smarty->assign("defense", $defense);
-$smarty->assign("l_warpedit", $l_warpedit);
-$smarty->assign("warpedit", $warpedit);
-$smarty->assign("l_planet", $l_planet);
-$smarty->assign("l_planets", $l_planets);
-$smarty->assign("planet", $planet);
-$smarty->assign("l_title_port", $l_title_port);
-$smarty->assign("trade", $trade);
-$smarty->assign("l_zi_maxhull", $l_zi_maxhull);
-$smarty->assign("maxlevel", $maxlevel);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/zoneinfo.tpl");
+$template->assign("attack", $attack);
+$template->assign("title", $title);
+$template->assign("l_zi_control", $l_zi_control);
+$template->assign("l_clickme", $l_clickme);
+$template->assign("l_zi_tochange", $l_zi_tochange);
+$template->assign("editable", $editable);
+$template->assign("zoneinfo_zonename", $zoneinfo['zone_name']);
+$template->assign("l_zi_owner", $l_zi_owner);
+$template->assign("ownername", $ownername);
+$template->assign("color_line1", $color_line1);
+$template->assign("color_line2", $color_line2);
+$template->assign("l_att_att", $l_att_att);
+$template->assign("l_md_title", $l_md_title);
+$template->assign("defense", $defense);
+$template->assign("l_warpedit", $l_warpedit);
+$template->assign("warpedit", $warpedit);
+$template->assign("l_planet", $l_planet);
+$template->assign("l_planets", $l_planets);
+$template->assign("planet", $planet);
+$template->assign("l_title_port", $l_title_port);
+$template->assign("trade", $trade);
+$template->assign("l_zi_maxhull", $l_zi_maxhull);
+$template->assign("maxlevel", $maxlevel);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/zoneinfo.tpl");
 
 include_once ("./footer.php");
 ?>

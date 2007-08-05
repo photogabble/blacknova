@@ -24,6 +24,7 @@ dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
 dynamic_loader ($db, "calc_dist.php"); 
 dynamic_loader ($db, "updatecookie.php");
+dynamic_loader ($db, "num_level.php");
 
 // Load language variables
 load_languages($db, $raw_prefix, 'navcomp');
@@ -88,7 +89,7 @@ if (isset($_GET['destination']))
 
 if (isset($_POST['destination']))
 {
-    $destination = $_POST['destination'];   
+    $destination = $_POST['destination'];
 }
 
 if (isset($_GET['engage']))
@@ -98,7 +99,7 @@ if (isset($_GET['engage']))
 
 if (isset($_POST['engage']))
 {
-    $engage = $_POST['engage'];   
+    $engage = $_POST['engage'];
 }
 
 if (isset($_POST['go']))
@@ -124,7 +125,7 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
     if ($destination == '' || ($destination > $sector_max) || ($destination <1))
     {
         echo "$l_rs_invalid.<br><br>";
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     else
@@ -187,11 +188,11 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
                 $energyscooped = 0;
             }
 
-            $debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=$destination");
+            $debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=?", array($destination));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $dest_zone = $debug_query->fields['zone_id'];
 
-            $debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=$dest_zone");
+            $debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=?", array($dest_zone));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $dest_max_level = $debug_query->fields['max_level'];
 
@@ -199,7 +200,7 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
             if ($combat_levels > $dest_max_level && $dest_max_level > 0)
             {
                 echo $l_max_level_move . "<br>";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             elseif ($triptime > $playerinfo['turns'])
@@ -207,7 +208,7 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
                 $l_rs_movetime=str_replace("[triptime]",number_format($triptime, 0, $local_number_dec_point, $local_number_thousands_sep),$l_rs_movetime);
                 echo "$l_rs_movetime<br><br>";
                 echo "$l_rs_noturns";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             elseif ($engage == 1)
@@ -236,7 +237,7 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
 elseif ($_GET['move_method'] == 'warp' || $_POST['move_method'] == 'warp')
 {
     // Retrive all the warp links out of the current sector
-    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}links WHERE link_start='$shipinfo[sector_id]'");
+    $result3 = $db->Execute ("SELECT * FROM {$db->prefix}links WHERE link_start=?", array($shipinfo['sector_id']));
     $i = 0;
     $flag = 0;
 
@@ -259,11 +260,11 @@ elseif ($_GET['move_method'] == 'warp' || $_POST['move_method'] == 'warp')
         // TODO: Add 'link disappeared' text, as entropy will soon make this common.
     }
 
-    $debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=$destination");
+    $debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=?", array($destination));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $dest_zone = $debug_query->fields['zone_id'];
 
-    $debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=$dest_zone");
+    $debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=?", array($dest_zone));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $dest_max_level = $debug_query->fields['max_level'];
 
@@ -271,7 +272,7 @@ elseif ($_GET['move_method'] == 'warp' || $_POST['move_method'] == 'warp')
     if ($combat_levels > $dest_max_level && $dest_max_level > 0)
     {
         echo $l_max_level_move . "<br>";
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     elseif ($flag == 1)   // Check if there was a valid warp link to move to
@@ -297,7 +298,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
 
     if (isset($_POST['destination']))    
     {
-        $destination = $_POST['destination'];   
+        $destination = $_POST['destination'];
     }
 
     if (isset($_GET['engage']))
@@ -307,7 +308,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
 
     if (isset($_POST['engage']))    
     {
-        $engage = $_POST['engage'];   
+        $engage = $_POST['engage'];
     }
 
     if (isset($_POST['go']))
@@ -320,7 +321,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
     if ($destination == '' || ($destination > $sector_max))
     {
         echo "$l_rs_invalid.<br><br>";
-        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
     else
@@ -359,11 +360,11 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
                 $triptime = 0;
             }
 
-            $debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=$destination");
+            $debug_query = $db->Execute("SELECT zone_id FROM {$db->prefix}universe WHERE sector_id=?", array($destination));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $dest_zone = $debug_query->fields['zone_id'];
 
-            $debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=$dest_zone");
+            $debug_query = $db->Execute("SELECT max_level FROM {$db->prefix}zones WHERE zone_id=?", array($dest_zone));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
             $dest_max_level = $debug_query->fields['max_level'];
 
@@ -371,7 +372,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
             if ($combat_levels > $dest_max_level && $dest_max_level > 0)
             {
                 echo $l_max_level_move . "<br>";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             elseif ($triptime > $playerinfo['turns'])
@@ -379,7 +380,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
                 $l_rs_movetime=str_replace("[triptime]",number_format($triptime, 0, $local_number_dec_point, $local_number_thousands_sep),$l_rs_movetime);
                 echo "$l_rs_movetime<br><br>";
                 echo "$l_rs_noturns";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             elseif ($plasmacost > $shipinfo['energy'])
@@ -387,7 +388,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
                 $l_plasma_energy_need = str_replace("[energy]",number_format($plasmacost, 0, $local_number_dec_point, $local_number_thousands_sep),$l_plasma_energy_need);
                 echo $l_plasma_energy_need."<br>";
                 echo $l_plasma_not_enuf."<br>";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=$shipinfo[ship_id]");
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
             }
             elseif ($engage == 1)

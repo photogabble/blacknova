@@ -27,20 +27,20 @@ global $l_tdr_globalset, $l_tdr_tdrsportsrc, $l_tdr_colonists, $l_tdr_fighters, 
 global $l_tdr_tdrescooped, $l_tdr_keep, $l_tdr_save, $l_tdr_returnmenu;
 global $db;
 
-$smarty->assign("l_tdr_globalset", $l_tdr_globalset);
-$smarty->assign("l_tdr_tdrsportsrc", $l_tdr_tdrsportsrc);
-$smarty->assign("l_tdr_colonists", $l_tdr_colonists);
-$smarty->assign("playerinfo_trade_colonists", $playerinfo['trade_colonists']);
-$smarty->assign("l_tdr_fighters", $l_tdr_fighters);
-$smarty->assign("playerinfo_trade_fighters", $playerinfo['trade_fighters']);
-$smarty->assign("l_tdr_torps", $l_tdr_torps);
-$smarty->assign("playerinfo_trade_torps", $playerinfo['trade_torps']);
-$smarty->assign("l_tdr_tdrescooped", $l_tdr_tdrescooped);
-$smarty->assign("l_tdr_trade", $l_tdr_trade);
-$smarty->assign("l_tdr_keep", $l_tdr_keep);
-$smarty->assign("playerinfo_trade_energy", $playerinfo['trade_energy']);
-$smarty->assign("l_tdr_save", $l_tdr_save);
-$smarty->assign("l_tdr_returnmenu", $l_tdr_returnmenu);
-$smarty->display("$templateset/traderoute_settings.tpl");
+$template->assign("l_tdr_globalset", $l_tdr_globalset);
+$template->assign("l_tdr_tdrsportsrc", $l_tdr_tdrsportsrc);
+$template->assign("l_tdr_colonists", $l_tdr_colonists);
+$template->assign("playerinfo_trade_colonists", $playerinfo['trade_colonists']);
+$template->assign("l_tdr_fighters", $l_tdr_fighters);
+$template->assign("playerinfo_trade_fighters", $playerinfo['trade_fighters']);
+$template->assign("l_tdr_torps", $l_tdr_torps);
+$template->assign("playerinfo_trade_torps", $playerinfo['trade_torps']);
+$template->assign("l_tdr_tdrescooped", $l_tdr_tdrescooped);
+$template->assign("l_tdr_trade", $l_tdr_trade);
+$template->assign("l_tdr_keep", $l_tdr_keep);
+$template->assign("playerinfo_trade_energy", $playerinfo['trade_energy']);
+$template->assign("l_tdr_save", $l_tdr_save);
+$template->assign("l_tdr_returnmenu", $l_tdr_returnmenu);
+$template->display("$templateset/traderoute_settings.tpl");
 traderoute_die("");
 ?>

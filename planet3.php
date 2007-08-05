@@ -51,7 +51,7 @@ checkdead($db);
 $title = $l_planet3_title;
 updatecookie($db);
 
-$result2 = $db->Execute ("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+$result2 = $db->Execute ("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
 if ($result2)
 {
     $planetinfo = $result2->fields;
@@ -146,16 +146,16 @@ if ($planetinfo['sells']=='Y')
 
         // Update ship cargo, credits and turns
         $debug_query = $db->Execute ("UPDATE {$db->prefix}players SET turns=turns-1, " .
-                                     "turns_used=turns_used+1, credits=credits-$total_cost WHERE player_id=$playerinfo[player_id]");
+                                     "turns_used=turns_used+1, credits=credits-? WHERE player_id=?", array($total_cost, $playerinfo['player_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET ore=ore+$trade_ore, organics=organics+$trade_organics, " .
-                                     "goods=goods+$trade_goods, energy=energy+$trade_energy WHERE ship_id=$shipinfo[ship_id]");
+        $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET ore=ore+?, organics=organics+?, " .
+                                     "goods=goods+?, energy=energy+? WHERE ship_id=?", array($trade_ore, $trade_organics, $trade_goods, $trade_energy, $shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-        $debug_query = $db->Execute ("UPDATE {$db->prefix}planets SET ore=ore-$trade_ore, organics=organics-$trade_organics, " .
-                                     "goods=goods-$trade_goods, energy=energy-$trade_energy, credits=credits+$total_cost " .
-                                     "WHERE planet_id=$planet_id");
+        $debug_query = $db->Execute ("UPDATE {$db->prefix}planets SET ore=ore-?, organics=organics-?, " .
+                                     "goods=goods-?, energy=energy-?, credits=credits+? " .
+                                     "WHERE planet_id=$planet_id", array($trade_ore, $trade_organics, $trade_goods, $trade_energy, $total_cost, $planet_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
 
         echo "$l_trade_complete<br><br>";
