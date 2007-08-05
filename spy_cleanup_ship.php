@@ -156,7 +156,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         echo "<br>$l_spy_notinspecial<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");    
+        include_once ("./footer.php");
         die();
     }
 
@@ -219,7 +219,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
   
     if (empty($doit))
     { 
-        echo '<form name="bntform" action="spy_cleanup_ship.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
+        echo '<form name="bntform" action="spy_cleanup_ship.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
         echo "<input type=hidden name=doit value=1>";
         echo "<input type=radio name=type value=1 $set[1]> $l_spy_cleanuptext_1<br>";
         echo "<input type=radio name=type value=2 $set[2]> $l_spy_cleanuptext_2<br>";
@@ -249,10 +249,10 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         if ($set[$type] != "DISABLED") 
         {  
             $found = 0;
-            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+$spy_cleanup_ship_turns[$type], turns=turns-$spy_cleanup_ship_turns[$type], credits=credits-$spy_cleanup_ship_credits[$type] WHERE player_id=$playerinfo[player_id] ");
+            $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+?, turns=turns-?, credits=credits-? WHERE player_id=? ", array($spy_cleanup_ship_turns[$type], $spy_cleanup_ship_turns[$type], $spy_cleanup_ship_credits[$type], $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-            $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}ships.cloak, {$db->prefix}players.character_name FROM {$db->prefix}ships INNER JOIN {$db->prefix}players ON {$db->prefix}ships.player_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}spies ON {$db->prefix}players.player_id={$db->prefix}spies.owner_id WHERE {$db->prefix}spies.ship_id=$shipinfo[ship_id] AND {$db->prefix}spies.active='Y' AND {$db->prefix}spies.planet_id='0'");
+            $res = $db->Execute("SELECT {$db->prefix}spies.*, {$db->prefix}ships.cloak, {$db->prefix}players.character_name FROM {$db->prefix}ships INNER JOIN {$db->prefix}players ON {$db->prefix}ships.player_id = {$db->prefix}players.player_id INNER JOIN {$db->prefix}spies ON {$db->prefix}players.player_id={$db->prefix}spies.owner_id WHERE {$db->prefix}spies.ship_id=? AND {$db->prefix}spies.active='Y' AND {$db->prefix}spies.planet_id='0'", array($shipinfo['ship_id']));
             while (!$res->EOF)
             {
                 $info = $res->fields;
@@ -303,7 +303,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
                     $l_spy_spyfoundonship2 = str_replace("[player]", "<strong>$info[character_name]</strong>", $l_spy_spyfoundonship);
                     $l_spy_spyfoundonship2 = str_replace("[spyid]", "<strong>$info[spy_id]</strong>", $l_spy_spyfoundonship2);
                     echo "$l_spy_spyfoundonship2<br>";
-                    $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=$info[spy_id]");
+                    $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=?", array($info['spy_id']));
                     playerlog($db,$info['owner_id'], "LOG_SHIPSPY_KILLED", "$info[spy_id]|$playerinfo[character_name]|$shipinfo[name]");
                 }
                 $res->MoveNext();
@@ -320,9 +320,9 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         }
     }
 global $l_global_mmenu;
-$smarty->assign("title", $title);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/spy.tpl");
+$template->assign("title", $title);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

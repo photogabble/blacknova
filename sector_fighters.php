@@ -191,7 +191,7 @@ $armor_lost = $shipinfo['armor_pts'] - $playerarmor;
 $fighters_lost = $shipinfo['fighters'] - $playerfighters;
 $energy = $shipinfo['energy'];
 
-$debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=$energy, fighters=fighters-$fighters_lost, armor_pts=armor_pts-$armor_lost, torps=torps-$playertorpnum WHERE ship_id=$shipinfo[ship_id]");
+$debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=?, fighters=fighters-?, armor_pts=armor_pts-?, torps=torps-? WHERE ship_id=?", array($energy, $fighters_lost, $armor_lost, $playertorpnum, $shipinfo['ship_id']));
 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 $l_sf_lreport = str_replace("[armor]", $armor_lost, $l_sf_lreport);

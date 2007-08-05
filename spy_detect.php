@@ -147,11 +147,11 @@ $line_color = $color_line2;
 
     if (!empty($info_id))
     {
-        $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=$playerinfo[player_id] AND det_id='$info_id'");
+        $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=? AND det_id=?", array($playerinfo['player_id'], $info_id));
         if ($res->RecordCount())
         {
             echo "<font color=red style=\"font-size: 1.5em;\">$l_spy_infodeleted<br><br></font>";
-            $res = $db->Execute("DELETE FROM {$db->prefix}detect WHERE det_id='$info_id'");
+            $res = $db->Execute("DELETE FROM {$db->prefix}detect WHERE det_id=?", array($info_id));
         }
         else 
         {
@@ -173,14 +173,14 @@ $line_color = $color_line2;
         $by2 = "det_time desc";
     }
   
-    $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=$playerinfo[player_id] ORDER BY $by2");
+    $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=? ORDER BY ?", array($playerinfo['player_id'], $by2));
     if (!$res->RecordCount())
     {
         echo "$l_spy_noinfo<br><br>";
         echo "<a href=spy.php>$l_clickme</a> $l_spy_linkback<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");    
+        include_once ("./footer.php");
         die();
     }
   
@@ -203,7 +203,7 @@ $line_color = $color_line2;
         switch ($info['det_type'])
         {
             case 0:
-                list($sector, $owner, $planet)= split ("\|", $info['detect_data']);
+                list($sector, $owner, $planet)= explode ("\|", $info['detect_data']);
                 $l_spy_datatextF = str_replace("[sector]", "<a href=move.php?move_method=real&engage=1&destination=$sector>$sector</a>", $l_spy_datatext_1);
                 $l_spy_datatextF = str_replace("[player]", "<font color=white><strong>$owner</strong></font>", $l_spy_datatextF);
                 $l_spy_datatextF = str_replace("[planet]", "<font color=white><strong>$planet</strong></font>", $l_spy_datatextF);
@@ -212,7 +212,7 @@ $line_color = $color_line2;
             break;
       
             case 1:
-                list($inf, $sender, $receiver,$type)= split ("\>", $info['detect_data']);    // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
+                list($inf, $sender, $receiver,$type)= explode ("\>", $info['detect_data']); // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
                 if ($type == 'alliance')
                 {
                     $l_spy_datatextF = str_replace("[sender]", "<font color=white><strong>$sender</strong></font>", $l_spy_datatext[2]);
@@ -239,9 +239,9 @@ $line_color = $color_line2;
 
     echo "</table><br>";
 global $l_global_mmenu;
-$smarty->assign("title", $title);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/spy.tpl");
+$template->assign("title", $title);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

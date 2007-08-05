@@ -155,7 +155,7 @@ if ($playerinfo['turns'] < 1)
     die();
 }
   
-$res2 = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE owner_id = $playerinfo[player_id] AND ship_id = $shipinfo[ship_id]",1);// AND active = 'N'
+$res2 = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE owner_id=? AND ship_id=?",1,-1,array($playerinfo['player_id'], $shipinfo['ship_id']));// AND active = 'N'
 $result = $res2->RecordCount();
 if (!$result)
 {
@@ -170,12 +170,12 @@ else
     $spyinfo = $res2->fields['spy_id'];
 }
 
-$res3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=$planet_id");
+$res3 = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
 $planetinfo = $res3->fields;
 $base_factor = ($planetinfo['base'] == 'Y') ? $basedefense : 0;
 $planetinfo['sensors'] += $base_factor;
 
-$res = $db->Execute("SELECT MAX(sensors) as maxsensors FROM {$db->prefix}ships WHERE planet_id=$planet_id AND on_planet='Y'");
+$res = $db->Execute("SELECT MAX(sensors) as maxsensors FROM {$db->prefix}ships WHERE planet_id=? AND on_planet='Y'", array($planet_id));
 if ($planetinfo['sensors'] < $res->fields['maxsensors'])
 {
     $planetinfo['sensors'] = $res->fields['maxsensors'];
@@ -186,7 +186,7 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 
@@ -195,7 +195,7 @@ if ($planetinfo['owner'] == $playerinfo['player_id'])
     echo "$l_spy_ownplanet<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 elseif ($planetinfo['owner'] == 0)
@@ -203,11 +203,11 @@ elseif ($planetinfo['owner'] == 0)
     echo "$l_spy_unownedplanet<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 
-$res5 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=$planet_id AND owner_id=$playerinfo[player_id]");
+$res5 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
 $num_spies = $res5->RecordCount();
 if ($num_spies >= $max_spies_per_planet)
 {
@@ -215,7 +215,7 @@ if ($num_spies >= $max_spies_per_planet)
     echo "$l_spy_planetfull<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");    
+    include_once ("./footer.php");
     die();
 }
 
@@ -223,7 +223,7 @@ if (empty($doit))
 {
     $l_spy_sendtitle = str_replace("[spyid]", "$spyinfo", $l_spy_sendtitle);
     echo "<strong>" . $l_spy_sendtitle . "<br>" . $l_spy_sendtitle2 . "</strong><br>";
-    echo '<form name="bntform" action="spy.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">';
+    echo '<form name="bntform" action="spy.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
     echo "<input type=hidden name=command value=send>";
     echo "<input type=hidden name=doit value=1>";
     echo "<input type=hidden name=planet_id value=$planet_id>";
@@ -248,7 +248,7 @@ if (empty($doit))
 }
 else
 {
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+1, turns=turns-1 WHERE player_id=$playerinfo[player_id] ");
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+1, turns=turns-1 WHERE player_id=? ", array($playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $success = $shipinfo['cloak'] - $planetinfo['sensors'];
@@ -258,12 +258,12 @@ else
     }
 
     // Here we subtract 4% for every spy the planet owner has on the planet from the success score.
-    $res66 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=$planet_id AND owner_id=$planetinfo[owner]");
+    $res66 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $planetinfo['owner']));
     $num_spies = $res66->RecordCount();
     $success = $success - ($num_spies * 4);
 
     // Here we add 4% for every spy the spy owner has on the planet to the success score.
-    $res77 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=$planet_id AND owner_id=$playerinfo[player_id]");
+    $res77 = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($planet_id, $playerinfo['player_id']));
     $num_own_spies = $res77->RecordCount();
     $success = $success + ($num_own_spies * 4);
 
@@ -294,13 +294,13 @@ else
             $mode = "toship";
         }
 
-        $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET active='Y', planet_id='$planet_id', ship_id='0', spy_percent='0.0', job_id='0', move_type='$mode', try_sabot='$try_sabot', try_inter='$try_inter', try_birth='$try_birth', try_steal='$try_steal', try_torps='$try_torps', try_fits='$try_fits', try_capture='$try_capture' WHERE spy_id='$spyinfo' ");
+        $debug_query = $db->Execute("UPDATE {$db->prefix}spies SET active='Y', planet_id=?, ship_id='0', spy_percent='0.0', job_id='0', move_type=?, try_sabot=?, try_inter=?, try_birth=?, try_steal=?, try_torps=?, try_fits=?, try_capture=? WHERE spy_id=? ", array ($planet_id, $mode, $try_sabot, $try_inter, $try_birth, $try_steal, $try_torps, $try_fits, $try_capture, $spyinfo));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         echo "$l_spy_sendsuccessful<br>";
     }
     else
     {
-        $debug_query = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=$spyinfo ");
+        $debug_query = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=? ", array($spyinfo));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         echo "$l_spy_sendfailed<br>";
         if (!$planetinfo['name']) 
@@ -314,9 +314,9 @@ else
 
 echo "<a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu";
 global $l_global_mmenu;
-$smarty->assign("title", $title);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/spy.tpl");
+$template->assign("title", $title);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/spy.tpl");
 
 include_once ("./footer.php");
 ?>

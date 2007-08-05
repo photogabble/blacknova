@@ -52,20 +52,20 @@ if ($sure == 2)
     playerdeath($db,$playerinfo['player_id'], "LOG_HARAKIRI");
 }
 
-$smarty->assign("title", $title);
-$smarty->assign("sure", $sure);
-$smarty->assign("l_yes", $l_yes);
-$smarty->assign("l_die_rusure", $l_die_rusure);
-$smarty->assign("l_die_check", $l_die_check);
-$smarty->assign("l_die_what", $l_die_what);
-$smarty->assign("l_die_nonono", $l_die_nonono);
-$smarty->assign("l_die_goodbye", $l_die_goodbye);
-$smarty->assign("l_die_exploit", $l_die_exploit);
-$smarty->assign("l_die_count", $l_die_count);
-$smarty->assign("l_die_vapor", $l_die_vapor);
-$smarty->assign("l_global_mlogin", $l_global_mlogin);
-$smarty->assign("l_global_mmenu", $l_global_mmenu);
-$smarty->display("$templateset/self_destruct.tpl");
+$template->assign("title", $title);
+$template->assign("sure", $sure);
+$template->assign("l_yes", $l_yes);
+$template->assign("l_die_rusure", $l_die_rusure);
+$template->assign("l_die_check", $l_die_check);
+$template->assign("l_die_what", $l_die_what);
+$template->assign("l_die_nonono", $l_die_nonono);
+$template->assign("l_die_goodbye", $l_die_goodbye);
+$template->assign("l_die_exploit", $l_die_exploit);
+$template->assign("l_die_count", $l_die_count);
+$template->assign("l_die_vapor", $l_die_vapor);
+$template->assign("l_global_mlogin", $l_global_mlogin);
+$template->assign("l_global_mmenu", $l_global_mmenu);
+$template->display("$templateset/self_destruct.tpl");
 
 include_once ("./footer.php");
 ?>

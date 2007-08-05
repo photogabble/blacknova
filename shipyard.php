@@ -217,7 +217,7 @@ foreach ($ships as $curship)
 
             if ($_GET['stype'] != $shipinfo['class'])
             {
-                echo '<form name="bntform" action="shipyard2.php" method="post" accept-charset="utf-8" onsubmit="document.bntform.submit_button.disabled=true;">' .
+                echo '<form name="bntform" action="shipyard2.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">' .
                      "<input type=hidden name=stype value=$_GET[stype]>" .
                      "&nbsp;<input name=submit_button type=submit value=Purchase>" .
                      "</form>";
@@ -233,63 +233,63 @@ foreach ($ships as $curship)
     }
 }
 
-$smarty->assign("sship_name", $sship['name']);
-$smarty->assign("sship_description", $sship['description']);
-$smarty->assign("sship_image", $sship['image']);
-$smarty->assign("sship_minhull", $sship['minhull']);
-$smarty->assign("sship_maxhull", $sship['maxhull']);
-$smarty->assign("l_hull", $l_hull);
-$smarty->assign("hull_bars", $hull_bars);
-$smarty->assign("sship_minengines", $sship['minengines']);
-$smarty->assign("sship_maxengines", $sship['maxengines']);
+$template->assign("sship_name", $sship['name']);
+$template->assign("sship_description", $sship['description']);
+$template->assign("sship_image", $sship['image']);
+$template->assign("sship_minhull", $sship['minhull']);
+$template->assign("sship_maxhull", $sship['maxhull']);
+$template->assign("l_hull", $l_hull);
+$template->assign("hull_bars", $hull_bars);
+$template->assign("sship_minengines", $sship['minengines']);
+$template->assign("sship_maxengines", $sship['maxengines']);
 if ($plasma_engines)
 {
-    $smarty->assign("sship_minpengines", $sship['minpengines']);
-    $smarty->assign("sship_maxpengines", $sship['maxpengines']);
-    $smarty->assign("l_pengines", $l_pengines);
-    $smarty->assign("pengines_bars", $pengines_bars);
+    $template->assign("sship_minpengines", $sship['minpengines']);
+    $template->assign("sship_maxpengines", $sship['maxpengines']);
+    $template->assign("l_pengines", $l_pengines);
+    $template->assign("pengines_bars", $pengines_bars);
 }
 
-$smarty->assign("l_engines", $l_engines);
-$smarty->assign("engines_bars", $engines_bars);
-$smarty->assign("sship_minpower", $sship['minpower']);
-$smarty->assign("sship_maxpower", $sship['maxpower']);
-$smarty->assign("l_power", $l_power);
-$smarty->assign("power_bars", $power_bars);
-$smarty->assign("sship_mincomputer", $sship['mincomputer']);
-$smarty->assign("sship_maxcomputer", $sship['maxcomputer']);
-$smarty->assign("l_computer", $l_computer);
-$smarty->assign("computer_bars", $computer_bars);
-$smarty->assign("sship_minsensors", $sship['minsensors']);
-$smarty->assign("sship_maxsensors", $sship['maxsensors']);
-$smarty->assign("l_sensors", $l_sensors);
-$smarty->assign("sensors_bars", $sensors_bars);
-$smarty->assign("sship_minarmor", $sship['minarmor']);
-$smarty->assign("sship_maxarmor", $sship['maxarmor']);
-$smarty->assign("l_armor", $l_armor);
-$smarty->assign("armor_bars", $armor_bars);
-$smarty->assign("sship_minshields", $sship['minshields']);
-$smarty->assign("sship_maxshields", $sship['maxshields']);
-$smarty->assign("l_shields", $l_shields);
-$smarty->assign("shields_bars", $shields_bars);
-$smarty->assign("sship_minbeams", $sship['minbeams']);
-$smarty->assign("sship_maxbeams", $sship['maxbeams']);
-$smarty->assign("l_beams", $l_beams);
-$smarty->assign("beams_bars", $beams_bars);
-$smarty->assign("sship_mintorp_launchers", $sship['mintorp_launchers']);
-$smarty->assign("sship_maxtorp_launchers", $sship['maxtorp_launchers']);
-$smarty->assign("l_torp_launch", $l_torp_launch);
-$smarty->assign("torp_launchers_bars", $torp_launchers_bars);
-$smarty->assign("sship_mincloak", $sship['mincloak']);
-$smarty->assign("sship_maxcloak", $sship['maxcloak']);
-$smarty->assign("l_cloak", $l_cloak);
-$smarty->assign("cloak_bars", $cloak_bars);
-$smarty->assign("newshipvalue", $newshipvalue);
-$smarty->assign("sship_turnstobuild", $sship['turnstobuild']);
-$smarty->assign("shipinfo_class", $shipinfo['class']);
-$smarty->assign("color_line2", $color_line2);
-$smarty->assign("stype",$_GET['stype']);
-$smarty->display("$templateset/shipyard.tpl");
+$template->assign("l_engines", $l_engines);
+$template->assign("engines_bars", $engines_bars);
+$template->assign("sship_minpower", $sship['minpower']);
+$template->assign("sship_maxpower", $sship['maxpower']);
+$template->assign("l_power", $l_power);
+$template->assign("power_bars", $power_bars);
+$template->assign("sship_mincomputer", $sship['mincomputer']);
+$template->assign("sship_maxcomputer", $sship['maxcomputer']);
+$template->assign("l_computer", $l_computer);
+$template->assign("computer_bars", $computer_bars);
+$template->assign("sship_minsensors", $sship['minsensors']);
+$template->assign("sship_maxsensors", $sship['maxsensors']);
+$template->assign("l_sensors", $l_sensors);
+$template->assign("sensors_bars", $sensors_bars);
+$template->assign("sship_minarmor", $sship['minarmor']);
+$template->assign("sship_maxarmor", $sship['maxarmor']);
+$template->assign("l_armor", $l_armor);
+$template->assign("armor_bars", $armor_bars);
+$template->assign("sship_minshields", $sship['minshields']);
+$template->assign("sship_maxshields", $sship['maxshields']);
+$template->assign("l_shields", $l_shields);
+$template->assign("shields_bars", $shields_bars);
+$template->assign("sship_minbeams", $sship['minbeams']);
+$template->assign("sship_maxbeams", $sship['maxbeams']);
+$template->assign("l_beams", $l_beams);
+$template->assign("beams_bars", $beams_bars);
+$template->assign("sship_mintorp_launchers", $sship['mintorp_launchers']);
+$template->assign("sship_maxtorp_launchers", $sship['maxtorp_launchers']);
+$template->assign("l_torp_launch", $l_torp_launch);
+$template->assign("torp_launchers_bars", $torp_launchers_bars);
+$template->assign("sship_mincloak", $sship['mincloak']);
+$template->assign("sship_maxcloak", $sship['maxcloak']);
+$template->assign("l_cloak", $l_cloak);
+$template->assign("cloak_bars", $cloak_bars);
+$template->assign("newshipvalue", $newshipvalue);
+$template->assign("sship_turnstobuild", $sship['turnstobuild']);
+$template->assign("shipinfo_class", $shipinfo['class']);
+$template->assign("color_line2", $color_line2);
+$template->assign("stype",$_GET['stype']);
+$template->display("$templateset/shipyard.tpl");
 
 global $allow_ibank, $l_igb_term, $l_ifyouneedmore;
 
