@@ -55,6 +55,7 @@ dynamic_loader ($db, "ini_to_mem.php");
 
 ini_to_mem("languages/english.ini");
 
+
 // Include the sha256 backend
 include_once ("./backends/sha256/shaclass.php");
 include_once ("header.php");

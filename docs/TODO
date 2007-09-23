@@ -1,5 +1,6 @@
 This file is used to keep track of things that need doing, and all feature requests.
 
+TODO: add a check for no "scratch_dir" during install. Right now, it just ends up showing a blank page, making it tough to debug
 TODO: get rid of admin_mail_name, have it use admin player (id=1) name.
 FREQ: vote S1-062804-2 - Ship Defense Visibility - Fighters and Torps on board - must be shown on the main screen of the game.
 FREQ: vote S1-062804-3 - Base Button - A "base" button will be added to the game that allows creation of bases by automatically transferring commodities and credits from a player's ship in the same sector to the planet. This transfer/build function will charge the player the same number of turns as if it had been done manually.

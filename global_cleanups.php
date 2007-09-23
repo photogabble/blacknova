@@ -152,6 +152,6 @@ $langdir = set_langdir($db,$pos);
 dynamic_loader ($db, "load_languages.php");
 load_languages($db, $raw_prefix, 'regional');
 
-// Template Lite
+// Smarty
 $template = new bnt_smarty;
 ?>

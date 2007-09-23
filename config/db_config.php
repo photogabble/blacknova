@@ -9,13 +9,13 @@ if ($pos !== false)
 }
 
 $ADODB_SESSION_DRIVER = "mysqlt";
-$ADODB_SESSION_DB = "tki";
-$ADODB_SESSION_USER = "proton";
-$ADODB_SESSION_PWD = "proton";
+$ADODB_SESSION_DB = "bnt";
+$ADODB_SESSION_USER = "bnt_user";
+$ADODB_SESSION_PWD = "bnt_user";
 $ADODB_SESSION_CONNECT = "localhost";
 $dbport = "";
-$db_prefix = "tki_1_";
-$raw_prefix = "tki_";
+$db_prefix = "bnt_1_";
+$raw_prefix = "bnt_";
 $adminpass = "proton";
 $ADODB_CRYPT_KEY = "tisruekuteyasfuc";
 ?>
