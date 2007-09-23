@@ -22,7 +22,7 @@ function getdirfiles($dirPath)
     {
         while (false !== ($file = readdir($handle)))
         {
-            if ($file != "." && $file != "..")
+            if ($file != "." && $file != ".." && $file !=".svn")
             {
                 $filesArr[] = trim($file);
             }
