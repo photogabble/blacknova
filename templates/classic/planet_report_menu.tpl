@@ -9,7 +9,7 @@
 <strong><a href="planet_production_change.php">{$l_pr_changeprods}</a></strong> &nbsp;&nbsp; {$l_pr_baserequired}<br>{$l_pr_prod_disp1}
 <br>{$l_pr_prod_disp2}<br>
 
-{if $playerinfo_team>=0}
+{if $playerinfo_team>0}
 <br><strong><a href="team_planets.php">{$l_pr_teamlink}</a></strong><br>{$l_pr_team_disp}<br>
 <br><strong><a href="team_defenses.php">{$l_pr_showtmdef}</a></strong><br>{$l_pr_showtmlvls}<br>
 {/if}

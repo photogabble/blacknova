@@ -23,18 +23,10 @@ dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
 dynamic_loader ($db, "updatecookie.php");
-dynamic_loader ($db, "team_planet_checkboxes.php");
-dynamic_loader ($db, "selling_checkboxes.php");
-dynamic_loader ($db, "base_build_check.php");
 
 // Load language variables
 load_languages($db, $raw_prefix, 'planet_report');
-load_languages($db, $raw_prefix, 'planets');
-load_languages($db, $raw_prefix, 'report');
-load_languages($db, $raw_prefix, 'teams');
-load_languages($db, $raw_prefix, 'ports');
 load_languages($db, $raw_prefix, 'global_includes');
-load_languages($db, $raw_prefix, 'common');
 
 checklogin($db);
 get_info($db);
@@ -44,20 +36,17 @@ $title = $l_pr_title;
 updatecookie($db);
 include_once ("./header.php");
 
-global $playerinfo;
-global $l_pr_teamlink, $ship_based_combat;
-global $l_pr_planetstatus, $l_pr_changeprods, $l_pr_comm_disp, $l_pr_prod_disp1, $l_pr_prod_disp2, $l_pr_baserequired, $l_pr_team_disp;
-global $l_global_mmenu;
+global $playerinfo, $ship_based_combat;
 
 $template->assign("title", $title);
+$template->assign("ship_based_combat", $ship_based_combat);
+$template->assign("playerinfo_team", $playerinfo['team']);
 $template->assign("l_pr_planetstatus", $l_pr_planetstatus);
 $template->assign("l_pr_comm_disp", $l_pr_comm_disp);
-$template->assign("ship_based_combat", $ship_based_combat);
 $template->assign("l_pr_changeprods", $l_pr_changeprods);
 $template->assign("l_pr_baserequired", $l_pr_baserequired);
 $template->assign("l_pr_prod_disp1", $l_pr_prod_disp1);
 $template->assign("l_pr_prod_disp2", $l_pr_prod_disp2);
-$template->assign("playerinfo_team", $playerinfo['team']);
 $template->assign("l_pr_team_disp", $l_pr_team_disp);
 $template->assign("l_pr_teamlink", $l_pr_teamlink);
 $template->assign("l_global_mmenu", $l_global_mmenu);
