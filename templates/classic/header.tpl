@@ -22,7 +22,7 @@
 {/if}
 <!-- This pops us out of frames. -->
 <script type="text/javascript" defer="defer">
-    if(self != top) top.location = location;
+{literal}    if(self != top) { top.location = location; }{/literal}
 </script>
 <!-- addloadevent cant be defer due to IE.. sigh -->
 <script type="text/javascript" defer="defer" src="backends/javascript/addloadevent.js"></script>
