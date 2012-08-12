@@ -19,7 +19,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/sched_ai.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php");
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -27,7 +27,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -35,7 +35,7 @@ if ($pos !== false)
 echo "<strong>" . $ai_name . " turns</strong><br>\n";
 
 //  include functions
-include_once ("./ai_functions.php");
+include_once './ai_functions.php';
 
 // Dynamic functions
 dynamic_loader ($db, "ai_move.php");
@@ -63,28 +63,28 @@ while(!$res->EOF && $res)
     $ai_isdead = 0;
     $playerinfo = $res->fields;
 
-    //  REGENERATE/BUY STATS 
+    //  REGENERATE/BUY STATS
     ai_regen();
 
-    //  RUN THROUGH ORDERS 
+    //  RUN THROUGH ORDERS
     $ai_count++;
-    if (mt_rand(1,5) > 1)                                 //  20% CHANCE OF NOT MOVING AT ALL 
+    if (mt_rand(1,5) > 1)                                 //  20% CHANCE OF NOT MOVING AT ALL
     {
-        //  ORDERS = 0 SENTINEL 
+        //  ORDERS = 0 SENTINEL
         if ($playerinfo['orders'] == 0)
         {
             $ai_count0++;
-            //  FIND A TARGET 
-            //  IN MY SECTOR, NOT MYSELF, NOT ON A PLANET 
+            //  FIND A TARGET
+            //  IN MY SECTOR, NOT MYSELF, NOT ON A PLANET
             $reso0 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and planet_id=0 and ship_id > 1", array($playerinfo['sector'], $playerinfo['email']));
             if (!$reso0->EOF)
             {
                 $rowo0 = $reso0->fields;
-                if ($playerinfo['aggression'] == 0)            //  O = 0 & AGRESSION = 0 PEACEFUL 
+                if ($playerinfo['aggression'] == 0)            //  O = 0 & AGRESSION = 0 PEACEFUL
                 {
                     // This Guy Does Nothing But Sit As A Target Himself
                 }
-                elseif ($playerinfo[aggression] == 1)        //  O = 0 & AGRESSION = 1 ATTACK SOMETIMES 
+                elseif ($playerinfo[aggression] == 1)        //  O = 0 & AGRESSION = 1 ATTACK SOMETIMES
                 {
                     // ai players's only compare number of fighters when determining if they have an attack advantage
                     if ($playerinfo[ship_fighters] > $rowo0[ship_fighters])
@@ -99,7 +99,7 @@ while(!$res->EOF && $res)
                         }
                     }
                 }
-                elseif ($playerinfo[aggression] == 2)        //  O = 0 & AGRESSION = 2 ATTACK ALLWAYS 
+                elseif ($playerinfo[aggression] == 2)        //  O = 0 & AGRESSION = 2 ATTACK ALLWAYS
                 {
                     $ai_count0a++;
                     playerlog($db,$playerinfo[ship_id], "LOG_AI_ATTACK", "$rowo0[character_name]");
@@ -115,7 +115,7 @@ while(!$res->EOF && $res)
         elseif ($playerinfo[orders] == 1) //  ORDERS = 1 ROAM
         {
             $ai_count1++;
-            //  ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE 
+            //  ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE
             $targetlink = $playerinfo[sector];
             ai_move();
             if ($ai_isdead>0)
@@ -124,17 +124,17 @@ while(!$res->EOF && $res)
                 continue;
             }
 
-            //  FIND A TARGET 
-            //  IN MY SECTOR, NOT MYSELF 
+            //  FIND A TARGET
+            //  IN MY SECTOR, NOT MYSELF
             $reso1 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($targetlink, $playerinfo['email']));
             if (!$reso1->EOF)
             {
                 $rowo1 = $reso1->fields;
-                if ($playerinfo[aggression] == 0)            //  O = 1 & AGRESSION = 0 PEACEFUL 
+                if ($playerinfo[aggression] == 0)            //  O = 1 & AGRESSION = 0 PEACEFUL
                 {
                     // This Guy Does Nothing But Roam Around As A Target Himself
                 }
-                elseif ($playerinfo[aggression] == 1)        //  O = 1 & AGRESSION = 1 ATTACK SOMETIMES 
+                elseif ($playerinfo[aggression] == 1)        //  O = 1 & AGRESSION = 1 ATTACK SOMETIMES
                 {
                     // AI player's only compare number of fighters when determining if they have an attack advantage
                     if ($playerinfo[ship_fighters] > $rowo1[ship_fighters] && $rowo1[planet_id] == 0)
@@ -149,7 +149,7 @@ while(!$res->EOF && $res)
                         }
                     }
                 }
-                elseif ($playerinfo[aggression] == 2)        //  O = 1 & AGRESSION = 2 ATTACK ALLWAYS 
+                elseif ($playerinfo[aggression] == 2)        //  O = 1 & AGRESSION = 2 ATTACK ALLWAYS
                 {
                     $ai_count1a++;
                     playerlog($db,$playerinfo[ship_id], "LOG_AI_ATTACK", "$rowo1[character_name]");
@@ -173,7 +173,7 @@ while(!$res->EOF && $res)
         elseif ($playerinfo[orders] == 2) //  ORDERS = 2 ROAM AND TRADE
         {
             $ai_count2++;
-            //  ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE 
+            //  ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE
             $targetlink = $playerinfo[sector];
             ai_move();
             if ($ai_isdead > 0)
@@ -182,20 +182,20 @@ while(!$res->EOF && $res)
                 continue;
             }
 
-            //  NOW TRADE BEFORE WE DO ANY AGGRESSION CHECKS 
+            //  NOW TRADE BEFORE WE DO ANY AGGRESSION CHECKS
             ai_trade();
 
-            //  FIND A TARGET 
-            //  IN MY SECTOR, NOT MYSELF 
+            //  FIND A TARGET
+            //  IN MY SECTOR, NOT MYSELF
             $reso2 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($targetlink, $playerinfo['email']));
             if (!$reso2->EOF)
             {
                 $rowo2=$reso2->fields;
-                if ($playerinfo[aggression] == 0)            //  O = 2 & AGRESSION = 0 PEACEFUL 
+                if ($playerinfo[aggression] == 0)            //  O = 2 & AGRESSION = 0 PEACEFUL
                 {
                     // This Guy Does Nothing But Roam And Trade
                 }
-                elseif ($playerinfo[aggression] == 1)        //  O = 2 & AGRESSION = 1 ATTACK SOMETIMES 
+                elseif ($playerinfo[aggression] == 1)        //  O = 2 & AGRESSION = 1 ATTACK SOMETIMES
                 {
                     // AI player's only compare number of fighters when determining if they have an attack advantage
                     if ($playerinfo[ship_fighters] > $rowo2[ship_fighters] && $rowo2[planet_id] == 0)
@@ -210,7 +210,7 @@ while(!$res->EOF && $res)
                         }
                     }
                 }
-                elseif ($playerinfo[aggression] == 2)        //  O = 2 & AGRESSION = 2 ATTACK ALLWAYS 
+                elseif ($playerinfo[aggression] == 2)        //  O = 2 & AGRESSION = 2 ATTACK ALLWAYS
                 {
                     $ai_count2a++;
                     playerlog($db,$playerinfo[ship_id], "LOG_AI_ATTACK", "$rowo2[character_name]");
@@ -253,7 +253,7 @@ while(!$res->EOF && $res)
             }
             else
             {
-                //  ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE 
+                //  ROAM TO A NEW SECTOR BEFORE DOING ANYTHING ELSE
                 ai_move();
                 if ($ai_isdead>0)
                 {
@@ -261,17 +261,17 @@ while(!$res->EOF && $res)
                     continue;
                 }
 
-                //  FIND A TARGET 
-                //  IN MY SECTOR, NOT MYSELF 
+                //  FIND A TARGET
+                //  IN MY SECTOR, NOT MYSELF
                 $reso3 = $db->Execute("SELECT * FROM {$db->prefix}players WHERE sector=? and email!=? and ship_id > 1", array($playerinfo['sector'], $playerinfo['email']));
                 if (!$reso3->EOF)
                 {
                     $rowo3=$reso3->fields;
-                    if ($playerinfo[aggression] == 0)            //  O = 3 & AGRESSION = 0 PEACEFUL 
+                    if ($playerinfo[aggression] == 0)            //  O = 3 & AGRESSION = 0 PEACEFUL
                     {
                         // This Guy Does Nothing But Roam Around As A Target Himself
                     }
-                    elseif ($playerinfo[aggression] == 1)        //  O = 3 & AGRESSION = 1 ATTACK SOMETIMES 
+                    elseif ($playerinfo[aggression] == 1)        //  O = 3 & AGRESSION = 1 ATTACK SOMETIMES
                     {
                         // AI player's only compare number of fighters when determining if they have an attack advantage
                         if ($playerinfo[ship_fighters] > $rowo3[ship_fighters] && $rowo3[planet_id] == 0)
@@ -286,7 +286,7 @@ while(!$res->EOF && $res)
                             }
                         }
                     }
-                    elseif ($playerinfo[aggression] == 2)        //  O = 3 & AGRESSION = 2 ATTACK ALLWAYS 
+                    elseif ($playerinfo[aggression] == 2)        //  O = 3 & AGRESSION = 2 ATTACK ALLWAYS
                     {
                         $ai_count3a++;
                         playerlog($db,$playerinfo[ship_id], "LOG_AI_ATTACK", "$rowo3[character_name]");
@@ -314,17 +314,17 @@ while(!$res->EOF && $res)
 
 // attempting to make a player generator to regenerate players after death and keep the number of AI players
 // at the ai_max value in the the config file.
-    
+
 $needed_ai_ = $ai__max - $ai_count;
 if ($needed_ai_ >= 0)
 {
     echo "creating $needed_ai_ ai_.<br>";
-     
+
     // The created ai_ will be set to the average player hull + or - 7
 
     $res = $db->Execute("SELECT round(AVG(hull)) AS hull, round(AVG(power)) AS power FROM {$db->prefix}ships JOIN {$db->prefix}players WHERE destroyed='N' AND acl != '0' AND hull > 3"); // ACL = 0 means AI player.
     $row = $res->fields;
- 
+
     while ($needed_ai_ > 0)
     {
         $furlevel = (($row['hull'] + $row['power'])/2) + mt_rand(-7,9);
@@ -335,7 +335,7 @@ if ($needed_ai_ >= 0)
 
         if ($furlevel >= 100)
         {
-            $furlevel = 100; 
+            $furlevel = 100;
             echo "<br>Lowering AI average too big !<br>"; } // New code to limit AI size, stops undeafetable AI's being created - GunSlinger
         }
 
@@ -368,11 +368,11 @@ if ($needed_ai_ >= 0)
         }
 
         // Create Ship Name
-        $shipname = $ai_name . "-" . $character; 
+        $shipname = $ai_name . "-" . $character;
 
         // Select Random Sector
         $sector = mt_rand(1,$sector_max);
-          
+
         // Select Orders
         $orders = mt_rand(0,2);
 
@@ -397,7 +397,7 @@ if ($needed_ai_ >= 0)
         $errflag=0;
         if ( $character=='' || $shipname=='' )
         {
-            echo "Ship name, and character name may not be blank.<br>"; 
+            echo "Ship name, and character name may not be blank.<br>";
             $errflag=1;
         }
 
@@ -414,19 +414,19 @@ if ($needed_ai_ >= 0)
                 $row= $result->fields;
                 if ($row[0]==$emailname)
                 {
-                    echo "ERROR: E-mail address $emailname, is already in use.  "; 
+                    echo "ERROR: E-mail address $emailname, is already in use.  ";
                     $errflag=1;
                 }
 
                 if ($row[1]==$character)
                 {
-                    echo "ERROR: Character name $character, is already in use.<br>"; 
+                    echo "ERROR: Character name $character, is already in use.<br>";
                     $errflag=1;
                 }
 
                 if ($row[2]==$shipname)
                 {
-                    echo "ERROR: Ship name $shipname, is already in use.<br>"; 
+                    echo "ERROR: Ship name $shipname, is already in use.<br>";
                     $errflag=1;
                 }
 
@@ -571,11 +571,11 @@ if ($needed_ai_ >= 0)
                 if ($ep['planet_id'])
                 {
                     $result7 = $db->Execute("UPDATE {$db->prefix}planets SET organics='$fpf', ore='$fpf', goods='$fpf', energy='$fpf', colonists='$fpf', credits='$fpf', fighters='$fpf', torps='$fpf', owner='$furshipid[player_id]', base='Y', sells='N', prod_organics='15.00',prod_ore='5.00',prod_goods='5.00',prod_energy='10.00',prod_fighters='20.00',prod_torp='10.00' WHERE planet_id=$ep[planet_id]");
-                    if (!$result7) 
+                    if (!$result7)
                     {
                         echo $db->ErrorMsg() . "<br>";
                     }
-                    else 
+                    else
                     {
                         echo $ai_name . " captured an abanded planet. $ep[planet_id]<br><br>";
                     }
@@ -594,7 +594,7 @@ if ($needed_ai_ >= 0)
                     {
                         echo "sector is $sector<br>";
                         $maxp = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE sector_id = '$sector'");
-                        $num_res = $maxp->RecordCount(); 
+                        $num_res = $maxp->RecordCount();
                         if ($num_res >= $max_star_size)
                         {
                             echo "There are too many planets in sector $sector. <br>";

@@ -26,14 +26,14 @@ function ai_move()
     global $db, $db_prefix;
     seed_mt_rand();
 
-    //  OBTAIN A TARGET LINK 
+    //  OBTAIN A TARGET LINK
     if ($targetlink = $playerinfo['sector'])
     {
         $targetlink = 0;
     }
 
     $linkres = $db->Execute ("SELECT * FROM {$db_prefix}links WHERE link_start=?", array($playerinfo['sector']));
-  
+
     if (mt_rand(1,100)<=50)
     {
         // Generate a random sector number
@@ -41,7 +41,7 @@ function ai_move()
         $limitloop=1;                        //  Limit the number of loops
         while (!$targetlink>0 && $limitloop<15)
         {
-            //  OBTAIN SECTOR INFORMATION 
+            //  OBTAIN SECTOR INFORMATION
             $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id=?", array($wormto));
             $sectrow = $sectres->fields;
             $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
@@ -49,7 +49,7 @@ function ai_move()
             if ($zonerow['allow_attack']== "Y")
             {
                 $targetlink= $wormto;
-                playerlog($playerinfo['ship_id'], "LOG_RAW", "Used a wormhole to warp to a zone where attacks are allowed."); 
+                playerlog($playerinfo['ship_id'], "LOG_RAW", "Used a wormhole to warp to a zone where attacks are allowed.");
             }
 
             $wormto++;
@@ -62,15 +62,15 @@ function ai_move()
         while (!$linkres->EOF)
         {
             $row = $linkres->fields;
-            //  OBTAIN SECTOR INFORMATION 
+            //  OBTAIN SECTOR INFORMATION
             $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id=?", array($row['link_dest']));
             $sectrow = $sectres->fields;
             $zoneres = $db->Execute("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
             $zonerow = $zoneres->fields;
-            if ($zonerow['allow_attack']== "Y")                        // DEST LINK MUST ALLOW ATTACKING 
+            if ($zonerow['allow_attack']== "Y")                        // DEST LINK MUST ALLOW ATTACKING
             {
-                $setlink=mt_rand(0,2);                        // 33% CHANCE OF REPLACING DEST LINK WITH THIS ONE 
-                if ($setlink== 0 || !$targetlink>0)          // UNLESS THERE IS NO DEST LINK, CHHOSE THIS ONE 
+                $setlink=mt_rand(0,2);                        // 33% CHANCE OF REPLACING DEST LINK WITH THIS ONE
+                if ($setlink== 0 || !$targetlink>0)          // UNLESS THERE IS NO DEST LINK, CHHOSE THIS ONE
                 {
                     $targetlink= $row['link_dest'];
                 }
@@ -88,7 +88,7 @@ function ai_move()
         $limitloop=1;                        //  Limit the number of loops
         while (!$targetlink>0 && $limitloop<15)
         {
-            //  OBTAIN SECTOR INFORMATION 
+            //  OBTAIN SECTOR INFORMATION
             $sectres = $db->Execute ("SELECT sector_id,zone_id FROM {$db_prefix}universe WHERE sector_id=?", array($wormto)));
             $sectrow = $sectres->fields;
             $zoneres = $db->Execute ("SELECT zone_id,allow_attack FROM {$db_prefix}zones WHERE zone_id=?", array($sectrow['zone_id']));
@@ -96,14 +96,14 @@ function ai_move()
             if ($zonerow['allow_attack']== "Y")
             {
                 $targetlink= $wormto;
-                playerlog($playerinfo['ship_id'], "LOG_RAW", "Used a wormhole to warp to a zone where attacks are allowed."); 
+                playerlog($playerinfo['ship_id'], "LOG_RAW", "Used a wormhole to warp to a zone where attacks are allowed.");
             }
 
             $wormto++;
             $wormto++;
             $limitloop++;
         }
-    } 
+    }
 
     //  CHECK FOR SECTOR DEFENSE
     if ($targetlink > 0)
@@ -137,11 +137,11 @@ function ai_move()
         }
 
         if ($total_sector_fighters>0 || $total_sector_mines>0 || ($total_sector_fighters>0 && $total_sector_mines>0))
-        // DEST LINK HAS DEFENSES 
+        // DEST LINK HAS DEFENSES
         {
             if ($playerinfo['aggression'] == 2 || $playerinfo['aggression'] == 1 || !(strstr($playerinfo['character_name'], 'Flag')))
             {
-                //  ATTACK SECTOR DEFENSES 
+                //  ATTACK SECTOR DEFENSES
                 // Dynamic functions
                 dynamic_loader ($db, "ai_tosecdef.php");
                 ai_tosecdef();
@@ -149,13 +149,13 @@ function ai_move()
             }
             else
             {
-                playerlog($playerinfo['ship_id'], "LOG_RAW", "Move failed, the sector is defended by $total_sector_fighters fighters and $total_sector_mines mines."); 
+                playerlog($playerinfo['ship_id'], "LOG_RAW", "Move failed, the sector is defended by $total_sector_fighters fighters and $total_sector_mines mines.");
                 return;
             }
         }
     }
 
-    // DO MOVE TO TARGET LINK 
+    // DO MOVE TO TARGET LINK
     if ($targetlink > 0)
     {
         $stamp = date("Y-m-d H-i-s");
@@ -164,17 +164,17 @@ function ai_move()
         if (!$move_result)
         {
             $error = $db->ErrorMsg();
-            playerlog($playerinfo['ship_id'], "LOG_RAW", "Move failed with error: $error "); 
+            playerlog($playerinfo['ship_id'], "LOG_RAW", "Move failed with error: $error ");
         }
         else
         {
-            // playerlog($playerinfo['ship_id'], "LOG_RAW", "Moved to $targetlink without incident."); 
+            // playerlog($playerinfo['ship_id'], "LOG_RAW", "Moved to $targetlink without incident.");
         }
     }
     else
-    {                                            // WE HAVE NO TARGET LINK FOR SOME REASON 
+    {                                            // WE HAVE NO TARGET LINK FOR SOME REASON
         playerlog($playerinfo['ship_id'], "LOG_RAW", "Move failed due to lack of target link.");
-        $targetlink = $playerinfo['sector'];         // RESET TARGET LINK SO IT IS NOT ZERO 
+        $targetlink = $playerinfo['sector'];         // RESET TARGET LINK SO IT IS NOT ZERO
     }
 }
 ?>

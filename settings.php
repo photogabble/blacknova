@@ -16,7 +16,7 @@
 //
 // File: settings.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "truefalse.php");
@@ -27,7 +27,7 @@ load_languages($db, $raw_prefix, 'settings');
 load_languages($db, $raw_prefix, 'global_includes');
 
 $title = $l_s_gamesettings;
-include_once ("./header.php"); 
+include_once './header.php';
 
 if ($db->prefix != $raw_prefix)
 {
@@ -208,5 +208,5 @@ $template->assign("dbprefix", $db->prefix);
 $template->assign("raw_prefix", $raw_prefix);
 $template->display("$templateset/settings.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

@@ -16,7 +16,7 @@
 //
 // File: options.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -34,7 +34,7 @@ checkdead($db);
 
 $title = $l_opt_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if ((!isset($i)) || ($i == ''))
 {
@@ -82,5 +82,5 @@ $template->assign("sb_lines", $playerinfo['sb_lines']);
 $template->assign("use_gravatar", $playerinfo['use_gravatar']);
 $template->display("$templateset/options.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

@@ -16,7 +16,7 @@
 //
 // File: navcomp.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -35,7 +35,7 @@ checkdead($db);
 
 $title = $l_nav_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($_POST['state']))
 {
@@ -106,7 +106,7 @@ if ($allow_navcomp)
                     $search_query = $search_query . ", a" . $i . ".link_dest";
                 }
 
-                // Okay, this is tricky. We need the db returns to be numeric, not associative, so that we 
+                // Okay, this is tricky. We need the db returns to be numeric, not associative, so that we
                 // can get a count from it. A good page on it is here: php.weblogs.com/adodb_tutorial .
                 // We also dont need to set it BACK to the game default, because each page sets it again (by calling config).
                 // If someone can think of a way to recode this to not need this line, I would deeply appreciate it!
@@ -145,6 +145,7 @@ if ($allow_navcomp)
     }
 
     global $l_global_mmenu;
+    $template->assign("title", $title);
     $template->assign("l_global_mmenu", $l_global_mmenu);
     $template->assign("l_nav_nocomp", $l_nav_nocomp);
     $template->assign("allow_navcomp", $allow_navcomp);
@@ -162,5 +163,5 @@ if ($allow_navcomp)
     $template->display("$templateset/navcomp.tpl");
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

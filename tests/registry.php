@@ -1,17 +1,17 @@
 <?php
 class registry_test_case extends UnitTestCase
 {
-    function registry_test_case()
+    public function registry_test_case()
     {
         $this->UnitTestCase();
     }
 
-    function testClassExists()
+    public function testClassExists()
     {
         $this->assertTrue(class_exists('registry'), 'Registry class exists');
     }
 
-    function testAccess()
+    public function testAccess()
     {
         $registry = &new registry();
         $this->assertFalse($registry->is_entry('a'));
@@ -23,4 +23,3 @@ class registry_test_case extends UnitTestCase
     }
 }
 ?>
-

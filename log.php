@@ -16,8 +16,8 @@
 //
 // File: log.php
 
-include_once ("./global_includes.php");
-include_once ("./backends/sha256/shaclass.php"); // Include the sha256 backend
+include_once './global_includes.php';
+include_once './backends/sha256/shaclass.php'; // Include the sha256 backend
 
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
@@ -32,7 +32,7 @@ load_languages($db, $raw_prefix, 'planet');
 load_languages($db, $raw_prefix, 'spy');
 
 $title = $l_log_titlet;
-include_once ("./header.php");
+include_once './header.php';
 
 $sha256adminpass = sha256::hash($adminpass);
 
@@ -266,5 +266,5 @@ else
 
 echo "</table>" . "</div>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

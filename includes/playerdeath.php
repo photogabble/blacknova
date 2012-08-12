@@ -65,7 +65,7 @@ function playerdeath($db,$corpse_id, $logtype, $loginfo=0, $murdered=0, $murdere
         $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET class=1, hull=0, engines=0, pengines=0, power=0, sensors=0, " .
                                     "computer=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=?, " .
                                     "cloak=0, shields=0, sector_id=1, organics=0, ore=0, goods=0, energy=?, " .
-                                    "colonists=0, fighters=?, dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, " .    
+                                    "colonists=0, fighters=?, dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, " .
                                     "dev_escapepod='N', dev_fuelscoop='N', dev_minedeflector=0, on_planet='N', " .
                                     "cleared_defenses=' ' WHERE ship_id=?", array($start_armor, $start_energy, $start_fighters, $ship_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);

@@ -157,7 +157,6 @@ else
     $all_ports_results_array[0] = '';
 }
 
-
 // Device ports
 $cumulative = 0;
 $l_all_ports_array[1] = str_replace("[number]", ($_POST['upp']), $l_place_devices);

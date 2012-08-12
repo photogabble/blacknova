@@ -16,13 +16,13 @@
 //
 // File: port.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "num_level.php"); 
+dynamic_loader ($db, "num_level.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -40,7 +40,7 @@ checkdead($db);
 
 $title = $l_title_port;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($pay))
 {
@@ -113,7 +113,7 @@ if ($zoneinfo['zone_id'] == 4)
     echo "$l_war_info <p>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 elseif ($zoneinfo['allow_trade'] == 'N')
@@ -123,7 +123,7 @@ elseif ($zoneinfo['allow_trade'] == 'N')
     echo "$l_no_trade_info<p>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 elseif ($zoneinfo['allow_trade'] == 'L')
@@ -140,7 +140,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
             echo "Trading at this port is not allowed for outsiders<p>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
     }
@@ -153,7 +153,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
             echo "$l_no_trade_out<p>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
     }
@@ -299,11 +299,11 @@ if ($portinfo['port_type'] != "none" && $portinfo['port_type'] != "upgrades" && 
 }
 elseif ($portinfo['port_type'] == "upgrades")
 {
-    include_once ("./port_upgrade.php");
+    include_once './port_upgrade.php';
 }
 elseif ($portinfo['port_type'] == "devices")
 {
-    include_once ("./port_devices.php");
+    include_once './port_devices.php';
 }
 else
 {
@@ -316,6 +316,6 @@ global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 echo "\n";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

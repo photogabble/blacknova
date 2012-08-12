@@ -19,16 +19,16 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/an.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php");
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
-    include_once ("./header.php");
+    include_once './header.php';
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 

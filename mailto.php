@@ -16,7 +16,7 @@
 //
 // File: mailto.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -37,7 +37,7 @@ checkdead($db);
 
 $title = $l_sendm_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 $name = '';
 if (isset($_POST['name']))
@@ -81,7 +81,6 @@ if (isset($_POST['subject']))
 {
     $subject = $_POST['subject'];
 }
-
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -180,6 +179,6 @@ else
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

@@ -16,7 +16,7 @@
 //
 // File: planet_report.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -42,7 +42,7 @@ checkdead($db);
 
 $title = $l_pr_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 global $db;
 global $res;
@@ -54,7 +54,7 @@ global $l_pr_teamlink, $l_pr_clicktosort;
 global $l_sector, $l_name, $l_unnamed, $l_ore, $l_organics, $l_goods;
 global $l_energy, $l_colonists, $l_credits, $l_fighters, $l_torps, $l_base;
 global $l_selling, $l_pr_totals, $l_yes, $l_no, $l_team;
-global $l_pr_noplanet, $l_reset, $l_pr_changeprods, $l_pr_baserequired; 
+global $l_pr_noplanet, $l_reset, $l_pr_changeprods, $l_pr_baserequired;
 global $l_pr_takecreds, $l_pr_collectcreds, $l_pr_warning1, $l_pr_warning2;
 global $l_pr_menulink;
 global $planet_detect_success2, $spy_success_factor, $shipinfo, $title;
@@ -112,7 +112,7 @@ if ($res)
         {
             spy_detect_planet($db,$shipinfo['ship_id'], $planet[$i]['planet_id'], $planet_detect_success2);
         }
-      
+
         $i++;
         $res->MoveNext();
     }
@@ -260,7 +260,7 @@ else
     echo "    }";
     echo "}";
     echo "</script> .";
-    echo "<br> <input type=checkbox onClick=\"checkAll(this,'TPCreds')\"> Select All <br>. "; 
+    echo "<br> <input type=checkbox onClick=\"checkAll(this,'TPCreds')\"> Select All <br>. ";
     echo "<input type=\"submit\" name=\"submit_button\" value=\"$l_pr_collectcreds\">";
     echo "<input type=\"reset\" value=\"$l_reset\">";
     echo "</form>";
@@ -270,5 +270,5 @@ echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

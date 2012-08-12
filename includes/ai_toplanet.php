@@ -21,7 +21,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_toplanet.php"));
 if ($pos !== false)
 {
-    include_once ("global_includes.php");
+    include_once 'global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -29,7 +29,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("footer.php");
+    include_once 'footer.php';
     die();
 }
 
@@ -40,7 +40,7 @@ function ai_toplanet($planet_id, $charactername)
     dynamic_loader ($db, "seed_mt_rand.php");
     dynamic_loader ($db, "playerlog.php");
 
-    //  AI Planet Attack Code 
+    //  AI Planet Attack Code
 
     //  SETUP GENERAL VARIABLES
     global $playerinfo, $planetinfo, $torp_dmg_rate, $level_factor, $rating_combat_factor;
@@ -61,32 +61,32 @@ function ai_toplanet($planet_id, $charactername)
     $ownerinfo= $resulto->fields;
 
     // Checking if flag AI
-    if (strstr($playerinfo['character_name'], 'Flag'))                       // He's the flag 
+    if (strstr($playerinfo['character_name'], 'Flag'))                       // He's the flag
     {
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Attack failed, The Flag kabal cannot attack a planet.");
-        // $db->Execute("UNLOCK TABLES"); 
+        // $db->Execute("UNLOCK TABLES");
         return;
     }
-        
+
     // Made it this far, so I'm going to log the attack and give the AI a bounty if he deserves it - rjordan
     // Moved the log attack here to clear log clutter and reduce scheduler time - rjordan
-    
+
     playerlog($db,$playerinfo['ship_id'], "LOG_AI_ATTACK", "$character_name");
-  
+
     //  SETUP PLANETARY VARIABLES
     $base_factor = ($planetinfo['base'] == 'Y') ? $basedefense : 0;
 
-    //  PLANET BEAMS 
+    //  PLANET BEAMS
     $targetbeams = num_beams($ownerinfo['beams'] + $base_factor);
     if ($targetbeams > $planetinfo['energy']) $targetbeams = $planetinfo['energy'];
     $planetinfo['energy'] -= $targetbeams;
-    
-    //  PLANET SHIELDS 
+
+    //  PLANET SHIELDS
     $targetshields = num_shields($ownerinfo['shields'] + $base_factor);
     if ($targetshields > $planetinfo['energy']) $targetshields = $planetinfo['energy'];
     $planetinfo['energy'] -= $targetshields;
-    
-    //  PLANET TORPS 
+
+    //  PLANET TORPS
     $torp_launchers = round(pow($level_factor, ($ownerinfo['torp_launchers'])+ $base_factor)) * 10;
     $torps = $planetinfo['torps'];
     $targettorps = $torp_launchers;
@@ -94,167 +94,167 @@ function ai_toplanet($planet_id, $charactername)
     $planetinfo['torps'] -= $targettorps;
     $targettorpdmg = $torp_dmg_rate * $targettorps;
 
-    //  PLANET FIGHTERS 
+    //  PLANET FIGHTERS
     $targetfighters = $planetinfo['fighters'];
 
     //  SETUP ATTACKER VARIABLES
 
-    //  ATTACKER BEAMS 
+    //  ATTACKER BEAMS
     $attackerbeams = num_beams($playerinfo['beams']);
     if ($attackerbeams > $playerinfo['ship_energy']) $attackerbeams = $playerinfo['ship_energy'];
     $playerinfo['ship_energy'] -= $attackerbeams;
 
-    //  ATTACKER SHIELDS 
+    //  ATTACKER SHIELDS
     $attackershields = num_shields($playerinfo['shields']);
     if ($attackershields > $playerinfo['ship_energy']) $attackershields = $playerinfo['ship_energy'];
     $playerinfo['ship_energy'] -= $attackershields;
 
-    //  ATTACKER TORPS 
+    //  ATTACKER TORPS
     $attackertorps = round(pow($level_factor, $playerinfo['torp_launchers'])) * 2;
-    if ($attackertorps > $playerinfo['torps']) $attackertorps = $playerinfo['torps']; 
+    if ($attackertorps > $playerinfo['torps']) $attackertorps = $playerinfo['torps'];
     $playerinfo['torps'] -= $attackertorps;
     $attackertorpdamage = $torp_dmg_rate * $attackertorps;
 
-    //  ATTACKER FIGHTERS 
+    //  ATTACKER FIGHTERS
     $attackerfighters = $playerinfo['ship_fighters'];
 
-    //  ATTACKER armor 
+    //  ATTACKER armor
     $attackerarmor = $playerinfo['armor_pts'];
 
     // BEGIN COMBAT PROCEDURES
     if ($attackerbeams > 0 && $targetfighters > 0)
-    {                         // ATTACKER HAS BEAMS - TARGET HAS FIGHTERS - BEAMS VS FIGHTERS 
+    {                         // ATTACKER HAS BEAMS - TARGET HAS FIGHTERS - BEAMS VS FIGHTERS
         if ($attackerbeams > $targetfighters)
-        {                                  // ATTACKER BEAMS GT TARGET FIGHTERS 
+        {                                  // ATTACKER BEAMS GT TARGET FIGHTERS
             $lost = $targetfighters;
             $targetfighters = 0;                                     // T LOOSES ALL FIGHTERS
             $attackerbeams = $attackerbeams-$lost;                   // A LOOSES BEAMS EQ TO T FIGHTERS
         }
         else
-        {                                  // ATTACKER BEAMS LE TARGET FIGHTERS 
+        {                                  // ATTACKER BEAMS LE TARGET FIGHTERS
             $targetfighters = $targetfighters-$attackerbeams;        // T LOOSES FIGHTERS EQ TO A BEAMS
             $attackerbeams = 0;                                      // A LOOSES ALL BEAMS
-        }   
+        }
     }
 
     if ($attackerfighters > 0 && $targetbeams > 0)
-    {                         // TARGET HAS BEAMS - ATTACKER HAS FIGHTERS - BEAMS VS FIGHTERS 
+    {                         // TARGET HAS BEAMS - ATTACKER HAS FIGHTERS - BEAMS VS FIGHTERS
         if ($targetbeams > round($attackerfighters / 2))
-        {                                  // TARGET BEAMS GT HALF ATTACKER FIGHTERS 
+        {                                  // TARGET BEAMS GT HALF ATTACKER FIGHTERS
             $lost= $attackerfighters-(round($attackerfighters/2));
             $attackerfighters= $attackerfighters-$lost;               // A LOOSES HALF ALL FIGHTERS
             $targetbeams= $targetbeams-$lost;                         // T LOOSES BEAMS EQ TO HALF A FIGHTERS
         }
         else
-        {                                  // TARGET BEAMS LE HALF ATTACKER FIGHTERS 
+        {                                  // TARGET BEAMS LE HALF ATTACKER FIGHTERS
             $attackerfighters= $attackerfighters-$targetbeams;        // A LOOSES FIGHTERS EQ TO T BEAMS
             $targetbeams = 0;                                          // T LOOSES ALL BEAMS
         }
     }
 
     if ($attackerbeams > 0)
-    {                         // ATTACKER HAS BEAMS LEFT - CONTINUE COMBAT - BEAMS VS SHIELDS 
+    {                         // ATTACKER HAS BEAMS LEFT - CONTINUE COMBAT - BEAMS VS SHIELDS
         if ($attackerbeams > $targetshields)
-        {                                  // ATTACKER BEAMS GT TARGET SHIELDS 
+        {                                  // ATTACKER BEAMS GT TARGET SHIELDS
             $attackerbeams= $attackerbeams-$targetshields;            // A LOOSES BEAMS EQ TO T SHIELDS
             $targetshields = 0;                                        // T LOOSES ALL SHIELDS
         }
         else
-        {                                  // ATTACKER BEAMS LE TARGET SHIELDS 
+        {                                  // ATTACKER BEAMS LE TARGET SHIELDS
             $targetshields= $targetshields-$attackerbeams;            // T LOOSES SHIELDS EQ TO A BEAMS
             $attackerbeams = 0;                                        // A LOOSES ALL BEAMS
         }
     }
 
     if ($targetbeams > 0)
-    {                         // TARGET HAS BEAMS LEFT - CONTINUE COMBAT - BEAMS VS SHIELDS 
+    {                         // TARGET HAS BEAMS LEFT - CONTINUE COMBAT - BEAMS VS SHIELDS
         if ($targetbeams > $attackershields)
-        {                                  // TARGET BEAMS GT ATTACKER SHIELDS 
+        {                                  // TARGET BEAMS GT ATTACKER SHIELDS
             $targetbeams= $targetbeams-$attackershields;              // T LOOSES BEAMS EQ TO A SHIELDS
             $attackershields = 0;                                      // A LOOSES ALL SHIELDS
         }
         else
-        {                                  // TARGET BEAMS LE ATTACKER SHIELDS  
+        {                                  // TARGET BEAMS LE ATTACKER SHIELDS
             $attackershields= $attackershields-$targetbeams;          // A LOOSES SHIELDS EQ TO T BEAMS
             $targetbeams = 0;                                          // T LOOSES ALL BEAMS
         }
     }
 
     if ($targetbeams > 0)
-    {                        // TARGET HAS BEAMS LEFT - CONTINUE COMBAT - BEAMS VS ARMOR  
+    {                        // TARGET HAS BEAMS LEFT - CONTINUE COMBAT - BEAMS VS ARMOR
         if ($targetbeams > $attackerarmor)
-        {                                 // TARGET BEAMS GT ATTACKER ARMOR 
+        {                                 // TARGET BEAMS GT ATTACKER ARMOR
             $targetbeams= $targetbeams-$attackerarmor;                // T LOOSES BEAMS EQ TO A ARMOR
             $attackerarmor = 0;                                        // A LOOSES ALL ARMOR (A DESTROYED)
         }
         else
-        {                                 // TARGET BEAMS LE ATTACKER ARMOR 
+        {                                 // TARGET BEAMS LE ATTACKER ARMOR
             $attackerarmor= $attackerarmor-$targetbeams;              // A LOOSES ARMOR EQ TO T BEAMS
             $targetbeams = 0;                                          // T LOOSES ALL BEAMS
-        } 
+        }
     }
 
     if ($targetfighters > 0 && $attackertorpdamage > 0)
-    {                        // ATTACKER FIRES TORPS - TARGET HAS FIGHTERS - TORPS VS FIGHTERS 
+    {                        // ATTACKER FIRES TORPS - TARGET HAS FIGHTERS - TORPS VS FIGHTERS
         if ($attackertorpdamage > $targetfighters)
-        {                                 // ATTACKER FIRED TORPS GT TARGET FIGHTERS 
+        {                                 // ATTACKER FIRED TORPS GT TARGET FIGHTERS
             $lost= $targetfighters;
             $targetfighters = 0;                                       // T LOOSES ALL FIGHTERS
             $attackertorpdamage= $attackertorpdamage-$lost;           // A LOOSES FIRED TORPS EQ TO T FIGHTERS
         }
         else
-        {                                 // ATTACKER FIRED TORPS LE HALF TARGET FIGHTERS 
+        {                                 // ATTACKER FIRED TORPS LE HALF TARGET FIGHTERS
             $targetfighters= $targetfighters-$attackertorpdamage;     // T LOOSES FIGHTERS EQ TO A TORPS FIRED
             $attackertorpdamage = 0;                                   // A LOOSES ALL TORPS FIRED
         }
     }
 
     if ($attackerfighters > 0 && $targettorpdmg > 0)
-    {                        // TARGET FIRES TORPS - ATTACKER HAS FIGHTERS - TORPS VS FIGHTERS 
+    {                        // TARGET FIRES TORPS - ATTACKER HAS FIGHTERS - TORPS VS FIGHTERS
         if ($targettorpdmg > round($attackerfighters / 2))
-        {                                 // TARGET FIRED TORPS GT HALF ATTACKER FIGHTERS 
+        {                                 // TARGET FIRED TORPS GT HALF ATTACKER FIGHTERS
             $lost= $attackerfighters-(round($attackerfighters/2));
             $attackerfighters= $attackerfighters-$lost;               // A LOOSES HALF ALL FIGHTERS
             $targettorpdmg= $targettorpdmg-$lost;                     // T LOOSES FIRED TORPS EQ TO HALF A FIGHTERS
         }
         else
-        {                                 // TARGET FIRED TORPS LE HALF ATTACKER FIGHTERS 
+        {                                 // TARGET FIRED TORPS LE HALF ATTACKER FIGHTERS
             $attackerfighters= $attackerfighters-$targettorpdmg;      // A LOOSES FIGHTERS EQ TO T TORPS FIRED
             $targettorpdmg = 0;                                        // T LOOSES ALL TORPS FIRED
         }
     }
 
     if ($targettorpdmg > 0)
-    {                        // TARGET FIRES TORPS - CONTINUE COMBAT - TORPS VS ARMOR 
+    {                        // TARGET FIRES TORPS - CONTINUE COMBAT - TORPS VS ARMOR
         if ($targettorpdmg > $attackerarmor)
-        {                                 // TARGET FIRED TORPS GT HALF ATTACKER ARMOR 
+        {                                 // TARGET FIRED TORPS GT HALF ATTACKER ARMOR
             $targettorpdmg= $targettorpdmg-$attackerarmor;            // T LOOSES FIRED TORPS EQ TO A ARMOR
             $attackerarmor = 0;                                        // A LOOSES ALL ARMOR (A DESTROYED)
         }
         else
-        {                                 // TARGET FIRED TORPS LE HALF ATTACKER ARMOR 
+        {                                 // TARGET FIRED TORPS LE HALF ATTACKER ARMOR
             $attackerarmor= $attackerarmor-$targettorpdmg;            // A LOOSES ARMOR EQ TO T TORPS FIRED
             $targettorpdmg = 0;                                        // T LOOSES ALL TORPS FIRED
-        } 
+        }
     }
 
     if ($attackerfighters > 0 && $targetfighters > 0)
-    {                        // ATTACKER HAS FIGHTERS - TARGET HAS FIGHTERS - FIGHTERS VS FIGHTERS 
+    {                        // ATTACKER HAS FIGHTERS - TARGET HAS FIGHTERS - FIGHTERS VS FIGHTERS
         if ($attackerfighters > $targetfighters)
-        {                                 // ATTACKER FIGHTERS GT TARGET FIGHTERS 
+        {                                 // ATTACKER FIGHTERS GT TARGET FIGHTERS
             $temptargfighters = 0;                                     // T WILL LOOSE ALL FIGHTERS
         }
         else
-        {                                 // ATTACKER FIGHTERS LE TARGET FIGHTERS 
+        {                                 // ATTACKER FIGHTERS LE TARGET FIGHTERS
             $temptargfighters= $targetfighters-$attackerfighters;     // T WILL LOOSE FIGHTERS EQ TO A FIGHTERS
         }
 
         if ($targetfighters > $attackerfighters)
-        {                                 // TARGET FIGHTERS GT ATTACKER FIGHTERS 
+        {                                 // TARGET FIGHTERS GT ATTACKER FIGHTERS
             $tempplayfighters = 0;                                     // A WILL LOOSE ALL FIGHTERS
         }
         else
-        {                                 // TARGET FIGHTERS LE ATTACKER FIGHTERS 
+        {                                 // TARGET FIGHTERS LE ATTACKER FIGHTERS
             $tempplayfighters= $attackerfighters-$targetfighters;     // A WILL LOOSE FIGHTERS EQ TO T FIGHTERS
         }
 
@@ -263,13 +263,13 @@ function ai_toplanet($planet_id, $charactername)
     }
 
     if ($targetfighters > 0)
-    {                        // TARGET HAS FIGHTERS - CONTINUE COMBAT - FIGHTERS VS ARMOR 
+    {                        // TARGET HAS FIGHTERS - CONTINUE COMBAT - FIGHTERS VS ARMOR
         if ($targetfighters > $attackerarmor)
-        {                                 // TARGET FIGHTERS GT ATTACKER ARMOR 
+        {                                 // TARGET FIGHTERS GT ATTACKER ARMOR
             $attackerarmor = 0;                                        // A LOOSES ALL ARMOR (A DESTROYED)
         }
         else
-        {                                 // TARGET FIGHTERS LE ATTACKER ARMOR 
+        {                                 // TARGET FIGHTERS LE ATTACKER ARMOR
             $attackerarmor= $attackerarmor-$targetfighters;           // A LOOSES ARMOR EQ TO T FIGHTERS
         }
     }
@@ -285,7 +285,7 @@ function ai_toplanet($planet_id, $charactername)
     if ($targetshields    < 0) $targetshields = 0;
     if ($targetbeams      < 0) $targetbeams = 0;
 
-    //  CHECK IF ATTACKER SHIP DESTROYED   
+    //  CHECK IF ATTACKER SHIP DESTROYED
     if (!$attackerarmor>0)
     {
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Ship destroyed by planetary defenses on planet $planetinfo[name]");
@@ -302,16 +302,16 @@ function ai_toplanet($planet_id, $charactername)
         $ship_salvage= $ship_value*$ship_salvage_rate/100;
         $fighters_lost = $planetinfo['fighters'] - $targetfighters;
 
-        //  LOG ATTACK TO PLANET OWNER 
+        //  LOG ATTACK TO PLANET OWNER
         playerlog($db,$planetinfo['owner'], "LOG_PLANET_NOT_DEFEATED", "$planetinfo[name]|$playerinfo[sector]|kabal $playerinfo[character_name]|$free_ore|$free_organics|$free_goods|$ship_salvage_rate|$ship_salvage");
 
-        //  UPDATE PLANET 
+        //  UPDATE PLANET
         $db->Execute("UPDATE {$db->prefix}planets SET energy=?, fighters=fighters-?, " .
                      "torps=torps-?, ore=ore+?, goods=goods+?, " .
                      "organics=organics+?, credits=credits+? " .
                      "WHERE planet_id=?", array($planetinfo['energy'], $fighters_lost, $targettorps, $free_ore, $free_goods, $free_organics, $ship_salvage, $planetinfo['planet_id']));
-    } 
-//  MUST HAVE MADE IT PAST PLANET DEFENSES 
+    }
+//  MUST HAVE MADE IT PAST PLANET DEFENSES
     else
     {
         $armor_lost = $playerinfo['armor_pts'] - $attackerarmor;
@@ -319,7 +319,7 @@ function ai_toplanet($planet_id, $charactername)
         $target_fighters_lost = $planetinfo['ship_fighters'] - $targetfighters;
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Made it past defenses on planet $planetinfo[name]");
 
-        //  UPDATE ATTACKER 
+        //  UPDATE ATTACKER
         $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, " .
                       "ship_fighters=ship_fighters-?, torps=torps-?, " .
                       "armor_pts=armor_pts-? WHERE ship_id=?", array($playerinfo['ship_energy'], $fighters_lost, $attackertorps, $armor_lost, $playerinfo['ship_id']));
@@ -327,13 +327,13 @@ function ai_toplanet($planet_id, $charactername)
         $playerinfo['torps'] = $attackertorps;
         $playerinfo['armor_pts'] = $attackerarmor;
 
-        //  UPDATE PLANET 
+        //  UPDATE PLANET
         $db->Execute ("UPDATE {$db->prefix}planets SET energy=?, fighters=?, " .
                       "torps=torps-? WHERE planet_id=$planetinfo[planet_id]", array($planetinfo['energy'], $targetfighters, $targettorps, $planetinfo['planet_id']));
         $planetinfo['fighters'] = $targetfighters;
         $planetinfo['torps'] = $targettorps;
 
-        //  NOW WE MUST ATTACK ALL SHIPS ON THE PLANET ONE BY ONE 
+        //  NOW WE MUST ATTACK ALL SHIPS ON THE PLANET ONE BY ONE
         $resultps = $db->Execute("SELECT ship_id,ship_name FROM {$db->prefix}ships WHERE " .
                                  "planet_id=? AND on_planet='Y'", array($planetinfo['planet_id']));
         $shipsonplanet = $resultps->RecordCount();
@@ -354,26 +354,26 @@ function ai_toplanet($planet_id, $charactername)
         $shipsonplanet = $resultps->RecordCount();
         if ($shipsonplanet == 0 && $ai_isdead < 1)
         {
-            //  MUST HAVE KILLED ALL SHIPS ON PLANET 
+            //  MUST HAVE KILLED ALL SHIPS ON PLANET
             playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Defeated all ships on planet $planetinfo[name]");
-            //  LOG ATTACK TO PLANET OWNER 
+            //  LOG ATTACK TO PLANET OWNER
             playerlog($db,$planetinfo['owner'], "LOG_PLANET_DEFEATED", "$planetinfo[name]|$playerinfo[sector]|$playerinfo[character_name]");
 
-            //  UPDATE PLANET 
+            //  UPDATE PLANET
             $db->Execute("UPDATE {$db->prefix}planets SET fighters=0, torps=0, base='N', owner=0, corp=0 WHERE " .
-                         "planet_id=?", array($planetinfo['planet_id'])); 
+                         "planet_id=?", array($planetinfo['planet_id']));
             calc_ownership($db, $planetinfo['sector_id']);
         }
         else
         {
-            //  MUST HAVE DIED TRYING 
+            //  MUST HAVE DIED TRYING
             playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "We were KILLED by ships defending planet $planetinfo[name]");
-            //  LOG ATTACK TO PLANET OWNER 
+            //  LOG ATTACK TO PLANET OWNER
             playerlog($db,$planetinfo['owner'], "LOG_PLANET_NOT_DEFEATED", "$planetinfo[name]|$playerinfo[sector]|kabal $playerinfo[character_name]|0|0|0|0|0");
-            //  NO SALVAGE FOR PLANET BECAUSE WENT TO SHIP WHO WON 
+            //  NO SALVAGE FOR PLANET BECAUSE WENT TO SHIP WHO WON
         }
     }
-//  END OF AI PLANET ATTACK CODE 
+//  END OF AI PLANET ATTACK CODE
 //  $db->Execute("UNLOCK TABLES");
 }
 ?>

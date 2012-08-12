@@ -16,47 +16,47 @@
 //
 // File: global_includes.php
 
-ini_set("include_path","."); // This seems to be a problem on a few platforms, 
+ini_set("include_path","."); // This seems to be a problem on a few platforms,
                              // so we manually set it to avoid those problems.
 
 // Benchmarking - start before anything else.
-include_once ("./includes/timer.php");
+include_once './includes/timer.php';
 $BenchmarkTimer = new c_Timer;
 $BenchmarkTimer->start(); // Start benchmarking immediately
 
 // Allows dynamic drop-in mods
-include_once ("./includes/dynamic_loader.php");
+include_once './includes/dynamic_loader.php';
 
-//$ADODB_CACHE_DIR = "../scratch_dir"; // TODO - This should be able to be set 
+//$ADODB_CACHE_DIR = "../scratch_dir"; // TODO - This should be able to be set
                                        // dynamically, like in install
 
 // Adodb handles database abstraction. We also use clob sessions, so that pgsql is
 // supported, and cryptsessions, so the session data itself is encrypted.
 // For some reason, compression + crypt + clob causes problems on pgsql.
-include_once ("./backends/adodb/adodb.inc.php");
-include_once ("./backends/adodb/adodb-perf.inc.php");
-include_once ("./backends/adodb/session/adodb-session-clob.php");
-include_once ("./backends/adodb/session/adodb-cryptsession.php");
+include_once './backends/adodb/adodb.inc.php';
+include_once './backends/adodb/adodb-perf.inc.php';
+include_once './backends/adodb/session/adodb-session-clob.php';
+include_once './backends/adodb/session/adodb-cryptsession.php';
 // include_once("./backends/adodb/session/adodb-compress-gzip.php");
 
 // Add the db_op_result function so that all files in the game can have debugging.
-include_once ("./includes/db_op_result.php");
+include_once './includes/db_op_result.php';
 
 // Smarty provides templating
-include_once ("./backends/smarty/libs/Smarty.class.php");
-include_once ("./includes/smarty.php");
+include_once './backends/smarty/libs/Smarty.class.php';
+include_once './includes/smarty.php';
 //include_once ("./backends/smarty/src/class.template.php"); For template-lite (in testing)
 
 // Because these files declare variables (in the global scope), they can't
 // be called from inside a function.
-include_once ("./config/db_config.php");
-include_once ("./includes/fix_magic_quotes.php");
-include_once ("./includes/input_filter.php");
-include_once ("./includes/set_langdir.php");
-include_once ("./includes/connectdb.php");
+include_once './config/db_config.php';
+include_once './includes/fix_magic_quotes.php';
+include_once './includes/input_filter.php';
+include_once './includes/set_langdir.php';
+include_once './includes/connectdb.php';
 
-include_once ("global_cleanups.php");
+include_once 'global_cleanups.php';
 
 // Soon to be removed - db-specific functions.
-include_once ("includes/" . $ADODB_SESSION_DRIVER . "-common.php");
+include_once 'includes/'. $ADODB_SESSION_DRIVER . "-common.php");
 ?>

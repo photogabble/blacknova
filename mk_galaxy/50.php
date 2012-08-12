@@ -200,7 +200,6 @@ unset($sector); // Sector of course is the sector template used above.
 $insertquery = array(); // Insertquery is the array holding the 1,000 sector dump we will send to the db.
 $s=0; // S is the counter that loops us through the 1,000 sectors at a time.
 
-
 // This loop creates the raw sectors themselves - NOT the ports - that happens later in an update.
 for ($i=4; $i<=$_POST['sektors']; $i++)
 {
@@ -314,7 +313,7 @@ while (!$collisions_repaired)
                 $total_collisions++;
                 $debug_query2->MoveNext();
             }
-        } 
+        }
     }
     $collisions_repaired = true;
 }

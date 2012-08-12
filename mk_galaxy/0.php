@@ -23,9 +23,8 @@ if ($pos !== false)
     die();
 }
 
-// Template Lite
+//  Smarty Template
 $template = new bnt_smarty;
-
 $l_welcome_make = str_replace("[project]", $l_project_name, $l_welcome_make);
 $template->assign("l_welcome_make",$l_welcome_make);
 $template->assign("l_welcome_assist",$l_welcome_assist);
@@ -41,6 +40,6 @@ $template->assign("title", $title);
 $template->assign("l_submit", $l_submit);
 $template->assign("l_reset", $l_reset);
 $template->assign("badpass", $badpass);
-$template->display("$templateset/mk_galaxy/0.tpl");
+$template->display("templates/$templateset/mk_galaxy/0.tpl");
 $filezero = 1;
 ?>

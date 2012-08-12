@@ -30,7 +30,7 @@ function db_op_result($db, $query, $served_line, $served_page)
     else
     {
         $dberror = "A Database error occurred in " . $served_page .
-                   " on line " . ($served_line-1) . 
+                   " on line " . ($served_line-1) .
                    " (called from: $_SERVER[PHP_SELF]): " . $db->ErrorMsg();
         $dberror = str_replace("'","&#39;",$dberror); // Allows the use of apostrophes.
         return $db->ErrorMsg();

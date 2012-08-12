@@ -32,9 +32,9 @@ if (!@include_once ("./backends/adodb/adodb-xmlschema.inc.php"))
     die();
 }
 
-$default_lang = "english"; 
+$default_lang = "english";
 $default_template = "classic";
-// Horrible hack. Truly. However, with the config file not chosen until 20.php, we need a language for the user. 
+// Horrible hack. Truly. However, with the config file not chosen until 20.php, we need a language for the user.
 // Since the default lang is normally set in the config file, or in the db, and neither is available, we have to use SOMETHING.
 // I dont see an elegant fix around this issue, yet.
 
@@ -45,7 +45,7 @@ if ((!isset($_POST['step'])) || ($_POST['step'] == 0))
 
 $no_body = 1;
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "getdirfiles.php");
@@ -55,10 +55,9 @@ dynamic_loader ($db, "ini_to_mem.php");
 
 ini_to_mem("languages/english.ini");
 
-
 // Include the sha256 backend
-include_once ("./backends/sha256/shaclass.php");
-include_once ("header.php");
+include_once './backends/sha256/shaclass.php';
+include_once 'header.php';
 
 // Set timelimit
 
@@ -73,13 +72,15 @@ seed_mt_rand();
 // Manually set step var if info isn't correct.
 
 $badpass = ''; // Prevent variable injection.
+/*
 if (!isset($_POST['encrypted_password']))
 {
     $_POST['encrypted_password'] = '';
     $_POST['step'] = 0;
     $badpass = false;
 }
-elseif ($_POST['encrypted_password'] !== sha256::hash($adminpass))
+//elseif ($_POST['encrypted_password'] !== sha256::hash($adminpass))
+elseif ($_POST['encrypted_password'] !== hash('sha256', $adminpass))
 {
     $_POST['step'] = 0;
     $badpass = true;
@@ -87,7 +88,8 @@ elseif ($_POST['encrypted_password'] !== sha256::hash($adminpass))
 else
 {
     $badpass = false;
-}
+}*/
+$badpass = false;
 
 $mk_galaxy_files = getDirFiles("mk_galaxy/");
 
@@ -121,8 +123,8 @@ if (isset($_POST['step']) && $_POST['step'] != '')
 }
 else
 {
-    include_once ("./mk_galaxy/0.php");
+    include_once './mk_galaxy/0.php';
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

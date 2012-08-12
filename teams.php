@@ -16,7 +16,7 @@
 //
 // File: teams.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -45,7 +45,7 @@ checkdead($db);
 
 $title = $l_team_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -325,7 +325,7 @@ switch ($teamwhat)
         if ($thisplayer_info['team'] != 0)
         {
             echo $l_team_leavefirst . "<br>";
-        }                 
+        }
         else
         {
             if ($thisplayer_info['team_invite'] == $whichteam)
@@ -384,7 +384,7 @@ switch ($teamwhat)
              adminlog($db, "LOG_CHEAT_TEAM", "$thisplayer_info[character_name]|$ip_address");
              echo "<br><br><a href=\"teams.php\">$l_clickme</a> $l_team_menu.<br><br>";
              break;
-        } 
+        }
     case 6: // Create Team
 
             if (!isset($_POST['teamname']) || ($_POST['teamname'] == ''))
@@ -465,12 +465,12 @@ switch ($teamwhat)
             {
                 $res = $db->Execute("SELECT character_name,team_invite FROM {$db->prefix}players WHERE player_id=?", array($who));
                 $newpl = $res->fields;
-                if ($newpl['team_invite']) 
+                if ($newpl['team_invite'])
                 {
                     $l_team_isorry = str_replace("[name]", $newpl[character_name], $l_team_isorry);
                     echo "$l_team_isorry<br><br>";
                 }
-                else 
+                else
                 {
                     $debug_query = $db->Execute("UPDATE {$db->prefix}players SET team_invite=? " .
                                                 "WHERE player_id=?", array($whichteam, $who));
@@ -513,7 +513,7 @@ switch ($teamwhat)
                 echo "<br><br>";
                 global $l_global_mmenu;
                 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
             }
         }*/
@@ -539,7 +539,7 @@ switch ($teamwhat)
             {
                 $teamname = htmlspecialchars($teamname,ENT_QUOTES,"UTF-8");
                 $teamdesc = htmlspecialchars($teamdesc,ENT_QUOTES,"UTF-8");
-                $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET team_name=?, description=? " . 
+                $debug_query = $db->Execute("UPDATE {$db->prefix}teams SET team_name=?, description=? " .
                                             "WHERE team_id=?", array($teamname, $teamdesc, $whichteam));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
                 echo "$l_team <strong>$teamname</strong> $l_team_hasbeenr<br><br>";
@@ -595,11 +595,11 @@ switch ($teamwhat)
 
         $res = $db->Execute("SELECT * FROM {$db->prefix}teams");
         $teams_count = $res->RecordCount();
-        if ($teams_count > 0) 
+        if ($teams_count > 0)
         {
             display_all_teams($db);
-        } 
-        else 
+        }
+        else
         {
             echo "$l_team_noteams<br><br>";
         }
@@ -611,5 +611,5 @@ echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

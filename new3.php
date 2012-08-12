@@ -1,12 +1,12 @@
 <?php
-// This program is free software; you can redistribute it and/or modify it   
-// under the terms of the GNU General Public License as published by the     
-// Free Software Foundation; either version 2 of the License, or (at your    
-// option) any later version.                                                
-// 
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 2 of the License, or (at your
+// option) any later version.
+//
 // File: new3.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 if (strlen(dirname($_SERVER['PHP_SELF'])) > 1)
 {
@@ -94,8 +94,8 @@ if ($invitation_only && !$flag)
 }
 
 if (($email == '' || $character == '' || $shipname == '' || $password == '') && !$flag)
-{ 
-    echo "$l_new_blank<br>"; 
+{
+    echo "$l_new_blank<br>";
     $flag = 1;
 }
 
@@ -109,10 +109,10 @@ if (!$flag)
         while (!$result->EOF)
         {
             $row = $result->fields;
-            if (strtolower($row['email']) == strtolower($email)) 
-            { 
+            if (strtolower($row['email']) == strtolower($email))
+            {
                 $l_new_inuse = str_replace("[username]", "\"$email\"", $l_new_inuse);
-                echo "$l_new_inuse<br><br>"; 
+                echo "$l_new_inuse<br><br>";
                 $flag = 1;
                 $pw_flag = 1;
             }
@@ -125,17 +125,17 @@ if (!$flag)
         while (!$result2->EOF)
         {
             $row2 = $result2->fields;
-            if (strtolower($row2['character_name']) == strtolower($character)) 
-            { 
+            if (strtolower($row2['character_name']) == strtolower($character))
+            {
                 $l_new_inusechar = str_replace("[character]", "\"$character\"", $l_new_inusechar);
-                echo "$l_new_inusechar<br><br>"; 
+                echo "$l_new_inusechar<br><br>";
                 $flag = 1;
                 $pw_flag = 1;
             }
-            elseif (metaphone($row2['character_name']) == metaphone($character)) 
-            { 
+            elseif (metaphone($row2['character_name']) == metaphone($character))
+            {
                 $l_new_similar_inusechar = str_replace("[character]", "\"$row2[character_name]\"", $l_new_similar_inusechar);
-                echo "$l_new_similar_inusechar<br><br>"; 
+                echo "$l_new_similar_inusechar<br><br>";
                 $flag = 1;
                 $pw_flag = 1;
             }
@@ -153,16 +153,16 @@ if (!$flag)
         while (!$result->EOF)
         {
             $row = $result->fields;
-            if (strtolower($row['name']) == strtolower($shipname)) 
-            { 
+            if (strtolower($row['name']) == strtolower($shipname))
+            {
                 $l_new_inuseship = str_replace("[shipname]", "\"$shipname\"", $l_new_inuseship);
-                echo "$l_new_inuseship <br><br>"; 
+                echo "$l_new_inuseship <br><br>";
                 $flag = 1;
             }
-            elseif (metaphone($row['name']) == metaphone($shipname)) 
-            { 
+            elseif (metaphone($row['name']) == metaphone($shipname))
+            {
                 $l_new_similar_inuseship = str_replace("[shipname]", "\"$row[name]\"", $l_new_similar_inuseship);
-                echo "$l_new_similar_inuseship<br><br>"; 
+                echo "$l_new_similar_inuseship<br><br>";
                 $flag = 1;
                 $pw_flag = 1;
             }
@@ -214,7 +214,7 @@ if ($flag == 0)
     $msg = str_replace($tempurl, "<a href=\"" . $tempurl . "\">" . $tempurl . "</a>",$msg);
 
     // Include the phpmailer backend
-    include_once ("./backends/phpmailer/class.phpmailer.php");
+    include_once './backends/phpmailer/class.phpmailer.php';
 
     // Instantiate your new class
     $mail_msg = new bnt_mailer;
@@ -240,7 +240,7 @@ if ($flag == 0)
     }
 
     $mail_msg->ClearAddresses();
-} 
+}
 
 $template->assign("display_password", $display_password);
 $template->assign("l_new_pwis", $l_new_pwis);
@@ -255,5 +255,5 @@ $template->assign("flag", $flag);
 $template->assign("l_new_err", $l_new_err);
 $template->display("$templateset/new3.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

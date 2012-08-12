@@ -21,8 +21,8 @@
 <body style="background-image: url(templates/{$templateset}/images/bgoutspace1.png);" id="bntbody">
 {/if}
 <!-- This pops us out of frames. -->
-<script type="text/javascript" defer="defer">
+<script type="text/javascript">
 {literal}    if(self != top) { top.location = location; }{/literal}
 </script>
 <!-- addloadevent cant be defer due to IE.. sigh -->
-<script type="text/javascript" defer="defer" src="backends/javascript/addloadevent.js"></script>
+<script type="text/javascript" src="backends/javascript/addloadevent.js"></script>

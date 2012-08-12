@@ -62,7 +62,7 @@ function display_all_teams($db)
     }
 
 //    echo $sql_query;
-    while (!$res->EOF) 
+    while (!$res->EOF)
     {
         $row = $res->fields;
         echo "<tr bgcolor=\"$color_line1\">";

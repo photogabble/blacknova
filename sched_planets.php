@@ -20,7 +20,7 @@ dynamic_loader ($db, "playerlog.php");
 $pos = (strpos($_SERVER['PHP_SELF'], "/sched_planets.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php"); 
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -28,7 +28,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -44,7 +44,7 @@ echo "<br><br>expoprod is " . $expoprod;
 $expoprod *= $multiplier;
 
 $expocreds = pow($interest_rate, $multiplier);
-$expostarvation_death_rate = 1 - pow((1 - $starvation_death_rate ), $multiplier);  
+$expostarvation_death_rate = 1 - pow((1 - $starvation_death_rate ), $multiplier);
 
 $line = "-1";
 
@@ -67,7 +67,7 @@ echo "<strong>PLANETS</strong><br>\n";
 // If organics plus org production minus org consumption is less then zero then there is starvation
 // So set organics to zero and kill off some colonists
 
-$debug_query = sql_log_starvation(); // See includes/dbtype-common.php 
+$debug_query = sql_log_starvation(); // See includes/dbtype-common.php
 while (!$debug_query->EOF)
 {
     $info = $debug_query->fields;
@@ -97,7 +97,7 @@ db_op_result($db,$debug_query1,__LINE__,__FILE__);
 while (!$debug_query1->EOF)
 {
     $row = $debug_query1->fields;
-   
+
     if ($spy_success_factor)
     {
         $result_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=$row[planet_id] AND job_id='1' AND active='Y' "); // Saboteurs
@@ -145,7 +145,7 @@ while (!$debug_query1->EOF)
             $spy = $result_b->fields;
             $sum2 += $spy['spy_percent'];
             $result_b->MoveNext();
-        }  
+        }
     }
     else
     {
@@ -203,7 +203,7 @@ while (!$debug_query1->EOF)
     $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET organics=organics+$organics_production, " .
                                 "ore=ore+$ore_production, goods=goods+$goods_production, energy=energy+$energy_production, " .
                                 "colonists=colonists+$reproduction-$starvation, torps=torps+$torp_production, " .
-                                "fighters=fighters+$fighter_production, credits=credits*" . 
+                                "fighters=fighters+$fighter_production, credits=credits*" .
                                 pow(($interest_rate - $intr), $multiplier) .
                                 "+$credits_production WHERE planet_id=$row[planet_id]");
     db_op_result($db,$debug_query,__LINE__,__FILE__);

@@ -16,7 +16,7 @@
 //
 // File: emerwarp.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -37,7 +37,7 @@ checkdead($db);
 
 $title = $l_ewd_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 seed_mt_rand();
 
@@ -56,8 +56,8 @@ if ($shipinfo['dev_emerwarp'] > 0)
     log_move($db, $playerinfo['player_id'],$shipinfo['ship_id'],$source_sector,$dest_sector,$shipinfo['class'],$shipinfo['cloak']);
     $l_ewd_used=str_replace("[sector]",$dest_sector,$l_ewd_used);
     $ewd_output = $l_ewd_used;
-} 
-else 
+}
+else
 {
     $ewd_output = $l_ewd_none;
 }
@@ -69,5 +69,5 @@ $template->assign("ewd_output", $ewd_output);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/emerwarp.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

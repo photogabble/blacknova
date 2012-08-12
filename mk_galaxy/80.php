@@ -1,9 +1,9 @@
 <?php
-// This program is free software; you can redistribute it and/or modify it   
-// under the terms of the GNU General Public License as published by the     
-// Free Software Foundation; either version 2 of the License, or (at your    
-// option) any later version.                                                
-// 
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 2 of the License, or (at your
+// option) any later version.
+//
 // File: mk_galaxy/80.php
 
 $pos = strpos($_SERVER['PHP_SELF'], "/80.php");
@@ -40,7 +40,7 @@ for ($i=1; $i<=$_POST['sektors']; $i++)
         else
         {
             $j--;
-        }   
+        }
     }
 
     if ($ADODB_SESSION_DRIVER == 'postgres7')

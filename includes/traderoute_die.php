@@ -30,7 +30,7 @@ function traderoute_die($error_msg)
 
     global $l_global_mmenu, $db;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 ?>

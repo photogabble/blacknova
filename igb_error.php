@@ -16,7 +16,7 @@
 //
 // File: igb_error.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 global $l_igb_igberrreport, $l_igb_back, $l_igb_logout;
 
@@ -28,7 +28,6 @@ $template->assign("l_igb_logout", $l_igb_logout);
 $template->assign("templateset", $templateset);
 $template->display("$templateset/igb_error.tpl");
 
-include_once ("footer.php");
+include_once 'footer.php';
 die();
 ?>
-

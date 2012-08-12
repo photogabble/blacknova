@@ -21,7 +21,7 @@ dynamic_loader ($db, "playerlog.php");
 $pos = (strpos($_SERVER['PHP_SELF'], "/sched_degrade.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php"); 
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -29,7 +29,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -46,13 +46,13 @@ for ($j = 0; $j<$multiplier; $j++)
         $res3 = $db->SelectLimit("SELECT team FROM {$db->prefix}players WHERE player_id=?",1,-1,array($row['player_id']));
         $sched_playerinfo = $res3->fields;
 
-        $res2 = $db->Execute("SELECT energy, planet_id FROM {$db->prefix}planets WHERE ". 
+        $res2 = $db->Execute("SELECT energy, planet_id FROM {$db->prefix}planets WHERE ".
                              "(owner = $row[player_id] || (team = $sched_playerinfo[team] && $sched_playerinfo[team] != 0)) && " .
-                             "sector_id = $row[sector_id] and energy > 0"); 
+                             "sector_id = $row[sector_id] and energy > 0");
         $owned_planets = $res2->fields;
 
         if ($res2->EOF) // If there are fighters in a sector, and the owner doesnt have planets in the sector with energy
-        {     
+        {
             if ($row['defense_id'] != "")
             {
                 sql_sched_degrade_defenses($row['defense_id']);
@@ -79,7 +79,7 @@ for ($j = 0; $j<$multiplier; $j++)
             {
                 sql_sched_degrade_defenses($row['defense_id']);
                 $degrade_rate = $defense_degrade_rate * 100;
-                playerlog($db,$row['player_id'], "LOG_DEFENSE_DEGRADE", "$row[sector_id]|$degrade_rate");  
+                playerlog($db,$row['player_id'], "LOG_DEFENSE_DEGRADE", "$row[sector_id]|$degrade_rate");
             }
         }
         $res->MoveNext();

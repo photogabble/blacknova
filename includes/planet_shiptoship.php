@@ -16,7 +16,7 @@
 //
 // File: includes/planet_shiptoship.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 dynamic_loader ($db, "direct_test.php");
 direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
@@ -77,7 +77,7 @@ function shiptoship($player_id, $ship_id)
     global $spy_success_factor;
 
     $result2 = $db->Execute ("SELECT {$db->prefix}ships.*, {$db->prefix}players.currentship, {$db->prefix}players.character_name, " .
-                             "{$db->prefix}players.rating, " . 
+                             "{$db->prefix}players.rating, " .
                              "{$db->prefix}players.player_id FROM {$db->prefix}ships LEFT JOIN {$db->prefix}players " .
                              "ON {$db->prefix}players.player_id = {$db->prefix}ships.player_id WHERE ship_id=?", array($ship_id));
     $targetinfo=$result2->fields;
@@ -115,7 +115,7 @@ function shiptoship($player_id, $ship_id)
 
     $targetdestroyed = 0;
     $playerdestroyed = 0;
-    
+
     echo "
     <div style='text-align:center'>
     <hr>
@@ -595,13 +595,13 @@ function shiptoship($player_id, $ship_id)
     {
         $l_cmb_youdidntdestroyhim = str_replace("[cmb_targetinfo_ship_name]", $targetinfo['name'], $l_cmb_youdidntdestroyhim);
         echo "$l_cmb_youdidntdestroyhim<br>";
-    
+
         $target_rating_change = round($targetinfo['rating']*.1);
         $target_armor_lost = $targetinfo['armor_pts']-$targetarmor;
         $target_fighters_lost = $targetinfo['fighters']-$targetfighters;
         $target_energy = $targetinfo['energy'];
         playerlog($db,$targetinfo['player_id'], "LOG_ATTACKED_WIN", "$playerinfo[character_name]|$target_armor_lost|$target_fighters_lost");
-    
+
         $debug_query = $db->Execute ("UPDATE {$db->prefix}ships SET energy=?, " .
                                      "fighters=fighters-?, armor_pts=armor_pts-?, " .
                                      "torps=torps-? WHERE ship_id=?", array($target_energy, $target_fighters_lost, $target_armor_lost, $targettorpnum, $targetinfo['ship_id']));

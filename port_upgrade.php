@@ -16,7 +16,7 @@
 //
 // File: port_upgrade.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -30,7 +30,7 @@ if (isLoanPending($playerinfo['player_id']))
     echo "<a href=igb_login.php>$l_igb_term</a><p>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 

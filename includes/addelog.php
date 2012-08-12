@@ -76,7 +76,7 @@ function AddELog($db,$d_user,$e_type,$e_status,$e_subject,$e_response)
         $dp_name = $d_user;
     }
 
-    if ($e_response == '1') 
+    if ($e_response == '1')
     {
         $e_response = "Sent OK";
     }

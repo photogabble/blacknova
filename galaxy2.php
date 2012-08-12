@@ -16,7 +16,7 @@
 //
 // File: galaxy2.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -41,13 +41,13 @@ if (!$ksm_allowed)
     echo "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
 $title = $l_map;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 echo "<h1>" . $title. "</h1>\n";
 $tile['shipyard'] = "shipyard.png";
@@ -59,7 +59,7 @@ $tile['energy']   = "energy.png";
 $tile['goods']    = "goods.png";
 $tile['none']     = "space.png";
 $tile['unknown']  = "uspace.png";
-    
+
 $text['ore']      = $l_ore;
 $text['goods']    = $l_goods;
 $text['organics'] = $l_organics;
@@ -91,7 +91,7 @@ else //set ship's  location to set map display
 {
     $location = $shipinfo['sector_id'];
 }
- 
+
 // checking input data for  forbidden values; happens in 3 cases: prev , next buttons (hoped for locations near 0 or sector_max), and if player uses bad input
 
 if ( $location < 0 )
@@ -179,23 +179,23 @@ $result4 = $db->Execute("SELECT distinct destination FROM {$db->prefix}movement_
 
 echo "<table border=0 cellpadding=2 cellspacing=1 >\n";
 
-if (!$result2->EOF) 
+if (!$result2->EOF)
 {
     $row2 = $result2->fields;
 }
 
-if (!$result3->EOF) 
+if (!$result3->EOF)
 {
     $row3 = $result3->fields;
 }
 
-if (!$result4->EOF) 
+if (!$result4->EOF)
 {
     $row4 = $result4->fields;
 }
 
 $ind = 0;
-$sectorcount = $result->RecordCount();    
+$sectorcount = $result->RecordCount();
 while (!$result->EOF)
 {
     $row   = $result->fields;
@@ -209,7 +209,7 @@ while (!$result->EOF)
     {
         $port= "unknown";
         $alt = "$row[sector_id] - $l_unknown";
-     
+
         if ( (!$result2->EOF) && ($row2['source'] == $row['sector_id']) )
         {
             $port = $row['port_type'];
@@ -217,7 +217,7 @@ while (!$result->EOF)
             $result2->Movenext();
             $row2 = $result2->fields;
         }
-     
+
         if ( (!$result3->EOF) && ($row3['sector_id'] == $row['sector_id']) )
         {
             $port = $row['port_type'];
@@ -250,7 +250,7 @@ while (!$result->EOF)
     $result->Movenext();
     $ind++;
 }
-    
+
 echo "</table>\n";
 
 // Easter egg comment - We get to say wikki-wikki-wikki again
@@ -270,6 +270,6 @@ echo "</tr></table>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

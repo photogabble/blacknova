@@ -8,4 +8,3 @@
         <field name="gamenumber" type="I1"><notnull/><default value="0"/></field>
     </table>
 </schema>
-

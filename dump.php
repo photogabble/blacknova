@@ -16,7 +16,7 @@
 //
 // File: dump.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -44,15 +44,15 @@ if ($playerinfo['turns'] < 1)
     $template->display("$templateset/dump.tpl");
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
 if ($shipinfo['colonists'] == 0)
 {
     $dump_echo = $l_dump_nocol;
-} 
-elseif ($portinfo['port_type'] == "upgrades" || $portinfo['port_type'] == "devices") 
+}
+elseif ($portinfo['port_type'] == "upgrades" || $portinfo['port_type'] == "devices")
 {
     $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET colonists=0 WHERE ship_id=?", array($shipinfo['ship_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
@@ -60,8 +60,8 @@ elseif ($portinfo['port_type'] == "upgrades" || $portinfo['port_type'] == "devic
     $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns=turns-1, turns_used=turns_used+1 WHERE player_id=?", array($playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
     $dump_echo = $l_dump_dumped;
-} 
-else 
+}
+else
 {
     $dump_echo = $l_dump_nono;
 }
@@ -71,6 +71,6 @@ $template->display("$templateset/dump.tpl");
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

@@ -16,18 +16,18 @@
 //
 // File: lrscan.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "get_shipclassname.php"); 
-dynamic_loader ($db, "display_this_planet.php"); 
-dynamic_loader ($db, "log_scan.php"); 
-dynamic_loader ($db, "t_port.php"); 
-dynamic_loader ($db, "scan_success.php"); 
-dynamic_loader ($db, "get_player.php"); 
+dynamic_loader ($db, "get_shipclassname.php");
+dynamic_loader ($db, "display_this_planet.php");
+dynamic_loader ($db, "log_scan.php");
+dynamic_loader ($db, "t_port.php");
+dynamic_loader ($db, "scan_success.php");
+dynamic_loader ($db, "get_player.php");
 dynamic_loader ($db, "seed_mt_rand.php");
 dynamic_loader ($db, "updatecookie.php");
 
@@ -56,12 +56,11 @@ else
 }
 
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 seed_mt_rand();
 
 //-------------------------------------------------------------------------------------------------
-
 
 if ($_GET['sector'] == "*")
 {
@@ -73,7 +72,7 @@ if ($_GET['sector'] == "*")
         echo "$l_lrs_nofull<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -83,7 +82,7 @@ if ($_GET['sector'] == "*")
         echo "$l_lrs_noturns<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -112,7 +111,7 @@ if ($_GET['sector'] == "*")
 
         // get number of ships in scanned sector
         $result2 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE sector_id=? AND on_planet='N' and destroyed='N'", array($row['link_dest']));
-        
+
         $num_ships = 0;
         while (!$result2->EOF)
         {
@@ -136,7 +135,7 @@ if ($_GET['sector'] == "*")
             }
             $result2->MoveNext();
         }
-        
+
         // get port type and discover the presence of a planet in scanned sector
         $result2 = $db->SelectLimit("SELECT port_type FROM {$db->prefix}ports WHERE sector_id=?",1,-1,array($row['link_dest']));
         $resultSDa = $db->Execute("SELECT SUM(quantity) as mines from {$db->prefix}sector_defense WHERE sector_id=? and defense_type='M'", array($row['link_dest']));
@@ -183,18 +182,18 @@ if ($_GET['sector'] == "*")
                 {
                     $success = 5;
                 }
-    
+
                 if ($success > 95)
                 {
                     $success = 95;
                 }
-    
+
                 $roll = mt_rand(1, 100);
                 if ($roll <= $success) // If able to see the planet
                 {
                     $uber = 1; // Confirmed working
                 }
-    
+
              ///
                 if ($uber == 0 && $spy_success_factor)  // Still not yet 'visible'
                 {
@@ -213,19 +212,19 @@ if ($_GET['sector'] == "*")
             $result3->MoveNext();
         }
 
-        if ($port_type != "none") 
+        if ($port_type != "none")
         {
             $icon_alt_text = t_port($db, $port_type);
             $icon_port_type_name = $port_type . ".png";
             $image_string = "<img align=middle height=12 width=12 alt=\"$icon_alt_text\" src=\"templates/$templateset/images/$icon_port_type_name\">&nbsp;";
-        } 
-        else 
+        }
+        else
         {
             $image_string = "&nbsp;";
         }
 
         log_scan($db, $playerinfo['player_id'], $row['link_dest']);
-        
+
         if ($num_ships < 1)
         {
             $num_ships = '';
@@ -306,7 +305,7 @@ else // user requested a single sector (standard) long range scan
         echo "$l_lrs_noturns<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -335,10 +334,10 @@ else // user requested a single sector (standard) long range scan
         echo "$l_lrs_cantscan<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
- 
+
     log_scan($db, $playerinfo['player_id'], $_GET['sector']);
 
     echo "<table border=0 cellspacing=0 cellpadding=0 width=\"100%\">";
@@ -431,14 +430,14 @@ else // user requested a single sector (standard) long range scan
     echo "</td></tr>";
     echo "<tr bgcolor=\"$color_line2\"><td><strong>$l_port</strong></td></tr>";
     echo "<tr><td>";
-  
+
     if ($port_sector_info['port_type'] == "none")
     {
         echo "$l_none";
     }
     else
     {
-        if ($port_sector_info['port_type'] != "none") 
+        if ($port_sector_info['port_type'] != "none")
         {
             $port_type = $port_sector_info['port_type'];
             $icon_alt_text = ucfirst(t_port($db, $port_type));
@@ -491,18 +490,18 @@ else // user requested a single sector (standard) long range scan
             {
                 $success = 5;
             }
-    
+
             if ($success > 95)
             {
                 $success = 95;
             }
-    
+
             $roll = mt_rand(1, 100);
             if ($roll <= $success) // If able to see the planet
             {
                 $uber = 1; // Confirmed working
             }
-    
+
             if ($uber == 0 && $spy_success_factor)  // Still not yet 'visible'
             {
                 $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($hiding_planet[$i]['planet_id'], $playerinfo['player_id']));
@@ -512,7 +511,7 @@ else // user requested a single sector (standard) long range scan
                 }
             }
         }
-    
+
         global $basefontsize;
         if ($uber == 1)
         {
@@ -592,6 +591,6 @@ echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

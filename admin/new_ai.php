@@ -19,16 +19,16 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/new_ai.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php");
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
-    include_once ("./header.php");
+    include_once './header.php';
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -58,7 +58,7 @@ if (empty($operation))
     $nametry = 1;
     // If Name Exists Try Again - Up To Nine Times
 
-    while (($namecheck[0]) and ($nametry <= 9)) 
+    while (($namecheck[0]) and ($nametry <= 9))
     {
         $sy1roll = mt_rand(0,19);
         $sy2roll = mt_rand(0,19);
@@ -72,9 +72,9 @@ if (empty($operation))
     }
 
     // Create Ship Name
-    $shipname = $ai_name . "-" . $character; 
+    $shipname = $ai_name . "-" . $character;
     // Select Random Sector
-    $sector = mt_rand(1,$sector_max); 
+    $sector = mt_rand(1,$sector_max);
     // Display Confirmation form
     echo "<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=5>";
     echo "<TR><TD>" . $ai_name . " Name</TD><TD><INPUT TYPE=TEXT SIZE=20 NAME=character VALUE=$character></TD>";
@@ -108,7 +108,7 @@ elseif ($operation == "create_ai")
     $errflag = 0;
     if ( $character=='' || $shipname=='' )
     {
-        echo "Ship name, and character name may not be blank.<br>"; 
+        echo "Ship name, and character name may not be blank.<br>";
         $errflag=1;
     }
     // Change Spaces to Underscores in shipname
@@ -123,12 +123,12 @@ elseif ($operation == "create_ai")
         while (!$result->EOF)
         {
             $row= $result->fields;
-            if ($row[0]==$emailname) 
+            if ($row[0]==$emailname)
             {
                 echo "ERROR: E-mail address $emailname, is already in use.  ";
                 $errflag=1;
             }
-            if ($row[1]==$character) 
+            if ($row[1]==$character)
             {
                 echo "ERROR: Character name $character, is already in use.<br>";
                 $errflag=1;
@@ -145,19 +145,19 @@ elseif ($operation == "create_ai")
         $syllables="er,in,tia,wol,fe,pre,vet,jo,nes,al,len,son,cha,ir,ler,bo,ok,tio,nar,sim,ple,bla,ten,toe,cho,co,lat,spe,ak,er,po,co,lor,pen,cil,li,ght,wh,at,the,he,ck,is,mam,bo,no,fi,ve,any,way,pol,iti,cs,ra,dio,sou,rce,sea,rch,pa,per,com,bo,sp,eak,st,fi,rst,gr,oup,boy,ea,gle,tr,ail,bi,ble,brb,pri,dee,kay,en,be,se";
         $syllable_array=explode(",", $syllables);
         seed_mt_rand();
-        for ($count=1;$count<=4;$count++) 
+        for ($count=1;$count<=4;$count++)
         {
-            if (mt_rand()%10 == 1) 
+            if (mt_rand()%10 == 1)
             {
                 $makepass .= sprintf("%0.0f",(mt_rand()%50)+1);
             }
-            else 
+            else
             {
                 $makepass .= sprintf("%s",$syllable_array[mt_rand()%62]);
             }
         }
 
-        if ($ai_level=='') 
+        if ($ai_level=='')
         {
             $ai_level=0;
         }
@@ -175,11 +175,11 @@ elseif ($operation == "create_ai")
         $ship_id = $res->fields['ship_id'];
 
         $result2 = $db->Execute("UPDATE {$db_prefix}ships SET hull=?, engines=?, pengines=?, power=?, computer=?, sensors=?, beams=?, torp_launchers=?, shields=?, armor=?, cloak=?, torps=?, armor_pts=?, sector_id=?, energy=?, fighters=? WHERE ship_id=?", array($ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $ai_level, $maxtorps, $maxarmor, $sector, $maxenergy, $maxfighters, $ship_id));
-        if (!$result2) 
+        if (!$result2)
         {
             echo $db->ErrorMsg() . "<br>";
-        } 
-        else 
+        }
+        else
         {
             echo $ai_name . " has been created.<br><br>";
             echo "Ship Records have been updated.<br><br>";

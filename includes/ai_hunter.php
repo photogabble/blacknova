@@ -21,7 +21,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_toship.php"));
 if ($pos !== false)
 {
-    include_once ("global_includes.php");
+    include_once 'global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -29,7 +29,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("footer.php");
+    include_once 'footer.php';
     die();
 }
 
@@ -67,7 +67,7 @@ function ai_hunter()
     while (!$res->EOF)
     {
         if ($i == $targetnum)
-        { 
+        {
             $targetinfo = $res->fields;
         }
 
@@ -75,7 +75,7 @@ function ai_hunter()
         $res->MoveNext();
     }
 
-    //  Make sure we have a target 
+    //  Make sure we have a target
     if (!$targetinfo)
     {
         playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Hunt Failed: No Target ");
@@ -94,11 +94,11 @@ function ai_hunter()
         $stamp = date("Y-m-d H-i-s");
         $query = $db->Execute("UPDATE {$db->prefix}ships SET last_login=?, turns_used=turns_used+1, sector=? " .
                  "WHERE ship_id=?", array($stamp, $targetinfo['sector'], $playerinfo['ship_id']));
-        playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Xenobe used a wormhole to warp to sector $targetinfo[sector] where he is hunting player $targetinfo[character_name]."); 
+        playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Xenobe used a wormhole to warp to sector $targetinfo[sector] where he is hunting player $targetinfo[character_name].");
         if (!$move_result)
         {
             $error = $db->ErrorMsg();
-            playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Move failed with error: $error "); 
+            playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Move failed with error: $error ");
             return;
         }
 
@@ -133,7 +133,7 @@ function ai_hunter()
             }
         }
 
-        if ($total_sector_fighters>0 || $total_sector_mines>0 || ($total_sector_fighters>0 && $total_sector_mines>0)) // DEST LINK HAS DEFENSES 
+        if ($total_sector_fighters>0 || $total_sector_mines>0 || ($total_sector_fighters>0 && $total_sector_mines>0)) // DEST LINK HAS DEFENSES
         {
             // Attack sector defenses
             $targetlink = $targetinfo['sector'];
@@ -149,7 +149,7 @@ function ai_hunter()
         }
 
         // Time to attack the target
-        playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Xenobe launching an attack on $targetinfo[character_name]."); 
+        playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "Xenobe launching an attack on $targetinfo[character_name].");
 
         // See if the target is on a planet
         if ($targetinfo['planet_id']>0)

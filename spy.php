@@ -16,7 +16,7 @@
 //
 // File: spy.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -48,7 +48,7 @@ if (!$spy_success_factor)
     echo "<strong>$l_spy_disabled</strong><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -146,7 +146,7 @@ $line_color = $color_line2;
 // Showing a summary table of all spies
 
     echo "<a href=\"spy_detect.php\">$l_clickme</a> $l_spy_messages<br><br>";
-  
+
     if ($by1 == 'character_name')
     {
         $by11 = "character_name asc";
@@ -271,7 +271,7 @@ $line_color = $color_line2;
             echo "<td><strong><a href=spy.php?by2=percent&by1=$by1&by3=$by3>$l_spy_percent</a></strong></td>";
             echo "<td><strong><a href=spy.php?by2=move_type&by1=$by1&by3=$by3>$l_spy_move</a></strong></td>";
             echo "</tr>";
-    
+
             while (!$res->EOF)
             {
                 $spy = $res->fields;
@@ -306,12 +306,12 @@ $line_color = $color_line2;
                 {
                     $spy['name'] = $l_unnamed;
                 }
- 
+
                 if (empty($spy['character_name']))
                 {
                     $spy['character_name'] = $l_unowned;
                 }
-    
+
                 echo "<tr bgcolor=" . linecolor() ."><td><font style=\"font-size: 0.8em;\" color=white>$spy[spy_id]</font></td><td><font style=\"font-size: 0.8em;\" color=white>$spy[character_name]</font></td><td><font style=\"font-size: 0.8em;\" color=white>$spy[name]</font></td><td><font style=\"font-size: 0.8em;\"><a href=move.php?move_method=real&engage=1&destination=$spy[sector_id]>$spy[sector_id]</a></font></td><td><font style=\"font-size: 0.8em;\" color=white>$job</font></td><td><font style=\"font-size: 0.8em;\" color=white>$spy[spy_percent]</font></td><td><font style=\"font-size: 0.8em;\"><a href=spy_change.php&spy_id=$spy[spy_id]>$move</a></font></td></tr>";
                 $res->MoveNext();
             }
@@ -334,16 +334,16 @@ $line_color = $color_line2;
             echo "<td><strong><a href=spy.php?by1=$by1&by2=$by2>$l_spy_planetname</a></strong></td>";
             echo "<td><strong><a href=spy.php?by3=sector&by1=$by1&by2=$by2>$l_spy_sector</a></strong></td>";
             echo "</tr>";
-    
+
             while (!$res->EOF)
             {
                 $spy = $res->fields;
-        
+
                 if (empty($spy['name']))
                 {
                     $spy['name'] = $l_unnamed;
                 }
-    
+
                 echo "<tr bgcolor=" . linecolor() ."><td><font style=\"font-size: 0.8em;\" color=white>$spy[spy_id]</font></td><td><font style=\"font-size: 0.8em;\" color=white>$spy[name]</font></td><td><font style=\"font-size: 0.8em;\"><a href=move.php?move_method=real&engage=1&destination=$spy[sector_id]>$spy[sector_id]</a></font></td></tr>";
                 $res->MoveNext();
             }
@@ -369,7 +369,7 @@ $line_color = $color_line2;
             while (!$res->EOF)
             {
                 $spy = $res->fields;
-    
+
                 echo "<tr bgcolor=" . linecolor() ."><td><font style=\"font-size: 0.8em;\" color=white>$spy[spy_id]</font></td></tr>";
                 $res->MoveNext();
             }
@@ -391,5 +391,5 @@ $template->assign("title", $title);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/spy.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

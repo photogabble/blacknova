@@ -16,7 +16,7 @@
 //
 // File: spy_detect.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -48,7 +48,7 @@ if (!$spy_success_factor)
     echo "<strong>$l_spy_disabled</strong><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -153,13 +153,12 @@ $line_color = $color_line2;
             echo "<font color=red style=\"font-size: 1.5em;\">$l_spy_infodeleted<br><br></font>";
             $res = $db->Execute("DELETE FROM {$db->prefix}detect WHERE det_id=?", array($info_id));
         }
-        else 
+        else
         {
             echo "<strong>$l_spy_infonotyours</strong><br><br>";
         }
     }
-  
-  
+
     if ($by == "time")
     {
         $by2 = "det_type asc, det_time desc";
@@ -172,7 +171,7 @@ $line_color = $color_line2;
     {
         $by2 = "det_time desc";
     }
-  
+
     $res = $db->Execute("SELECT * FROM {$db->prefix}detect WHERE {$db->prefix}detect.owner_id=? ORDER BY ?", array($playerinfo['player_id'], $by2));
     if (!$res->RecordCount())
     {
@@ -180,22 +179,22 @@ $line_color = $color_line2;
         echo "<a href=spy.php>$l_clickme</a> $l_spy_linkback<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
-  
+
     echo "<a href=spy.php>$l_clickme</a> $l_spy_linkback<br>";
-  
+
     echo "<br><table border=1 cellspacing=1 cellpadding=2 width=\"100%\">";
     echo "<tr bgcolor=\"$color_header\"><td colspan=99 align=center><font color=white><strong>$l_spy_infotitle</strong></font></td></tr>";
     echo "<tr bgcolor=\"$color_line2\">";
-  
+
     echo "<td><strong><a href=\"spy_detect.php\">$l_spy_time</a></strong></td>";
     echo "<td><strong><a href=\"spy_detect.php&by=type\">$l_spy_type</a></strong></td>";
     echo "<td><strong><a href=\"spy_detect.php&by=detect_data\">$l_spy_info</a></strong></td>";
     echo "<td><strong><font color=white>$l_spy_action</font></strong></td>";
     echo "</tr>";
-  
+
     while (!$res->EOF)
     {
         $info = $res->fields;
@@ -210,7 +209,7 @@ $line_color = $color_line2;
                 $detect_data=$l_spy_datatextF;
                 $data_type=$l_spy_datatype_1;
             break;
-      
+
             case 1:
                 list($inf, $sender, $receiver,$type)= explode ("\>", $info['detect_data']); // I use that symbol, because a letter may include '|' symbols, but cannot include '>' symbols
                 if ($type == 'alliance')
@@ -227,13 +226,13 @@ $line_color = $color_line2;
                     $l_spy_datatextF = str_replace("[letter]", "<font color=white><strong>$inf</strong></font>", $l_spy_datatextF);
                     $detect_data=$l_spy_datatextF;
                 }
-        
+
                 $data_type=$l_spy_datatype[2];
             break;
         }
-    
+
         echo "<tr bgcolor=" . linecolor() ."><td><font style=\"font-size: 0.8em;\" color=white>$info[det_time]</font></td><td><font style=\"font-size: 0.8em;\" color=white>$data_type</font></td><td><font style=\"font-size: 0.8em;\">$detect_data</font></td><td><font style=\"font-size: 0.8em;\"><a href=\"spy_detect.php&info_id=$info[det_id]&by=$by\">$l_spy_delete</a></font></td></tr>";
-   
+
         $res->MoveNext();
     }
 
@@ -243,5 +242,5 @@ $template->assign("title", $title);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/spy.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

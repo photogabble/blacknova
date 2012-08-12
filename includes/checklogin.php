@@ -72,10 +72,10 @@ function checklogin($db, $email='', $password='')
         global $l_error_occured, $raw_prefix, $template;
         // User not recognized - we should offer a redirect to login in this case.
         $title = $l_error_occured;
-        include_once("./header.php");
+        include_once './header.php';
         echo "<h1>" . $title. "</h1>\n";
         echo "<a href=\"index.php\">" . $l_global_needlogin . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         // Dynamic functions
         dynamic_loader ($db, "attack_check.php");
         attack_check($db, $ip_address, $attack_repeats);
@@ -98,7 +98,7 @@ function checklogin($db, $email='', $password='')
         // Password is incorrect
         global $l_error_occured, $title;
         $title = $l_error_occured;
-        include_once("./header.php");
+        include_once './header.php';
         echo "<h1>" . $title. "</h1>\n";
         echo $l_login_4gotpw1 ."<br><br>" . $l_login_4gotpw2 . "<a href=\"mail.php?character_name=$playerinfo[character_name]\">" . $l_login_4gotpw3;
         echo "</a><br><br> <a href=\"index.php\">" . $l_login_4gotpw4 . "</a> " . $l_login_4gotpw5 . " " . $ip_address. "...";
@@ -106,7 +106,7 @@ function checklogin($db, $email='', $password='')
         // Dynamic functions
         dynamic_loader ($db, "attack_check.php");
         attack_check($db, $ip_address, $attack_repeats);
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
     elseif ($login_results == 'banned')
@@ -129,11 +129,11 @@ function checklogin($db, $email='', $password='')
         $ban = $debug_query->fields;
 
         $title = $l_error_occured;
-        include_once("./header.php");
+        include_once './header.php';
         echo "<h1>" . $title. "</h1>\n";
         echo "<<div style='text-align:center'><p><font color=\"red\"><strong>" . $l_login_banned . "<strong></font><p></div><br>";
         echo "<div style='text-align:center'><p><font color=\"red\"><strong>" . $l_login_banned2 . $ban['ban_reason'] . "<strong></font><p></div>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         adminlog($db, "LOG_RAW", "Bad login - banned user from $ip_address");
         die();
     }
@@ -141,7 +141,7 @@ function checklogin($db, $email='', $password='')
     {
         global $l_error_occured;
         $title = $l_error_occured;
-        include_once("./header.php");
+        include_once './header.php';
         echo "<h1>" . $title. "</h1>\n";
         echo "Your account is marked inactive. This means that you have not confirmed your account. Please do so following ";
         echo "the directions you received in email.<br><br>\n";
@@ -149,18 +149,18 @@ function checklogin($db, $email='', $password='')
         // Dynamic functions
         dynamic_loader ($db, "attack_check.php");
         attack_check($db, $ip_address, $attack_repeats);
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
     elseif ($server_closed && $open_time < $stamp)
     {
         global $l_error_occured, $l_login_closed_message;
         $title = $l_error_occured;
-        include_once("./header.php");
+        include_once './header.php';
         echo "<h1>" . $title. "</h1>\n";
         echo $l_login_closed_message;
 //        adminlog($db, "LOG_RAW", "Bad login - server closed from $ip_address");
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
     elseif ($login_results == 'insecure-success')
@@ -175,11 +175,11 @@ function checklogin($db, $email='', $password='')
     {
         global $l_error_occured;
         $title = $l_error_occured;
-        include_once("./header.php");
+        include_once './header.php';
         echo "passthru error " . $login_results;
         echo "<h1>" . $title. "</h1>\n";
         echo $l_error_occured;
-        include_once ("./footer.php");
+        include_once './footer.php';
         adminlog($db, "LOG_RAW", "Questionable login - unknown issue from $ip_address");
         die();
     }

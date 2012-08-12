@@ -16,7 +16,7 @@
 //
 // File: traderoute_setsettings.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 global $playerinfo, $colonists;

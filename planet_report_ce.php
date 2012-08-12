@@ -16,7 +16,7 @@
 //
 // File: planet_report_ce.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -77,5 +77,5 @@ else
     change_planet_production($_POST);
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

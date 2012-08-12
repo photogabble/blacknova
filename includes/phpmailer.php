@@ -18,17 +18,17 @@
 //
 // Include the phpmailer backend
 
-include_once ("./backends/phpmailer/class.phpmailer.php");
+include_once './backends/phpmailer/class.phpmailer.php';
 
 class bnt_mailer extends phpmailer // This handles mail for the game.
 {
-    var $From;
-    var $FromName;
-    var $WordWrap;
-    var $Host;
-    var $Mailer;
+    public $From;
+    public $FromName;
+    public $WordWrap;
+    public $Host;
+    public $Mailer;
 
-    function bnt_mailer()
+    public function bnt_mailer()
     {
         $this->WordWrap = 75;
         $this->CharSet = "UTF-8";

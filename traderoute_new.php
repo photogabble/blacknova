@@ -16,7 +16,7 @@
 //
 // File: traderoute_new.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 global $playerinfo, $shipinfo;
@@ -368,7 +368,7 @@ else
         echo "<input type=submit value=\"$l_tdr_create\" onclick=\"clean_forms()\">";
     }
     else
-    { 
+    {
         echo "<input type=hidden name=editing value=$editroute[traderoute_id]>";
         echo "<input type=submit value=\"$l_tdr_modify\" onclick=\"clean_forms()\">";
     }
@@ -381,6 +381,6 @@ else
 
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 ?>

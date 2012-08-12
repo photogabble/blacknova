@@ -33,7 +33,7 @@
 function authcheck($charname='', $password='')
 {
     // Include the sha256 backend
-    include_once ("./backends/sha256/shaclass.php");
+    include_once './backends/sha256/shaclass.php';
 
     global $db, $raw_prefix, $playerinfo, $accountinfo;
     global $server_closed;

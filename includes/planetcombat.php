@@ -16,7 +16,7 @@
 //
 // File: includes/planetcombat.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //dynamic_loader ($db, "direct_test.php");
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
@@ -104,7 +104,7 @@ function planetcombat()
         echo "$l_cmb_atleastoneturn<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -116,7 +116,7 @@ function planetcombat()
     $planetshields = calcplanetshields($db);
     $planettorps = calcplanettorps($db);
     $planetsensors = calcplanetsensors($db);
-    
+
     $startplanetfighters = $planetfighters;
 
     // Attacking ship calculations
@@ -149,7 +149,7 @@ function planetcombat()
     }
 
     $shipinfo['energy'] = $shipinfo['energy'] - $attackerbeams;
-    
+
     if ($debug)
     {
         echo "$l_cmb_shipenergyab (before shields): $shipinfo[energy]<br>\n";
@@ -172,7 +172,7 @@ function planetcombat()
     {
         echo "$l_cmb_shiptorpsbtl: $attackertorps ($shipinfo[torps] / $shipinfo[torp_launchers])<br>\n";
     }
-    
+
     if ($attackertorps > $shipinfo['torps'])
     {
         $attackertorps = $shipinfo['torps'];
@@ -580,7 +580,7 @@ function planetcombat()
         $l_cmb_youlostfighters = str_replace("[cmb_fighters_lost]", $fighters_lost, $l_cmb_youlostfighters);
         $l_cmb_youlostfighters = str_replace("[cmb_playerinfo_ship_fighters]", num_fighters($shipinfo['computer']), $l_cmb_youlostfighters);
         echo "$l_cmb_youlostfighters<br>";
-        
+
         $armor_lost = $shipinfo['armor_pts'] - $attackerarmor;
         $l_cmb_youlostarmorpoints = str_replace("[cmb_armor_lost]", $armor_lost, $l_cmb_youlostarmorpoints);
         $l_cmb_youlostarmorpoints = str_replace("[cmb_playerinfo_armor_pts]", $shipinfo['armor_pts'], $l_cmb_youlostarmorpoints);
@@ -626,7 +626,7 @@ function planetcombat()
                    dynamic_loader ($db, "spy_planet_destroyed.php");
                    spy_planet_destroyed($db,$planetinfo['planet_id']);
                 }
-                
+
                 $db->Execute("DELETE FROM {$db->prefix}planets WHERE planet_id=?", array($planetinfo['planet_id']));
                 playerlog($db,$ownerinfo['player_id'], "LOG_PLANET_DEFEATED_D", "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
                 adminlog($db, "LOG_ADMIN_PLANETDEL", "$playerinfo[character_name]|$ownerinfo[character_name]|$shipinfo[sector_id]");
@@ -710,8 +710,8 @@ function planetcombat()
 //      $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET ore=ore-$free_ore, goods=goods-$free_goods, organics=organics-$free_organics WHERE ship_id=$shipinfo[ship_id]");
 //        db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-//        For some reason, this manages to set the ships to negative?? 
-//        Answer: Because its removing credits from the ship based on the value of levels, goods, and so on.. 
+//        For some reason, this manages to set the ships to negative??
+//        Answer: Because its removing credits from the ship based on the value of levels, goods, and so on..
 //        $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=credits-$ship_salvage " .
 //                                    "WHERE player_id=$shipinfo[player_id]");
 //        db_op_result($db,$debug_query,__LINE__,__FILE__);

@@ -17,7 +17,7 @@
 // File: install.php
 
 $no_body = 1;
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "ini_to_mem.php");
@@ -36,7 +36,7 @@ $title = $l_install_title . " - Phase ". ($_POST['step']+1) . " of " . (count($i
 
 if ($_POST['step'] != '3')
 {
-    include_once ("./header.php");
+    include_once './header.php';
 }
 
 if ((!isset($_POST['swordfish'])) || ($_POST['swordfish'] ==''))
@@ -80,19 +80,19 @@ if (isset($_POST['step']) && $_POST['step'] != '')
 }
 else
 {
-    include_once ("./install/0.php");
+    include_once './install/10.php';
 }
 
 if ($_POST['step'] != '3')
 {
-    include_once ("./footer.php");
+    include_once './footer.php';
 }
 
 /*
 if (($game_installed && $swordfish != $adminpass && $_POST['step'] !='1'))
 {
     echo "<strong>Hacking attempt</strong>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 */

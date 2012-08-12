@@ -16,7 +16,7 @@
 //
 // File: admin.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "yesno.php");
@@ -35,7 +35,7 @@ load_languages($db, $raw_prefix, 'admin');
 $style_sheet_file = "templates/$templateset/styles/style.css";
 $no_body = 1;
 $title = $l_admin_title;
-include_once ("./header.php");
+include_once './header.php';
 
 global $db;
 
@@ -54,7 +54,7 @@ if (!get_info($db) || $playerinfo['acl'] < 128) // Check player's ACL to ensure 
     $template->assign("l_acc_denied", $l_acc_denied);
     $template->display("$templateset/admin-denied.tpl");
 
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -73,7 +73,7 @@ if ($debug_query && !$debug_query->EOF)
         $template->assign("l_login_banned", $l_login_banned);
         $template->display("$templateset/admin-banned.tpl");
 
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
 }
 
@@ -170,87 +170,87 @@ $button_main = true;
 
 if ($playerinfo['acl'] >= 128 && $admin_menu == "logview")
 {
-    include_once ("./admin/logview.php");
-} 
+    include_once './admin/logview.php';
+}
 elseif ($playerinfo['acl'] >= 128 && $admin_menu == "an")
 {
-    include_once ("./admin/an.php");
+    include_once './admin/an.php';
 }
 elseif ($playerinfo['acl'] >= 128 && $admin_menu == "stats")
 {
-    include_once ("./admin/stats.php");
+    include_once './admin/stats.php';
 }
 elseif ($playerinfo['acl'] >= 128 && $admin_menu == "emailview")
 {
-    include_once ("./admin/emailview.php");
+    include_once './admin/emailview.php';
 }
 elseif ($playerinfo['acl'] >= 128 && $admin_menu == "iplog")
 {
-    include_once ("./admin/iplog.php");
+    include_once './admin/iplog.php';
 }
 elseif ($playerinfo['acl'] >= 128 && $admin_menu == "perfmon")
 {
-    include_once ("./admin/perfmon.php");
+    include_once './admin/perfmon.php';
 }
 elseif ($playerinfo['acl'] >= 128 && $admin_menu == "ai_instruct")
 {
-    include_once ("./admin/ai_instruct.php");
+    include_once './admin/ai_instruct.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "globmsg")
-{ 
-    include_once ("./admin/globmsg.php");
-} 
+{
+    include_once './admin/globmsg.php';
+}
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "useredit")
 {
-    include_once ("./admin/useredit.php");
+    include_once './admin/useredit.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "planedit")
 {
-    include_once ("./admin/planedit.php");
+    include_once './admin/planedit.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "ipedit")
 {
-    include_once ("./admin/ipedit.php");
-}    
+    include_once './admin/ipedit.php';
+}
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "setedit")
 {
-    include_once ("./admin/setedit.php");
+    include_once './admin/setedit.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "galedit")
 {
-    include_once ("./admin/galedit.php");
+    include_once './admin/galedit.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "sectedit")
 {
-    include_once ("./admin/sectedit.php");
+    include_once './admin/sectedit.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "zoneedit")
 {
-    include_once ("./admin/zoneedit.php");
+    include_once './admin/zoneedit.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "memberlist")
 {
-    include_once ("./admin/memberlist.php");
+    include_once './admin/memberlist.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "kinstruct")
 {
-    include_once ("./admin/kinstruct.php");
+    include_once './admin/kinstruct.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "drop_ai")
 {
-    include_once ("./admin/drop_ai.php");
+    include_once './admin/drop_ai.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "new_ai")
 {
-    include_once ("./admin/new_ai.php");
+    include_once './admin/new_ai.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "clear_ai_log")
 {
-    include_once ("./admin/clear_ai_log.php");
+    include_once './admin/clear_ai_log.php';
 }
 elseif ($playerinfo['acl'] >= 255 && $admin_menu == "ai_edit")
 {
-    include_once ("./admin/ai_edit.php");
+    include_once './admin/ai_edit.php';
 }
 elseif ($admin_menu != '')
 {
@@ -260,11 +260,14 @@ elseif ($admin_menu != '')
     $template->display("$templateset/admin-unknown.tpl");
 }
 
+$template->assign("title", $title);
+$template->assign("ai_name", $ai_name);
+$template->assign("l_project_name", $l_project_name);
 $template->assign("playerinfo_acl", $playerinfo['acl']);
 $template->assign("admin_menu", $admin_menu);
 $template->assign("adminurl", $adminurl);
 $template->assign("button_main", $button_main);
 $template->display("$templateset/admin.tpl");
 
-include_once ("./footer.php");
-?> 
+include_once './footer.php';
+?>

@@ -19,7 +19,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/sched_spies.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php"); 
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -27,7 +27,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 

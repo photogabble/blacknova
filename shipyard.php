@@ -16,17 +16,17 @@
 //
 // File: shipyard.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "makebars.php"); 
+dynamic_loader ($db, "makebars.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
-load_languages($db, $raw_prefix, 'shipyard');
+load_languages($db, $raw_prefix, 'ship');
 load_languages($db, $raw_prefix, 'global_includes');
 load_languages($db, $raw_prefix, 'common');
 load_languages($db, $raw_prefix, 'report');
@@ -46,7 +46,7 @@ if ($portinfo['port_type'] != 'shipyard')
     echo $l_noport . "<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -298,10 +298,10 @@ if ($allow_ibank)
     $igblink = "\n<a href=\"igb_login.php\">$l_igb_term</a>";
     $l_ifyouneedmore=str_replace("[igb]",$igblink,$l_ifyouneedmore);
     echo "$l_ifyouneedmore<br>";
-}   
+}
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

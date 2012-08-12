@@ -16,7 +16,7 @@
 //
 // File: includes/player_insignia_name.php
 
-function player_insignia_name($db,$a_username) 
+function player_insignia_name($db,$a_username)
 {
     global $raw_prefix, $player_insignia;
     global $langdir;
@@ -56,7 +56,7 @@ function player_insignia_name($db,$a_username)
         $player_score['score'] = 0;
     }
 
-    // Level 59 across the board is 16, with no planets/credits, etc. 
+    // Level 59 across the board is 16, with no planets/credits, etc.
     // We need to redo this now that top level is 100.
     $i = round( (log($player_score['score'] / 2000)) / log(3.5) + 2);
     if ($i > 13)

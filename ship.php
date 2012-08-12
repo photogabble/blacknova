@@ -16,7 +16,7 @@
 //
 // File: ship.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -68,5 +68,5 @@ $template->assign("otherplayer_name", $otherplayer['name']);
 $template->assign("otherplayer_sector_id", $otherplayer['sector_id']);
 $template->assign("shipinfo_sector_id", $shipinfo['sector_id']);
 $template->display("$templateset/ship.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

@@ -87,13 +87,13 @@ function newplayer($db,$email, $char, $pass, $c_code, $ship_name, $acl)
     $x = $preset_limit + 1;
     for ($y=1; $y<$x; $y++)
     {
-        $debug_query = $db->Execute("INSERT INTO {$db->prefix}presets (player_id, preset) VALUES " . 
+        $debug_query = $db->Execute("INSERT INTO {$db->prefix}presets (player_id, preset) VALUES " .
                                     "(?, '1')", array($player_id));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
 
     // Add presets for player
-    $debug_query = $db->Execute("INSERT INTO {$db->prefix}presets (player_id, preset) VALUES " . 
+    $debug_query = $db->Execute("INSERT INTO {$db->prefix}presets (player_id, preset) VALUES " .
                                 "(?, '1')", array($player_id));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 

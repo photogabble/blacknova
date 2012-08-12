@@ -16,7 +16,7 @@
 //
 // File: igb_repay.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -35,11 +35,11 @@ checklogin($db);
 get_info($db);
 checkdead($db);
 $title = $l_igb_title;
-include_once ("./header.php");
+include_once './header.php';
 
 if (!$allow_ibank)
 {
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 $debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
@@ -55,7 +55,7 @@ if ($portinfo['port_type'] != 'shipyard' && $portinfo['port_type'] != 'upgrades'
     echo $l_noport . "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 else
@@ -90,21 +90,21 @@ if (($amount * 1) != $amount)
 {
     $backlink = "igb_loans.php";
     $igb_errmsg = $l_igb_invalidamount;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 if ($amount == 0)
 {
     $backlink = "igb_loans.php";
     $igb_errmsg = $l_igb_invalidamount;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 if ($account['loan'] == 0)
 {
     $backlink = "igb_loans.php";
     $igb_errmsg = $l_igb_notrepay;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 if ($amount > $account['loan'])
@@ -116,7 +116,7 @@ if ($amount > $playerinfo['credits'])
 {
     $backlink = "igb_loans.php";
     $igb_errmsg = $l_igb_notenoughrepay;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 $playerinfo['credits'] -= $amount;
@@ -144,5 +144,5 @@ $template->display("$templateset/igb_repay.tpl");
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

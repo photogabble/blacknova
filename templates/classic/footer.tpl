@@ -5,7 +5,7 @@
   <noscript><a href="news.php" class="dis" target="newWin">{$l_main_noscript}</a></noscript>
 </div></div>
 
-<script type="text/javascript" defer="defer">
+<script type="text/javascript">
 <!--
 var myi = {$seconds_until_update};
 var ticks = {$scheduler_ticks};
@@ -14,7 +14,7 @@ arURL = new Array({$url_array});
 arTXT = new Array({$news_array});
 //-->
 </script>
-<script type="text/javascript" defer="defer" src="backends/javascript/fader_funcs.js"></script>
+<script type="text/javascript" src="backends/javascript/fader_funcs.js"></script>
 <!-- End news fader -->
 {/if}
 
@@ -51,11 +51,13 @@ arTXT = new Array({$news_array});
 </div>
 <!-- End Legally-required footer -->
 
+<!--
 {if $total_elapsed}
-<!-- Make galaxy time -->
+<!-- Make galaxy time --><!--
 <div style="text-align:center;">Total elapsed time to make galaxy: {$total_elapsed} seconds</div>
-<!-- End Make galaxy time -->
+<!-- End Make galaxy time --><--
 {/if}
+-->
 
 <!-- Updates notice -->
 {if $seconds_until_update == 10000 && $sched_type != 1}

@@ -21,7 +21,7 @@ function ai_tosecdef()
     dynamic_loader ($db, "seed_mt_rand.php");
     dynamic_loader ($db, "playerlog.php");
 
-    //  AI TO SECTOR DEFENSE 
+    //  AI TO SECTOR DEFENSE
 
     //  SETUP GENERAL VARIABLES
     global $playerinfo, $targetlink;
@@ -64,8 +64,8 @@ function ai_tosecdef()
         if ($total_sector_fighters>0 || $total_sector_mines>0 || ($total_sector_fighters>0 && $total_sector_mines>0))
         // DEST LINK HAS DEFENSES SO LETS ATTACK THEM
         {
-            playerlog($playerinfo['ship_id'], "LOG_RAW", "ATTACKING SECTOR DEFENSES $total_sector_fighters fighters and $total_sector_mines mines."); 
-            //  LETS GATHER COMBAT VARIABLES 
+            playerlog($playerinfo['ship_id'], "LOG_RAW", "ATTACKING SECTOR DEFENSES $total_sector_fighters fighters and $total_sector_mines mines.");
+            //  LETS GATHER COMBAT VARIABLES
             $targetfighters = $total_sector_fighters;
             $playerbeams = num_beams($playerinfo['beams']);
             if ($playerbeams>$playerinfo['ship_energy'])
@@ -100,11 +100,11 @@ function ai_tosecdef()
             }
 
             $totalmines = $totalmines - $roll;
-            //$playerminedeflect = $playerinfo['ship_fighters']; //  AI keep as many deflectors as fighters 
+            //$playerminedeflect = $playerinfo['ship_fighters']; //  AI keep as many deflectors as fighters
             $playerminedeflect = $playerinfo['dev_minedeflector'];
 
-            //  LETS DO SOME COMBAT ! 
-            //  BEAMS VS FIGHTERS 
+            //  LETS DO SOME COMBAT !
+            //  BEAMS VS FIGHTERS
             if ($targetfighters > 0 && $playerbeams > 0)
             {
                 if ($playerbeams > round($targetfighters / 2))
@@ -117,10 +117,10 @@ function ai_tosecdef()
                 {
                     $targetfighters = $targetfighters-$playerbeams;
                     $playerbeams = 0;
-                }   
+                }
             }
 
-            //  TORPS VS FIGHTERS 
+            //  TORPS VS FIGHTERS
             if ($targetfighters > 0 && $playertorpdmg > 0)
             {
                 if ($playertorpdmg > round($targetfighters / 2))
@@ -136,7 +136,7 @@ function ai_tosecdef()
                 }
             }
 
-            //  FIGHTERS VS FIGHTERS 
+            //  FIGHTERS VS FIGHTERS
             if ($playerfighters > 0 && $targetfighters > 0)
             {
                 if ($playerfighters > $targetfighters)
@@ -162,8 +162,8 @@ function ai_tosecdef()
                 $targetfighters= $temptargfighters;
             }
 
-            //  OH NO THERE ARE STILL FIGHTERS 
-            //  armor VS FIGHTERS 
+            //  OH NO THERE ARE STILL FIGHTERS
+            //  armor VS FIGHTERS
             if ($targetfighters > 0)
             {
                 if ($targetfighters > $playerarmor)
@@ -173,26 +173,26 @@ function ai_tosecdef()
                 else
                 {
                     $playerarmor= $playerarmor-$targetfighters;
-                } 
+                }
             }
 
-            //  GET RID OF THE SECTOR FIGHTERS THAT DIED 
+            //  GET RID OF THE SECTOR FIGHTERS THAT DIED
             $fighterslost = $total_sector_fighters - $targetfighters;
             destroy_fighters($targetlink,$fighterslost);
 
-            //  LETS LET DEFENSE OWNER KNOW WHAT HAPPENED  
+            //  LETS LET DEFENSE OWNER KNOW WHAT HAPPENED
             $l_sf_sendlog1 = str_replace("[player]", "kabal $playerinfo[character_name]", $l_sf_sendlog);
             $l_sf_sendlog2 = str_replace("[lost]", $fighterslost, $l_sf_sendlog1);
             $l_sf_sendlog3 = str_replace("[sector]", $targetlink, $l_sf_sendlog2);
             message_defense_owner($targetlink,$l_sf_sendlog3);
 
-            //  UPDATE AI AFTER COMBAT 
+            //  UPDATE AI AFTER COMBAT
             $armor_lost= $playerinfo['armor_pts']-$playerarmor;
             $fighters_lost= $playerinfo['ship_fighters']-$playerfighters;
             $energy = $playerinfo['ship_energy'];
             $update1 = $db->Execute ("UPDATE {$db_prefix}ships SET ship_energy=?, ship_fighters=ship_fighters-?, armor_pts=armor_pts-?, torps=torps-? WHERE ship_id=?", array($energy, $fighters_lost, $armor_lost, $playertorpnum, $playerinfo['ship_id']));
 
-            //  CHECK TO SEE IF AI IS DEAD 
+            //  CHECK TO SEE IF AI IS DEAD
             if ($playerarmor < 1)
             {
                 $l_sf_sendlog2 = str_replace("[player]", "kabal " . $playerinfo['character_name'], $l_sf_sendlog2);
@@ -206,9 +206,9 @@ function ai_tosecdef()
                 return;
             }
 
-            //  OK AI MUST STILL BE ALIVE 
-            //  NOW WE HIT THE MINES 
-            //  LETS LOG THE FACT THAT WE HIT THE MINES 
+            //  OK AI MUST STILL BE ALIVE
+            //  NOW WE HIT THE MINES
+            //  LETS LOG THE FACT THAT WE HIT THE MINES
             // echo "before - $playerinfo[character_name] hit $roll mines in sector $targetlink<br>";
             $l_chm_hehitminesinsector1 = str_replace("[chm_playerinfo_character_name]", "kabal " . $playerinfo['character_name'], $l_chm_hehitminesinsector);
             $l_chm_hehitminesinsector2 = str_replace("[chm_roll]", $roll, $l_chm_hehitminesinsector1);
@@ -217,7 +217,7 @@ function ai_tosecdef()
             // echo "after - $l_chm_hehitminesinsector3<br>";
             message_defense_owner($targetlink,"$l_chm_hehitminesinsector3");
 
-            //  DEFLECTORS VS MINES 
+            //  DEFLECTORS VS MINES
             if ($playerminedeflect >= $roll)
             {
                 $playerminedeflect = $playerminedeflect - $roll;
@@ -231,7 +231,7 @@ function ai_tosecdef()
                     $mines_left = 0;
                 }
 
-                //  SHIELDS VS MINES 
+                //  SHIELDS VS MINES
                 if ($playershields >= $mines_left)
                 {
                     $update2 = $db->Execute("UPDATE {$db_prefix}ships set ship_energy=ship_energy-? WHERE ship_id=?", array($mines_left, $playerinfo['ship_id']));
@@ -240,37 +240,37 @@ function ai_tosecdef()
                 {
                     $mines_left = $mines_left - $playershields;
 
-                    //  armor VS MINES 
+                    //  armor VS MINES
                     if ($playerarmor >= $mines_left)
                     {
                         $update2 = $db->Execute("UPDATE {$db_prefix}ships set armor_pts=armor_pts-?,ship_energy=0 WHERE ship_id=?", array($mines_left, $playerinfo['ship_id']));
                     }
                     else
                     {
-                        //  OH NO WE DIED 
-                        //  LETS LOG THE FACT THAT WE DIED  
+                        //  OH NO WE DIED
+                        //  LETS LOG THE FACT THAT WE DIED
                         $l_chm_hewasdestroyedbyyourmines = str_replace("[chm_playerinfo_character_name]", "kabal " . $playerinfo['character_name'], $l_chm_hewasdestroyedbyyourmines);
                         $l_chm_hewasdestroyedbyyourmines = str_replace("[chm_sector]", $targetlink, $l_chm_hewasdestroyedbyyourmines);
                         message_defense_owner($targetlink,"$l_chm_hewasdestroyedbyyourmines");
-                        //  LETS ACTUALLY KILL THE AI NOW 
+                        //  LETS ACTUALLY KILL THE AI NOW
                         cancel_bounty($playerinfo['ship_id']);
                         // Dynamic functions
                         dynamic_loader ($db, "db_kill_player.php");
                         db_kill_player($playerinfo['ship_id']);
                         $ai_isdead = 1;
-                        //  LETS GET RID OF THE MINES NOW AND RETURN OUT OF THIS FUNCTION 
+                        //  LETS GET RID OF THE MINES NOW AND RETURN OUT OF THIS FUNCTION
                         explode_mines($targetlink,$roll);
                         return;
                     }
                 }
             }
 
-        //  LETS GET RID OF THE MINES NOW 
+        //  LETS GET RID OF THE MINES NOW
         explode_mines($targetlink,$roll);
         }
         else
         {
-            // FOR SOME REASON THIS WAS CALLED WITHOUT ANY SECTOR DEFENSES TO ATTACK 
+            // FOR SOME REASON THIS WAS CALLED WITHOUT ANY SECTOR DEFENSES TO ATTACK
             return;
         }
     }

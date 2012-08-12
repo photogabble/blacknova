@@ -16,10 +16,10 @@
 //
 // File: login2.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
-dynamic_loader ($db, "spy_ship_destroyed.php"); 
+dynamic_loader ($db, "spy_ship_destroyed.php");
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "playerlog.php");
 
@@ -28,7 +28,7 @@ load_languages($db, $raw_prefix, 'login2');
 load_languages($db, $raw_prefix, 'global_includes');
 load_languages($db, $raw_prefix, 'common');
 
-include_once ("./header.php");
+include_once './header.php';
 global $playerinfo, $accountinfo, $ip_address;
 
 // Here we set to defaults all unset variables. Later we will also clean them and typecast them.
@@ -71,18 +71,18 @@ $found = 0;
 // This helps reduce the chance of a session replay attack.
 adodb_session_regenerate_id();
 
-if (isset($_POST['newlang'])) 
-{ 
+if (isset($_POST['newlang']))
+{
     $_POST['newlang'] = preg_replace('/[^A-Za-z]/','',$_POST['newlang']);
-    $_SESSION['langdir'] = $_POST['newlang']; 
+    $_SESSION['langdir'] = $_POST['newlang'];
 }
 
 if ((!isset($_SESSION['langdir'])) || ($_SESSION['langdir'] == ''))
 {
     $_SESSION['langdir'] = $default_lang;
-    
+
     $h_a_l = '';
-    if (isset($_ENV['HTTP_ACCEPT_LANGUAGE'])) 
+    if (isset($_ENV['HTTP_ACCEPT_LANGUAGE']))
     {
         $h_a_l = $_ENV['HTTP_ACCEPT_LANGUAGE'];
     }
@@ -94,42 +94,42 @@ if ((!isset($_SESSION['langdir'])) || ($_SESSION['langdir'] == ''))
     {
         $h_a_l = 0; // Cannot find either
     }
-    
-    if ($h_a_l) 
+
+    if ($h_a_l)
     {
         $plng = explode(',', $h_a_l);
-        if (count($plng) > 0) 
+        if (count($plng) > 0)
         {
             $found=0;
-//            while (list($k,$v) = each($plng)) 
+//            while (list($k,$v) = each($plng))
             foreach($plng as $key=>$val);
             {
                 $k = explode(';', $v, 1);
                 $k = explode('-', $k[0]);
-                
+
                 switch ($k[0])
                 {
-                    case 'en': 
+                    case 'en':
                         $_SESSION['langdir'] = 'english';
-                        $found = 1; 
+                        $found = 1;
                         break;
-                    case 'et': 
+                    case 'et':
                         $_SESSION['langdir'] = 'estonian';
-                        $found = 1; 
+                        $found = 1;
                         break;
-                    case 'es': 
+                    case 'es':
                         $_SESSION['langdir'] = 'spanish';
-                        $found = 1; 
+                        $found = 1;
                         break;
-                    case 'fr': 
+                    case 'fr':
                         $_SESSION['langdir'] = 'french';
-                        $found = 1; 
+                        $found = 1;
                         break;
-                    case 'ru': 
+                    case 'ru':
                         $_SESSION['langdir'] = 'russian';
-                        $found = 1; 
+                        $found = 1;
                         break;
-                    default: 
+                    default:
                         if (file_exists(str_replace(basename(__FILE__),"","login2.php") . 'languages/' . $k[0] ))
                         {
                            $_SESSION['langdir'] = $k[0];
@@ -199,7 +199,7 @@ else
     {
         $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET class=1, hull=0, engines=0, pengines=0, power=0, computer=0, " .
                                     "sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=?, " .
-                                    "cloak=0, shields=0, sector_id=1, ore=0, organics=0, " . 
+                                    "cloak=0, shields=0, sector_id=1, ore=0, organics=0, " .
                                     "energy=?, colonists=0, goods=0, fighters=?, on_planet='N', " .
                                     "dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, dev_escapepod=?, " .
                                     "dev_fuelscoop=?, dev_minedeflector=0, destroyed='N' WHERE " .
@@ -238,7 +238,7 @@ else
             if ($num_rows || $always_reincarnate)
             {
                 echo "<br><br>$l_login_newbie<br><br>";
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET hull=0,engines=0,pengines=0,power=0,computer=0,sensors=0,beams=0, torp_launchers=0,torps=0,armor=0,armor_pts=$start_armor, cloak=0,shields=0,sector_id=1,ore=0,organics=0,energy=$start_energy, colonists=0,goods=0,fighters=$start_fighters, on_planet='N',dev_warpedit=0,dev_genesis=0,dev_emerwarp=0,dev_escapepod='$start_pod', dev_fuelscoop='$start_scoop', dev_minedeflector=0,destroyed='N' WHERE player_id=$playerinfo[player_id] AND ship_id=$playerinfo[currentship]", array($start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop, $playerinfo['player_id'], $playerinfo['currentship']));
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET hull=0,engines=0,pengines=0,power=0,computer=0,sensors=0,beams=0, torp_launchers=0,torps=0,armor=0,armor_pts=?, cloak=0,shields=0,sector_id=1,ore=0,organics=0,energy=?, colonists=0,goods=0,fighters=?, on_planet='N',dev_warpedit=0,dev_genesis=0,dev_emerwarp=0,dev_escapepod=?, dev_fuelscoop=?, dev_minedeflector=0,destroyed='N' WHERE player_id=? AND ship_id=?", array($start_armor, $start_energy, $start_fighters, $start_pod, $start_scoop, $playerinfo['player_id'], $playerinfo['currentship']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
                 $debug_query = $db->Execute("UPDATE {$db->prefix}players SET credits=1000 WHERE player_id=?", array($playerinfo['player_id']));
@@ -264,5 +264,5 @@ else
     }
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

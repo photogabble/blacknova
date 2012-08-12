@@ -19,16 +19,16 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/setedit.php"));
 if ($pos !== false)
 {
-    include ("global_includes.php");
+    include 'global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
-    include ("header.php");
+    include 'header.php';
     echo $l_cannot_access;
-    include ("footer.php");
+    include 'footer.php';
     die();
 }
 

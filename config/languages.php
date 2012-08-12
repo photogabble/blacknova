@@ -2,6 +2,6 @@
 
 [LANGUAGES]
 English = "english";
-; Eesti = "estonian" these are now disabled - no maintainer. 
+; Eesti = "estonian" these are now disabled - no maintainer.
 ; Español = "spanish" these are now disabled - no maintainer.
 ; Français = "french" these are now disabled - no maintainer.

@@ -16,7 +16,7 @@
 //
 // File: new.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 if (strlen(dirname($_SERVER['PHP_SELF'])) > 1)
 {
@@ -31,7 +31,7 @@ load_languages($db, $raw_prefix, 'login');
 $no_body = 1;
 
 $title = $l_new_title;
-include_once ("./header.php");
+include_once './header.php';
 
 $game_drop_down='';
 $game_query = $db->Execute("SELECT gamenumber FROM {$db->prefix}instances ORDER BY gamenumber ASC");
@@ -68,5 +68,5 @@ $template->assign("l_login_pw", $l_login_pw);
 $template->assign("l_login_pw2", $l_login_pw2);
 $template->display("$templateset/new.tpl");
 
-include_once ("./footer.php"); 
+include_once './footer.php';
 ?>

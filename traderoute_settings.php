@@ -16,7 +16,7 @@
 //
 // File: traderoute_settings.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions

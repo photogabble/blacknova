@@ -16,7 +16,7 @@
 //
 // File: help.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -42,6 +42,6 @@ $template->assign("allow_fullscan", $allow_fullscan);
 $template->assign("allow_navcomp", $allow_navcomp);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/help.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 
-?> 
+?>

@@ -18,7 +18,7 @@
 //
 // Description: The function handling AI trading routines.
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 dynamic_loader ($db, "direct_test.php");
 direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
@@ -28,7 +28,7 @@ function ai_trade()
     global $playerinfo, $inventory_factor, $ore_price, $ore_delta, $ore_limit, $goods_price;
     global $goods_delta, $goods_limit, $organics_price, $organics_delta, $organics_limit, $ai_isdead;
     global $db;
-    
+
     dynamic_loader ($db, "playerlog.php");
 
     $ore_price = 11;
@@ -68,25 +68,25 @@ function ai_trade()
 
     //  Check for net credit/cargo
     // if ($playerinfo['ship_ore']<0) $playerinfo['ship_ore']= $shipore = 0;
-    if ($playerinfo['ship_ore']<0) 
+    if ($playerinfo['ship_ore']<0)
     {
         $playerinfo['ship_ore']= $shipore = 0;
     }
 
     // if ($playerinfo['ship_organics']<0) $playerinfo['ship_organics']= $shiporganics = 0;
-    if ($playerinfo['ship_organics']<0) 
+    if ($playerinfo['ship_organics']<0)
     {
         $playerinfo['ship_organics']= $shiporganics = 0;
     }
 
     // if ($playerinfo['ship_goods']<0) $playerinfo['ship_goods']= $shipgoods = 0;
-    if ($playerinfo['ship_goods']<0) 
+    if ($playerinfo['ship_goods']<0)
     {
         $playerinfo['ship_goods']= $shipgoods = 0;
     }
 
     // if ($playerinfo['credits']<0) $playerinfo['credits']= $shipcredits=10000;
-    if ($playerinfo['credits']<= 0) 
+    if ($playerinfo['credits']<= 0)
     {
         $playerinfo['credits']= $shipcredits=10000;
     }
@@ -121,7 +121,7 @@ function ai_trade()
     if ($portinfo['port_type']== "goods" && $shipgoods>0) return;
 
     //  Lets trade some cargo
-    if ($portinfo['port_type']== "ore")//  PORT ORE 
+    if ($portinfo['port_type']== "ore")//  PORT ORE
     {
         // Set the prices
         $ore_price = $ore_price - $ore_delta * $portinfo['port_ore'] / $ore_limit * $inventory_factor;
@@ -134,7 +134,7 @@ function ai_trade()
 
         //  Since we sell all other holds we set amount to be our total hold limit
         $amount_ore = num_holds($playerinfo['hull']);
-    
+
         //  We adjust this to make sure it does not exceed what the port has to sell
         $amount_ore = min($amount_ore, $portinfo['port_ore']);
 
@@ -172,7 +172,7 @@ function ai_trade()
         //  Make sure we do not exceed what the port has to sell
         $amount_organics = min($amount_organics, $portinfo['port_organics']);
 
-        // Make sure its not more than we can afford 
+        // Make sure its not more than we can afford
         $amount_organics = min($amount_organics, floor(($playerinfo['credits'] + $amount_ore * $ore_price + $amount_goods * $goods_price) / $organics_price));
 
         // Buy/Sell cargo
@@ -187,7 +187,7 @@ function ai_trade()
         $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore+?, " .
                                       "port_organics=port_organics-?, " .
                                       "port_goods=port_goods+? WHERE sector_id=?", array($amount_ore, $amount_organics, $amount_goods, $sectorinfo['sector_id']));
-        // playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal Trade Results: Sold $amount_goods Goods Sold $amount_ore Ore Bought $amount_organics Organics Cost $total_cost"); 
+        // playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal Trade Results: Sold $amount_goods Goods Sold $amount_ore Ore Bought $amount_organics Organics Cost $total_cost");
     }
 
     if ($portinfo['port_type']== "goods") // Post goods
@@ -207,7 +207,7 @@ function ai_trade()
         // Make sure it does not exceed what the port has to sell
         $amount_goods = min($amount_goods, $portinfo['port_goods']);
 
-        // Make sure its not more than we can afford 
+        // Make sure its not more than we can afford
         $amount_goods = min($amount_goods, floor(($playerinfo['credits'] + $amount_ore * $ore_price + $amount_organics * $organics_price) / $goods_price));
 
         // Buy / Sell Cargo
@@ -222,7 +222,7 @@ function ai_trade()
         $trade_result2 = $db->Execute("UPDATE {$db->prefix}ports SET port_ore=port_ore+?, " .
                                       "port_organics=port_organics+?, " .
                                       "port_goods=port_goods-? WHERE sector_id=?", array($amount_ore, $amount_organics, $amount_goods, $sectorinfo['sector_id']));
-        // playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal Trade Results: Sold $amount_ore Ore Sold $amount_organics Organics Bought $amount_goods Goods Cost $total_cost"); 
+        // playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal Trade Results: Sold $amount_ore Ore Sold $amount_organics Organics Bought $amount_goods Goods Cost $total_cost");
     }
 }
 ?>

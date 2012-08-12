@@ -16,16 +16,16 @@
 //
 // File: planet2.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "transfer_to_planet.php"); 
-dynamic_loader ($db, "transfer_to_ship.php"); 
-dynamic_loader ($db, "spy_detect_planet.php"); 
-dynamic_loader ($db, "spy_sneak_to_ship.php"); 
+dynamic_loader ($db, "transfer_to_planet.php");
+dynamic_loader ($db, "transfer_to_ship.php");
+dynamic_loader ($db, "spy_detect_planet.php");
+dynamic_loader ($db, "spy_sneak_to_ship.php");
 dynamic_loader ($db, "spy_sneak_to_planet.php");
 dynamic_loader ($db, "col_count_news.php");
 dynamic_loader ($db, "num_level.php");
@@ -84,7 +84,7 @@ if ($planetinfo['sector_id'] != $shipinfo['sector_id'])
     echo "$l_planet2_sector<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -222,7 +222,6 @@ else
     $transfer_goods = $_POST['transfer_goods'];
 }
 
-
 if ((!isset($_POST['transfer_energy'])) || ($_POST['transfer_energy'] == ''))
 {
     $transfer_energy = 0;
@@ -240,7 +239,6 @@ else
 {
     $transfer_colonists = $_POST['transfer_colonists'];
 }
-
 
 if ((!isset($_POST['transfer_credits'])) || ($_POST['transfer_credits'] == ''))
 {
@@ -323,7 +321,6 @@ else
     $allenergy = $_POST['allenergy'];
 }
 
-
 if ((!isset($_POST['allcolonists'])) || ($_POST['allcolonists'] == ''))
 {
     $allcolonists = 0;
@@ -359,7 +356,6 @@ else
 {
     $allfighters = $_POST['allfighters'];
 }
-
 
 if ((!isset($_POST['allspies'])) || ($_POST['allspies'] == ''))
 {
@@ -416,7 +412,6 @@ if ($tpspies != -1)
     $tpspies = 1;
 }
 
-    
     // Now remove anything but numbers from the submitted form. Yes, even negative numbers. :)
     $transfer_ore = floor(preg_replace('/[^0-9]/','',$transfer_ore));
     $transfer_organics = floor(preg_replace('/[^0-9]/','',$transfer_organics));
@@ -592,7 +587,7 @@ if ($tpspies != -1)
         $transfer_spies = -1 * $transfer_spies;
         $tpspies = -1 * $tpspies;
     }
-  
+
     if ($spy_success_factor)
     {
         spy_sneak_to_planet($db,$planetinfo['planet_id'], $shipinfo['ship_id']);
@@ -1139,6 +1134,6 @@ if ($tpspies != -1)
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

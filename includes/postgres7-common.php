@@ -19,10 +19,10 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/postgres7-common.php"));
 if ($pos !== false)
 {
-    include_once ("../global_includes.php");
+    include_once '../global_includes.php';
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("../footer.php");
+    include_once '../footer.php';
     die();
 }
 

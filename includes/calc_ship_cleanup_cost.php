@@ -18,7 +18,7 @@
 function calc_ship_cleanup_cost($level_avg = 0, $type = 1)
 {
     global $level_factor, $upgrade_cost;
-  
+
     if ($type==1)
     {
         $c=1;
@@ -39,7 +39,7 @@ function calc_ship_cleanup_cost($level_avg = 0, $type = 1)
     {
         $cl_cost = 2000000000;
     }
-  
+
     return $cl_cost;
 }
 ?>

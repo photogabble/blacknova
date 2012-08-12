@@ -23,7 +23,7 @@ if ($pos !== false)
     die();
 }
 
-if ($_POST['fedsecs'] > $_POST['sektors']) 
+if ($_POST['fedsecs'] > $_POST['sektors'])
 {
     echo "The number of Federation sectors must be smaller than the size of the universe!";
     echo "We have lowered it to half the total number of sectors.";

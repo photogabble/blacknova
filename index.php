@@ -18,7 +18,7 @@
 
 $title = '';
 $no_body = 1;
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Load language variables
 load_languages($db, $raw_prefix, 'common');
@@ -44,7 +44,7 @@ if (!$db_installed)
 }
 
 $style_sheet_file = "templates/$templateset/styles/index-style.css";
-include_once ("./header.php");
+include_once './header.php';
 
 $login_drop_down = '';
 
@@ -148,6 +148,6 @@ $template->assign("l_login_settings", $l_login_settings);
 $template->assign("avail_lang", $avail_lang);
 $template->assign("login_language_change", $l_login_change);
 $template->assign("templateset", $templateset);
-$template->display("$templateset/index.tpl");
-include_once ("./footer.php");
+$template->display("templates/$templateset/index.tpl");
+include_once './footer.php';
 ?>

@@ -56,7 +56,7 @@ function display_this_planet($db, $this_planet, $planettypes, $basefontsize, $l_
         $output = $output . "</a>";
     }
     $output = $output . "<br><font color=\"";
-    $output = $output . $general_highlight_color; 
+    $output = $output . $general_highlight_color;
     $output = $output . "\">";
     if (empty($this_planet['name']))
     {

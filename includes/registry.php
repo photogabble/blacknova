@@ -18,9 +18,9 @@
 
 Class registry
 {
-    var $_items = array();
+    public $_items = array();
 
-    function set($name, &$item)
+    public function set($name, &$item)
     {
         $this->_items[$name]=&$item;
     }
@@ -30,7 +30,7 @@ Class registry
         return $this->_items[$name];
     }
 
-    function is_entry($key)
+    public function is_entry($key)
     {
         return ($this->get($key) !== null);
     }

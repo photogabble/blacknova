@@ -16,16 +16,16 @@
 //
 // File: traderoute.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "t_port.php"); 
-dynamic_loader ($db, "num_level.php"); 
-dynamic_loader ($db, "traderoute_delete.php"); 
-dynamic_loader ($db, "adminlog.php"); 
+dynamic_loader ($db, "t_port.php");
+dynamic_loader ($db, "num_level.php");
+dynamic_loader ($db, "traderoute_delete.php");
+dynamic_loader ($db, "adminlog.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -44,7 +44,7 @@ checkdead($db);
 $title = $l_tdr_title;
 updatecookie($db);
 
-include_once ("./header.php");
+include_once './header.php';
 //-------------------------------------------------------------------------------------------------
 
 echo "<h1>" . $title. "</h1>\n";
@@ -139,23 +139,23 @@ $tr_repeat = preg_replace('/[^0-9]/','',$tr_repeat);
 
 if ($_GET['command'] == 'new')   // Displays new trade route form
 {
-    include_once ("./traderoute_new.php");
+    include_once './traderoute_new.php';
 }
 elseif ($_GET['command'] == 'create')    // Enters new route in db
 {
-    include_once ("./traderoute_create.php");
+    include_once './traderoute_create.php';
 }
 elseif ($_GET['command'] == 'edit')    // Displays new trade route form, edit
 {
-    include_once ("./traderoute_new.php");
+    include_once './traderoute_new.php';
 }
 elseif ($_GET['command'] == 'settings')  // Global traderoute settings form
 {
-    include_once ("./traderoute_settings.php");
+    include_once './traderoute_settings.php';
 }
 elseif ($_GET['command'] == 'setsettings') // Enters settings in db
 {
-    include_once ("./traderoute_setsettings.php");
+    include_once './traderoute_setsettings.php';
 }
 elseif (isset($_GET['engage'])) // Performs trade route
 {
@@ -176,7 +176,7 @@ else
         echo "<p><a href=\"traderoute.php?command=new\">" . $l_tdr_newtdr . "</a></p>";
         echo "<p><a href=\"traderoute.php?command=settings\">" . $l_tdr_modtdrset . "</a></p>";
     }
-    else 
+    else
     {
         traderoute_delete();
         echo "<a href=\"traderoute.php?command=delete&amp;confirm=yes&amp;traderoute_id=" . $_GET['traderoute_id'] . "\">";
@@ -310,7 +310,7 @@ else
                         {
                             echo $l_tdr_colonists;
                         }
-        
+
                         if ($playerinfo['trade_fighters'] == 'Y')
                         {
                             if ($playerinfo['trade_colonists'] == 'Y')
@@ -319,7 +319,7 @@ else
                             }
                             echo $l_tdr_fighters;
                         }
-        
+
                        if ($playerinfo['trade_torps'] == 'Y')
                        {
                            echo "<br>$l_tdr_torps";
@@ -328,7 +328,7 @@ else
                     echo "</td>";
                 }
             }
-    
+
             echo "<td align=center>";
             if ($traderoutes[$i]['move_type'] == 'R')
             {
@@ -341,18 +341,18 @@ else
                 {
                     $src = $planet1;
                 }
-    
+
                 if ($traderoutes[$i]['dest_type'] == 'P')
                 {
                     $dst = $port2;
                 }
                 else
-                {  
+                {
                     $dst = $planet2;
                 }
-    
+
                 $dist = traderoute_distance($traderoutes[$i]['source_type'], $traderoutes[$i]['dest_type'], $src['sector_id'], $dst['sector_id'], $traderoutes[$i]['circuit'], $playerinfo['trade_energy']);
-    
+
                 $l_tdr_escooped2 = $l_tdr_escooped;
                 $l_tdr_escooped2 = str_replace("[tdr_dist_triptime]", $dist['triptime'], $l_tdr_escooped2);
                 $l_tdr_escooped2 = str_replace("[tdr_dist_scooped]", "<br>" . $dist['scooped'], $l_tdr_escooped2);
@@ -370,10 +370,10 @@ else
                 {
                     echo ", 4 $l_tdr_turns";
                 }
-    
+
                 echo "</td>";
             }
-    
+
             echo "<td align=center>";
             if ($traderoutes[$i]['circuit'] == '1')
             {
@@ -383,14 +383,14 @@ else
             {
                 echo "&nbsp;2 $l_tdr_ways</td>";
             }
-    
+
             echo "<td align=center>";
             echo "<a href=\"traderoute.php?command=edit&amp;traderoute_id=" . $traderoutes[$i]['traderoute_id'] . "\">";
             echo "$l_tdr_edit</a><br><a href=\"traderoute.php?command=delete&amp;traderoute_id=" . $traderoutes[$i]['traderoute_id'] . "\">";
             echo "$l_tdr_del</a></td></tr>";
             $i++;
         }
-    
+
         echo "</table><p>";
     }
 }
@@ -399,7 +399,7 @@ else
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 // Dynamic functions
 dynamic_loader ($db, "traderoute_die.php");

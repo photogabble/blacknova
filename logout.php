@@ -16,7 +16,7 @@
 //
 // File: logout.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -32,7 +32,7 @@ load_languages($db, $raw_prefix, 'main');
 load_languages($db, $raw_prefix, 'global_includes');
 
 $title = $l_logout;
-include_once ("./header.php");
+include_once './header.php';
 
 // Set globals (BAD!)
 global $local_number_dec_point, $local_number_thousands_sep;
@@ -58,5 +58,5 @@ $template->assign("current_score", $current_score);
 $template->assign("l_logout_text", $l_logout_text);
 $template->display("$templateset/logout.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

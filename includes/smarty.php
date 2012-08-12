@@ -20,14 +20,12 @@
 
 class bnt_smarty extends Smarty
 {
-    function bnt_smarty()
+    public function __construct()
     {
-        // Class constructor
-
-        $this->Smarty();
-        $this->security = true; // Enforce tight security for templates: http://smarty.php.net/manual/en/variable.security.php
-        $this->compile_dir = ('../scratch_dir');
-        $this->cache_dir = ('../scratch_dir');
+        parent::__construct();
+        $this->setTemplateDir('/var/www/html/bnta/templates');
+        $this->setCacheDir('/var/www/html/bnta/cache_dir');
+        $this->setCompileDir('/var/www/html/bnta/compile_dir');
     }
 }
 

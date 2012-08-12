@@ -5,7 +5,7 @@
             <key/>
             <autoincrement/>
         </field>
-        <field name="amount" type="F"><notnull/><default value="0"/></field> 
+        <field name="amount" type="F"><notnull/><default value="0"/></field>
         <field name="bounty_on" type="I2"><notnull/><default value="0"/></field>
         <field name="placed_by" type="I2"><notnull/><default value="0"/></field>
         <field name="bounty_reason" type="C" size="80"><notnull/></field>

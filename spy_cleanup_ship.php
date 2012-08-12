@@ -16,7 +16,7 @@
 //
 // File: spy_cleanup_ship.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -48,7 +48,7 @@ if (!$spy_success_factor)
     echo "<strong>$l_spy_disabled</strong><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -156,7 +156,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         echo "<br>$l_spy_notinspecial<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -181,7 +181,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         $l_spy_cleanuptext[$a] = str_replace("[creds]", number_format($spy_cleanup_ship_credits[$a], 0, $local_number_dec_point, $local_number_thousands_sep), $new_spy_clean);
         $l_spy_cleanuptext[$a] = str_replace("[turns]", number_format($spy_cleanup_ship_turns[$a], 0, $local_number_dec_point, $local_number_thousands_sep), $new_spy_clean);
     }
-  
+
     if ($playerinfo['credits'] < $spy_cleanup_ship_credits[1] || $playerinfo['turns'] < $spy_cleanup_ship_turns[1])
     {
         $set[1] = "DISABLED";
@@ -190,7 +190,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
     {
         $set[1] = "checked";
     }
- 
+
     if ($playerinfo['credits'] < $spy_cleanup_ship_credits[2] || $playerinfo['turns'] < $spy_cleanup_ship_turns[2])
     {
         $set[2] = "DISABLED";
@@ -216,15 +216,15 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
     {
         $set[3] = "checked";
     }
-  
+
     if (empty($doit))
-    { 
+    {
         echo '<form name="bntform" action="spy_cleanup_ship.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
         echo "<input type=hidden name=doit value=1>";
         echo "<input type=radio name=type value=1 $set[1]> $l_spy_cleanuptext_1<br>";
         echo "<input type=radio name=type value=2 $set[2]> $l_spy_cleanuptext_2<br>";
         echo "<input type=radio name=type value=3 $set[3]> $l_spy_cleanuptext_3<br><br>";
-    
+
         if ($set[1] == "DISABLED" && $set[2] == "DISABLED" && $set[3] == "DISABLED")
         {
             $l_spy_cannotcleanupship = str_replace("[credits]" , number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep), $l_spy_cannotcleanupship);
@@ -235,7 +235,7 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         {
             echo "<input type=submit name=submit_button value=\"$l_spy_cleanupbutton2\">";
         }
-    
+
         echo "</form>";
     }
     else
@@ -245,9 +245,9 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
         {
             $type = 1;
         }
-      
-        if ($set[$type] != "DISABLED") 
-        {  
+
+        if ($set[$type] != "DISABLED")
+        {
             $found = 0;
             $debug_query = $db->Execute("UPDATE {$db->prefix}players SET turns_used=turns_used+?, turns=turns-?, credits=credits-? WHERE player_id=? ", array($spy_cleanup_ship_turns[$type], $spy_cleanup_ship_turns[$type], $spy_cleanup_ship_credits[$type], $playerinfo['player_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
@@ -308,15 +308,15 @@ $spy_cleanup_ship_turns[3] = $spy_cleanup_ship_turns3;
                 }
                 $res->MoveNext();
             }
-   
+
             if (!$found)
             {
                 echo "$l_spy_spynotfoundonship<br>";
             }
-        }  
+        }
         else
         {
-            echo "<br>$l_spy_notenough<br>"; 
+            echo "<br>$l_spy_notenough<br>";
         }
     }
 global $l_global_mmenu;
@@ -324,5 +324,5 @@ $template->assign("title", $title);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/spy.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

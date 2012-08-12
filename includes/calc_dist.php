@@ -17,7 +17,7 @@
 // File: includes/calc_dist.php
 
 // Calculate the distance between two sectors.
-function calc_dist($db, $src, $dst) 
+function calc_dist($db, $src, $dst)
 {
     $results = $db->Execute("SELECT x,y,z FROM {$db->prefix}universe WHERE " .
                             "sector_id=? OR sector_id=?", array($src, $dst));
@@ -44,7 +44,7 @@ function calc_dist($db, $src, $dst)
     $x = sqrt(($x*$x) + ($y*$y) + ($z*$z));
 
     // Make sure it's never less than 1.
-    if ($x < 1) 
+    if ($x < 1)
     {
         $x = 1;
     }

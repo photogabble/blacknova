@@ -19,10 +19,10 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/mysql-common.php"));
 if ($pos !== false)
 {
-    include_once ("../global_includes.php");
+    include_once '../global_includes.php';
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("../footer.php");
+    include_once '../footer.php';
     die();
 }
 
@@ -189,7 +189,7 @@ function sql_planet_zero()
 
 function sql_port_grow()
 {
-    // I did try optimizing this further by splitting it into two seperate sql calls - one to increase and one to cap to limit, but 
+    // I did try optimizing this further by splitting it into two seperate sql calls - one to increase and one to cap to limit, but
     // two calls ended up being far slower than this one complex call.
     global $db, $ore_rate, $multiplier, $ore_limit, $organics_rate, $organics_limit, $goods_rate, $goods_limit, $energy_rate;
     global $energy_limit;

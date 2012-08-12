@@ -27,7 +27,7 @@ function spy_planet_destroyed($db,$planet_id)
         playerlog($db,$owners[owner_id], "LOG_SPY_CATACLYSM", "$owners[spy_id]|$owners[name]|$owners[sector_id]");
         $res->MoveNext();
     }
-  
+
     $db->Execute("DELETE FROM {$db->prefix}spies WHERE planet_id=?", array($planet_id));
 }
 ?>

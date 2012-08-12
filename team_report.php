@@ -16,7 +16,7 @@
 //
 // File: team_report.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -37,7 +37,7 @@ checkdead($db);
 
 $title = $l_team_report_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 $main_table_heading = "#ffffff"; // Used for table headings for tables on main
 
@@ -101,5 +101,5 @@ $template->assign("l_team_menu", $l_team_menu);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/team_report.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

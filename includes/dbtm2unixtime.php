@@ -19,9 +19,12 @@
 function dbtm2unixtime( $dbtm2timestamp_in )
 {
    // Returns unix time stamp for a given date time string that comes from DB
-   list( $date, $time ) = split(" ", $dbtm2timestamp_in);
-   list( $year, $month, $day ) = split( "-", $date );
-   list( $hour, $minute, $second ) = split( ":", $time );
+///   list( $date, $time ) = split(" ", $dbtm2timestamp_in);
+   list( $date, $time ) = explode(" ", $dbtm2timestamp_in);
+///   list( $year, $month, $day ) = split( "-", $date );
+   list( $year, $month, $day ) = explode( "-", $date );
+///   list( $hour, $minute, $second ) = split( ":", $time );
+   list( $hour, $minute, $second ) = explode( ":", $time );
 
    return mktime( $hour, $minute, $second, $month, $day, $year );
 }

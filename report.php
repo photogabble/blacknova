@@ -16,14 +16,14 @@
 //
 // File: report.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "makebars.php"); 
-dynamic_loader ($db, "num_level.php"); 
+dynamic_loader ($db, "makebars.php");
+dynamic_loader ($db, "num_level.php");
 dynamic_loader ($db, "updatecookie.php");
 
 load_languages($db, $raw_prefix, 'report');
@@ -38,7 +38,7 @@ checkdead($db);
 
 $title = $l_report_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 global $local_number_dec_point, $local_number_thousands_sep;
 
@@ -57,16 +57,16 @@ if (isset($_GET['sid']))  // Called from the Spy menu
         $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}players WHERE currentship=?",1,-1,array($_GET['sid']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $playerinfo = $debug_query->fields;
-    
+
         $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ships WHERE player_id=? " .
                                         "AND ship_id=?",1,-1,array($playerinfo['player_id'], $playerinfo['currentship']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $shipinfo = $debug_query->fields;
-    
+
         $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}ship_types WHERE type_id=?",1,-1,array($shipinfo['class']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $classinfo = $debug_query->fields;
-    
+
         $debug_query = $db->SelectLimit("SELECT * FROM {$db->prefix}universe WHERE sector_id=?",1,-1,array($shipinfo['sector_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $sectorinfo = $debug_query->fields;
@@ -76,7 +76,7 @@ if (isset($_GET['sid']))  // Called from the Spy menu
         global $l_global_mmenu;
         $template->assign("l_global_mmenu", $l_global_mmenu);
         $template->display("$templateset/report-cheat.tpl");
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -124,7 +124,7 @@ if ($spy_success_factor)
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
     $ship_spies = $debug_query->RecordCount();
-  
+
     $template->assign("ship_spies", $ship_spies);
     $template->assign("l_spy", $l_spy);
 }
@@ -247,5 +247,5 @@ if (isset($thisplayerinfo))
     $sectorinfo = $thissectorinfo;
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

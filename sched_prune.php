@@ -19,7 +19,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/sched_repair.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php"); 
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -27,12 +27,12 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
 $in_past = time() - (192 * 3600); // Time gives time in seconds,
-                                  // so multiply 8 days * 
+                                  // so multiply 8 days *
                                   // 24 hours * 60 minutes * 60 seconds.
 $targetday = date("Y-m-d H:i:s", $in_past);
 

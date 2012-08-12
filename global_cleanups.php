@@ -33,7 +33,7 @@ ini_set('url_rewriter.tags', ''); // Ensure that the session id is *not* passed 
 
 fix_magic_quotes(); // See the function in common_functions. This fixes all possible weirdness from magic_quotes_*
 
-
+date_default_timezone_set('America/New_York');
 $db = '';
 $pos = (strpos($_SERVER['PHP_SELF'], "/install.php"));
 if (!$pos)
@@ -62,11 +62,10 @@ if (!$pos)
 
     global $db;
     $db = connectdb($ADODB_SESSION_DB, $ADODB_SESSION_DRIVER, $ADODB_SESSION_USER, $ADODB_SESSION_PWD, $ADODB_SESSION_CONNECT, $dbport);
-    
     if (!$db)
     {
         //    $title = $l_error_occured;
-        die ("Unable to connect to the database: ");
+        die ("Unable to connect to the database. ");
         echo "Cannot connect to database.";
         //    include_once ("./footer.php");
         die();
@@ -95,11 +94,12 @@ if (!$pos)
     {
         // We explicitly use encrypted sessions, but this adds compression as well.
         $ADODB_SESSION_TBL     = $raw_prefix."sessions";
-        ADODB_Session::encryptionKey($ADODB_CRYPT_KEY);
+///        ADODB_Session::encryptionKey($ADODB_CRYPT_KEY);
 //        ADODB_Session::filter(new ADODB_Compress_GZip());
 
         // The data field name "data" violates SQL reserved words - switch it to session_data.
         ADODB_Session::dataFieldName('session_data');
+    global $ADODB_SESS_CONN;
         if (!isset($_SESSION))
         {
             session_start();
@@ -154,4 +154,6 @@ load_languages($db, $raw_prefix, 'regional');
 
 // Smarty
 $template = new bnt_smarty;
+
+//$template = new Smarty();
 ?>

@@ -19,7 +19,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/global_variables.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php"); 
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -27,11 +27,11 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
-// These spy values are most array based, and thus difficult to implement in the config_values db. 
+// These spy values are most array based, and thus difficult to implement in the config_values db.
 $spy_cleanup_ship_turns[1] = 2;
 $spy_cleanup_ship_turns[2] = 4;
 $spy_cleanup_ship_turns[3] = 6;
@@ -46,12 +46,12 @@ $planettypes[0] = "tinyplanet";
 $planettypes[1] = "smallplanet";
 $planettypes[2] = "mediumplanet";
 $planettypes[3] = "largeplanet";
-$planettypes[4] = "hugeplanet";               
+$planettypes[4] = "hugeplanet";
 
 $startypes[0] = "";
 $startypes[1] = "redstar";
 $startypes[2] = "orangestar";
-$startypes[3] = "yellowstar"; 
+$startypes[3] = "yellowstar";
 $startypes[4] = "greenstar";
 $startypes[5] = "bluestar";
 ?>

@@ -16,7 +16,7 @@
 //
 // File: mines.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -35,7 +35,7 @@ checkdead($db);
 
 $title = $l_mines_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($_POST['op']))
 {
@@ -56,7 +56,8 @@ $fighter_id = 0;
 $mine_id = 0;
 $set_attack = 'CHECKED';
 $set_toll = '';
-if ($result3 > 0)
+
+if ($result3 instanceof ADORecordSet)
 {
     while (!$result3->EOF)
     {
@@ -108,7 +109,7 @@ if ($playerinfo['turns'] < 1)
     echo "$l_mines_noturn<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -135,7 +136,7 @@ else
                 echo "$l_mines_nodeploy<br>";
                 global $l_global_mmenu;
                 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
             }
         }
@@ -154,7 +155,7 @@ else
                  echo "$l_mines_nopermit<br><br>";
                  global $l_global_mmenu;
                  echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                 include_once ("./footer.php");
+                 include_once './footer.php';
                  die();
              }
         }
@@ -184,7 +185,7 @@ else
     {
         $_POST['nummines'] = preg_replace('/[^0-9]/','',$_POST['nummines']);
         $_POST['numfighters'] = preg_replace('/[^0-9]/','',$_POST['numfighters']);
-        if (empty($_POST['nummines'])) 
+        if (empty($_POST['nummines']))
         {
             $_POST['nummines'] = 0;
         }
@@ -194,12 +195,12 @@ else
             $_POST['numfighters'] = 0;
         }
 
-        if ($_POST['nummines'] < 0) 
+        if ($_POST['nummines'] < 0)
         {
             $_POST['nummines'] = 0;
         }
 
-        if ($_POST['numfighters'] < 0) 
+        if ($_POST['numfighters'] < 0)
         {
             $_POST['numfighters'] =0;
         }
@@ -276,6 +277,6 @@ else
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

@@ -16,7 +16,7 @@
 //
 // File: scan.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -89,7 +89,7 @@ else
     }
     else
     {
-        // determine per cent chance of success in scanning target ship - 
+        // determine per cent chance of success in scanning target ship -
         // Based on player's sensors and opponent's cloak
 
         $success = scan_success($shipinfo['sensors'], $targetshipinfo['cloak']);
@@ -143,7 +143,7 @@ else
                 }
             }
 
-            // Player will get a Federation Bounty on themselves if they attack a player who's score is less than 
+            // Player will get a Federation Bounty on themselves if they attack a player who's score is less than
             // bounty_ratio of themselves. If the target has a Federation Bounty, they can attack without attracting a bounty on themselves.
 
             if (($btyamount == 0 && ((($targetscore / $playerscore) < $bounty_ratio) || $targetinfo['turns_used'] < $bounty_minturns)) && !("aiplayer" == substr($targetaccountinfo['email'], -8)))
@@ -166,7 +166,7 @@ else
                 $sc_hull = round($targetshipinfo['hull'] * $sc_error / 100);
                 echo "<td>$sc_hull</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -178,7 +178,7 @@ else
                 $sc_engines = round($targetshipinfo['engines'] * $sc_error / 100);
                 echo "<td>$sc_engines</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -192,7 +192,7 @@ else
                     $sc_pengines = round($targetshipinfo['pengines'] * $sc_error / 100);
                     echo "<td>$sc_pengines</td></tr>";
                 }
-                else 
+                else
                 {
                     echo "<td>???</td></tr>";
                 }
@@ -205,7 +205,7 @@ else
                 $sc_power = round($targetshipinfo['power'] * $sc_error / 100);
                 echo "<td>$sc_power</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -217,7 +217,7 @@ else
                 $sc_computer = round($targetshipinfo['computer'] * $sc_error / 100);
                 echo "<td>$sc_computer</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -229,7 +229,7 @@ else
                 $sc_sensors = round($targetshipinfo['sensors'] * $sc_error / 100);
                 echo "<td>$sc_sensors</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -241,7 +241,7 @@ else
                 $sc_beams = round($targetshipinfo['beams'] * $sc_error / 100);
                 echo "<td>$sc_beams</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -253,7 +253,7 @@ else
                 $sc_torp_launchers = round($targetshipinfo['torp_launchers'] * $sc_error / 100);
                 echo "<td>$sc_torp_launchers</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -265,7 +265,7 @@ else
                 $sc_armor = round($targetshipinfo['armor'] * $sc_error / 100);
                 echo "<td>$sc_armor</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -277,7 +277,7 @@ else
                 $sc_shields = round($targetshipinfo['shields'] * $sc_error / 100);
                 echo "<td>$sc_shields</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -288,7 +288,7 @@ else
                 $sc_cloak = round($targetshipinfo['cloak'] * $sc_error / 100);
                 echo "<td>$sc_cloak</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -303,7 +303,7 @@ else
                 $sc_armor_pts=round($targetshipinfo['armor_pts'] * $sc_error / 100);
                 echo "<td>$sc_armor_pts</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -315,7 +315,7 @@ else
                 $sc_ship_fighters = round($targetshipinfo['fighters'] * $sc_error / 100);
                 echo "<td>$sc_ship_fighters</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -327,7 +327,7 @@ else
                 $sc_torps = round($targetshipinfo['torps'] * $sc_error / 100);
                 echo "<td>$sc_torps</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -342,7 +342,7 @@ else
                 $sc_credits = round($targetinfo['credits'] * $sc_error / 100);
                 echo "<td>$sc_credits</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -354,7 +354,7 @@ else
                 $sc_ship_colonists = round($targetshipinfo['colonists'] * $sc_error / 100);
                 echo "<td>$sc_ship_colonists</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -366,7 +366,7 @@ else
                 $sc_ship_energy = round($targetshipinfo['energy'] * $sc_error / 100);
                 echo "<td>$sc_ship_energy</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -378,7 +378,7 @@ else
                 $sc_ship_ore = round($targetshipinfo['ore'] * $sc_error / 100);
                 echo "<td>$sc_ship_ore</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -390,7 +390,7 @@ else
                 $sc_ship_organics = round($targetshipinfo['organics'] * $sc_error / 100);
                 echo "<td>$sc_ship_organics</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -402,7 +402,7 @@ else
                 $sc_ship_goods = round($targetshipinfo['goods'] * $sc_error / 100);
                 echo "<td>$sc_ship_goods</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -417,7 +417,7 @@ else
                 $sc_dev_warpedit = round($targetshipinfo['dev_warpedit'] * $sc_error / 100);
                 echo "<td>$sc_dev_warpedit</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -429,7 +429,7 @@ else
                 $sc_dev_genesis = round($targetshipinfo['dev_genesis'] * $sc_error / 100);
                 echo "<td>$sc_dev_genesis</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -441,7 +441,7 @@ else
                 $sc_dev_minedeflector = round($targetshipinfo['dev_minedeflector'] * $sc_error / 100);
                 echo "<td>$sc_dev_minedeflector</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -453,7 +453,7 @@ else
                 $sc_dev_emerwarp = round($targetshipinfo['dev_emerwarp'] * $sc_error / 100);
                 echo "<td>$sc_dev_emerwarp</td></tr>";
             }
-            else 
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -463,8 +463,8 @@ else
             if ($roll < $success)
             {
                 echo "<td>$targetshipinfo[dev_escapepod]</td></tr>";
-            } 
-            else 
+            }
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -475,8 +475,8 @@ else
             if ($roll < $success)
             {
                 echo "<td>$targetshipinfo[dev_fuelscoop]</td></tr>";
-            } 
-            else 
+            }
+            else
             {
                 echo "<td>???</td></tr>";
             }
@@ -493,6 +493,6 @@ else
 echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

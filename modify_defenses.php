@@ -16,15 +16,15 @@
 //
 // File: modify_defenses.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "message_defense_owner.php"); 
-dynamic_loader ($db, "explode_mines.php"); 
-dynamic_loader ($db, "num_level.php"); 
+dynamic_loader ($db, "message_defense_owner.php");
+dynamic_loader ($db, "explode_mines.php");
+dynamic_loader ($db, "num_level.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -52,7 +52,7 @@ else
     echo "$l_md_invalid<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -68,7 +68,7 @@ if ($playerinfo['turns']<1)
     echo "$l_md_noturn<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -79,11 +79,11 @@ if ($result3 == 0)
     echo "$l_md_nolonger<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
-$defenseinfo = $result3->fields; 
+$defenseinfo = $result3->fields;
 if ($defenseinfo['player_id'] == $playerinfo['player_id'])
 {
     $defense_owner = $l_md_you;
@@ -118,7 +118,7 @@ switch ($_POST['response'])
             echo "$l_md_yours<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -128,7 +128,7 @@ switch ($_POST['response'])
             $countres = $db->Execute("SELECT SUM(quantity) as totalfighters FROM {$db->prefix}sector_defense WHERE sector_id=? and defense_type='F'", array($sector));
             $ttl = $countres->fields;
             $total_sector_fighters = $ttl['totalfighters'];
-            include_once ("./sector_fighters.php");
+            include_once './sector_fighters.php';
         }
         else
         {
@@ -161,7 +161,7 @@ switch ($_POST['response'])
             message_defense_owner($db, $sector,"$l_md_msgdownerb");
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
         break;
@@ -172,7 +172,7 @@ switch ($_POST['response'])
             echo "$l_md_notyours<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -239,7 +239,7 @@ switch ($_POST['response'])
         echo "$l_md_retr $_POST[quantity] $defense_type.<br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
         break;
 
@@ -250,7 +250,7 @@ switch ($_POST['response'])
             echo "$l_md_notyours<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -277,7 +277,7 @@ switch ($_POST['response'])
         echo "$l_md_mode<br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
         break;
 
@@ -329,17 +329,16 @@ switch ($_POST['response'])
 
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
         break;
 }
-
 
 //-------------------------------------------------------------------------------------------------
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

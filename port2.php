@@ -16,14 +16,14 @@
 //
 // File: port2.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "buy_them.php"); 
-dynamic_loader ($db, "num_level.php"); 
+dynamic_loader ($db, "buy_them.php");
+dynamic_loader ($db, "num_level.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -39,7 +39,7 @@ checkdead($db);
 
 $title = $l_title_port;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($_POST['trade_ore']))
 {
@@ -293,7 +293,7 @@ if ($zoneinfo['allow_trade'] == 'N')
     echo "$l_no_trade_info<p>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 elseif ($zoneinfo['allow_trade'] == 'L')
@@ -310,7 +310,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
             echo "$l_no_trade_out<p>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
     }
@@ -323,7 +323,7 @@ elseif ($zoneinfo['allow_trade'] == 'L')
             echo "$l_no_trade_out<p>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
     }
@@ -360,7 +360,7 @@ else
             echo "<a href=\"igb_login.php\">$l_igb_term</a><p>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -540,7 +540,6 @@ else
             $shields_upgrade_cost = phpChangeDelta($_POST['shields_upgrade'], $shipinfo['shields'], $upgrade_cost, $upgrade_factor);
         }
 
-
         if ($_POST['fighter_number'] < 0)
         {
             $_POST['fighter_number'] = 0;
@@ -647,7 +646,7 @@ else
             $dev_fuelscoop_cost = $dev_fuelscoop_price;
         }
 
-        $total_cost = $hull_upgrade_cost + $engine_upgrade_cost + $pengine_upgrade_cost + $power_upgrade_cost + 
+        $total_cost = $hull_upgrade_cost + $engine_upgrade_cost + $pengine_upgrade_cost + $power_upgrade_cost +
         $computer_upgrade_cost + $sensors_upgrade_cost + $beams_upgrade_cost + $armor_upgrade_cost + $cloak_upgrade_cost +
         $torp_launchers_upgrade_cost + $fighter_cost + $torpedo_cost + $armor_cost + $colonist_cost +
         $dev_genesis_cost + $dev_emerwarp_cost + $dev_warpedit_cost + $dev_minedeflector_cost +
@@ -655,7 +654,7 @@ else
 
         if ($total_cost > $playerinfo['credits'])
         {
-            echo "You do not have enough credits for this transaction.  The total cost is " . number_format($total_cost, 0, $local_number_dec_point, $local_number_thousands_sep) . 
+            echo "You do not have enough credits for this transaction.  The total cost is " . number_format($total_cost, 0, $local_number_dec_point, $local_number_thousands_sep) .
                  " credits and you only have " . number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep) . " credits.";
         }
         else
@@ -677,7 +676,7 @@ else
 
             if ($_POST['hull_upgrade'] > $shipinfo['hull'])
             {
-                $tempvar = 0; 
+                $tempvar = 0;
                 $tempvar = $_POST['hull_upgrade'] - $shipinfo['hull'];
                 $query = $query . ", hull=hull+". $db->qstr($tempvar);
                 BuildOneCol("$l_hull $l_trade_upgraded $_POST[hull_upgrade]");
@@ -717,7 +716,7 @@ else
 
             if ($_POST['sensors_upgrade'] > $shipinfo['sensors'])
             {
-                $tempvar = 0; 
+                $tempvar = 0;
                 $tempvar = $_POST['sensors_upgrade'] - $shipinfo['sensors'];
                 $query = $query . ", sensors=sensors+". $db->qstr($tempvar);
                 BuildOneCol("$l_sensors $l_trade_upgraded $_POST[sensors_upgrade]");
@@ -725,7 +724,7 @@ else
 
             if ($_POST['beams_upgrade'] > $shipinfo['beams'])
             {
-                $tempvar = 0; 
+                $tempvar = 0;
                 $tempvar = $_POST['beams_upgrade'] - $shipinfo['beams'];
                 $query = $query . ", beams=beams+". $db->qstr($tempvar);
                 BuildOneCol("$l_beams $l_trade_upgraded $_POST[beams_upgrade]");
@@ -828,7 +827,7 @@ else
                 buy_them($db,$playerinfo['player_id'], $_POST['spy_number']);
                 BuildTwoCol("$l_spy $l_trade_added:", $_POST['spy_number'] , "left", "right" );
             }
-      
+
             $query = $query . " WHERE ship_id=?";
             $debug_query = $db->Execute($query, $shipinfo['class'], $shipinfo['ship_id']);
             db_op_result($db,$debug_query,__LINE__,__FILE__);
@@ -862,13 +861,13 @@ else
 
         $cargo_exchanged = $_POST['trade_ore'] + $_POST['trade_organics'] + $_POST['trade_goods'];
 
-        $free_holds = num_level($shipinfo['hull'], $level_factor, $level_magnitude) - $shipinfo['ore'] - $shipinfo['organics'] - $shipinfo['goods'] - 
+        $free_holds = num_level($shipinfo['hull'], $level_factor, $level_magnitude) - $shipinfo['ore'] - $shipinfo['organics'] - $shipinfo['goods'] -
                       $shipinfo['colonists'];
 
         $free_power = (5 * num_level($shipinfo['power'], $level_factor, $level_magnitude)) - $shipinfo['energy'];
 
         $total_cost = '';
-        $total_cost = $_POST['trade_ore'] * $ore_price + $_POST['trade_organics'] * $organics_price + $_POST['trade_goods'] * 
+        $total_cost = $_POST['trade_ore'] * $ore_price + $_POST['trade_organics'] * $organics_price + $_POST['trade_goods'] *
                       $goods_price + $_POST['trade_energy'] * $energy_price;
 
         $l_returnto_port = str_replace("[port_link]", "<a href=port.php>".$l_returnto_port1."</a>", $l_returnto_port2);
@@ -1014,6 +1013,6 @@ echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

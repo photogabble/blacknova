@@ -18,7 +18,7 @@
 //
 // Sending spy to enemy planet
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -50,7 +50,7 @@ if (!$spy_success_factor)
     echo "<strong>$l_spy_disabled</strong><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -145,16 +145,15 @@ if (!isset($dismiss))
 
 $line_color = $color_line2;
 
-
 if ($playerinfo['turns'] < 1)
 {
     echo "$l_spy_noturn<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
-  
+
 $res2 = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE owner_id=? AND ship_id=?",1,-1,array($playerinfo['player_id'], $shipinfo['ship_id']));// AND active = 'N'
 $result = $res2->RecordCount();
 if (!$result)
@@ -162,7 +161,7 @@ if (!$result)
     echo "$l_spy_notonboard<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 else
@@ -186,7 +185,7 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -195,7 +194,7 @@ if ($planetinfo['owner'] == $playerinfo['player_id'])
     echo "$l_spy_ownplanet<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 elseif ($planetinfo['owner'] == 0)
@@ -203,7 +202,7 @@ elseif ($planetinfo['owner'] == 0)
     echo "$l_spy_unownedplanet<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -215,7 +214,7 @@ if ($num_spies >= $max_spies_per_planet)
     echo "$l_spy_planetfull<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -303,14 +302,14 @@ else
         $debug_query = $db->Execute("DELETE FROM {$db->prefix}spies WHERE spy_id=? ", array($spyinfo));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         echo "$l_spy_sendfailed<br>";
-        if (!$planetinfo['name']) 
+        if (!$planetinfo['name'])
         {
             $planetinfo['name'] = $l_unnamed;
         }
 
         playerlog($db,$planetinfo['owner'], "LOG_SPY_SEND_FAIL", "$planetinfo[name]|$planetinfo[sector_id]|$playerinfo[character_name]");
     }
-}   
+}
 
 echo "<a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu";
 global $l_global_mmenu;
@@ -318,5 +317,5 @@ $template->assign("title", $title);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/spy.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

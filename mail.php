@@ -16,7 +16,7 @@
 //
 // File: mail.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions & classes
 dynamic_loader ($db, "addelog.php");
@@ -61,7 +61,7 @@ if (!$result->EOF)
     $msg = str_replace("\r\n.\r\n","\r\n. \r\n",$msg);
 
     // Include the phpmailer backend
-    include_once ("./backends/phpmailer/class.phpmailer.php");
+    include_once './backends/phpmailer/class.phpmailer.php';
 
     // Instantiate your new class
     $mail_msg = new bnt_mailer;
@@ -76,22 +76,22 @@ if (!$result->EOF)
 
     if ($mail_msg->Send())
     {
-        echo "<font color=\"lime\">Confirmation code has been sent to " . $_GET['character_name'] . ".</font>\n<br>"; 
+        echo "<font color=\"lime\">Confirmation code has been sent to " . $_GET['character_name'] . ".</font>\n<br>";
         AddELog($db,$mailplayer_info['email'],3,'Y',$l_mail_topic,$mail_msg->ErrorInfo);
     }
     else
     {
-        echo "<font color=\"red\">Confirmation code failed to send to " . $_GET['character_name'] . ".</font> - \n<br>"; 
+        echo "<font color=\"red\">Confirmation code failed to send to " . $_GET['character_name'] . ".</font> - \n<br>";
         AddELog($db,$mailplayer_info['email'],3,'N',$l_mail_topic,$mail_msg->ErrorInfo);
     }
 
-    echo "<br>"; 
-    echo "<a href=confirm.php class=nav>$l_clickme</a> $l_new_login"; 
-} 
-else 
-{ 
+    echo "<br>";
+    echo "<a href=confirm.php class=nav>$l_clickme</a> $l_new_login";
+}
+else
+{
     echo "<strong>" . $l_mail_noplayer1 . "<a href=new.php>" . $l_mail_noplayer2 . "</a></strong><br>";
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

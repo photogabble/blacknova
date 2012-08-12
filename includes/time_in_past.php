@@ -18,7 +18,7 @@
 
 function time_in_past($minutes)
 {
-    $in_past = time() - ($minutes * 60); // Time gives time in seconds, 
+    $in_past = time() - ($minutes * 60); // Time gives time in seconds,
                                          // so multiply minutes * 60.
     $timestamp = date("Y-m-d H:i:s", $in_past);
     return $timestamp;

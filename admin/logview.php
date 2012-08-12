@@ -19,21 +19,21 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/logview.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php");
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
-    include_once ("./header.php");
+    include_once './header.php';
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
 // Include the sha256 backend
-include_once ("./backends/sha256/shaclass.php");
+include_once './backends/sha256/shaclass.php';
 
 echo "<form action=log.php method=post>" .
      "<input type=hidden name=sha256swordfish value=".sha256::hash($adminpass).">" .
@@ -51,8 +51,6 @@ while (!$res->EOF)
     echo "<option value=$player[player_id]>$player[character_name]</option>";
     $res->MoveNext();
 }
-
-
 
 echo "</select>&nbsp;&nbsp;" .
      "<input type=submit value=\"View player log\">" .

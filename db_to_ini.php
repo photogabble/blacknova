@@ -16,8 +16,8 @@
 //
 // File: includes/db_to_ini.php
 
-include_once ("./global_includes.php");
-include_once ("./header.php");
+include_once './global_includes.php';
+include_once './header.php';
 
 $debug_query = $db->Execute("SELECT DISTINCT category FROM {$raw_prefix}languages order by category asc");
 
@@ -44,5 +44,5 @@ for ($i=1; $i<count($categories); $i++)
 }
 
 fclose($inifile);
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

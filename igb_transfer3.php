@@ -16,7 +16,7 @@
 //
 // File: igb_transfer3.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -37,11 +37,11 @@ checklogin($db);
 get_info($db);
 checkdead($db);
 $title = $l_igb_title;
-include_once ("./header.php");
+include_once './header.php';
 
 if (!$allow_ibank)
 {
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 $debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
@@ -57,7 +57,7 @@ if ($portinfo['port_type'] != 'shipyard' && $portinfo['port_type'] != 'upgrades'
     echo $l_noport . "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 else
@@ -115,14 +115,14 @@ if (isset($_POST['player_id'])) // Ship transfer
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errsendyourself;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if (!$res || $res->EOF)
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_unknowntargetship;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $target = $res->fields;
@@ -133,7 +133,7 @@ if (isset($_POST['player_id'])) // Ship transfer
         $l_igb_min_turns3 = str_replace("[igb_target_char_name]", $target[character_name], $l_igb_min_turns3);
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_min_turns3;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($playerinfo['turns_used'] < $igb_min_turns)
@@ -141,7 +141,7 @@ if (isset($_POST['player_id'])) // Ship transfer
         $l_igb_min_turns4 = str_replace("[igb_min_turns]", $igb_min_turns, $l_igb_min_turns4);
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_min_turns4;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($igb_trate > 0)
@@ -160,7 +160,7 @@ if (isset($_POST['player_id'])) // Ship transfer
             $l_igb_mustwait2 = str_replace("[igb_difftime]", number_format($difftime, 0, $local_number_dec_point, $local_number_thousands_sep), $l_igb_mustwait2);
             $backlink = "igb_transfer.php";
             $igb_errmsg = $l_igb_mustwait2;
-            include_once ("./igb_error.php");
+            include_once './igb_error.php';
         }
     }
 
@@ -168,21 +168,21 @@ if (isset($_POST['player_id'])) // Ship transfer
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_invalidtransferinput;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($amount == 0)
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_nozeroamount;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($amount > $account['balance'])
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_notenoughcredit;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($igb_svalue != 0)
@@ -195,7 +195,7 @@ if (isset($_POST['player_id'])) // Ship transfer
         {
             $backlink = "igb_transfer.php";
             $igb_errmsg = $l_igb_amounttoogreat;
-            include_once ("./igb_error.php");
+            include_once './igb_error.php';
         }
     }
 
@@ -243,7 +243,7 @@ else
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errplanetsrcanddest;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $res = $db->Execute("SELECT name, credits, owner, sector_id FROM {$db->prefix}planets WHERE planet_id=?", array($_POST['splanet_id']));
@@ -251,7 +251,7 @@ else
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errunknownplanet;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $source = $res->fields;
@@ -266,7 +266,7 @@ else
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errunknownplanet;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $dest = $res->fields;
@@ -280,14 +280,14 @@ else
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errnotyourplanet;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($amount > $source['credits'])
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_notenoughcredits2;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $percent = $ibank_paymentfee * 100;
@@ -304,7 +304,7 @@ else
     $template->assign("dest_name",$dest['name']);
     $template->assign("formatted_trans_to", number_format($transfer, 0, $local_number_dec_point, $local_number_thousands_sep));
     $template->assign("l_igb_transferamount", $l_igb_transferamount);
-    $template->assign("formatted_trans_amt", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep)); 
+    $template->assign("formatted_trans_amt", number_format($amount, 0, $local_number_dec_point, $local_number_thousands_sep));
     $template->assign("l_igb_transferfee", $l_igb_transferfee);
     $template->assign("formatted_trans_fee", number_format($amount2, 0, $local_number_dec_point, $local_number_thousands_sep));
     $template->assign("l_igb_amounttransferred", $l_igb_amounttransferred);
@@ -333,5 +333,5 @@ else
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

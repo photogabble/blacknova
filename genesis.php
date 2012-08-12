@@ -16,7 +16,7 @@
 //
 // File: genesis.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -38,7 +38,7 @@ checkdead($db);
 
 $title = $l_gns_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 $result3 = $db->Execute("SELECT planet_id FROM {$db->prefix}planets WHERE sector_id=?", array($shipinfo['sector_id']));
 $num_planets = $result3->RecordCount();
@@ -115,11 +115,12 @@ else
 //-------------------------------------------------------------------------------------------------
 
 global $l_global_mmenu;
+$template->assign("title", $title);
 $template->assign("gen_failed", $gen_failed);
 $template->assign("gen_reason", $gen_reason);
 $template->assign("l_gns_pcreate", $l_gns_pcreate);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/genesis.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

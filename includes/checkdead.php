@@ -18,7 +18,7 @@
 
 function checkdead($db)
 {
-    global $playerinfo, $shipinfo; 
+    global $playerinfo, $shipinfo;
     global $spy_success_factor;
     global $l_global_died1, $l_global_died2, $l_login_died1, $l_login_died2, $l_die_please1, $l_die_please2;
     global $start_fighters, $start_armor, $start_energy;
@@ -32,7 +32,7 @@ function checkdead($db)
         {
             $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET class=1, hull=0, engines=0, pengines=0, power=0, computer=0,sensors=0, beams=0, torp_launchers=0, torps=0, armor=0, armor_pts=?, cloak=0, shields=0, sector_id=1, ore=0, organics=0, energy=?, colonists=0, goods=0, fighters=?, on_planet='N', dev_warpedit=0, dev_genesis=0, dev_emerwarp=0, dev_escapepod=?, dev_fuelscoop=?, dev_minedeflector=0, destroyed='N' WHERE ship_id=?", array($boom_armor, $boom_energy, $boom_fighters, $boom_pod, $boom_scoop, $shipinfo['ship_id']));
             db_op_result($db,$debug_query,__LINE__,__FILE__);
-            
+
             if ($spy_success_factor) // If there was a spy onboard, make sure its destroyed.
             {
                 spy_ship_destroyed($db,$shipinfo['ship_id'],0);
@@ -60,7 +60,7 @@ function checkdead($db)
             db_kill_player($db, $playerinfo['player_id']);
             cancel_bounty($db, $playerinfo['player_id']);
 
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
     }

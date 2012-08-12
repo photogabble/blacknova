@@ -35,7 +35,7 @@ function updatecookie($db)
     dynamic_loader ($db, "dbtm2unixtime.php");
     $last_update = dbtm2unixtime( $debug_query->fields['last_update'] );
     $turns = $debug_query->fields['turns'];
-    
+
     if ($turns < $max_turns)
     {
         // Find the number of minutes since last update - use floor so that its not based on half-minutes!

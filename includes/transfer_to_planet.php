@@ -30,12 +30,12 @@ function transfer_to_planet($db,$player_id, $planet_id, $how_many = 1)
 
     $res = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE owner_id=? AND ship_id=?",$can_transfer,-1,array($player_id, $shipinfo['ship_id']));
     $how_many2 = $res->RecordCount();
-  
+
     if (!$how_many2)
     {
         return 0;
     }
-    else  
+    else
     {
         while (!$res->EOF)
         {
@@ -46,6 +46,6 @@ function transfer_to_planet($db,$player_id, $planet_id, $how_many = 1)
             $res->MoveNext();
         }
     return $how_many2;
-    }   
+    }
 }
 ?>

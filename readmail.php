@@ -16,7 +16,7 @@
 //
 // File: readmail.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -36,7 +36,7 @@ checkdead($db);
 
 $title = $l_readm_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -83,7 +83,7 @@ $res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? ORDER B
               </td>
             </tr>
 
-<?
+<?php
  if ($res->EOF)
  {
 //  echo "$l_readm_nomessage";
@@ -99,7 +99,7 @@ $res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? ORDER B
                 </div>
               </td>
             </tr>
-<?
+<?php
  }
  else
  {
@@ -177,7 +177,7 @@ $res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? ORDER B
                 </div>
               </td>
             </tr>
-<?
+<?php
     $res->MoveNext();
   }
 }
@@ -206,12 +206,11 @@ $res = $db->Execute("SELECT * FROM {$db->prefix}messages WHERE recp_id=? ORDER B
   </table>
 </div>
 <br>
-<?
+<?php
  //}
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>
-

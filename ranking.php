@@ -16,10 +16,10 @@
 //
 // File: ranking.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
-dynamic_loader ($db, "player_insignia_name.php"); 
+dynamic_loader ($db, "player_insignia_name.php");
 dynamic_loader ($db, "gen_score.php");
 
 // Load language variables
@@ -30,7 +30,7 @@ load_languages($db, $raw_prefix, 'main');
 load_languages($db, $raw_prefix, 'teams');
 
 $title = $l_ranks_title;
-include_once ("./header.php");
+include_once './header.php';
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -195,7 +195,7 @@ if ($raw_prefix != $db->prefix)
             echo "    <td>" . number_format($row['score'], 0, $local_number_dec_point, $local_number_thousands_sep) . "</td>\n";
             $player_insignia = player_insignia_name($db,$row['email']);
             if ($player_insignia['rank_icon'] == 0)
-            {                 
+            {
                 $player_insignia['rank_icon'] = 1;
             }
 
@@ -269,5 +269,5 @@ $template->assign("dbprefix", $db->prefix);
 $template->assign("raw_prefix", $raw_prefix);
 $template->display("$templateset/rankings.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

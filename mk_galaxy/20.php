@@ -226,7 +226,7 @@ $lang_result = ini_to_db($db, "languages/english.ini", $raw_prefix . 'languages'
 // This has to come after we've imported the languages above
 $config_result = ini_to_db($db, "config/configset-" . $_POST['mode'] . ".php", $db->prefix . 'config_values', $l_store_configs);
 
-$debug_query = $db->Replace("{$raw_prefix}instances", 
+$debug_query = $db->Replace("{$raw_prefix}instances",
                             array('instance_id'=>"$_POST[gamenum]", 'gamenumber'=>"$_POST[gamenum]"),"instance_id", false);
 //db_output($db,$debug_query,__LINE__,__FILE__);
 

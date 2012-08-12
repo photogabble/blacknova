@@ -39,9 +39,9 @@ function spy_detect_planet($db,$shipowner_ship_id, $planet_id, $succ)
                 if ($res->RecordCount())
                 {
                     $planet = $res->fields;
-                    if (!$planet['name']) 
-                    { 
-                        $planet['name'] = $l_unnamed; 
+                    if (!$planet['name'])
+                    {
+                        $planet['name'] = $l_unnamed;
                     }
 
                     $stamp = date("Y-m-d H:i:s");

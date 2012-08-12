@@ -21,8 +21,8 @@ function take_credits($sector_id, $planet_id)
     global $db, $shipinfo, $playerinfo, $l_unnamed;
     global $l_pr_credstaken, $l_pr_credsonboard, $l_planet2_notowner, $l_planet2_sector, $l_pr_notturns;
 
-    // Dynamic functions 
-    include_once ("./get_info.php");
+    // Dynamic functions
+    include_once './get_info.php';
 
     // Get basic Database information (ship, player and planet)
     get_info($db);
@@ -61,10 +61,10 @@ function take_credits($sector_id, $planet_id)
                 get_info($db);
                 $l_pr_credstaken2 = str_replace("[CreditsTaken]", number_format($CreditsTaken, 0, $local_number_dec_point, $local_number_thousands_sep), $l_pr_credstaken);
                 $l_pr_credstaken2 = str_replace("[name]", $planetinfo['name'], $l_pr_credstaken2);
-        
+
                 $l_pr_credsonboard2 = str_replace("[name]", "<strong>" . $shipinfo['name'] . "</strong>", $l_pr_credsonboard);
                 $l_pr_credsonboard2 = str_replace("[NewShipCredits]", number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep), $l_pr_credsonboard2);
-        
+
                 echo "$l_pr_credstaken2 <br>";
                 echo "$l_pr_credsonboard2 <br>";
 

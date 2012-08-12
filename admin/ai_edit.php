@@ -19,16 +19,16 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_edit.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php");
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
-    include_once ("./header.php");
+    include_once './header.php';
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -44,8 +44,8 @@ if (empty($user1))
         $charnamelist = sprintf("%-20s", $row['character_name']);
         $charnamelist = str_replace("  ", "&nbsp;&nbsp;",$charnamelist);
         $sectorlist = sprintf("Sector %'04d&nbsp;&nbsp;", $row['sector_id']);
-        if ($row['active'] == "Y") 
-        { 
+        if ($row['active'] == "Y")
+        {
             $activelist = "Active &Oslash;&nbsp;&nbsp;";
         }
         else
@@ -53,7 +53,7 @@ if (empty($user1))
             $activelist = "Active O&nbsp;&nbsp;";
         }
 
-        if ($row['destroyed'] == "Y") 
+        if ($row['destroyed'] == "Y")
         {
             $destroylist = "Destroyed &Oslash;&nbsp;&nbsp;";
         }
@@ -86,12 +86,12 @@ else
         echo "<TR><TD>Orders</TD><TD>";
         echo "<SELECT SIZE=1 NAME=orders>";
         $oorder0 = $oorder1 = $oorder2 = $oorder3 = "VALUE";
-        if ($row[orders] == 0) 
+        if ($row[orders] == 0)
         {
             $oorder0 = "SELECTED=0 VALUE";
         }
 
-        if ($row[orders] == 1) 
+        if ($row[orders] == 1)
         {
             $oorder1 = "SELECTED=1 VALUE";
         }
@@ -113,7 +113,7 @@ else
         echo "</SELECT></TD></TR>";
         echo "<TR><TD>Aggression</TD><TD>";
         $oaggr0 = $oaggr1 = $oaggr2 = "VALUE";
-        if ($row['aggression'] == 0) 
+        if ($row['aggression'] == 0)
         {
             $oaggr0 = "SELECTED=0 VALUE";
         }
@@ -213,23 +213,23 @@ else
         $_dev_escapepod = empty($dev_escapepod) ? "N" : "Y";
         $_dev_fuelscoop = empty($dev_fuelscoop) ? "N" : "Y";
         $_active = empty($active) ? "N" : "Y";
-        $res = $db->Execute("SELECT ship_id FROM {$db_prefix}players LEFT JOIN {$db_prefix}ships ". 
+        $res = $db->Execute("SELECT ship_id FROM {$db_prefix}players LEFT JOIN {$db_prefix}ships ".
                             "ON {$db_prefix}players.player_id={$db_prefix}ships.player_id WHERE " .
                             "email=?", array($user1));
         $ship_id = $res->fields['ship_id'];
 
         $result = $db->Execute("UPDATE {$db_prefix}players SET character_name=?, credits=?, turns=? WHERE email=?", array($character_name, $credits, $turns, $user1));
         $result = $db->Execute("UPDATE {$db_prefix}ships SET name=?, destroyed=?, hull=?, engines=?, pengines=?, power=?, computer=?, sensors=?, armor=?, shields=?, beams=?, torp_launchers=?, cloak=?, dev_warpedit=?, dev_genesis=?, dev_emerwarp=?, dev_escapepod=?, dev_fuelscoop=?, dev_minedeflector=?, sector_id=?, ore=?, organics=?, goods=?, energy=?, colonists=?, fighters=?, torps=?, armor_pts=? WHERE ship_id=?",array($ship_name, $_ship_destroyed, $hull, $engines, $pengines, $power, $computer, $sensors, $armor, $shields, $beams, $torp_launchers, $cloak, $dev_warpedit, $dev_genesis, $dev_emerwarp, $_dev_escapepod, $_dev_fuelscoop, $dev_minedeflector, $sector, $ship_ore, $ship_organics, $ship_goods, $ship_energy, $ship_colonists, $ship_fighters, $torps, $armor_pts, $ship_id));
-        if (!$result) 
+        if (!$result)
         {
             echo "Changes to " . $ai_name . " ship record have FAILED Due to the following Error:<br><br>";
             echo $db->ErrorMsg() . "<br>";
-        } 
-        else 
+        }
+        else
         {
             echo "Changes to " . $ai_name . " ship record have been saved.<br><br>";
             $result2 = $db->Execute("UPDATE {$db_prefix}ai SET active=?, orders=?, aggression=? WHERE ai_id=?", array($_active, $orders, $aggression, $user1));
-            if (!$result2) 
+            if (!$result2)
             {
                 echo "Changes to " . $ai_name . " activity record have FAILED Due to the following Error:<br><br>";
                 echo $db->ErrorMsg() . "<br>";
@@ -249,4 +249,4 @@ else
 echo "<INPUT TYPE=HIDDEN NAME=module VALUE=ai_edit>";
 echo "</form>";
 
-?> 
+?>

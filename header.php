@@ -19,14 +19,14 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/header.php"));
 if ($pos !== false)
 {
-    include_once ("global_includes.php");
+    include_once 'global_includes.php';
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("footer.php");
+    include_once 'footer.php';
     die();
 }
 
@@ -102,5 +102,5 @@ $template->assign("header_alink_color", "#F00");
 $template->assign("header_vlink_color", "#00FF00");
 $template->assign("no_body", $no_body);
 $template->assign("style_sheet_file", $style_sheet_file);
-$template->display("$templateset/header.tpl");
+$template->display("/var/www/html/bnta/templates/$templateset/header.tpl");
 ?>

@@ -51,7 +51,7 @@ if ($showit == 1)     // Preparing values for the form
     else
     {
         $mykey='';
-        mt_srand((double)microtime()*1000000);
+        mt_srand((double) microtime()*1000000);
         for ($i=0; $i<16; $i++)
         {
             $mykey .= chr(mt_rand(97,122));

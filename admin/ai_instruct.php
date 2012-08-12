@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-// 
+//
 // File: admin/ai_instruct.php
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_instruct.php"));
 if ($pos !== false)
 {
-    include ("./global_includes.php");
+    include './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -27,7 +27,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include ("./footer.php");
+    include './footer.php';
     die();
 }
 

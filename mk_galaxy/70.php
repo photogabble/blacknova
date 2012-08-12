@@ -55,7 +55,7 @@ while ($_POST['nump'] >0)
 
             $num_planets_in_sector = $debug_query->RecordCount();
             $num_ok_planets = $planetary_sector->fields['star_size'] - $num_planets_in_sector;
-             
+
             if ($num_ok_planets > $_POST['nump'])
             {
                 $num_ok_planets = $_POST['nump'];

@@ -16,7 +16,7 @@
 //
 // File: news.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "translate_news.php");
@@ -27,7 +27,7 @@ load_languages($db, $raw_prefix, 'global_includes');
 load_languages($db, $raw_prefix, 'common');
 
 $title = $l_news_title;
-include_once ("./header.php");
+include_once './header.php';
 
 global $local_date_short_format;
 // Check to see if the date was passed in the query string
@@ -95,5 +95,5 @@ $template->assign("l_global_mlogin", $l_global_mlogin);
 $template->assign("session_email", empty($_SESSION['email']));
 $template->display("$templateset/news.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

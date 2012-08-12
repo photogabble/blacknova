@@ -19,16 +19,16 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/emailview.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php");
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
-    include_once ("./header.php");
+    include_once './header.php';
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -86,11 +86,11 @@ if (empty($cmd)|| $cmd =="Refresh")
     echo "        <td noWrap width=\"100\" bgColor=\"#900\" align=\"center\"><font size=\"2\" color=\"#FFF\"><i><b>Source IP</b></i></font></td>\n";
     echo "        <td noWrap width=\"150\" bgColor=\"#900\" align=\"left\"><font size=\"2\" color=\"#FFF\"><i><b>Destination</b></i></font></td>\n";
     echo "        <td noWrap bgColor=\"#900\"><font size=\"2\" color=\"#FFF\"><i><b>Topic&nbsp;</b></i></font></td>\n";
-    echo "        <td noWrap width=\"100\" bgColor=\"#900\" align=\"center\"><font size=\"2\" color=\"#FFF\"><i><b>Delivery</b></i></font></td>\n"; 
-    echo "        <td noWrap bgColor=\"#900\" align=\"center\"><font size=\"2\" color=\"#FFF\"><i><b>Log Type</b></i></font></td>\n"; 
-    echo "        <td noWrap bgColor=\"#900\"><font size=\"2\" color=\"#FFF\"><i><b>Date of Log</b></i></font></td>\n"; 
-    echo "        <td noWrap bgColor=\"#900\"><font size=\"2\" color=\"#FFF\"><i><b>Response</b></i></font></td>\n"; 
-    echo "      </tr>\n"; 
+    echo "        <td noWrap width=\"100\" bgColor=\"#900\" align=\"center\"><font size=\"2\" color=\"#FFF\"><i><b>Delivery</b></i></font></td>\n";
+    echo "        <td noWrap bgColor=\"#900\" align=\"center\"><font size=\"2\" color=\"#FFF\"><i><b>Log Type</b></i></font></td>\n";
+    echo "        <td noWrap bgColor=\"#900\"><font size=\"2\" color=\"#FFF\"><i><b>Date of Log</b></i></font></td>\n";
+    echo "        <td noWrap bgColor=\"#900\"><font size=\"2\" color=\"#FFF\"><i><b>Response</b></i></font></td>\n";
+    echo "      </tr>\n";
     while (!$res->EOF)
     {
         $row = $res->fields;
@@ -123,27 +123,27 @@ if (empty($cmd)|| $cmd =="Refresh")
         {
             $Delivery = "<font size=\"1\" color=\"lime\">Successful</font>";
         }
-        else 
+        else
         {
-            $Delivery = "<font size=\"1\" color=\"red\">Fail</font>"; 
+            $Delivery = "<font size=\"1\" color=\"red\">Fail</font>";
         }
 
-        echo "      <tr>\n"; 
-        echo "        <td noWrap width=\"50\" bgColor=\"#009\" align=\"center\"><font size=\"1\" color=\"#FF0\">$row[log_id]</font></td>\n"; 
-        echo "        <td noWrap width=\"150\" bgColor=\"#009\" align=\"left\"><font size=\"1\" color=\"#FF0\">$row[sp_name]</font></td>\n"; 
-        echo "        <td noWrap width=\"100\" bgColor=\"#009\" align=\"center\"><font size=\"1\" color=\"#FF0\">$row[sp_IP]</font></td>\n"; 
-        echo "        <td noWrap width=\"150\" bgColor=\"#009\" align=\"left\"><font size=\"1\" color=\"#FF0\">$row[dp_name]</font></td>\n"; 
-        echo "        <td noWrap bgColor=\"#009\"><font size=\"1\" color=\"#FF0\">$row[e_subject]</font></td>\n"; 
-        echo "        <td noWrap width=\"100\" bgColor=\"#009\" align=\"center\"><font size=\"1\">$Delivery</font></td>\n"; 
-        echo "        <td noWrap bgColor=\"#009\" align=\"center\"><font size=\"1\" color=\"#FF0\">$LogType</font></td>\n"; 
-        echo "        <td noWrap bgColor=\"#009\"><font size=\"1\" color=\"#FFF\">$row[e_stamp]</font></td>\n"; 
-        echo "        <td noWrap bgColor=\"#009\"><font size=\"1\" color=\"#FFF\">$row[e_response]</font></td>\n"; 
-        echo "      </tr>\n"; 
-        $res->MoveNext(); 
-    } 
-echo "</table>\n</div></div>\n"; 
-echo "</body>\n"; 
-$res = ''; 
-} 
+        echo "      <tr>\n";
+        echo "        <td noWrap width=\"50\" bgColor=\"#009\" align=\"center\"><font size=\"1\" color=\"#FF0\">$row[log_id]</font></td>\n";
+        echo "        <td noWrap width=\"150\" bgColor=\"#009\" align=\"left\"><font size=\"1\" color=\"#FF0\">$row[sp_name]</font></td>\n";
+        echo "        <td noWrap width=\"100\" bgColor=\"#009\" align=\"center\"><font size=\"1\" color=\"#FF0\">$row[sp_IP]</font></td>\n";
+        echo "        <td noWrap width=\"150\" bgColor=\"#009\" align=\"left\"><font size=\"1\" color=\"#FF0\">$row[dp_name]</font></td>\n";
+        echo "        <td noWrap bgColor=\"#009\"><font size=\"1\" color=\"#FF0\">$row[e_subject]</font></td>\n";
+        echo "        <td noWrap width=\"100\" bgColor=\"#009\" align=\"center\"><font size=\"1\">$Delivery</font></td>\n";
+        echo "        <td noWrap bgColor=\"#009\" align=\"center\"><font size=\"1\" color=\"#FF0\">$LogType</font></td>\n";
+        echo "        <td noWrap bgColor=\"#009\"><font size=\"1\" color=\"#FFF\">$row[e_stamp]</font></td>\n";
+        echo "        <td noWrap bgColor=\"#009\"><font size=\"1\" color=\"#FFF\">$row[e_response]</font></td>\n";
+        echo "      </tr>\n";
+        $res->MoveNext();
+    }
+echo "</table>\n</div></div>\n";
+echo "</body>\n";
+$res = '';
+}
 
 ?>

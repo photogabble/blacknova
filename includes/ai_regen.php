@@ -21,7 +21,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/ai_regen.php"));
 if ($pos !== false)
 {
-    include_once ("global_includes.php");
+    include_once 'global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -29,7 +29,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("footer.php");
+    include_once 'footer.php';
     die();
 }
 
@@ -55,7 +55,7 @@ function ai_regen()
     //  Regenerate Armor
     $maxarmor = num_level($playerinfo['armor'], $level_factor, $level_magnitude);
     if ($playerinfo['armor_pts'] <= ($maxarmor - 50))  //  Stop regen when within 50 of max
-    {                                                  //  Regen half of remaining armor 
+    {                                                  //  Regen half of remaining armor
         $playerinfo['armor_pts'] = $playerinfo['armor_pts'] + round(($maxarmor - $playerinfo['armor_pts'])/2);
         $gena = "regenerated armor to $playerinfo[armor_pts] points,";
     }
@@ -80,7 +80,7 @@ function ai_regen()
             $genf = "purchased $purchase fighters for $playerinfo[credits] credits,";
             $playerinfo['credits'] = 0;
         }
-    } 
+    }
 
     //  AI pay 3 per torpedo
     $available_torpedoes = num_level($playerinfo['torp_launchers'], $level_factor, $level_magnitude) - $playerinfo['torps'];
@@ -101,14 +101,14 @@ function ai_regen()
             $gent = "purchased $purchase torpedoes for $playerinfo[credits] credits,";
             $playerinfo['credits'] = 0;
         }
-    } 
+    }
 
     //  Update AI Record
     $db->Execute ("UPDATE {$db->prefix}ships SET ship_energy=?, armor_pts=?, ship_fighters=?, torps=?, credits=? " .
                   "WHERE ship_id=?", array($playerinfo['ship_energy'], $playerinfo['armor_pts'], $playerinfo['ship_fighters'], $playerinfo['torps'], $playerinfo['credits'], $playerinfo['ship_id']));
     if (!$gene=='' || !$gena=='' || !$genf=='' || !$gent=='')
     {
-        playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal $gene $gena $genf $gent and has been updated."); 
+        playerlog($db,$playerinfo['ship_id'], "LOG_RAW", "kabal $gene $gena $genf $gent and has been updated.");
     }
 }
 ?>

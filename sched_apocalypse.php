@@ -21,7 +21,7 @@ dynamic_loader ($db, "playerlog.php");
 $pos = (strpos($_SERVER['PHP_SELF'], "/sched_apocalypse.php"));
 if ($pos !== false)
 {
-    include_once ("./global_includes.php"); 
+    include_once './global_includes.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -29,7 +29,7 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -41,9 +41,9 @@ db_op_result($db,$debug_query,__LINE__,__FILE__);
 $chance = 9;
 $reccount = $debug_query->RecordCount();
 
-if ($reccount > 200) 
+if ($reccount > 200)
 {
-    $chance = 7; // increase chance it will happen if we have lots of planets meeting the criteria 
+    $chance = 7; // increase chance it will happen if we have lots of planets meeting the criteria
 }
 
 for loop here 1 to multiplier
@@ -69,7 +69,7 @@ for ($j = 0; $j<$multiplier; $j++)
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             $logpercent = ROUND($space_plague_kills * 100);
-            playerlog($db,$targetinfo['owner'], "LOG_SPACE_PLAGUE","$targetinfo[name]|$targetinfo[sector_id]|$logpercent"); 
+            playerlog($db,$targetinfo['owner'], "LOG_SPACE_PLAGUE","$targetinfo[name]|$targetinfo[sector_id]|$logpercent");
         }
         else
         {
@@ -78,7 +78,7 @@ for ($j = 0; $j<$multiplier; $j++)
             db_op_result($db,$debug_query,__LINE__,__FILE__);
 
             playerlog($db,$targetinfo['owner'], "LOG_PLASMA_STORM","$targetinfo[name]|$targetinfo[sector_id]");
-        } 
+        }
     }
 }
 

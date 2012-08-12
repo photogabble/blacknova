@@ -16,7 +16,7 @@
 //
 // File: planet.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -62,7 +62,7 @@ $title = $l_planet_title;
 updatecookie($db);
 
 // Planet log constants
-include_once ("./header.php");
+include_once './header.php';
 
 // Defines for Planet log
 define('PLOG_GENESIS_CREATE',1);
@@ -134,7 +134,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
         echo $l_planet_none . "<p>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -151,7 +151,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
         echo "<br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -284,7 +284,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
         $l_planet_transfer=str_replace("[transfer]",$l_planet_transfer_link,$l_planet_transfer);
         echo "$l_planet_transfer<br>";
         if ($planetinfo['base'] == "Y" && !$ship_based_combat)
-        {     
+        {
             echo "<a href='planet.php?planet_id=$planet_id&amp;command=defenses'>$l_planet_upgrade</a> " . $l_planetary_defense_levels . ".<br>";
         }
 
@@ -472,7 +472,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
             $r = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE active = 'Y' AND planet_id=? AND " .
                               "owner_id = ? ORDER BY ?", array($planet_id, $playerinfo['player_id'], $by));
             if ($numspies = $r->RecordCount())
-            {            
+            {
                 echo "<br><table border=1 cellspacing=1 cellpadding=2 width=\"100%\">";
                 echo "<tr bgcolor=\"$color_header\"><td colspan=99 align=center><font color=white><strong>$l_spy_yourspies </font> ($numspies)";
                 if ($numspies < $max_spies_per_planet)
@@ -488,7 +488,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
                 echo "<td><strong><a href=planet.php?planet_id=$planet_id&amp;by=move_type>$l_spy_move</a></strong></td>";
                 echo "<td><font color=white><strong>$l_spy_action</strong></font></td>";
                 echo "</tr>";
-        
+
                 while (!$r->EOF)
                 {
                     $spy = $r->fields;
@@ -504,11 +504,11 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
 
                         $job = "<a href=spy_change.php&amp;spy_id=$spy[spy_id]&amp;planet_id=$planet_id>$new_spy_job</a>";
                     }
-            
+
                     $temp = $spy['move_type'];
                     $l_movetype = 'l_spy_moves_' . $temp;
                     $move = $$l_movetype;
-           
+
                     if ($spy['spy_percent'] == 0)
                     {
                         $spy['spy_percent'] = "-";
@@ -517,7 +517,7 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
                     {
                         $spy['spy_percent'] = number_format(100*$spy['spy_percent'], 5, $local_number_dec_point, $local_number_thousands_sep);
                     }
-            
+
                     echo "<tr bgcolor=" . linecolor() ."><td><font style=\"font-size: 0.8em;\" color=white>$spy[spy_id]</font></td><td><font style=\"font-size: 0.8em;\" color=white>$job</font></td><td><font style=\"font-size: 0.8em;\" color=white>$spy[spy_percent]</font></td><td><font style=\"font-size: 0.8em;\"><a href=spy_change.php&amp;spy_id=$spy[spy_id]&amp;planet_id=$planet_id>$move</a></font></td><td><font style=\"font-size: 0.8em;\"><a href=spy_comeback.php&amp;spy_id=$spy[spy_id]&amp;planet_id=$planet_id>$l_spy_comeback</a></font></td></tr>";
                     $r->MoveNext();
                 }
@@ -564,12 +564,12 @@ if (!empty($planetinfo)) // if there is a planet in the sector show appropriate 
                 echo "</table>$l_planet_interest<br><br>";
                 // End of Planet info
             }
-            else 
+            else
             {
                 echo "$l_spy_nospieshere. ";
                 echo "<a href=spy_send.php&amp;planet_id=$planet_id>$l_spy_sendnew</a><br>";
-            }  
-        }  
+            }
+        }
     }
 }
 elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team'] == $playerinfo['team'] && $playerinfo['team'] > 0 && $planetinfo[owner] > 0))
@@ -623,7 +623,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
         // leave menu
         echo "$l_planet_left<br><br>";
         $destination = $sectorinfo['sector_id'];
-        include ("./check_defenses.php"); //          Need to edit check_defenses a bit more, but it will cause def check when leaving planet.
+        include './check_defenses.php'; //          Need to edit check_defenses a bit more, but it will cause def check when leaving planet.
         $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET on_planet='N' WHERE ship_id=?", array($shipinfo['ship_id']));
         db_op_result($db,$debug_query,__LINE__,__FILE__);
     }
@@ -689,7 +689,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
 
             // changeDelta function //
             echo "function changeDelta(desiredvalue,currentvalue)\n";
-            echo "{\n"; 
+            echo "{\n";
             echo "  Delta=0; DeltaCost=0;\n";
             echo "  Delta = desiredvalue - currentvalue;\n";
             echo "\n";
@@ -755,7 +755,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             $onfocus =  "onfocus=\"counttotal()\"";
             $onchange =  "onchange=\"counttotal()\"";
             $onclick =  "onclick=\"counttotal()\"";
-    
+
             // Dynamic functions
             dynamic_loader ($db, "dropdown.php");
 
@@ -841,7 +841,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                     echo "$l_planet_basenoturn<br><br>";
                     global $l_global_mmenu;
                     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                    include_once ("./footer.php");
+                    include_once './footer.php';
                     die();
                 }
 
@@ -929,7 +929,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             $planetowner = $playerinfo['character_name'];
             planet_log($db, $planetinfo['planet_id'],$planetinfo['owner'],$playerinfo['player_id'],PLOG_CAPTURE);
             playerlog($db,$playerinfo['player_id'], "LOG_PLANET_CAPTURED", number_format($planetinfo['colonists'], 0, $local_number_dec_point, $local_number_thousands_sep)."|".number_format($planetinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep) . "|$planetowner");
-        } 
+        }
         else
         {
             echo "$l_command_no<br>";
@@ -1051,7 +1051,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 echo "$l_plant_scn_turn<br><br>";
                 global $l_global_mmenu;
                 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
             }
 
@@ -1088,7 +1088,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 global $l_global_mmenu;
                 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
                 playerlog($db,$ownerinfo['player_id'], "LOG_PLANET_SCAN_FAIL", "$planetinfo[name]|$shipinfo[sector_id]|$playerinfo[character_name]");
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
             }
             else
@@ -1183,7 +1183,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
                 {
                     echo "<td>???</td></tr>";
                 }
-        
+
                 echo "<tr><td>$l_defense:</td><td></td>";
                 echo "<tr><td>$l_base:</td>";
 
@@ -1396,7 +1396,7 @@ elseif ($planetinfo['owner'] == $playerinfo['player_id'] || ($planetinfo['team']
             else
             {
                 $planetowner = $l_planet_noone;
-            }  
+            }
 
             $debug_query = $db->Execute("SELECT time FROM {$db->prefix}planet_log WHERE " .
                                         "planet_id=? AND (action=? OR action=?)", $planetinfo['planet_id'], PLOG_CAPTURE, PLOG_GENESIS_CREATE);
@@ -1451,5 +1451,5 @@ echo "<a href =\"bounty.php\">$l_by_placebounty</a><p>";
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

@@ -42,7 +42,6 @@ function go_build_base($planet_id, $sector_id)
 
     echo "<br><a href=planet.php?planet_id=$planet_id>$l_clickme</a> $l_toplanetmenu<br><br>";
 
-
     // build a base
     if ($planetinfo['ore'] >= $base_ore && $planetinfo['organics'] >= $base_organics && $planetinfo['goods'] >= $base_goods && $planetinfo['credits'] >= $base_credits)
     {

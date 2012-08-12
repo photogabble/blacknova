@@ -21,7 +21,7 @@ function get_info($db)
     // Dynamic functions
     dynamic_loader ($db, "adminlog.php");
 
-    global $raw_prefix, $playerinfo, $portinfo, $shipinfo, $zoneinfo, $sectorinfo, $classinfo, $igbinfo, $accountinfo; 
+    global $raw_prefix, $playerinfo, $portinfo, $shipinfo, $zoneinfo, $sectorinfo, $classinfo, $igbinfo, $accountinfo;
     global $templateset;
 
     if (isset($_SESSION['email']))

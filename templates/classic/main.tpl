@@ -8,7 +8,7 @@
 <div style="text-align:center;">
   <div style="border-width:1px; border-style:solid; margin:0 auto; position:relative; z-index: 2;" class="headingcolor mostwidth mainheader">
     <img src="templates/{$templateset}/images/rank/{$player_insignia}.png" alt="{$player_insignia_name}">
-    <span class="textcolor">{$playerinfo_character_name}{$l_abord}<strong><a class="dis2" href="report.php">{$shipinfo_name}</a></strong></span>
+    <span class="textcolor">{$playerinfo_character_name}{$l_abord}<strong> <a class="dis2" href="report.php">{$shipinfo_name}</a></strong></span>
   </div>
 </div>
 
@@ -143,7 +143,7 @@
 <div class="center" style="position:relative; z-index: 2;"><strong class="highlightcolor">
 
 {if $portinfo_port_type == 'shipyard'}
-<p><strong><a class="dis2" href="shipyard.php">{$l_main_shipyard2}</a><strong></p>
+<p><strong><a class="dis2" href="shipyard.php">{$l_main_shipyard2}</a></strong></p>
 {elseif $portinfo_port_type == "none"}
 {$l_tradingport|capitalize}: 
 </strong>{$l_none|capitalize}<strong><br><br>
@@ -239,7 +239,7 @@
 </div>
 
 <div style="position:relative; z-index: 2;">
-{if $num_defense}
+{if $num_defenses > 0}
 <div style="text-align:center;"><strong class="highlightcolor">{$l_sector_def}:<br></strong></div>
 <table border="0" width="100%"><tr><td>
 {else}
@@ -309,7 +309,7 @@
 
 <div class="mnu">
   <div class="center">
-    <form method="post" action="move.php" style="margin: 0; padding: 2; white-space:nowrap">
+    <form method="post" action="move.php" style="margin: 0; padding: 2px; white-space:nowrap">
 {section name=index start=1 loop=$presetinfo}
       <div style="font-size:1.5em;"><a class="mnu" href="move.php?move_method=real&amp;engage=1&amp;destination={$presetinfo[index]}">=&gt;&nbsp;{$presetinfo[index]}</a>&nbsp;<a class="dis2" href="preset.php">[{$l_set}]</a></div>
 {/section}
@@ -352,7 +352,7 @@
   </div>
   <div class="mnu">
     <div class="center">
-      <form method="post" action="move.php" style="margin: 0; padding: 2; white-space:nowrap">
+      <form method="post" action="move.php" style="margin: 0; padding: 2px; white-space:nowrap">
       <p class="forms">
       <input type="hidden" name="move_method" value="navcomp">
       <input type="text" name="destination" maxlength="7" size="3" class="rsform">
@@ -372,7 +372,7 @@
 </div>
 
 <div class="mnu">
-  <form method="post" action="move.php" style="margin: 0; padding: 2; white-space:nowrap">
+  <form method="post" action="move.php" style="margin: 0; padding: 2px; white-space:nowrap">
       <p class="forms">
       <input type="hidden" name="move_method" value="plasma">
       <input type="text" name="destination" class="rsform" maxlength="7" size="3">&nbsp;
@@ -385,4 +385,3 @@
 </table>
 </div>
 </div>
-

@@ -19,9 +19,9 @@
       <p>
       <strong>{$l_in_others}</strong>
       <p>
-      <a href="http://bnt1.blacknova.net" tabindex="16">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_maingm}</a><br>
+<!--      <a href="http://bnt1.blacknova.net" tabindex="16">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_maingm}</a><br>
       <a href="http://bnt2.blacknova.net" tabindex="17">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_2ndgm}</a><br>
-      <a href="http://play.blacknovatraders.com" tabindex="18">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_devgm}</a><br>
+      <a href="http://play.blacknovatraders.com" tabindex="18">{$l_official} <acronym title="{$l_project_name}">BNT</acronym> {$l_in_devgm}</a><br>-->
       <p>
       <a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=14248&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo"></a>
     </td>

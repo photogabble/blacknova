@@ -16,7 +16,7 @@
 //
 // File: sector_fighters.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -72,7 +72,7 @@ $shipinfo['energy'] = $shipinfo['energy'] - $playerbeams;
 $playershields = num_level($shipinfo['shields'], $level_factor, $level_magnitude);
 
 if ($playershields > $shipinfo['energy'])
-{  
+{
     $playershields = $shipinfo['energy'];
 }
 
@@ -81,7 +81,7 @@ if ($playershields > $shipinfo['energy'])
 $playertorpnum = round(pow($level_factor,$shipinfo['torp_launchers']))*2;
 
 if ($playertorpnum > $shipinfo['torps'])
-{ 
+{
     $playertorpnum = $shipinfo['torps'];
 }
 
@@ -106,7 +106,7 @@ if ($targetfighters > 0 && $playerbeams > 0)
         $l_sf_destfightb = str_replace("[lost]", $playerbeams, $l_sf_destfightb);
         echo $l_sf_destfightb . "<br>";
         $playerbeams = 0;
-    }   
+    }
 }
 
 echo "<br>$l_sf_torphit<br>";
@@ -157,7 +157,7 @@ if ($playerfighters > 0 && $targetfighters > 0)
         $l_sf_lostfight2 = str_replace("[lost]", $targetfighters, $l_sf_lostfight2);
         echo $l_sf_lostfight2 . "<br>";
         $tempplayfighters = $playerfighters - $targetfighters;
-    }     
+    }
 
     $playerfighters = $tempplayfighters;
     $targetfighters = $temptargfighters;
@@ -175,7 +175,7 @@ if ($targetfighters > 0)
         $playerarmor = $playerarmor - $targetfighters;
         $l_sf_armorbreach2 = str_replace("[lost]", $targetfighters, $l_sf_armorbreach2);
         echo $l_sf_armorbreach2 . "<br>";
-    } 
+    }
 }
 
 $fighterslost = $total_sector_fighters - $targetfighters;
@@ -183,7 +183,7 @@ $fighterslost = $total_sector_fighters - $targetfighters;
 $l_sf_sendlog = str_replace("[player]", $playerinfo['character_name'], $l_sf_sendlog);
 $l_sf_sendlog = str_replace("[lost]", $fighterslost, $l_sf_sendlog);
 $l_sf_sendlog = str_replace("[sector]", $destination, $l_sf_sendlog);
-                 
+
 message_defense_owner($db, $destination,$l_sf_sendlog);
 destroy_fighters($db,$destination,$fighterslost);
 playerlog($db,$playerinfo['player_id'], "LOG_DEFS_DESTROYED_F", "$fighterslost|$destination");
@@ -211,7 +211,7 @@ if ($playerarmor < 1)
     $ok = 0;
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 

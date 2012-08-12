@@ -28,7 +28,7 @@ function spy_buy_new_ship($db,$old_ship_id)
         playerlog($db,$spy['owner_id'], "LOG_SPY_NEWSHIP", "$spy[spy_id]|$spy[character_name]|$spy[name]");
         $res->MoveNext();
     }
-  
+
     $res2 = $db->Execute("DELETE FROM {$db->prefix}spies WHERE ship_id=?", array($old_ship_id));  // Including player's own spies!
 }
 ?>

@@ -16,7 +16,7 @@
 //
 // File: spy_comeback.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -48,7 +48,7 @@ if (!$spy_success_factor)
     echo "<strong>$l_spy_disabled</strong><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -150,10 +150,10 @@ if ($playerinfo['turns'] < 1)
     echo "$l_spy_noturn2<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
-  
+
 $res = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE planet_id=?", array($planet_id));
 $planetinfo = $res->fields;
 if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
@@ -161,10 +161,10 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
-  
+
 $res = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE owner_id =? AND spy_id=?  AND active = 'Y' AND planet_id=?", array($playerinfo['player_id'], $spy_id, $planetinfo['planet_id']));
 if ($res->RecordCount())
 {
@@ -232,5 +232,5 @@ $template->assign("title", $title);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/spy.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

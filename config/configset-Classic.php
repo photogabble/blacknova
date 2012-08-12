@@ -276,4 +276,3 @@ ibank_allowloans = true;
 ibank_allowtransfer = true;
 max_team_members = 5;
 max_team_changes = 3;
-

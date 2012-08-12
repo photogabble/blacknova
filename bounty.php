@@ -15,7 +15,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // File: bounty.php
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -36,7 +36,7 @@ checkdead($db);
 
 $title = $l_by_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($response))
 {
@@ -45,7 +45,7 @@ if (!isset($response))
 
 //-------------------------------------------------------------------------------------------------
 
-switch ($response) 
+switch ($response)
 {
     case '1': // Display
         echo "<h1>" . $title. "</h1>\n";
@@ -122,7 +122,7 @@ switch ($response)
             echo "$l_by_noturn<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -132,7 +132,7 @@ switch ($response)
             echo "$l_by_nobounty<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
         $bty = $res->fields;
@@ -142,7 +142,7 @@ switch ($response)
             echo "$l_by_notyours<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -153,7 +153,7 @@ switch ($response)
         echo "$l_by_canceled<br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
         break;
 
@@ -168,7 +168,7 @@ switch ($response)
             echo "$l_by_notexists<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -178,7 +178,7 @@ switch ($response)
             echo "$l_by_destroyed<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -187,7 +187,7 @@ switch ($response)
             echo "$l_by_noturn<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -197,7 +197,7 @@ switch ($response)
             echo "$l_by_zeroamount<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -206,7 +206,7 @@ switch ($response)
             echo "$l_by_yourself<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -215,7 +215,7 @@ switch ($response)
             echo "$l_by_notenough<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
 
@@ -238,7 +238,7 @@ switch ($response)
                 echo "$l_by_toomuch<br><br>";
                 global $l_global_mmenu;
                 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
             }
 
@@ -252,7 +252,7 @@ switch ($response)
       echo "$l_by_placed<br>";
       global $l_global_mmenu;
       echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-      include_once ("./footer.php");
+      include_once './footer.php';
       die();
       break;
 
@@ -351,6 +351,6 @@ switch ($response)
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

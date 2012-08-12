@@ -16,14 +16,14 @@
 //
 // File: planet3.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "spy_detect_planet.php"); 
-dynamic_loader ($db, "num_level.php"); 
+dynamic_loader ($db, "spy_detect_planet.php");
+dynamic_loader ($db, "num_level.php");
 dynamic_loader ($db, "gen_score.php");
 dynamic_loader ($db, "updatecookie.php");
 
@@ -64,7 +64,7 @@ if ($playerinfo['turns']<1)
     echo $l_trade_turnneed. "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -73,7 +73,7 @@ if ($planetinfo['sector_id'] != $shipinfo['sector_id'])
     echo $l_planet2_sector. "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -82,7 +82,7 @@ if (empty($planetinfo))
     echo $l_planet_none. "<br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -111,36 +111,36 @@ if ($planetinfo['sells']=='Y')
     if ($free_holds < $cargo_exchanged)
     {
         echo "$l_notenough_cargo  <a href=\"planet.php?planet_id=$planet_id\">$l_clickme</a> $l_toplanetmenu<br><br>";
-    } 
-    elseif ($trade_energy > $free_power) 
+    }
+    elseif ($trade_energy > $free_power)
     {
         echo "$l_notenough_power <a href=\"planet.php?planet_id=$planet_id\">$l_clickme</a> $l_toplanetmenu<br><br>";
-    } 
-    elseif ($playerinfo['turns']<1) 
+    }
+    elseif ($playerinfo['turns']<1)
     {
         echo "$l_notenough_turns<br><br>";
-    } 
-    elseif ($playerinfo['credits']<$total_cost) 
+    }
+    elseif ($playerinfo['credits']<$total_cost)
     {
         echo "$l_notenough_credits<br><br>";
-    } 
+    }
     elseif ($trade_organics > $planetinfo['organics'])
     {
         echo "$l_exceed_organics  ";
-    } 
+    }
     elseif ($trade_ore > $planetinfo['ore'])
     {
         echo "$l_exceed_ore  ";
-    } 
+    }
     elseif ($trade_goods > $planetinfo['goods'])
     {
         echo "$l_exceed_goods  ";
-    } 
+    }
     elseif ($trade_energy > $planetinfo['energy'])
     {
         echo "$l_exceed_energy  ";
-    } 
-    else 
+    }
+    else
     {
         echo "$l_totalcost: $total_cost<br>$l_traded_ore: $trade_ore<br>$l_traded_organics: $trade_organics<br>$l_traded_goods: $trade_goods<br>$l_traded_energy: $trade_energy<br><br>";
 
@@ -165,6 +165,6 @@ if ($planetinfo['sells']=='Y')
 gen_score($db,$planetinfo['owner']);
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

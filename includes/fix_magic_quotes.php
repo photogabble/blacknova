@@ -33,7 +33,7 @@ function fix_magic_quotes ($var = NULL, $sybase = NULL)
         if (get_magic_quotes_gpc())
         {
             // workaround because magic_quotes does not change $_SERVER['argv']
-            $argv = isset($_SERVER['argv']) ? $_SERVER['argv'] : NULL; 
+            $argv = isset($_SERVER['argv']) ? $_SERVER['argv'] : NULL;
 
             // fix all affected arrays
             foreach(array('_REQUEST', '_GET', '_POST', '_COOKIE', '_SERVER') as $var)
@@ -55,7 +55,7 @@ function fix_magic_quotes ($var = NULL, $sybase = NULL)
         }
 
         // disable magic_quotes_runtime
-        set_magic_quotes_runtime (0);
+//        set_magic_quotes_runtime (0);
         return TRUE;
     }
 

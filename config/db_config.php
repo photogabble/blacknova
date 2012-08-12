@@ -8,10 +8,10 @@ if ($pos !== false)
     die();
 }
 
-$ADODB_SESSION_DRIVER = "mysqlt";
-$ADODB_SESSION_DB = "bnt";
-$ADODB_SESSION_USER = "bnt_user";
-$ADODB_SESSION_PWD = "bnt_user";
+$ADODB_SESSION_DRIVER = "mysql";
+$ADODB_SESSION_DB = "bnta";
+$ADODB_SESSION_USER = "bnta";
+$ADODB_SESSION_PWD = "bnta";
 $ADODB_SESSION_CONNECT = "localhost";
 $dbport = "";
 $db_prefix = "bnt_1_";

@@ -16,7 +16,7 @@
 //
 // File: planet_report.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -42,7 +42,7 @@ checkdead($db);
 
 $title = $l_pr_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 global $db;
 global $res;
@@ -90,7 +90,7 @@ else
 {
     $query .= " ORDER BY sector_id ASC";
 }
- 
+
 $res = $db->Execute($query, $playerinfo['player_id']);
 
 $i = 0;
@@ -103,7 +103,7 @@ if ($res)
         {
             spy_detect_planet($db,$shipinfo['ship_id'], $planet[$i]['planet_id'], $planet_detect_success2);
         }
-      
+
         $i++;
         $res->MoveNext();
     }
@@ -185,5 +185,5 @@ echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

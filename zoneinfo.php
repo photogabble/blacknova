@@ -16,7 +16,7 @@
 //
 // File: zoneinfo.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -41,7 +41,7 @@ checkdead($db);
 
 $title = $l_zi_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if ($zoneinfo['zone_id'] < 5)
 {
@@ -82,7 +82,7 @@ else
 }
 
 if ($zoneinfo['allow_attack'] == 'Y')
-{    
+{
     $attack = $l_zi_allow;
 }
 else
@@ -186,5 +186,5 @@ $template->assign("maxlevel", $maxlevel);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/zoneinfo.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

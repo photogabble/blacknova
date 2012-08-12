@@ -16,13 +16,13 @@
 //
 // File: team_defenses.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "spy_detect_planet.php"); 
+dynamic_loader ($db, "spy_detect_planet.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -49,7 +49,7 @@ if ($playerinfo['team'] == 0)
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-    include_once ("./footer.php");
+    include_once './footer.php';
     return;
 }
 
@@ -185,5 +185,5 @@ else
 echo "<br><br>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

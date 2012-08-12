@@ -16,13 +16,13 @@
 //
 // File: showsource.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 // Load language variables
 load_languages($db, $raw_prefix, 'global_includes');
 
 $no_body = 1;
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($_GET['file']))
 {
@@ -53,5 +53,5 @@ else
 $template->assign("title", $title);
 $template->assign("output", $output);
 $template->display("$templateset/showsource.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

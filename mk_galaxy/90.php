@@ -354,7 +354,7 @@ $template->assign("l_allow_logins_result", db_output($db,db_op_result($db,$debug
 // Get a random string and push it through the md5 function
 $c_code = md5(mt_rand(0,9999));
 
-// Creates the confirmation code.        
+// Creates the confirmation code.
 $c_code = substr($c_code, 8, 6);
 
 // Add Gamemaster account and set active

@@ -16,15 +16,15 @@
 //
 // File: feedback.php
 
-include_once ("./global_includes.php"); 
-include_once ("./backends/phpmailer/class.phpmailer.php");
+include_once './global_includes.php';
+include_once './backends/phpmailer/class.phpmailer.php';
 
 // Dynamic functions & classes
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "addelog.php"); 
-dynamic_loader ($db, "phpmailer.php"); 
+dynamic_loader ($db, "addelog.php");
+dynamic_loader ($db, "phpmailer.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -37,7 +37,7 @@ get_info($db);
 checkdead($db);
 
 $title = $l_feedback_title;
-include_once ("./header.php");
+include_once './header.php';
 updatecookie($db);
 
 if (!isset($msg))
@@ -61,8 +61,8 @@ $mail_result = FALSE;
 if (empty($_POST['content']))
 {
     $empty_content = TRUE;
-} 
-else 
+}
+else
 {
     $content = stripslashes($_POST['content']);
     $subject = stripslashes($_POST['subject']);
@@ -119,6 +119,6 @@ $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->assign("title", $title);
 $template->display("$templateset/feedback.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

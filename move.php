@@ -16,13 +16,13 @@
 //
 // File: move.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "calc_dist.php"); 
+dynamic_loader ($db, "calc_dist.php");
 dynamic_loader ($db, "updatecookie.php");
 dynamic_loader ($db, "num_level.php");
 
@@ -67,12 +67,12 @@ else
     echo "ERROR! - Unknown movement type!!!<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($_GET['sector']))
 {
@@ -114,7 +114,7 @@ if ($playerinfo['turns']<1)
     echo "$l_move_turn<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -136,8 +136,8 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
         {
             $distance = calc_dist($db, $shipinfo['sector_id'],$destination);
             $shipspeed = $shipinfo['engines']; // 101 is the max_engines size + 1.
-            if ($shipspeed < 1)             
-            {    
+            if ($shipspeed < 1)
+            {
                 $shipspeed = 1;
             }
 
@@ -216,14 +216,14 @@ if ($_GET['move_method'] == 'real' || $_POST['move_method'] == 'real')
                 $ok = 1;
                 $sector = $destination;
                 $called_from = "rsmove.php";
-                include_once ("./check_defenses.php");
+                include_once './check_defenses.php';
             }
             else
             {
                 $l_rs_movetime=str_replace("[triptime]",number_format($triptime, 0, $local_number_dec_point, $local_number_thousands_sep),$l_rs_movetime);
                 $l_rs_energy=str_replace("[energy]",number_format($energyscooped, 0, $local_number_dec_point, $local_number_thousands_sep),$l_rs_energy);
                 echo "$l_rs_movetime $l_rs_energy<br><br>";
-            
+
                 $l_rs_engage_link= "<a href=move.php?move_method=real&amp;engage=1&amp;destination=$destination>" . $l_rs_engage_link . "</a>";
                 $l_rs_engage=str_replace("[turns]",number_format($playerinfo['turns'], 0, $local_number_dec_point, $local_number_thousands_sep),$l_rs_engage);
                 $l_rs_engage=str_replace("[engage]",$l_rs_engage_link,$l_rs_engage);
@@ -279,7 +279,7 @@ elseif ($_GET['move_method'] == 'warp' || $_POST['move_method'] == 'warp')
     {
         $ok = 1;
         $called_from = "move.php";
-        include_once ("./check_defenses.php");
+        include_once './check_defenses.php';
     }
     else
     {
@@ -296,7 +296,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
         $destination = $_GET['destination'];
     }
 
-    if (isset($_POST['destination']))    
+    if (isset($_POST['destination']))
     {
         $destination = $_POST['destination'];
     }
@@ -306,7 +306,7 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
         $engage = $_GET['engage'];
     }
 
-    if (isset($_POST['engage']))    
+    if (isset($_POST['engage']))
     {
         $engage = $_POST['engage'];
     }
@@ -339,10 +339,10 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
 
             // This is complicated. First, we have the max carryable amount of energy - num_level(100) * 5.
             // Thats the maximum amount of 'fuel' they are carrying. So, we divide the max amount of fuel by the shipspeed,
-            // which means that 'bigger' engines are more efficient. 
+            // which means that 'bigger' engines are more efficient.
             // Next we multiply that by the distance the ship is going. Because universe size varies, we have to 'normalize'
             // the equation so that the engines will match the formula we used to get these numbers. Basically, thats *50,
-            // entirely due to the power equation being *50. 
+            // entirely due to the power equation being *50.
             // Validity checks: level 0 for distance 50,000 is in the hundred-billions. Cost for lvl 100 is < 10k.
 
             $plasmacost =   round((5 * num_level(100, $level_factor, $level_magnitude)) / $shipspeed) * ($distance/($galaxy_size/50000 * 1000));
@@ -396,13 +396,13 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
                 $ok = 1;
                 $sector = $destination;
                 $called_from = "plasmamove.php";
-                include_once ("./check_defenses.php");
+                include_once './check_defenses.php';
             }
             else
             {
                 $l_plasma_energy_need=str_replace("[energy]",number_format($plasmacost, 0, $local_number_dec_point, $local_number_thousands_sep),$l_plasma_energy_need);
                 echo $l_plasma_energy_need ."<br><br>";
-            
+
                 $l_rs_engage_link= "<a href=move.php?move_method=plasma&amp;engage=1&amp;destination=$destination>" . $l_rs_engage_link . "</a>";
                 $l_plasma_engage=str_replace("[energy]",number_format($shipinfo['energy'], 0, $local_number_dec_point, $local_number_thousands_sep),$l_plasma_engage);
                 $l_plasma_engage=str_replace("[engage]",$l_rs_engage_link,$l_plasma_engage);
@@ -415,11 +415,11 @@ elseif (($_GET['move_method'] == 'plasma' || $_POST['move_method'] == 'plasma') 
 }
 elseif ($_POST['move_method'] == 'navcomp')
 {
-    include_once ("./navcomp.php");
+    include_once './navcomp.php';
 }
 
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

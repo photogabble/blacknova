@@ -17,21 +17,20 @@
 // File: footer.php
 
 $included_footer = true;
-
 // Dynamic functions
 dynamic_loader ($db, "return_print_r.php");
 
 $pos = (strpos($_SERVER['PHP_SELF'], "/footer.php"));
 if ($pos !== false)
 {
-    include_once ("global_includes.php");
+    include_once 'global_includes.php';
 
     // Load language variables
     load_languages($db, $raw_prefix, 'common');
 
     $title = $l_error_occured;
     echo $l_cannot_access;
-    include_once ("footer.php");
+    include_once 'footer.php';
     die();
 }
 
@@ -164,6 +163,7 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
     }
 }
 
+
 // Functions end
 
 if (is_object($db) && ($raw_prefix != $db->prefix))
@@ -171,7 +171,7 @@ if (is_object($db) && ($raw_prefix != $db->prefix))
     // Time left til next update
     $db->SetFetchMode(ADODB_FETCH_ASSOC);
     $debug_query = $db->Execute("SELECT last_run FROM {$db->prefix}scheduler"); // perfmon shows this to be faster than selectlimit.
-    if ($debug_query && !$debug_query->EOF) // Returns false if db isnt setup yet. 
+    if ($debug_query && !$debug_query->EOF) // Returns false if db isnt setup yet.
     {
         db_op_result($db,$debug_query,__LINE__,__FILE__);
         $row = $debug_query->fields;
@@ -264,8 +264,8 @@ if (is_object($db))
         // We don't use these checks, so just set them blank.
 
         // include the phpsniff backend
-        include_once ("./backends/phpsniff/phpSniff.class.php");
-
+        include_once './backends/phpsniff/phpSniff.class.php';
+/*
         $sniffer_settings = array('check_cookies'=>'',
                                   'default_language'=>'',
                                   'allow_masquerading'=>'');
@@ -275,20 +275,20 @@ if (is_object($db))
         $browser['useragent'] = $browser_sniff->property('ua');
         $browser['browser'] = $browser_sniff->property('long_name');
         $browser['version'] = $browser_sniff->property('version');
-
+*/
         $ip_address = getenv("REMOTE_ADDR"); // Get IP address for user
         $proxy_address = getenv("HTTP_X_FORWARDED_FOR"); // Get Proxy IP address for user
         $client_ip_address = getenv("HTTP_CLIENT_IP"); // Get http's IP address for user
 
-        $debug_query = $db->Execute("INSERT INTO {$db->prefix}ip_log (player_id, ip_address, proxy_address, client_ip_address, referer, getvars, " . 
-                                    "postvars, sector_id, url, time, os, platform, useragent, browser, bversion) " . 
+/*        $debug_query = $db->Execute("INSERT INTO {$db->prefix}ip_log (player_id, ip_address, proxy_address, client_ip_address, referer, getvars, " .
+                                    "postvars, sector_id, url, time, os, platform, useragent, browser, bversion) " .
                                     "VALUES " .
                                     "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", array ($playerinfo['player_id'], $ip_address, $proxy_address, $client_ip_address, $referer, $getvars, $postvars, $sectorinfo['sector_id'], $truncated_url, $stamp, $browser['os'], $browser['platform'], $browser['useragent'], $browser['browser'], $browser['version']));
-        if ($debug_query && !$debug_query->EOF) // Returns false if db isnt setup yet. 
+        if ($debug_query && !$debug_query->EOF) // Returns false if db isnt setup yet.
         {
             db_op_result($db,$debug_query,__LINE__,__FILE__);
         }
-    }
+    */}
     else
     {
     }
@@ -335,6 +335,7 @@ else
 }
 $template->assign("gen_time", $elapsed);
 
+/*
 if (basename($_SERVER['PHP_SELF']) == 'make_galaxy.php')
 {
     if (isset($_POST['step']) && $_POST['step'] >2) // Prevent loading languages before db loads.
@@ -351,7 +352,8 @@ if (basename($_SERVER['PHP_SELF']) == 'make_galaxy.php')
         $template->assign("total_elapsed", $_SESSION['total_elapsed']);
     }
 }
-
+*/
+$template->assign("total_elapsed", 0);
 if (!is_object($db))
 {
     $template->assign("dbprefix", '');
@@ -362,7 +364,7 @@ else
 }
 
 $template->assign("raw_prefix", $raw_prefix);
-$template->display("$templateset/footer.tpl");
+$template->display("templates/$templateset/footer.tpl");
 
 $size='';
 if (is_object($db) && ($raw_prefix != $db->prefix))
@@ -393,7 +395,8 @@ while (ob_get_level() > $minLevel)
 $outlength = strlen($output);
 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && !$zl)
 {
-    if (eregi("gzip",$_SERVER['HTTP_ACCEPT_ENCODING']))
+    if (stripos($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip"))
+    //if (eregi("gzip",$_SERVER['HTTP_ACCEPT_ENCODING']))
     {
         header("Content-Encoding: gzip");
         $output = gzencode($output,9);
@@ -435,7 +438,8 @@ else
     header("Cache-Control: public"); // Tell the client (and any caches) that this information can be stored in public caches.
     header("Connection: Keep-Alive"); // Tell the client to keep going until it gets all data, please.
     header("Keep-Alive: timeout=15, max=100");
-    // This header still causes issues on IE6, and I dont understand why. We need this header, so we need to figure out why its causing the problem, 
+    header("X-UA-Compatible: IE=Edge, chrome=1"); // Tell Internet Explorer to use the latest "edge" version of the rendering engine, and use chrome frame instead if possible
+    // This header still causes issues on IE6, and I dont understand why. We need this header, so we need to figure out why its causing the problem,
     // and fix it.
     // header("Expires: " . gmdate("D, d M Y H:i:s", time()) . " GMT"); // Tell the client that this page expires "now". This overrides incorrect apache info.
     echo $output;

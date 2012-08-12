@@ -39,7 +39,7 @@ for ($i = 0; $i < count($listpart) ; $i++)
 }
 
 $j = 0;
-for ($temp = 1; $temp< $k-1; $temp=$temp+2)  
+for ($temp = 1; $temp< $k-1; $temp=$temp+2)
 {
     if (md5_file($kimble[$temp+1]) == $kimble[$temp])
     {
@@ -54,6 +54,5 @@ $template->assign("testedcount",count($listpart));
 $template->assign("errorchk",$j);
 $template->assign("l_continue", $l_continue);
 $template->assign("step", ($_POST['step']+1));
-$template->display("$templateset/install/10.tpl");
-
+$template->display("templates/$templateset/install/10.tpl");
 ?>

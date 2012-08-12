@@ -20,12 +20,12 @@ class highlighter
 {
     // Class taken from http://www.aesthetic-theory.com/learn.php?highlight
 
-    var $code;
-    var $adjust;
-    var $line_numbers;
-    var $highlight_method;
+    public $code;
+    public $adjust;
+    public $line_numbers;
+    public $highlight_method;
 
-    function highlighter($method = 'highlight_string')
+    public function highlighter($method = 'highlight_string')
     {
         $this->highlight_method = $method;
         // defaults
@@ -33,7 +33,7 @@ class highlighter
         $this->line_numbers = true;
     }
 
-    function set_config($property, $value)
+    public function set_config($property, $value)
     {
         if (isset($this->$property))
         {
@@ -46,17 +46,17 @@ class highlighter
         }
     }
 
-    function set_code($code)
+    public function set_code($code)
     {
         $this->code = $code;
     }
 
-    function erase()
+    public function erase()
     {
         $this->code = '';
     }
 
-    function _make_css($code)
+    public function _make_css($code)
     {
         $code=preg_replace(
             '{([\w_]+)(\s*</font>)'.
@@ -79,7 +79,7 @@ class highlighter
         return str_replace('</font>', '</span>', $code);
     }
 
-    function process()
+    public function process()
     {
         $code = ($this->adjust && !strstr($this->code, '<?php')) ? '<?php' . "\n" . $this->code . "\n" . '?>' : $this->code;
         $hlfunc = $this->highlight_method;

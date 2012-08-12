@@ -16,7 +16,7 @@
 //
 // File: includes/planetbombing.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 dynamic_loader ($db, "direct_test.php");
 direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
@@ -58,7 +58,7 @@ function planetbombing()
         echo "$l_cmb_atleastoneturn<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -67,7 +67,7 @@ function planetbombing()
         echo "$l_cmb_needfighters<br><br>";
         global $l_global_mmenu;
         echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 
@@ -101,7 +101,6 @@ function planetbombing()
     {
         echo "$l_bigfigs<br><br>\n";
     }
-
 
     if ($planetbeams <= $attackerfighters)
     {

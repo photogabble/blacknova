@@ -17,9 +17,9 @@
 // File: newplayer.php
 
 $no_body = 1;
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 
 //$template->assign("title", $title);
 $template->display("$templateset/newplayer.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

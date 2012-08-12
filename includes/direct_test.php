@@ -28,7 +28,7 @@ function direct_test($file, $phpself)
 
     if ($phpfile == $selffile)
     {
-        include_once ("./global_includes.php");
+        include_once './global_includes.php';
         dynamic_loader ($db, "load_languages.php");
 
         // Load language variables
@@ -36,7 +36,7 @@ function direct_test($file, $phpself)
 
         $title = $l_error_occured;
         echo $l_cannot_access;
-        include_once ("./footer.php");
+        include_once './footer.php';
         die();
     }
 }

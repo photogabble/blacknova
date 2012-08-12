@@ -16,7 +16,7 @@
 //
 // File: includes/traderoute_engage.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 dynamic_loader ($db, "direct_test.php");
 direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
@@ -157,7 +157,7 @@ function traderoute_engage($j)
         {
             traderoute_die($l_tdr_invalidssector);
         }
-        
+
         $sourceport = $result->fields;
     }
 
@@ -209,7 +209,7 @@ function traderoute_engage($j)
         }
 
         $dest = $result->fields;
-    
+
         if ($traderoute['dest_type'] == 'L')
         {
             if ($dest['owner'] != $playerinfo['player_id'])
@@ -429,7 +429,6 @@ function traderoute_engage($j)
     <td width=\"50%\"><strong>
     ";
 
-
     // ------------ Determine if Source is Planet or Port
     if ($traderoute['source_type'] == 'P')
     {
@@ -552,7 +551,7 @@ function traderoute_engage($j)
                     $dist['scooped1'] = (num_level($shipinfo['power']) *5) - $shipinfo['energy'];
                 }
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET colonists=colonists+?, " . 
+                $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET colonists=colonists+?, " .
                                             "fighters=fighters+?, torps=torps+?, " .
                                             "energy=energy+? WHERE ship_id=?", array($colonists_buy, $fighters_buy, $torps_buy, $dist['scooped1'], $shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);

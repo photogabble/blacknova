@@ -19,11 +19,11 @@
 
 function log_scan($db, $player_id,$sector_id)
 {
-    // Check if the player has already scanned that sector - no need to double the 
+    // Check if the player has already scanned that sector - no need to double the
     // db record
     $debug_query = $db->Execute("SELECT * FROM {$db->prefix}scan_log WHERE player_id=? and sector_id=?", array($player_id, $sector_id));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
-    
+
     if ($debug_query->EOF)
     {
         $debug_query = $db->Execute("INSERT INTO {$db->prefix}scan_log (player_id,sector_id) VALUES " .

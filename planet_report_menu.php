@@ -16,7 +16,7 @@
 //
 // File: planet_report_menu.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -34,7 +34,7 @@ checkdead($db);
 
 $title = $l_pr_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 global $playerinfo, $ship_based_combat;
 
@@ -51,5 +51,5 @@ $template->assign("l_pr_team_disp", $l_pr_team_disp);
 $template->assign("l_pr_teamlink", $l_pr_teamlink);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/planet_report_menu.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

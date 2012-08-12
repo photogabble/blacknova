@@ -24,12 +24,12 @@ function transfer_to_ship($db,$player_id, $planet_id, $how_many = 1)
     $res = $db->SelectLimit("SELECT spy_id FROM {$db->prefix}spies WHERE owner_id=? AND planet_id=?",1, $how_many, array($player_id, $planet_id));
                             // The and active = n got dropped?
     $how_many2 = $res->RecordCount();
-  
+
     if (!$how_many2)
     {
         return FALSE; // Was 0.
     }
-    else  
+    else
     {
         while (!$res->EOF)
         {
@@ -40,6 +40,6 @@ function transfer_to_ship($db,$player_id, $planet_id, $how_many = 1)
             $res->MoveNext();
         }
         return $how_many2;
-    }   
+    }
 }
 ?>

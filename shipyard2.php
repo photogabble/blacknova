@@ -16,13 +16,13 @@
 //
 // File: shipyard2.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "spy_buy_new_ship.php"); 
+dynamic_loader ($db, "spy_buy_new_ship.php");
 dynamic_loader ($db, "gen_score.php");
 dynamic_loader ($db, "updatecookie.php");
 
@@ -96,7 +96,7 @@ if (!isset($_POST['confirm'])) // Display info only
     $calc_narmor = round(pow($upgrade_factor,$sship['minarmor']));
     $calc_ncloak = round(pow($upgrade_factor,$sship['mincloak']));
     $newshipvalue = ($calc_nhull+$calc_nengines+$calc_npengines+$calc_npower+$calc_ncomputer+$calc_nsensors+$calc_nbeams+$calc_ntorp_launchers+$calc_nshields+$calc_narmor+$calc_ncloak) * $upgrade_cost;
-    $totalcost = $newshipvalue - $shipvalue; 
+    $totalcost = $newshipvalue - $shipvalue;
 
     if ($totalcost <= 1)
     {
@@ -250,7 +250,7 @@ else // Now we really do buy the ship
     $ship_id = $debug_query->fields['ship_id'];
 
     // Insert current ship in players table
-    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET currentship=? " . 
+    $debug_query = $db->Execute("UPDATE {$db->prefix}players SET currentship=? " .
                                 "WHERE player_id=?", array($ship_id, $playerinfo['player_id']));
     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
@@ -273,7 +273,7 @@ else // Now we really do buy the ship
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 // Dynamic functions
 dynamic_loader ($db, "shipyard_die.php");

@@ -16,7 +16,7 @@
 //
 // File: warpedit3.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -51,7 +51,7 @@ if ($playerinfo['turns'] < 1)
     echo "$l_warp_turn<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -60,7 +60,7 @@ if ($shipinfo['dev_warpedit'] < 1)
     echo "$l_warp_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -72,7 +72,7 @@ if ($query97['allow_warpedit'] == 'N')
     echo "$l_warp_forbid<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -88,7 +88,7 @@ if ($query97['allow_warpedit'] == 'N' && $bothway)
     echo "$l_warp_forbidtwo<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -99,7 +99,7 @@ if (!$row)
     echo "$l_warp_nosector<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -152,6 +152,6 @@ if ($result3 > 0)
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

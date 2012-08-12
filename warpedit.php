@@ -16,7 +16,7 @@
 //
 // File: warpedit.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -35,7 +35,7 @@ checkdead($db);
 
 $title = $l_warp_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 echo "<h1>" . $title. "</h1>\n";
 
@@ -44,7 +44,7 @@ if ($playerinfo['turns'] < 1)
     echo "$l_warp_turn<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -53,7 +53,7 @@ if ($shipinfo['dev_warpedit'] < 1)
     echo "$l_warp_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -62,7 +62,7 @@ if ($zoneinfo['allow_warpedit'] == 'N')
     echo "$l_warp_forbid<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -78,7 +78,7 @@ if ($zoneinfo['allow_warpedit'] == 'L')
             echo "$l_warp_forbid<br><br>";
             global $l_global_mmenu;
             echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-            include_once ("./footer.php");
+            include_once './footer.php';
             die();
         }
     }
@@ -120,6 +120,6 @@ echo "</form>";
 global $l_global_mmenu;
 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 
 ?>

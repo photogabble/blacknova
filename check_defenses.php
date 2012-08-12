@@ -16,7 +16,7 @@
 //
 // File: check_defenses.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -130,7 +130,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
 
     if ($fighters_owner['team'] != $playerinfo['team'] || $playerinfo['team'] == 0)
     {
-        switch ($_POST['response']) 
+        switch ($_POST['response'])
         {
             case "fight":
                 $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses=' ' WHERE ship_id=?", array($shipinfo['ship_id']));
@@ -138,7 +138,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
 
                 echo "<h1>" . $title. "</h1>\n";
                 echo $destination;
-                include_once ("./sector_fighters.php");
+                include_once './sector_fighters.php';
                 break;
 
             case "retreat":
@@ -177,7 +177,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                 echo "$l_chf_youretreatback<br>";
                 global $l_global_mmenu;
                 echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
                 break;
 
@@ -207,7 +207,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                     echo "$l_chf_movefailed<br>";
                     // undo the move
                     // Todo: what happens if we don't have enough turns for BOTH moves (forth+back)?? Destroy the ship? Order him to wait turns?
-   
+
                     $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET cleared_defenses = ' ' WHERE ship_id =?", array($shipinfo['ship_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
 
@@ -256,7 +256,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                     // sector defenses detect incoming ship
                     echo "<h1>" . $title. "</h1>\n";
                     echo "$l_chf_thefightersdetectyou<br>";
-                    include_once ("./sector_fighters.php");
+                    include_once './sector_fighters.php';
                     break;
                 }
                 else
@@ -289,7 +289,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                 echo '<form name="bntform" action="move.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
                 $l_chf_therearetotalfightersindest = str_replace("[chf_total_sector_fighters]", $total_sector_fighters, $l_chf_therearetotalfightersindest);
                 echo "$l_chf_therearetotalfightersindest<br>";
-                 
+
                 if ($defenses[0]['fm_setting'] == "toll")
                 {
                     $l_chf_creditsdemanded = str_replace("[chf_number_fighterstoll]", number_format($fighterstoll, 0, $local_number_dec_point, $local_number_thousands_sep), $l_chf_creditsdemanded);
@@ -302,7 +302,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                 {
                     echo "<input type=radio name=response checked=\"checked\" value=pay><strong>" . $l_chf_inputpay1 . "</strong>" . $l_chf_inputpay2 . "<br></input>";
                 }
-                 
+
                 echo "<input type=radio name=response checked=\"checked\" value=fight><strong>" . $l_chf_inputfight1 . "</strong>" . $l_chf_inputfight2 . "<br></input>";
                 echo "<input type=radio name=response checked=\"checked\" value=sneak><strong>" . $l_chf_inputcloak1 . "</strong>" . $l_chf_inputcloak2 . "<br></input>";
                 echo "<br>";
@@ -323,7 +323,7 @@ if ($num_defenses > 0 && $total_sector_fighters > 0)
                 echo "<input type=hidden name=engage value=1>";
                 echo "<input type=hidden name=destination value=$destination>";
                 echo "</form>";
-                include_once ("./footer.php");
+                include_once './footer.php';
                 die();
                 break;
         }
@@ -399,12 +399,12 @@ if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_h
         $l_chm_youhitsomemines = str_replace("[chm_roll]", $roll, $l_chm_youhitsomemines);
         echo "$l_chm_youhitsomemines<br>";
         playerlog($db,$playerinfo['player_id'], "LOG_HIT_MINES", "$roll|$destination");
- 
+
         $l_chm_hehitminesinsector = str_replace("[chm_playerinfo_character_name]", $playerinfo['character_name'], $l_chm_hehitminesinsector);
         $l_chm_hehitminesinsector = str_replace("[chm_roll]", $roll, $l_chm_hehitminesinsector);
         $l_chm_hehitminesinsector = str_replace("[chm_sector]", $destination, $l_chm_hehitminesinsector);
         message_defense_owner($db, $destination,"$l_chm_hehitminesinsector");
- 
+
         if ($shipinfo['dev_minedeflector'] >= $roll)
         {
             $l_chm_youlostminedeflectors = str_replace("[chm_roll]", $roll, $l_chm_youlostminedeflectors);
@@ -422,22 +422,22 @@ if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_h
             {
                 echo "$l_chm_youhadnominedeflectors<br>";
             }
- 
+
             $mines_left = $roll - $shipinfo['dev_minedeflector'];
             $playershields = num_level($shipinfo['shields'], $level_factor, $level_magnitude);
-               
+
             if ($playershields > $shipinfo['energy'])
             {
                 $playershields = $shipinfo['energy'];
             }
- 
+
             if ($playershields >= $mines_left)
             {
                 $l_chm_yourshieldshitforminesdmg = str_replace("[chm_mines_left]", $mines_left, $l_chm_yourshieldshitforminesdmg);
                 echo "$l_chm_yourshieldshitforminesdmg<br>";
                 $debug_query = $db->Execute("UPDATE {$db->prefix}ships set energy=energy-?, dev_minedeflector=0 WHERE ship_id=?", array($mines_left, $shipinfo['ship_id']));
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
-                if ($playershields == $mines_left) 
+                if ($playershields == $mines_left)
                 {
                     echo "$l_chm_yourshieldsaredown<br>";
                 }
@@ -452,7 +452,7 @@ if ($num_defenses > 0 && $total_sector_mines > 0 && ($shipinfo['hull'] > $mine_h
                     echo "$l_chm_yourarmorhitforminesdmg<br>";
                     $debug_query = $db->Execute("UPDATE {$db->prefix}ships SET armor_pts=armor_pts-?, energy=0, dev_minedeflector=0 WHERE ship_id=?", array($mines_left, $shipinfo['ship_id']));
                     db_op_result($db,$debug_query,__LINE__,__FILE__);
-                    if ($shipinfo['armor_pts'] == $mines_left) 
+                    if ($shipinfo['armor_pts'] == $mines_left)
                     {
                         echo "$l_chm_yourhullisbreached<br>";
                     }

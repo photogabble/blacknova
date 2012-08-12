@@ -50,7 +50,7 @@
 // multiple function declaration error.
 //
 
-require_once ("./global_includes.php");
+require_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "seed_mt_rand.php");
@@ -83,7 +83,7 @@ while (!$game_query->EOF)
 {
     echo "Game # " . $game_query->fields['gamenumber'] . "<br>";
     $_POST['gamenum'] = $game_query->fields['gamenumber']; // Set the game number so that global cleanups can set the correct game number.
-    include_once ("./global_cleanups.php"); // Get the config variables like server closed, etc so the scheduler file and the called files have access.
+    include_once './global_cleanups.php'; // Get the config variables like server closed, etc so the scheduler file and the called files have access.
 
     if (!$server_closed)
     {
@@ -146,5 +146,5 @@ while (!$game_query->EOF)
     $game_query->MoveNext();
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

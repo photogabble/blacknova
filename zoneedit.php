@@ -16,7 +16,7 @@
 //
 // File: zoneedit.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -39,7 +39,7 @@ checkdead($db);
 
 $title = $l_ze_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 global $zoneinfo;
 if (!isset($_GET['command']))
@@ -138,7 +138,7 @@ if (($zoneinfo['team_zone'] == 'N' && $zoneinfo['owner'] != $ownerinfo['player_i
     $template->assign("l_global_mmenu", $l_global_mmenu);
     $template->display("$templateset/zoneedit-no.tpl");
 
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -165,7 +165,7 @@ if ($_GET['command'] == 'change')
     $template->assign("l_global_mmenu", $l_global_mmenu);
     $template->display("$templateset/zoneedit-change.tpl");
 
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -263,7 +263,7 @@ $template->assign("l_ze_return", $l_ze_return);
 $template->assign("l_clickme", $l_clickme);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/zoneedit.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 
 // Dynamic functions
 dynamic_loader ($db, "zoneedit_die.php");

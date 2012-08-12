@@ -16,7 +16,7 @@
 //
 // File: igb_withdraw2.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -35,11 +35,11 @@ checklogin($db);
 get_info($db);
 checkdead($db);
 $title = $l_igb_title;
-include_once ("./header.php");
+include_once './header.php';
 
 if (!$allow_ibank)
 {
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 $debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
@@ -55,7 +55,7 @@ if ($portinfo['port_type'] != 'shipyard' && $portinfo['port_type'] != 'upgrades'
     echo $l_noport . "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 else
@@ -80,7 +80,6 @@ echo "\n<img alt=\"\" src=\"templates/$templateset/images/div1.png\">";
 //echo "\n<table width=\"600\" height=\"350\" border=\"0\">";
 //echo "\n<tr><td align=\"center\" background=\"templates/$templateset/images/igbscreen.png\">";
 
-
 global $playerinfo, $igbinfo;
 global $amount;
 global $account;
@@ -93,21 +92,21 @@ if (($amount * 1) != $amount)
 {
     $backlink = "igb_withdraw.php";
     $igb_errmsg = $l_igb_invalidwithdrawinput;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 if ($amount == 0)
 {
     $backlink = "igb_withdraw.php";
     $igb_errmsg = $l_igb_nozeroamount3;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 if ($amount > $account['balance'])
 {
     $backlink = "igb_withdraw.php";
     $igb_errmsg = $l_igb_notenoughcredits;
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 $debug_query = $db->Execute("UPDATE {$db->prefix}ibank_accounts SET balance=balance-? WHERE " .
@@ -133,5 +132,5 @@ $template->display("$templateset/igb_withdraw2.tpl");
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

@@ -16,7 +16,7 @@
 //
 // File: igb_transfer2.php
 
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 //direct_test(__FILE__, $_SERVER['PHP_SELF']);
 
 // Dynamic functions
@@ -36,11 +36,11 @@ checklogin($db);
 get_info($db);
 checkdead($db);
 $title = $l_igb_title;
-include_once ("./header.php");
+include_once './header.php';
 
 if (!$allow_ibank)
 {
-    include_once ("./igb_error.php");
+    include_once './igb_error.php';
 }
 
 $debug_query = $db->Execute("SELECT * FROM {$db->prefix}planets WHERE base='Y' AND owner=?", array($playerinfo['player_id']));
@@ -56,7 +56,7 @@ if ($portinfo['port_type'] != 'shipyard' && $portinfo['port_type'] != 'upgrades'
     echo $l_noport . "<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 else
@@ -106,7 +106,7 @@ if ($_POST['splanet_id'] != $_POST['dplanet_id'])
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errunknownplanet;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $source = $res->fields;
@@ -121,7 +121,7 @@ if ($_POST['splanet_id'] != $_POST['dplanet_id'])
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errunknownplanet;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $dest = $res->fields;
@@ -135,14 +135,14 @@ if ($_POST['splanet_id'] != $_POST['dplanet_id'])
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errnobase;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($source['owner'] != $playerinfo['player_id'] || $dest['owner'] != $playerinfo['player_id'])
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_errnotyourplanet;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $percent = $ibank_paymentfee * 100;
@@ -186,14 +186,14 @@ else // Ship transfer
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_sendyourself;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if (!$res || $res->EOF)
     {
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_unknowntargetship;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     $target = $res->fields;
@@ -204,7 +204,7 @@ else // Ship transfer
         $l_igb_min_turns = str_replace("[igb_target_char_name]", $target['character_name'], $l_igb_min_turns);
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_min_turns;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($playerinfo['turns_used'] < $igb_min_turns)
@@ -212,7 +212,7 @@ else // Ship transfer
         $l_igb_min_turns2 = str_replace("[igb_min_turns]", $igb_min_turns, $l_igb_min_turns2);
         $backlink = "igb_transfer.php";
         $igb_errmsg = $l_igb_min_turns2;
-        include_once ("./igb_error.php");
+        include_once './igb_error.php';
     }
 
     if ($igb_trate > 0)
@@ -229,7 +229,7 @@ else // Ship transfer
             $l_igb_mustwait = str_replace("[igb_difftime]", number_format($difftime, 0, $local_number_dec_point, $local_number_thousands_sep), $l_igb_mustwait);
             $backlink = "igb_transfer.php";
             $igb_errmsg = $l_igb_mustwait;
-            include_once ("./igb_error.php");
+            include_once './igb_error.php';
         }
     }
 
@@ -277,5 +277,5 @@ else // Ship transfer
 echo "<img alt=\"\" src=\"templates/$templateset/images/div2.png\">";
 echo "</div>";
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

@@ -16,7 +16,7 @@
 //
 // File: spy_cleanup_planet.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -49,7 +49,7 @@ if (!$spy_success_factor)
     echo "<strong>$l_spy_disabled</strong><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -162,7 +162,7 @@ if ($shipinfo['sector_id'] != $planetinfo['sector_id'])
     echo "$l_planet_none<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -171,13 +171,13 @@ if ($playerinfo['player_id'] != $planetinfo['owner'])
     echo "$l_spy_notyourplanet<br><br>";
     global $l_global_mmenu;
     echo "<a href=\"main.php\">" . $l_global_mmenu . "</a>";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
-  
+
 for ($a=1; $a<=3; $a++)
 {
-    $spy_cleanup_planet_credits[$a] = calc_planet_cleanup_cost($db,$planetinfo['colonists'],$a); 
+    $spy_cleanup_planet_credits[$a] = calc_planet_cleanup_cost($db,$planetinfo['colonists'],$a);
     $spycleantext = "l_spy_cleanuptext_" . $a;
     global $$spycleantext;
     $new_spy_clean = $$spycleantext;
@@ -220,9 +220,9 @@ else
 {
     $set[3] = "checked";
 }
-  
+
 if (empty($doit))
-{ 
+{
     echo '<form name="bntform" action="spy.php" method="post" onsubmit="document.bntform.submit_button.disabled=true;">';
     echo "<input type=hidden name=command value=cleanup_planet>";
     echo "<input type=hidden name=planet_id value=$planet_id>";
@@ -230,7 +230,7 @@ if (empty($doit))
     echo "<input type=radio name=type value=1 $set[1]> $l_spy_cleanuptext_1<br>";
     echo "<input type=radio name=type value=2 $set[2]> $l_spy_cleanuptext_2<br>";
     echo "<input type=radio name=type value=3 $set[3]> $l_spy_cleanuptext_3<br><br>";
-    
+
     if ($set[1] == "DISABLED" && $set[2] == "DISABLED" && $set[3] == "DISABLED")
     {
         $l_spy_cannotcleanupplanet = str_replace("[credits]" , number_format($planetinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep), $l_spy_cannotcleanupplanet);
@@ -251,9 +251,9 @@ else
     {
         $type = 1;
     }
-      
-    if ($set[$type] != "DISABLED") 
-    {  
+
+    if ($set[$type] != "DISABLED")
+    {
         $found = 0;
         $debug_query = $db->Execute("UPDATE {$db->prefix}players SET " .
                                     "turns_used=turns_used+?, " .
@@ -350,10 +350,10 @@ else
         {
             echo "$l_spy_spynotfoundonplanet<br>";
         }
-    }  
+    }
     else
     {
-        echo "<br>$l_spy_notenough<br>"; 
+        echo "<br>$l_spy_notenough<br>";
     }
 }
 
@@ -363,5 +363,5 @@ $template->assign("title", $title);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/spy.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

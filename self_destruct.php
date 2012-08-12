@@ -16,13 +16,13 @@
 //
 // File: self_destruct.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // dynamic includes
 dynamic_loader ($db, "checklogin.php");
 dynamic_loader ($db, "get_info.php");
 dynamic_loader ($db, "checkdead.php");
-dynamic_loader ($db, "playerdeath.php"); 
+dynamic_loader ($db, "playerdeath.php");
 dynamic_loader ($db, "updatecookie.php");
 
 // Load language variables
@@ -36,7 +36,7 @@ checkdead($db);
 
 $title = $l_die_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 if (!isset($_GET['sure']))
 {
@@ -67,5 +67,5 @@ $template->assign("l_global_mlogin", $l_global_mlogin);
 $template->assign("l_global_mmenu", $l_global_mmenu);
 $template->display("$templateset/self_destruct.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

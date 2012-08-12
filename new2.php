@@ -16,7 +16,7 @@
 //
 // File: new.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -52,5 +52,5 @@ $template->assign("l_reset", $l_reset);
 $template->assign("l_reset", $l_global_mmenu);
 $template->display("$templateset/new2.tpl");
 
-include_once ("./footer.php");
-?> 
+include_once './footer.php';
+?>

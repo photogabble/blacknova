@@ -16,7 +16,7 @@
 //
 // File: option2.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -31,7 +31,7 @@ load_languages($db, $raw_prefix, 'option2');
 load_languages($db, $raw_prefix, 'common');
 
 // Include the sha256 backend
-include_once ("./backends/sha256/shaclass.php");
+include_once './backends/sha256/shaclass.php';
 
 checklogin($db);
 get_info($db);
@@ -39,7 +39,7 @@ checkdead($db);
 
 $title = $l_opt2_title;
 updatecookie($db);
-include_once ("./header.php");
+include_once './header.php';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -157,5 +157,5 @@ $template->assign("l_opt2_passchangeerr", $l_opt2_passchangeerr);
 $template->assign("l_opt2_chlang", $l_opt2_chlang);
 $template->display("$templateset/option2.tpl");
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>

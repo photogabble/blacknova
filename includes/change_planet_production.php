@@ -49,7 +49,7 @@ function change_planet_production($prodpercentarray)
     global $default_prod_torp;
     global $l_unnamed, $l_pr_changeprods, $l_pr_ppupdated, $l_pr_prexeedcheck, $l_pr_prexeeds;
     global $playerinfo;
-  
+
     $player_id = $playerinfo['player_id'];
     $team_id = $prodpercentarray['team_id']; // This needs to come from the DB, not the player url!!!
 
@@ -152,7 +152,7 @@ function change_planet_production($prodpercentarray)
                 $l_pr_prexeeds2 = str_replace("[sector_id]", $planet['sector_id'], $l_pr_prexeeds2);
 
                 echo "$l_pr_prexeeds2<br>";
-                $debug_query =$db->Execute("UPDATE {$db->prefix}planets SET prod_ore=$default_prod_ore " . 
+                $debug_query =$db->Execute("UPDATE {$db->prefix}planets SET prod_ore=$default_prod_ore " .
                                            "WHERE planet_id=$planet[planet_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
@@ -160,7 +160,7 @@ function change_planet_production($prodpercentarray)
                                             "WHERE planet_id=$planet[planet_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 
-                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET prod_goods=$default_prod_goods " . 
+                $debug_query = $db->Execute("UPDATE {$db->prefix}planets SET prod_goods=$default_prod_goods " .
                                             "WHERE planet_id=$planet[planet_id]");
                 db_op_result($db,$debug_query,__LINE__,__FILE__);
 

@@ -16,7 +16,7 @@
 //
 // File: includes/t_port.php
 
-function t_port($db, $ptype) 
+function t_port($db, $ptype)
 {
     global $l_ore, $l_none, $l_energy, $l_organics, $langdir;
     global $l_goods, $l_upgrade_ports, $l_device_ports, $l_shipyard_title;
@@ -27,7 +27,7 @@ function t_port($db, $ptype)
 
     // Load language variables
     load_languages($db, $raw_prefix, 'shipyard');
-    switch ($ptype) 
+    switch ($ptype)
     {
         case "none":
             $ret = $l_none;

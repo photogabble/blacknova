@@ -20,7 +20,7 @@
 $pos = (strpos($_SERVER['PHP_SELF'], "/server_list_client.php"));
 if ($pos !== false)
 {
-    include_once ("./config/config.php");
+    include_once './config/config.php';
     dynamic_loader ($db, "load_languages.php");
 
     // Load language variables
@@ -28,13 +28,13 @@ if ($pos !== false)
 
     $title = $l_error_occured;
     echo "You can not access this file directly!";
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 */
 
 $_POST['gamenum'] = '1';
-include_once ("./global_includes.php");
+include_once './global_includes.php';
 $server_list_url = "http://www.kabal-invasion.com/msl/";
 
 echo "sched ports " . $sched_ports;
@@ -77,13 +77,13 @@ $gm_all = "gm_speed=" . $gm_speed .
           "&gm_admin_mail=" . rawurlencode($gm_admin_mail) .
           "&gm_name=" . rawurlencode($game_name);
 
-$res = $db->Execute("SELECT COUNT({$db->prefix}ships.ship_id) AS x FROM {$db->prefix}ships, {$db->prefix}players LEFT JOIN {$raw_prefix}users " . 
+$res = $db->Execute("SELECT COUNT({$db->prefix}ships.ship_id) AS x FROM {$db->prefix}ships, {$db->prefix}players LEFT JOIN {$raw_prefix}users " .
                     "ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
                     "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND {$db->prefix}ships.destroyed='N' " .
                     "AND {$raw_prefix}users.email NOT LIKE '%@aiplayer' AND {$db->prefix}players.turns_used > 0");
 $row = $res->fields;
 $dyn_players = $row['x'];
-    
+
 $res = $db->Execute("SELECT score, character_name FROM {$db->prefix}ships, {$db->prefix}players LEFT JOIN {$raw_prefix}users " .
                     "ON {$raw_prefix}users.account_id = {$db->prefix}players.account_id ".
                     "WHERE {$db->prefix}ships.player_id = {$db->prefix}players.player_id AND {$db->prefix}ships.destroyed='N' AND " .
@@ -107,14 +107,14 @@ $res = $db->Execute("SELECT AVG(hull) AS a1 , AVG(engines) AS a2 , AVG(power) AS
 $row = $res->fields;
 $dyn_aiplayer_lvl = $row['a1'] + $row['a2'] + $row['a3'] + $row['a4'] + $row['a5'] + $row['a6'] + $row['a7'] + $row['a8'] + $row['a9'] + $row['a10'];
 $dyn_aiplayer_lvl = $dyn_aiplayer_lvl / 10;
-    
+
 $dyn_all = "&dyn_players=" . $dyn_players .
            "&dyn_aiplayer=" . $dyn_aiplayer .
            "&dyn_aiplayer_lvl=" . $dyn_aiplayer_lvl .
            "&dyn_top_score=" . $dyn_top_score .
            "&dyn_top_player=" . rawurlencode($dyn_top_player) .
            "&dyn_key=" . rawurlencode($server_list_key);
-    
+
 echo "\n\n<!-- Debug of values sent\n";
 echo str_replace("&", "\n", $gm_all);
 echo "\n";
@@ -129,7 +129,7 @@ if (isset($creating))
 
 //echo "\n\n<!--" . $url . "-->\n\n";
 echo "\n\n<br>" . $url . "<br>\n\n";
-    
+
 $i = @file($url);
 $result = @fopen($url,'r');
 

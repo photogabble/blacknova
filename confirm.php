@@ -17,7 +17,7 @@
 // File: confirm.php
 $no_body = 1;
 $title = $l_confirm_title;
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "attack_check.php");
@@ -26,7 +26,6 @@ dynamic_loader ($db, "adminlog.php");
 // Load language variables
 load_languages($db, $raw_prefix, 'global_includes');
 load_languages($db, $raw_prefix, 'login2');
-
 
 global $db;
 
@@ -41,12 +40,12 @@ db_op_result($db,$debug_query,__LINE__,__FILE__);
 
 if ($debug_query && !$debug_query->EOF)
 {
-        // IP was banned      
+        // IP was banned
         global $l_error_occured, $l_login_banned;
         $title = $l_error_occured;
         echo "<h1>" . $title. "</h1>\n";
         echo "<div style="text-align:center;"><p><font color=\"red\"><strong>" . $l_login_banned . "</strong></font><p></div>";
-        include_once ("./footer.php");
+        include_once './footer.php';
         adminlog($db, "LOG_RAW","Bad login - banned user from $ip_address");
         die();
 }
@@ -132,5 +131,5 @@ else
     echo "<a href=\"index.php\">" . $l_global_mlogin . "</a>";
 }
 
-include_once ("./footer.php");
+include_once './footer.php';
 ?>
