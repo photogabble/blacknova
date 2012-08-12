@@ -16,7 +16,7 @@
 //
 // File: main.php
 
-include_once ("./global_includes.php"); 
+include_once './global_includes.php';
 
 // Dynamic functions
 dynamic_loader ($db, "checklogin.php");
@@ -47,7 +47,7 @@ get_info($db);
 checkdead($db);
 
 $title = $l_main_title;
-include_once ("./header.php");
+include_once './header.php';
 updatecookie($db);
 
 if (!isset($_GET['command']))
@@ -77,7 +77,7 @@ if ($shipinfo['cleared_defenses'] > ' ')
     $template->assign("shipinfo_cleared_defenses", $shipinfo['cleared_defenses']);
     $template->display("$templateset/main-def.tpl");
 
-    include_once ("./footer.php");
+    include_once './footer.php';
     die();
 }
 
@@ -130,8 +130,8 @@ if (is_object($res))
         }
 
         $rez2 = $db->SelectLimit("SELECT sector_id FROM {$db->prefix}scan_log WHERE sector_id=? AND player_id =?",1,-1,array($links[$i]['dest'], $playerinfo['player_id']));
-        $rez3 = $db->SelectLimit("SELECT source FROM {$db->prefix}movement_log WHERE source=? AND player_id =?",1,-1, array($links[$i]['dest'], $playerinfo['player_id'])); 
-        $rez4 = $db->SelectLimit("SELECT destination FROM {$db->prefix}movement_log WHERE destination=? AND player_id =?",1,-1,array($links[$i]['dest'], $playerinfo['player_id'])); 
+        $rez3 = $db->SelectLimit("SELECT source FROM {$db->prefix}movement_log WHERE source=? AND player_id =?",1,-1, array($links[$i]['dest'], $playerinfo['player_id']));
+        $rez4 = $db->SelectLimit("SELECT destination FROM {$db->prefix}movement_log WHERE destination=? AND player_id =?",1,-1,array($links[$i]['dest'], $playerinfo['player_id']));
 
         if (!$rez2->EOF || !$rez3->EOF || !$rez4->EOF)
         {
@@ -195,9 +195,9 @@ if ($sectorinfo['star_size'] > 0 && !$no_stars)
 
 $player_insignia = player_insignia_name($db,$accountinfo['email']);
 if ($player_insignia['rank_icon'] == 0)
-{           
+{
     $player_insignia['rank_icon'] = 1;
-}      
+}
 
 // First template begins here.
 
@@ -297,23 +297,23 @@ $planettypes[4] = $planettypes4;
 
 while (!$res->EOF)
 {
-    $uber = 0; 
+    $uber = 0;
     $success = 0;
     $hiding_planet[$i] = $res->fields;
 
-    if ($hiding_planet[$i]['owner'] == $playerinfo['player_id']) 
+    if ($hiding_planet[$i]['owner'] == $playerinfo['player_id'])
     {
         $uber = 1;
     }
 
-    if ($hiding_planet[$i]['team'] != 0) 
+    if ($hiding_planet[$i]['team'] != 0)
     {
-        if ($hiding_planet[$i]['team'] == $playerinfo['team']) 
+        if ($hiding_planet[$i]['team'] == $playerinfo['team'])
         {
             $uber = 1;
         }
     }
-    
+
     if ($shipinfo['sensors'] >= $hiding_planet[$i]['cloak'])
     {
         $uber = 1;
@@ -326,19 +326,19 @@ while (!$res->EOF)
         {
             $success = 5;
         }
-    
+
         if ($success > 95)
         {
             $success = 95;
         }
-    
+
         seed_mt_rand();
         $roll = mt_rand(1, 100);
         if ($roll <= $success) // If able to see the planet
         {
             $uber = 1; // Confirmed working
         }
-    
+
         if ($uber == 0 && $spy_success_factor)  // Still not yet 'visible'
         {
             $res_s = $db->Execute("SELECT * FROM {$db->prefix}spies WHERE planet_id=? AND owner_id=?", array($hiding_planet[$i]['planet_id'], $playerinfo['player_id']));
@@ -348,7 +348,7 @@ while (!$res->EOF)
             }
         }
     }
-    
+
     if ($uber == 1)
     {
         $planets[$i] = $hiding_planet[$i];
@@ -536,9 +536,13 @@ if ($num_defenses > 0)
         }
         $i++;
     }
+    $template->assign("defenses", $defenses);
+}
+else
+{
+    $template->assign("defenses", '');
 }
 
-$template->assign("defenses", $defenses);
 $i = 0;
 $num_traderoutes = 0;
 
@@ -703,6 +707,7 @@ $template->assign("classimage", $classinfo['image']);
 $template->assign("gravatar_id", md5($accountinfo['email']));
 $template->assign("use_gravatar", $playerinfo['use_gravatar']);
 $template->assign("override_gravatar", $accountinfo['override_gravatar']);
+$template->assign("plasma_engines", $plasma_engines);
 $template->display("$templateset/main.tpl");
-include_once ("./footer.php");
+include_once './footer.php';
 ?>
