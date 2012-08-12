@@ -466,6 +466,10 @@ if ($shipinfo['sector_id'] != 1)
     $template->assign("visible_count", $i);
     $template->assign("visible_ship_array", $visible_ship_array);
 }
+else
+{
+    $template->assign("visible_count", 0);
+}
 
 $shipseen = 0;
 if ($shipinfo['sector_id'] != '1')

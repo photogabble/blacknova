@@ -269,6 +269,15 @@ $igblink = "\n<a href=igb_login.php>$l_igb_term</a>";
 $l_ifyouneedmore=str_replace("[igb]",$igblink,$l_ifyouneedmore);
 $l_creds_to_spend=str_replace("[credits]",number_format($playerinfo['credits'], 0, $local_number_dec_point, $local_number_thousands_sep),$l_creds_to_spend);
 
+$onblur = "onblur=\"counttotal()\"";
+$onfocus =  "onfocus=\"counttotal()\"";
+$onchange =  "onchange=\"counttotal()\"";
+$onclick =  "onclick=\"counttotal()\"";
+
+$template->assign("onblur", $onblur);
+$template->assign("onfocus", $onfocus);
+$template->assign("onchange", $onchange);
+$template->assign("onclick", $onclick);
 $template->assign("playerinfo_credits", $playerinfo['credits']);
 $template->assign("l_no_credits", $l_no_credits);
 $template->assign("l_creds_to_spend", $l_creds_to_spend);

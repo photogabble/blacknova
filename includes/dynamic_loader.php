@@ -46,7 +46,7 @@ function dynamic_loader ($db, $mod)
     }
     else // load original function, mod is unavailable for some reason.
     {
-        $return = include_once 'includes/'. $mod);
+        $return = include_once 'includes/'. $mod;
     }
 
     return $return;

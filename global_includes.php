@@ -43,7 +43,8 @@ include_once './backends/adodb/session/adodb-cryptsession.php';
 include_once './includes/db_op_result.php';
 
 // Smarty provides templating
-include_once './backends/smarty/libs/Smarty.class.php';
+//include_once './backends/smarty/libs/Smarty.class.php';
+include_once './backends/smarty/Smarty.class.php';
 include_once './includes/smarty.php';
 //include_once ("./backends/smarty/src/class.template.php"); For template-lite (in testing)
 
@@ -58,5 +59,5 @@ include_once './includes/connectdb.php';
 include_once 'global_cleanups.php';
 
 // Soon to be removed - db-specific functions.
-include_once 'includes/'. $ADODB_SESSION_DRIVER . "-common.php");
+include_once "includes/". $ADODB_SESSION_DRIVER . "-common.php";
 ?>
