@@ -23,9 +23,9 @@ class bnt_smarty extends Smarty
     public function __construct()
     {
         parent::__construct();
-        $this->setTemplateDir('/var/www/html/bnta/templates');
-        $this->setCacheDir('/var/www/html/bnta/cache_dir');
-        $this->setCompileDir('/var/www/html/bnta/compile_dir');
+        $this->setTemplateDir('templates');
+        $this->setCacheDir('cache_dir');
+        $this->setCompileDir('compile_dir');
     }
 }
 

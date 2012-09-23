@@ -102,5 +102,5 @@ $template->assign("header_alink_color", "#F00");
 $template->assign("header_vlink_color", "#00FF00");
 $template->assign("no_body", $no_body);
 $template->assign("style_sheet_file", $style_sheet_file);
-$template->display("/var/www/html/bnta/templates/$templateset/header.tpl");
+$template->display("templates/$templateset/header.tpl");
 ?>
