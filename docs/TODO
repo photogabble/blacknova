@@ -1,4 +1,4 @@
-This file is used to keep track of things that need doing, and all feature requests.
+This file is used to keep track of things that need doing, and all feature requests..
 
 TODO: add a check for no "scratch_dir" during install. Right now, it just ends up showing a blank page, making it tough to debug
 TODO: get rid of admin_mail_name, have it use admin player (id=1) name.
